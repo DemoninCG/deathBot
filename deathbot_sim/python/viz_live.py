@@ -1,31 +1,35 @@
-"""Live pygame visualizer for the deathbot training + testing process.
+"""Live pygame visualizer for the deathbot network playing TAP Death mode.
 
 Two panels in one window:
-  - LEFT (training): a colored visualization of the network's neurons and
-    connections on a black background. Neuron color encodes activation
-    (phase 2 will feed real activations; for now a mock pulse). Shows the
-    layer sizes and a "training step" counter.
+  - LEFT (live game): the network continuously plays full Death-mode games.
+    Shows the current board (white-on-black) with the ghost piece (where the
+    network will place the current piece, in dim blue), the next-piece preview,
+    and live stats: current level, pieces placed, games played, max level
+    reached, max/avg survival. When a game tops out, a new one starts after a
+    brief pause.
   - RIGHT (testing): cycles through all reachable lock positions for a
     hard-coded board + next piece, drawing each candidate in light blue on
     a white-on-black board. Below it, a separate board shows the network's
     predicted best placement, with the top-5 scores listed.
 
 Run:
-    python -m viz_live                 # default hard-coded board + I piece
-    python -m viz_live --piece T       # different piece
-    python -m viz_live --board SPEC    # custom board (see viz_pathfind._parse_board)
+    python viz_live.py --nn --weights model_weights.pt
+    python viz_live.py --piece T --board stack
+    python viz_live.py --help
 
 Controls:
-    SPACE  - pause/resume the lock cycling
-    LEFT / RIGHT - manually step through candidates when paused
-    R      - toggle reduced-motion mode (slower cycling)
+    SPACE  - pause/resume the live game + lock cycling
+    LEFT / RIGHT - manually step through candidates (testing panel) when paused
+    R      - toggle reduced-motion mode (slower cycling + game speed)
     N      - toggle between MockScorer and NeuralScorer (if torch installed)
+    G      - force-start a new game immediately
     ESC    - quit
 """
 
 from __future__ import annotations
 
 import math
+import random
 import sys
 import time
 from pathlib import Path
@@ -54,146 +58,283 @@ from viz_pathfind import _parse_board  # noqa: E402
 
 # ---- Constants ------------------------------------------------------------
 
-# Window layout.
 WINDOW_W = 1280
 WINDOW_H = 720
 PANEL_MARGIN = 16
-TRAIN_PANEL_W = 480  # left panel
-TEST_PANEL_W = WINDOW_W - TRAIN_PANEL_W - PANEL_MARGIN * 3
+GAME_PANEL_W = 480
+TEST_PANEL_W = WINDOW_W - GAME_PANEL_W - PANEL_MARGIN * 3
 
 # Colors (RGB).
-BG = (8, 8, 12)           # near-black background
+BG = (8, 8, 12)
 PANEL_BG = (16, 16, 24)
 GRID = (40, 40, 50)
 TEXT = (220, 220, 230)
 TEXT_DIM = (140, 140, 150)
-LOCKED = (200, 200, 200)  # white-ish for locked blocks
-ACTIVE = (120, 200, 255)  # light blue for the active piece being cycled
-BEST = (120, 255, 180)    # green for the network's pick
-NEURON_LOW = (30, 60, 120)
-NEURON_HIGH = (120, 200, 255)
-NEURON_EDGE = (50, 80, 130)
+LOCKED = (200, 200, 200)
+ACTIVE = (120, 200, 255)
+BEST = (120, 255, 180)
+GHOST = (60, 120, 160)
+STAT_GOOD = (120, 255, 180)
+STAT_DIM = (140, 140, 150)
 SCORE_BAR = (120, 200, 255)
+PIECE_COLORS: dict[int, tuple[int, int, int]] = {
+    0: (120, 200, 255),  # I - cyan
+    1: (255, 220, 80),   # O - yellow
+    2: (200, 120, 255),  # T - purple
+    3: (120, 255, 120),  # S - green
+    4: (255, 120, 120),  # Z - red
+    5: (120, 120, 255),  # J - blue
+    6: (255, 180, 80),   # L - orange
+}
 
 PIECE_KINDS = {
-    "I": ds.PieceType.I,
-    "O": ds.PieceType.O,
-    "T": ds.PieceType.T,
-    "S": ds.PieceType.S,
-    "Z": ds.PieceType.Z,
-    "J": ds.PieceType.J,
+    "I": ds.PieceType.I, "O": ds.PieceType.O, "T": ds.PieceType.T,
+    "S": ds.PieceType.S, "Z": ds.PieceType.Z, "J": ds.PieceType.J,
     "L": ds.PieceType.L,
+}
+ALL_PIECES = list(PIECE_KINDS.values())
+
+_PIECE_INDEX = {
+    ds.PieceType.I: 0, ds.PieceType.O: 1, ds.PieceType.T: 2,
+    ds.PieceType.S: 3, ds.PieceType.Z: 4, ds.PieceType.J: 5,
+    ds.PieceType.L: 6,
 }
 
 
-# ---- Training panel (network viz) -----------------------------------------
+# ---- Game runner (continuous play) ---------------------------------------
 
-def draw_network(
+class GameRunner:
+    """Plays one Death-mode game step at a time using a scorer."""
+
+    def __init__(self, scorer: Scorer, rng: random.Random | None = None,
+                 *, epsilon: float = 0.0) -> None:
+        self.scorer = scorer
+        self.rng = rng or random.Random()
+        self.epsilon = epsilon
+        self.reset()
+
+    def reset(self) -> None:
+        self.board = ds.Board()
+        self.current_piece: Optional[ds.PieceType] = None
+        self.next_piece: Optional[ds.PieceType] = None
+        self.current_candidates: list = []
+        self.current_scores: list[float] = []
+        self.best_idx: int = 0
+        self.pieces_placed: int = 0
+        self.lines_cleared: int = 0
+        self.alive: bool = True
+        self._spawn_new_piece()
+
+    def _spawn_new_piece(self) -> None:
+        self.current_piece = self.rng.choice(ALL_PIECES)
+        self.next_piece = self.rng.choice(ALL_PIECES)
+        self.current_candidates = self.board.search_locks(self.current_piece)
+        if not self.current_candidates:
+            self.alive = False
+            self.current_scores = []
+            self.best_idx = 0
+            return
+        if hasattr(self.scorer, "score_batch"):
+            self.current_scores = self.scorer.score_batch(
+                self.board, self.current_candidates)
+        else:
+            self.current_scores = [
+                self.scorer.score(self.board, c) for c in self.current_candidates]
+        self.best_idx = max(range(len(self.current_scores)),
+                            key=lambda i: self.current_scores[i])
+
+    def step(self) -> Optional["ds.LockCandidate"]:
+        if not self.alive or not self.current_candidates:
+            self.alive = False
+            return None
+        if self.rng.random() < self.epsilon:
+            cand = self.rng.choice(self.current_candidates)
+        else:
+            cand = self.current_candidates[self.best_idx]
+        self.board.lock(cand.piece)
+        self.lines_cleared += self.board.clear_lines()
+        self.pieces_placed += 1
+        self._spawn_new_piece()
+        return cand
+
+    @property
+    def level(self) -> int:
+        """TAP level: +1 per piece placed, +1 per line cleared (tetrises = +4)."""
+        return self.pieces_placed + self.lines_cleared
+
+    @property
+    def survival(self) -> int:
+        return self.pieces_placed
+
+
+class GameStats:
+    """Tracks aggregate stats across multiple games."""
+
+    def __init__(self) -> None:
+        self.games_played: int = 0
+        self.max_level: int = 0
+        self.max_survival: int = 0
+        self.max_lines: int = 0
+        self.total_pieces: int = 0
+        self.total_lines: int = 0
+        self.recent_survivals: list[int] = []
+
+    def record_game(self, runner: GameRunner) -> None:
+        self.games_played += 1
+        self.total_pieces += runner.pieces_placed
+        self.total_lines += runner.lines_cleared
+        if runner.level > self.max_level:
+            self.max_level = runner.level
+        if runner.survival > self.max_survival:
+            self.max_survival = runner.survival
+        if runner.lines_cleared > self.max_lines:
+            self.max_lines = runner.lines_cleared
+        self.recent_survivals.append(runner.survival)
+        if len(self.recent_survivals) > 20:
+            self.recent_survivals.pop(0)
+
+    @property
+    def avg_survival(self) -> float:
+        if not self.recent_survivals:
+            return 0.0
+        return sum(self.recent_survivals) / len(self.recent_survivals)
+
+
+# ---- Live game panel ------------------------------------------------------
+
+def draw_game_panel(
     surface: pygame.Surface,
-    net: "MockNetwork | Scorer",
-    step: int,
+    runner: GameRunner,
+    stats: GameStats,
+    scorer_name: str,
     font: pygame.font.Font,
+    small_font: pygame.font.Font,
     rect: pygame.Rect,
+    game_step_timer: float,
+    game_step_interval: float,
 ) -> None:
-    """Draw the network's neurons and connections on a black background.
-
-    `net` must have a `layer_sizes` attribute (list of ints) for the layout.
-    Activations are a mock pulse for now; phase 2 will pass real activations.
-    """
     pygame.draw.rect(surface, PANEL_BG, rect)
     pygame.draw.rect(surface, GRID, rect, 1)
 
-    # Title.
-    title = font.render("Network (training)", True, TEXT)
+    title = font.render("Live game (network play)", True, (220, 220, 230))
     surface.blit(title, (rect.x + 8, rect.y + 6))
-    step_txt = font.render(f"step {step}", True, TEXT_DIM)
-    surface.blit(step_txt, (rect.right - step_txt.get_width() - 8, rect.y + 6))
+    status = "PLAYING" if runner.alive else "GAME OVER"
+    status_color = STAT_GOOD if runner.alive else (255, 100, 100)
+    status_txt = small_font.render(status, True, status_color)
+    surface.blit(status_txt, (rect.right - status_txt.get_width() - 8, rect.y + 10))
 
-    # Layout.
-    if not hasattr(net, "layer_sizes"):
-        # Fallback: draw a label saying "no layer info".
-        lbl = font.render("(scorer has no layer_sizes; using mock)", True, TEXT_DIM)
-        surface.blit(lbl, (rect.x + 8, rect.y + 30))
-        return
-    layer_sizes = net.layer_sizes
-    n_layers = len(layer_sizes)
-    if n_layers == 0:
-        return
+    cell_px = 20
+    board_x = rect.x + 16
+    board_y = rect.y + 36
+    bw = runner.board.width * cell_px
+    bh = runner.board.visible_rows * cell_px
+    board_rect = pygame.Rect(board_x, board_y, bw, bh)
 
-    # Cap the displayed neurons per layer so the viz stays readable even for
-    # large layers (e.g. the 3207-dim fused input). We draw a representative
-    # sample and label the true size.
-    MAX_DISPLAY_NEURONS = 16
-    display_counts = [min(s, MAX_DISPLAY_NEURONS) for s in layer_sizes]
+    # Ghost piece (where the network will place the current piece).
+    ghost_cells: set[tuple[int, int]] = set()
+    if runner.alive and runner.current_candidates:
+        best_cand = runner.current_candidates[runner.best_idx]
+        ghost_cells = {(int(c), int(r)) for c, r in best_cand.piece.cells()}
 
-    # Compute neuron positions.
-    layer_x = [
-        rect.x + 40 + i * ((rect.width - 80) // max(1, n_layers - 1))
-        for i in range(n_layers)
-    ]
-    max_neurons = max(display_counts)
-    neuron_r = max(6, min(18, (rect.height - 80) // (max(2, max_neurons) * 2)))
-    neuron_positions: list[list[tuple[int, int]]] = []
-    for li, count in enumerate(display_counts):
-        xs = layer_x[li]
-        total_h = count * (neuron_r * 2 + 8)
-        start_y = rect.y + 50 + (rect.height - 70 - total_h) // 2
-        positions = []
-        for ni in range(count):
-            ny = start_y + ni * (neuron_r * 2 + 8) + neuron_r
-            positions.append((xs, ny))
-        neuron_positions.append(positions)
+    pygame.draw.rect(surface, BG, board_rect)
+    for r in range(runner.board.visible_rows):
+        for c in range(runner.board.width):
+            cx = board_x + c * cell_px
+            cy = board_y + (runner.board.visible_rows - 1 - r) * cell_px
+            crect = pygame.Rect(cx, cy, cell_px, cell_px)
+            if (c, r) in ghost_cells:
+                pygame.draw.rect(surface, GHOST, crect)
+            elif runner.board.cell(c, r):
+                pygame.draw.rect(surface, LOCKED, crect)
+            else:
+                pygame.draw.rect(surface, BG, crect)
+            pygame.draw.rect(surface, GRID, crect, 1)
 
-    # Draw connections (edges) first so neurons sit on top.
-    for li in range(n_layers - 1):
-        for (x1, y1) in neuron_positions[li]:
-            for (x2, y2) in neuron_positions[li + 1]:
-                pygame.draw.line(surface, NEURON_EDGE, (x1, y1), (x2, y2), 1)
+    # Next-piece preview.
+    next_x = board_x + bw + 12
+    next_y = board_y
+    surface.blit(small_font.render("NEXT", True, TEXT_DIM), (next_x, next_y))
+    if runner.next_piece is not None:
+        next_idx = _PIECE_INDEX.get(runner.next_piece, 0)
+        next_color = PIECE_COLORS.get(next_idx, ACTIVE)
+        mini_cell = 14
+        mini_x = next_x
+        mini_y = next_y + 18
+        p = ds.Piece(runner.next_piece, 0, 0, 0)
+        cells = {(int(c), int(r)) for c, r in p.cells()}
+        if cells:
+            min_c = min(c for c, _ in cells)
+            min_r = min(r for _, r in cells)
+            max_c = max(c for c, _ in cells)
+            max_r = max(r for _, r in cells)
+            for r in range(min_r, max_r + 1):
+                for c in range(min_c, max_c + 1):
+                    cx = mini_x + (c - min_c) * mini_cell
+                    cy = mini_y + (max_r - r) * mini_cell
+                    crect = pygame.Rect(cx, cy, mini_cell, mini_cell)
+                    if (c, r) in cells:
+                        pygame.draw.rect(surface, next_color, crect)
+                    else:
+                        pygame.draw.rect(surface, BG, crect)
+                    pygame.draw.rect(surface, GRID, crect, 1)
 
-    # Draw neurons with a mock activation pulse.
-    t = time.time()
-    for li, positions in enumerate(neuron_positions):
-        for ni, (x, y) in enumerate(positions):
-            # Mock activation: a wave traveling left-to-right + per-neuron phase.
-            phase = (t * 0.8 + li * 0.3 + ni * 0.15) % (2 * math.pi)
-            activation = 0.5 + 0.5 * math.sin(phase)
-            r_col = int(NEURON_LOW[0] + (NEURON_HIGH[0] - NEURON_LOW[0]) * activation)
-            g_col = int(NEURON_LOW[1] + (NEURON_HIGH[1] - NEURON_LOW[1]) * activation)
-            b_col = int(NEURON_LOW[2] + (NEURON_HIGH[2] - NEURON_LOW[2]) * activation)
-            pygame.draw.circle(surface, (r_col, g_col, b_col), (x, y), neuron_r)
-            pygame.draw.circle(surface, NEURON_EDGE, (x, y), neuron_r, 1)
+    # Stats.
+    stats_y = board_y + bh + 12
+    stats_x = board_x
 
-    # Layer labels: show the TRUE size, with a sample-count marker if subsampled.
-    for li, size in enumerate(layer_sizes):
-        x = layer_x[li]
-        shown = display_counts[li]
-        label = f"L{li}({size})"
-        if shown < size:
-            label += f" …{shown}"
-        lbl = font.render(label, True, TEXT_DIM)
-        surface.blit(lbl, (x - lbl.get_width() // 2, rect.bottom - 18))
+    def stat_line(label: str, value: str, y: int, color=TEXT) -> None:
+        surface.blit(small_font.render(f"{label}:", True, TEXT_DIM), (stats_x, y))
+        surface.blit(small_font.render(value, True, color), (stats_x + 80, y))
+
+    stat_line("level", f"{runner.level}", stats_y, STAT_GOOD)
+    stat_line("pieces", f"{runner.pieces_placed}", stats_y + 16)
+    stat_line("lines", f"{runner.lines_cleared}", stats_y + 32)
+
+    agg_x = stats_x + 180
+
+    def agg_line(label: str, value: str, y: int, color=TEXT) -> None:
+        surface.blit(small_font.render(f"{label}:", True, TEXT_DIM), (agg_x, y))
+        surface.blit(small_font.render(value, True, color), (agg_x + 90, y))
+
+    agg_line("games", f"{stats.games_played}", stats_y)
+    agg_line("max level", f"{stats.max_level}", stats_y + 16, STAT_GOOD)
+    agg_line("max survive", f"{stats.max_survival}", stats_y + 32, STAT_GOOD)
+    agg_line("avg survive", f"{stats.avg_survival:.1f}", stats_y + 48)
+    agg_line("max lines", f"{stats.max_lines}", stats_y + 64)
+
+    # Recent survivals mini bar chart.
+    chart_y = stats_y + 90
+    surface.blit(small_font.render("recent survivals:", True, TEXT_DIM),
+                 (stats_x, chart_y))
+    bar_x = stats_x + 110
+    bar_max_h = 30
+    max_s = max(stats.recent_survivals) if stats.recent_survivals else 1
+    for i, s in enumerate(stats.recent_survivals):
+        h = int(bar_max_h * s / max(1, max_s))
+        bx = bar_x + i * 6
+        by = chart_y + 16 + (bar_max_h - h)
+        color = STAT_GOOD if s == max_s else STAT_DIM
+        pygame.draw.rect(surface, color, (bx, by, 5, h))
+
+    # Game step progress bar.
+    if runner.alive:
+        progress = min(1.0, game_step_timer / game_step_interval)
+        bar_w = int(bw * progress)
+        pygame.draw.rect(surface, (30, 60, 90),
+                         (board_x, board_y + bh + 2, bw, 3))
+        pygame.draw.rect(surface, ACTIVE,
+                         (board_x, board_y + bh + 2, bar_w, 3))
 
 
-# ---- Testing panel (board cycling + best pick) ----------------------------
+# ---- Testing panel (kept from before) ------------------------------------
 
 def board_rect(x: int, y: int, cell_px: int, board: "ds.Board") -> pygame.Rect:
     return pygame.Rect(x, y, board.width * cell_px, board.visible_rows * cell_px)
 
 
-def draw_board(
-    surface: pygame.Surface,
-    board: "ds.Board",
-    piece: Optional["ds.Piece"],
-    rect: pygame.Rect,
-    cell_px: int,
-    piece_color: tuple[int, int, int] = ACTIVE,
-    *,
-    show_invisible: bool = False,
-) -> None:
-    """Draw a board (visible rows only) with locked blocks in white-ish and
-    an optional active piece in the given color. Black background."""
+def draw_board(surface, board, piece, rect, cell_px, piece_color=ACTIVE, *,
+               show_invisible=False) -> None:
     pygame.draw.rect(surface, BG, rect)
-    # Visible rows only (row 0 at bottom -> drawn last).
     rows = board.visible_rows if not show_invisible else board.height
     pc = {(int(c), int(r)) for c, r in piece.cells()} if piece else set()
     for r in range(rows):
@@ -210,111 +351,85 @@ def draw_board(
             pygame.draw.rect(surface, GRID, crect, 1)
 
 
-def draw_testing_panel(
-    surface: pygame.Surface,
-    board: "ds.Board",
-    candidates: list["ds.LockCandidate"],
-    scores: list[float],
-    current_idx: int,
-    best_idx: int,
-    font: pygame.font.Font,
-    small_font: pygame.font.Font,
-    rect: pygame.Rect,
-    net: "MockNetwork | Scorer",
-) -> None:
-    """Draw the testing panel: cycling board (left) + best pick (right) + scores."""
+def draw_testing_panel(surface, board, candidates, scores, current_idx, best_idx,
+                       font, small_font, rect, net) -> None:
     pygame.draw.rect(surface, PANEL_BG, rect)
     pygame.draw.rect(surface, GRID, rect, 1)
-
-    # Title.
-    title = font.render("Testing (lock candidates)", True, TEXT)
-    surface.blit(title, (rect.x + 8, rect.y + 6))
+    surface.blit(font.render("Testing (lock candidates)", True, TEXT),
+                 (rect.x + 8, rect.y + 6))
 
     cell_px = 18
-    # Left board: cycling through candidates.
     left_x = rect.x + 16
     left_y = rect.y + 36
     left_rect = board_rect(left_x, left_y, cell_px, board)
     cur_piece = candidates[current_idx].piece if candidates else None
     draw_board(surface, board, cur_piece, left_rect, cell_px, ACTIVE)
+    surface.blit(small_font.render(
+        f"cycling ({current_idx + 1}/{len(candidates)})", True, TEXT_DIM),
+        (left_x, left_y + left_rect.height + 4))
+    if cur_piece and candidates:
+        surface.blit(small_font.render(
+            f"inputs: {candidates[current_idx].inputs_str()}", True, TEXT_DIM),
+            (left_x, left_y + left_rect.height + 20))
 
-    lbl = small_font.render(f"cycling candidates ({current_idx + 1}/{len(candidates)})", True, TEXT_DIM)
-    surface.blit(lbl, (left_x, left_y + left_rect.height + 4))
-    if cur_piece:
-        path = candidates[current_idx].inputs_str()
-        path_txt = small_font.render(f"inputs: {path}", True, TEXT_DIM)
-        surface.blit(path_txt, (left_x, left_y + left_rect.height + 20))
-
-    # Right board: best pick.
     right_x = left_x + left_rect.width + 32
     right_y = left_y
     right_rect = board_rect(right_x, right_y, cell_px, board)
     best_piece = candidates[best_idx].piece if candidates else None
     draw_board(surface, board, best_piece, right_rect, cell_px, BEST)
+    surface.blit(small_font.render("network's pick (argmax)", True, TEXT_DIM),
+                 (right_x, right_y + right_rect.height + 4))
+    if best_piece and candidates:
+        surface.blit(small_font.render(
+            f"inputs: {candidates[best_idx].inputs_str()}", True, TEXT_DIM),
+            (right_x, right_y + right_rect.height + 20))
 
-    lbl2 = small_font.render("network's pick (argmax)", True, TEXT_DIM)
-    surface.blit(lbl2, (right_x, right_y + right_rect.height + 4))
-    if best_piece:
-        path2 = candidates[best_idx].inputs_str()
-        path_txt2 = small_font.render(f"inputs: {path2}", True, TEXT_DIM)
-        surface.blit(path_txt2, (right_x, right_y + right_rect.height + 20))
-
-    # Scores list (top 5).
     scores_x = right_x + right_rect.width + 24
     scores_y = right_y
-    surface.blit(small_font.render("top scores", True, TEXT_DIM), (scores_x, scores_y))
-    # Sort by score descending, take top 5.
+    surface.blit(small_font.render("top scores", True, TEXT_DIM),
+                 (scores_x, scores_y))
     ranked = sorted(enumerate(scores), key=lambda kv: -kv[1])[:5]
     for i, (orig_idx, sc) in enumerate(ranked):
         y = scores_y + 20 + i * 18
         color = BEST if orig_idx == best_idx else TEXT
         c = candidates[orig_idx]
-        txt = small_font.render(
-            f"#{i+1}  s={sc:+.3f}  st={c.piece.state} x={c.piece.x}", True, color
-        )
-        surface.blit(txt, (scores_x, y))
-        # Mini score bar.
+        surface.blit(small_font.render(
+            f"#{i+1}  s={sc:+.3f}  st={c.piece.state} x={c.piece.x}", True, color),
+            (scores_x, y))
         bar_w = max(0, min(120, int(sc * 40 + 60)))
         pygame.draw.rect(surface, SCORE_BAR, (scores_x + 180, y + 4, bar_w, 8))
 
-    # Feature readout for the current candidate (training-side debugging).
     if candidates and hasattr(net, "score"):
         feats = extract_features(board, candidates[current_idx])
         feats_y = scores_y + 140
-        surface.blit(small_font.render("features (current):", True, TEXT_DIM), (scores_x, feats_y))
+        surface.blit(small_font.render("features (current):", True, TEXT_DIM),
+                     (scores_x, feats_y))
         names = ["agg_h", "holes", "bump", "lines"]
         for i, (n, v) in enumerate(zip(names, feats)):
             y = feats_y + 18 + i * 16
-            surface.blit(small_font.render(f"  {n} = {v:.1f}", True, TEXT_DIM), (scores_x, y))
+            surface.blit(small_font.render(f"  {n} = {v:.1f}", True, TEXT_DIM),
+                         (scores_x, y))
 
 
-# ---- Main loop ------------------------------------------------------------
+# ---- Demo boards + scorer factory ----------------------------------------
 
 DEMO_BOARDS = {
-    # A near-full board with a gap on the right, good for showing the piece
-    # weaving into a hole.
     "stack": "........../........../........../........../........#/......####/######.###/#########/#########/#########",
-    # Empty board.
     "empty": "........../........../........../........../........../........../........../........../........../..........",
 }
 
 
-def make_scorer(use_nn: bool, weights_path: str | None = None) -> "MockNetwork | NeuralScorer":
-    """Construct the requested scorer. If use_nn and weights_path is given,
-    load the trained TAPNet weights from that file."""
+def make_scorer(use_nn: bool, weights_path: str | None = None):
     if use_nn:
         if not _TORCH_AVAILABLE:
             print("torch not available; falling back to MockScorer")
             return MockNetwork()
-        net = TAPNet()  # fresh net
+        net = TAPNet()
         if weights_path is not None:
-            from pathlib import Path
             p = Path(weights_path)
             if not p.is_absolute():
-                # resolve relative to the crate root (parent of python/)
                 p = HERE.parent / weights_path
             if p.exists():
-                import torch
                 net.load_state_dict(torch.load(p, map_location="cpu"))
                 print(f"loaded NN weights from {p}")
             else:
@@ -322,6 +437,8 @@ def make_scorer(use_nn: bool, weights_path: str | None = None) -> "MockNetwork |
         return NeuralScorer(net=net)
     return MockNetwork()
 
+
+# ---- Main loop ------------------------------------------------------------
 
 def main() -> None:
     args = sys.argv[1:]
@@ -346,51 +463,48 @@ def main() -> None:
         print(f"unknown piece {piece_name!r}; choose from {list(PIECE_KINDS)}")
         sys.exit(1)
 
-    # Resolve board: either a named demo or a spec string.
     if board_name in DEMO_BOARDS:
-        board = _parse_board(DEMO_BOARDS[board_name])
+        test_board = _parse_board(DEMO_BOARDS[board_name])
     else:
-        board = _parse_board(board_name)
+        test_board = _parse_board(board_name)
+    test_kind = PIECE_KINDS[piece_name]
 
-    kind = PIECE_KINDS[piece_name]
+    scorer = make_scorer(use_nn, weights_path)
+    scorer_name = "NeuralScorer" if use_nn else "MockScorer"
 
-    # Set up the scorer + compute scores.
-    net = make_scorer(use_nn, weights_path)
+    rng = random.Random(42)
+    runner = GameRunner(scorer, rng, epsilon=0.0)
+    stats = GameStats()
 
-    # Compute all lock candidates + their scores up front.
-    candidates = board.search_locks(kind)
-    # Use batched scoring if available (NeuralScorer), else per-candidate.
-    if hasattr(net, "score_batch") and candidates:
-        scores = net.score_batch(board, candidates)
+    test_candidates = test_board.search_locks(test_kind)
+    if hasattr(scorer, "score_batch") and test_candidates:
+        test_scores = scorer.score_batch(test_board, test_candidates)
     else:
-        scores = [net.score(board, c) for c in candidates]
-    if candidates:
-        best_idx = max(range(len(scores)), key=lambda i: scores[i])
-    else:
-        best_idx = 0
+        test_scores = [scorer.score(test_board, c) for c in test_candidates]
+    test_best_idx = (max(range(len(test_scores)), key=lambda i: test_scores[i])
+                     if test_scores else 0)
+    test_current_idx = 0
 
     pygame.init()
-    pygame.display.set_caption("deathbot — live training + testing viz")
+    pygame.display.set_caption("deathbot — live game + testing viz")
     screen = pygame.display.set_mode((WINDOW_W, WINDOW_H))
     clock = pygame.time.Clock()
-
     font = pygame.font.SysFont("consolas", 16)
     small_font = pygame.font.SysFont("consolas", 12)
 
-    train_rect = pygame.Rect(
-        PANEL_MARGIN, PANEL_MARGIN, TRAIN_PANEL_W, WINDOW_H - PANEL_MARGIN * 2
-    )
-    test_rect = pygame.Rect(
-        PANEL_MARGIN * 2 + TRAIN_PANEL_W, PANEL_MARGIN,
-        TEST_PANEL_W, WINDOW_H - PANEL_MARGIN * 2,
-    )
+    game_rect = pygame.Rect(PANEL_MARGIN, PANEL_MARGIN, GAME_PANEL_W,
+                            WINDOW_H - PANEL_MARGIN * 2)
+    test_rect = pygame.Rect(PANEL_MARGIN * 2 + GAME_PANEL_W, PANEL_MARGIN,
+                            TEST_PANEL_W, WINDOW_H - PANEL_MARGIN * 2)
 
-    current_idx = 0
     paused = False
     reduced_motion = False
-    cycle_speed = 8.0  # candidates per second
-    time_accum = 0.0
-    step = 0
+    game_step_timer = 0.0
+    game_step_interval = 0.3
+    game_over_pause = 0.0
+    game_over_interval = 1.5
+    test_cycle_speed = 8.0
+    test_time_accum = 0.0
 
     running = True
     while running:
@@ -405,50 +519,67 @@ def main() -> None:
                 elif event.key == pygame.K_SPACE:
                     paused = not paused
                 elif event.key == pygame.K_LEFT:
-                    if candidates:
-                        current_idx = (current_idx - 1) % len(candidates)
+                    if test_candidates:
+                        test_current_idx = (test_current_idx - 1) % len(test_candidates)
                 elif event.key == pygame.K_RIGHT:
-                    if candidates:
-                        current_idx = (current_idx + 1) % len(candidates)
+                    if test_candidates:
+                        test_current_idx = (test_current_idx + 1) % len(test_candidates)
                 elif event.key == pygame.K_r:
                     reduced_motion = not reduced_motion
                 elif event.key == pygame.K_n:
-                    # Toggle between MockScorer and NeuralScorer.
                     use_nn = not use_nn
-                    net = make_scorer(use_nn)
-                    if hasattr(net, "score_batch") and candidates:
-                        scores = net.score_batch(board, candidates)
+                    scorer = make_scorer(use_nn, weights_path)
+                    scorer_name = "NeuralScorer" if use_nn else "MockScorer"
+                    runner.scorer = scorer
+                    if hasattr(scorer, "score_batch") and test_candidates:
+                        test_scores = scorer.score_batch(test_board, test_candidates)
                     else:
-                        scores = [net.score(board, c) for c in candidates]
-                    if candidates:
-                        best_idx = max(range(len(scores)), key=lambda i: scores[i])
+                        test_scores = [scorer.score(test_board, c) for c in test_candidates]
+                    test_best_idx = (max(range(len(test_scores)),
+                                         key=lambda i: test_scores[i])
+                                     if test_scores else 0)
+                elif event.key == pygame.K_g:
+                    if not runner.alive:
+                        stats.record_game(runner)
+                    runner.reset()
+                    game_over_pause = 0.0
 
-        # Auto-cycle candidates.
-        if not paused and candidates:
-            speed = cycle_speed * (0.4 if reduced_motion else 1.0)
-            time_accum += dt * speed
-            if time_accum >= 1.0:
-                steps = int(time_accum)
-                current_idx = (current_idx + steps) % len(candidates)
-                time_accum -= steps
+        # Auto-cycle testing panel.
+        if not paused and test_candidates:
+            speed = test_cycle_speed * (0.4 if reduced_motion else 1.0)
+            test_time_accum += dt * speed
+            if test_time_accum >= 1.0:
+                steps = int(test_time_accum)
+                test_current_idx = (test_current_idx + steps) % len(test_candidates)
+                test_time_accum -= steps
 
-        # Mock training step counter (phase 2 will drive this for real).
-        step += 1
+        # Advance the live game.
+        if not paused:
+            if runner.alive:
+                interval = game_step_interval * (2.0 if reduced_motion else 1.0)
+                game_step_timer += dt
+                if game_step_timer >= interval:
+                    runner.step()
+                    game_step_timer = 0.0
+            else:
+                game_over_pause += dt
+                if game_over_pause >= game_over_interval:
+                    stats.record_game(runner)
+                    runner.reset()
+                    game_over_pause = 0.0
+                    game_step_timer = 0.0
 
         # Render.
         screen.fill(BG)
-        draw_network(screen, net, step, font, train_rect)
-        draw_testing_panel(
-            screen, board, candidates, scores, current_idx, best_idx,
-            font, small_font, test_rect, net,
-        )
+        draw_game_panel(screen, runner, stats, scorer_name, font, small_font,
+                        game_rect, game_step_timer, game_step_interval)
+        draw_testing_panel(screen, test_board, test_candidates, test_scores,
+                           test_current_idx, test_best_idx,
+                           font, small_font, test_rect, scorer)
 
-        # Controls hint + current scorer name.
-        scorer_name = "NeuralScorer" if use_nn else "MockScorer"
         hint = small_font.render(
-            f"{scorer_name} | SPACE pause | ←/→ step | R reduced-motion | N swap scorer | ESC quit",
-            True, TEXT_DIM,
-        )
+            f"{scorer_name} | SPACE pause | <-/-> test step | R slow | "
+            f"N swap | G new game | ESC quit", True, TEXT_DIM)
         screen.blit(hint, (PANEL_MARGIN, WINDOW_H - 18))
 
         pygame.display.flip()

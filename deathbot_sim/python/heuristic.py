@@ -59,6 +59,7 @@ WEIGHTS = {
     "overhang": -1.5,       # per overhang cell
     "well_depth": -2.0,     # per row of well depth beyond 1
     "row_transitions": -0.3,  # per row transition (surface roughness)
+    "lines_cleared": +7.6,  # per line cleared (encourages clears; tetrises = +30.4)
 }
 
 
@@ -197,7 +198,12 @@ def count_row_transitions(board: "ds.Board", heights: list[int]) -> int:
 
 def extract_features(board: "ds.Board") -> dict[str, float]:
     """Compute all heuristic features for a board. Returns a dict mapping
-    feature name to raw value (before weighting)."""
+    feature name to raw value (before weighting).
+
+    NOTE: `lines_cleared` is always 0 here since this function operates on a
+    static board (post-clear). The HeuristicScorer computes lines separately
+    during lock simulation and applies the weight in its `_reward` method.
+    """
     heights = column_heights(board)
     agg = sum(heights)
     holes_mid, holes_edge = count_holes(board, heights)
@@ -215,14 +221,16 @@ def extract_features(board: "ds.Board") -> dict[str, float]:
         "overhang": float(overhangs),
         "well_depth": float(well),
         "row_transitions": float(row_trans),
+        "lines_cleared": 0.0,  # populated by HeuristicScorer; 0 for static boards
     }
 
 
-def reward(board: "ds.Board") -> float:
+def reward(board: "ds.Board", lines_cleared: int = 0) -> float:
     """Compute the total reward for a board state. Higher = better.
 
     This is the heuristic teacher's target value. The network learns to
-    approximate this function.
+    approximate this function. `lines_cleared` is 0 for a static board;
+    pass the count explicitly if you're scoring a post-lock state.
     """
     feats = extract_features(board)
     w = WEIGHTS
@@ -234,6 +242,7 @@ def reward(board: "ds.Board") -> float:
         + w["overhang"] * feats["overhang"]
         + w["well_depth"] * max(0.0, feats["well_depth"] - 1.0)  # 1-row well is free
         + w["row_transitions"] * feats["row_transitions"]
+        + w.get("lines_cleared", 0.0) * lines_cleared
     )
     return total
 
@@ -255,7 +264,7 @@ class HeuristicScorer:
         else:
             self.weights = WEIGHTS.copy()
 
-    def _reward(self, board: "ds.Board") -> float:
+    def _reward(self, board: "ds.Board", lines_cleared: int = 0) -> float:
         feats = extract_features(board)
         w = self.weights
         return (
@@ -266,18 +275,21 @@ class HeuristicScorer:
             + w["overhang"] * feats["overhang"]
             + w["well_depth"] * max(0.0, feats["well_depth"] - 1.0)
             + w["row_transitions"] * feats["row_transitions"]
+            + w.get("lines_cleared", 0.0) * lines_cleared
         )
 
     def score(self, board: "ds.Board", candidate: "ds.LockCandidate") -> float:
-        """Simulate the lock, clear lines, and score the resulting board."""
+        """Simulate the lock, clear lines, and score the resulting board.
+        The line-clear bonus is applied explicitly (the post-clear board
+        doesn't encode how many lines were cleared)."""
         sim = ds.Board()
         for r in range(board.height):
             for c in range(board.width):
                 if board.cell(c, r):
                     sim.set_cell(c, r)
         sim.lock(candidate.piece)
-        sim.clear_lines()  # post-clear board; height reduction is implicit
-        return self._reward(sim)
+        lines = sim.clear_lines()  # post-clear board + line count
+        return self._reward(sim, lines_cleared=lines)
 
     def score_batch(
         self, board: "ds.Board", candidates: list["ds.LockCandidate"]

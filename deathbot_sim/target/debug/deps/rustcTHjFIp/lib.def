@@ -1,0 +1,4 @@
+LIBRARY
+EXPORTS
+  __rustc_proc_macro_decls_b88b38040527a23d__ DATA
+  rust_metadata_pyo3_macros_b88b38040527a23d DATA

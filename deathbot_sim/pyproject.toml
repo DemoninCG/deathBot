@@ -1,0 +1,12 @@
+[build-system]
+requires = ["maturin>=1.5,<2.0"]
+build-backend = "maturin"
+
+[project]
+name = "deathbot_sim"
+version = "0.1.0"
+description = "Tetris: The Grand Master 2 Death-mode gameplay simulator and pathfinder"
+requires-python = ">=3.8"
+
+[tool.maturin]
+features = ["pyo3/extension-module"]

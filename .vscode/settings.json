@@ -1,0 +1,23 @@
+{
+    // Pin the workspace Python interpreter so the Python extension doesn't
+    // auto-create a stray venv (it previously grabbed Python 3.8 from the
+    // Windows Store package). This venv was created with Python 3.13.3.
+    "python.defaultInterpreterPath": "${workspaceFolder}/.venv/Scripts/python.exe",
+    "python.terminal.activateEnvironment": true,
+    // The crate lives in deathbot_sim/; tell pytest to look there for tests.
+    "python.testing.pytestEnabled": true,
+    "python.testing.pytestArgs": [
+        "deathbot_sim/tests"
+    ],
+    "python.testing.unittestEnabled": false,
+    // Files we care about: exclude the build artifacts from search.
+    "search.exclude": {
+        "**/target": true,
+        "**/.pytest_cache": true,
+        "**/__pycache__": true
+    },
+    "files.exclude": {
+        "**/target": true,
+        "**/.pytest_cache": true
+    }
+}

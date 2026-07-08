@@ -46,60 +46,72 @@ class NeuralScorer:
         self.default_next_idx = (
             piece_to_index(next_piece) if next_piece is not None else 0
         )
+        # default_current_idx is set per-call (the scorer needs to know what
+        # piece is being placed); defaults to I (0) if not specified.
+        self.default_current_idx = 0
         # Expose layer_sizes for the visualizer.
         self.layer_sizes = self.net.layer_sizes
 
     def score(self, board: "ds.Board", candidate: "ds.LockCandidate") -> float:
-        """Score a candidate by simulating its lock and evaluating the board."""
-        return self.score_with_next(board, candidate, self.default_next_idx)
+        """Score a candidate by simulating its lock and evaluating the board.
+        Uses the candidate's piece type as the current piece."""
+        cur_idx = piece_to_index(candidate.piece.kind)
+        return self.score_with_next(board, candidate, cur_idx, self.default_next_idx)
 
     def score_with_next(
         self,
         board: "ds.Board",
         candidate: "ds.LockCandidate",
+        current_piece_idx: int,
         next_piece_idx: int,
     ) -> float:
-        """Score a candidate with a specific next-piece index."""
-        # Simulate the lock on a copy of the board.
-        sim = ds.Board()
-        for r in range(board.height):
-            for c in range(board.width):
-                if board.cell(c, r):
-                    sim.set_cell(c, r)
+        """Score a candidate with explicit current + next piece indices."""
+        # Simulate the lock on a copy of the board (one FFI call via
+        # clone_board, instead of 210 per-cell calls).
+        sim = board.clone_board()
         sim.lock(candidate.piece)
         # NOTE: we deliberately do NOT clear lines here — the network sees the
         # raw locked state. The training target (phase 2.2) will encode whether
         # line clears are good. Adjust if the heuristic wants pre-clear boards.
         tensor = board_to_tensor(sim).to(self.device)
-        return self.net.score_one(tensor, next_piece_idx)
+        return self.net.score_one(tensor, current_piece_idx, next_piece_idx)
 
     def score_batch(
         self,
         board: "ds.Board",
         candidates: list["ds.LockCandidate"],
+        current_piece_idx: Optional[int] = None,
         next_piece_idx: Optional[int] = None,
     ) -> list[float]:
         """Score many candidates efficiently as a single batch.
 
-        Builds a [B, 1, 20, 10] tensor of simulated boards and a [B] index
-        tensor, runs one forward pass, and returns a list of Python floats.
+        Args:
+            board: the current board.
+            candidates: lock candidates to score.
+            current_piece_idx: the piece being placed. If None, inferred from
+                each candidate's piece type (they should all be the same type).
+            next_piece_idx: the upcoming piece index. If None, uses
+                default_next_idx.
+
+        Returns a list of Python floats.
         """
         if not candidates:
             return []
-        idx = next_piece_idx if next_piece_idx is not None else self.default_next_idx
+        nxt = next_piece_idx if next_piece_idx is not None else self.default_next_idx
+        # If current_piece_idx is not given, infer from the first candidate
+        # (all candidates for a given piece type share the same type).
+        cur = current_piece_idx if current_piece_idx is not None else piece_to_index(candidates[0].piece.kind)
         boards = []
         for c in candidates:
-            sim = ds.Board()
-            for r in range(board.height):
-                for col in range(board.width):
-                    if board.cell(col, r):
-                        sim.set_cell(col, r)
+            # Clone the board in one FFI call instead of 210 per-cell calls.
+            sim = board.clone_board()
             sim.lock(c.piece)
             boards.append(board_to_tensor(sim))
         batch = torch.stack(boards, dim=0).to(self.device)  # [B, 1, 20, 10]
-        idx_t = torch.tensor([idx] * len(candidates), dtype=torch.long, device=self.device)
+        cur_t = torch.tensor([cur] * len(candidates), dtype=torch.long, device=self.device)
+        nxt_t = torch.tensor([nxt] * len(candidates), dtype=torch.long, device=self.device)
         with torch.no_grad():
-            out = self.net(batch, idx_t)  # [B, 1]
+            out = self.net(batch, cur_t, nxt_t)  # [B, 1]
         return [float(x) for x in out.squeeze(1).tolist()]
 
     def __repr__(self) -> str:

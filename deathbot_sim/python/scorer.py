@@ -54,12 +54,8 @@ class MockScorer:
         self.weights = weights or self.WEIGHTS
 
     def score(self, board: "ds.Board", candidate: "ds.LockCandidate") -> float:
-        # Simulate the lock on a copy of the board.
-        sim = ds.Board()
-        for r in range(board.height):
-            for c in range(board.width):
-                if board.cell(c, r):
-                    sim.set_cell(c, r)
+        # Simulate the lock on a copy of the board (one FFI call).
+        sim = board.clone_board()
         sim.lock(candidate.piece)
         lines = sim.clear_lines()
 
@@ -102,11 +98,7 @@ class MockNetwork:
 def extract_features(board: "ds.Board", candidate: "ds.LockCandidate") -> list[float]:
     """Extract the 4 heuristic features for a candidate. Used by the
     visualizer to show the NN's input on the training panel."""
-    sim = ds.Board()
-    for r in range(board.height):
-        for c in range(board.width):
-            if board.cell(c, r):
-                sim.set_cell(c, r)
+    sim = board.clone_board()
     sim.lock(candidate.piece)
     lines = sim.clear_lines()
     heights = [sim.column_height(c) for c in range(sim.width)]

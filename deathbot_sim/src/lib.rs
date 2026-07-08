@@ -337,6 +337,27 @@ impl PyBoard {
         out
     }
 
+    // ---- Fast board access (training speed optimizations) -----------------
+    //
+    // These exist to eliminate the O(210) per-cell Python→Rust FFI calls
+    // that dominated self-play training time. Each is a single FFI call.
+
+    /// Deep-copy the board. One FFI call instead of 210 set_cell calls.
+    /// Equivalent to the old Python loop:
+    ///   sim = Board(); for r in range(h): for c in range(w): if b.cell(c,r): sim.set_cell(c,r)
+    fn clone_board(&self) -> Self {
+        Self { inner: self.inner.clone() }
+    }
+
+    /// Return the raw row bitmasks as a list of 21 ints. Bit `c` of row `r`
+    /// is set iff cell (c, r) is filled. This lets Python build a tensor in
+    /// one vectorized pass instead of 200 individual cell() calls.
+    ///
+    /// Row 0 (bottom) is element 0; row 20 (invisible) is element 20.
+    fn row_bits(&self) -> Vec<u32> {
+        self.inner.rows.to_vec()
+    }
+
     // ---- Rotation / action API (phase 1.2) --------------------------------
 
     /// Attempt to rotate `p` (CW if `cw` else CCW) applying the ARS wall-kick

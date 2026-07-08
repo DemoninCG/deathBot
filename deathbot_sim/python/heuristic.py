@@ -53,7 +53,7 @@ HEIGHT = 20  # visible rows
 #     fine; deeper creates I dependency).
 WEIGHTS = {
     "aggregate_height": -1.0,
-    "pyramid": -1.5,        # per unit of weighted distance from col 5
+    "pyramid": -1.0,        # per unit of weighted distance from col 5
     "holes_mid": -4.0,      # cols 3-6 (0-indexed)
     "holes_edge": -2.0,     # cols 0-2, 7-9
     "overhang": -1.5,       # per overhang cell
@@ -81,9 +81,9 @@ def pyramid_weight(col: int) -> float:
     peak = 4  # column index 4 (the 5th column, 1-indexed)
     dist = abs(col - peak)
     if col < peak:
-        k = 0.5  # left side: gentler slope (slight left preference)
+        k = 0.2  # left side: gentler slope (slight left preference)
     else:
-        k = 0.8  # right side: steeper slope
+        k = 0.3  # right side: steeper slope
     return 1.0 + k * dist
 
 
@@ -282,20 +282,20 @@ class HeuristicScorer:
         """Simulate the lock, clear lines, and score the resulting board.
         The line-clear bonus is applied explicitly (the post-clear board
         doesn't encode how many lines were cleared)."""
-        sim = ds.Board()
-        for r in range(board.height):
-            for c in range(board.width):
-                if board.cell(c, r):
-                    sim.set_cell(c, r)
+        # Clone the board in one FFI call instead of 210 per-cell calls.
+        sim = board.clone_board()
         sim.lock(candidate.piece)
         lines = sim.clear_lines()  # post-clear board + line count
         return self._reward(sim, lines_cleared=lines)
 
     def score_batch(
-        self, board: "ds.Board", candidates: list["ds.LockCandidate"]
+        self, board: "ds.Board", candidates: list["ds.LockCandidate"],
+        current_piece_idx: int | None = None, next_piece_idx: int | None = None,
     ) -> list[float]:
         """Score many candidates. No batching speedup here (pure Python), but
-        matches the NeuralScorer interface so the visualizer can swap them."""
+        matches the NeuralScorer interface (including the current/next piece
+        kwargs, which are ignored since the heuristic doesn't use piece indices)
+        so the visualizer can swap them."""
         return [self.score(board, c) for c in candidates]
 
     def __repr__(self) -> str:

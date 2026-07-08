@@ -8,9 +8,9 @@ Architecture (per phase-2.1 spec):
       MaxPool2d(2×2)                        -> [64, 10, 5]
       Flatten                               -> 3200
   - Feature fusion:
-      Concat(flattened board, next_piece_one_hot[7]) -> 3207
+      Concat(flattened board, current_piece_one_hot[7], next_piece_one_hot[7]) -> 3214
   - Head (fully connected):
-      Linear(3207→128) -> ReLU
+      Linear(3214→128) -> ReLU
       Linear(128→1)    -> scalar goodness score
 
 Output is a single float: higher = better placement. The output activation
@@ -30,6 +30,7 @@ from __future__ import annotations
 
 from typing import Optional
 
+import numpy as np
 import torch
 import torch.nn as nn
 
@@ -43,21 +44,24 @@ NUM_PIECES = 7
 
 # Flattened conv output size: 64 channels * 10 * 5 after two 3x3 convs + 2x2 pool.
 _CONV_FLAT = 64 * (BOARD_HEIGHT // 2) * (BOARD_WIDTH // 2)  # = 3200
-_FUSED = _CONV_FLAT + NUM_PIECES  # = 3207
+# Fused = conv flat + current_piece_one_hot[7] + next_piece_one_hot[7]
+_FUSED = _CONV_FLAT + NUM_PIECES * 2  # = 3214
 
 
 class TAPNet(nn.Module):
     """The board-state scoring network.
 
-    forward(board_tensor, next_piece_idx) -> scalar score
-      - board_tensor: float tensor of shape [B, 1, 20, 10] (or [1, 20, 10]
-        for a single sample; we unsqueeze batch dim if needed)
-      - next_piece_idx: int (or LongTensor) — the index of the next piece
-        (0=I, 1=O, 2=T, 3=S, 4=Z, 5=J, 6=L). We one-hot encode it internally.
+    forward(board_tensor, current_piece_idx, next_piece_idx) -> scalar score
+      - board_tensor: float tensor of shape [B, 1, 20, 10]
+      - current_piece_idx: LongTensor [B] — the piece being placed (0=I..6=L)
+      - next_piece_idx: LongTensor [B] — the upcoming piece (0=I..6=L)
+        Both are one-hot encoded internally and concatenated with the conv
+        features. This lets the network know what it's placing AND what's
+        coming next, so it can place the current piece to accommodate.
 
-    For batched training, pass [B, 1, 20, 10] and a [B] LongTensor of indices;
-    output is [B, 1]. For single-sample inference (live play), pass
-    [1, 20, 10] and an int; output is a Python float.
+    For batched training, pass [B, 1, 20, 10] and [B] LongTensors; output is
+    [B, 1]. For single-sample inference (live play), pass [1, 20, 10] and
+    ints; output is a Python float.
     """
 
     def __init__(self, output: str = "linear") -> None:
@@ -87,12 +91,14 @@ class TAPNet(nn.Module):
     def forward(
         self,
         board: torch.Tensor,
+        current_piece_idx: torch.Tensor,
         next_piece_idx: torch.Tensor,
     ) -> torch.Tensor:
-        """Score a batch of (board, next_piece) pairs.
+        """Score a batch of (board, current_piece, next_piece) triples.
 
         Args:
             board: float tensor [B, 1, 20, 10].
+            current_piece_idx: LongTensor [B] in [0, 6].
             next_piece_idx: LongTensor [B] in [0, 6].
 
         Returns:
@@ -104,13 +110,16 @@ class TAPNet(nn.Module):
         x = self.pool(x)                   # [B, 64, 10, 5]
         x = torch.flatten(x, 1)            # [B, 3200]
 
-        # Next-piece one-hot: [B, 7].
-        piece_oh = torch.nn.functional.one_hot(
+        # Current + next piece one-hots: [B, 7] each.
+        cur_oh = torch.nn.functional.one_hot(
+            current_piece_idx, num_classes=NUM_PIECES
+        ).float()
+        next_oh = torch.nn.functional.one_hot(
             next_piece_idx, num_classes=NUM_PIECES
         ).float()
 
-        # Fusion.
-        x = torch.cat([x, piece_oh], dim=1)  # [B, 3207]
+        # Fusion: conv features + current piece + next piece.
+        x = torch.cat([x, cur_oh, next_oh], dim=1)  # [B, 3214]
 
         # Head.
         x = self.relu(self.fc1(x))           # [B, 128]
@@ -122,12 +131,14 @@ class TAPNet(nn.Module):
     def score_one(
         self,
         board_tensor: torch.Tensor,
+        current_piece_idx: int,
         next_piece_idx: int,
     ) -> float:
         """Convenience for single-sample inference (live play).
 
         Args:
             board_tensor: [1, 20, 10] or [20, 10] float tensor.
+            current_piece_idx: int in [0, 6].
             next_piece_idx: int in [0, 6].
 
         Returns:
@@ -137,8 +148,9 @@ class TAPNet(nn.Module):
             board_tensor = board_tensor.unsqueeze(0).unsqueeze(0)  # [1,1,20,10]
         elif board_tensor.dim() == 3:
             board_tensor = board_tensor.unsqueeze(0)  # [1,1,20,10] if [1,20,10]
-        idx = torch.tensor([next_piece_idx], dtype=torch.long)
-        out = self.forward(board_tensor, idx)
+        cur = torch.tensor([current_piece_idx], dtype=torch.long)
+        nxt = torch.tensor([next_piece_idx], dtype=torch.long)
+        out = self.forward(board_tensor, cur, nxt)
         return float(out.item())
 
 
@@ -162,14 +174,22 @@ def board_to_tensor(board: "ds.Board") -> torch.Tensor:
     Row 0 (bottom) is the last row in the tensor's dim 0 (top-first), matching
     the conv stack's expectation that the top of the field is row 0 of the
     input. Filled cells = 1.0, empty = 0.0. The invisible row is excluded.
+
+    Uses `row_bits()` (one FFI call returning all 21 row bitmasks) + numpy
+    vectorized bit decoding instead of 200 individual `cell()` calls.
     """
-    t = torch.zeros(BOARD_HEIGHT, BOARD_WIDTH, dtype=torch.float32)
-    for r in range(BOARD_HEIGHT):
-        for c in range(BOARD_WIDTH):
-            # board.cell(c, r): row 0 = bottom. Tensor row 0 = top, so flip.
-            if board.cell(c, r):
-                t[BOARD_HEIGHT - 1 - r][c] = 1.0
-    return t.unsqueeze(0)  # [1, 20, 10]
+    bits = board.row_bits()  # list of 21 u32 row bitmasks, row 0 = bottom
+    # Take only visible rows (0..19), reverse to top-first.
+    visible = bits[:BOARD_HEIGHT]  # rows 0..19, bottom-first
+    # Build column-bit mask: [1, 2, 4, ..., 512] for cols 0..9.
+    col_masks = np.array([1 << c for c in range(BOARD_WIDTH)], dtype=np.uint32)
+    # Decode: row_arr is [20] uint32; bitwise AND with col_masks gives [20, 10]
+    # boolean. Flip rows so tensor row 0 = top (row 19).
+    row_arr = np.array(visible, dtype=np.uint32).reshape(-1, 1)  # [20, 1]
+    grid = (row_arr & col_masks).astype(bool).astype(np.float32)  # [20, 10]
+    # Flip so row 0 of tensor = top of field (row 19 of board).
+    grid = grid[::-1, :].copy()  # [20, 10], top-first, contiguous
+    return torch.from_numpy(grid).unsqueeze(0)  # [1, 20, 10]
 
 
 def piece_to_index(kind: "ds.PieceType") -> int:

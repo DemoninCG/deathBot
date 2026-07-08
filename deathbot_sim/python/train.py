@@ -74,8 +74,8 @@ def random_board(max_pieces: int = 40, rng: random.Random | None = None) -> "ds.
 def generate_sample(
     scorer: Scorer,
     rng: random.Random | None = None,
-) -> tuple[torch.Tensor, int, float] | None:
-    """Generate one training sample: (board_tensor, next_piece_idx, target).
+) -> tuple[torch.Tensor, int, int, float] | None:
+    """Generate one training sample: (board_tensor, current_idx, next_idx, target).
 
     The target is the reward of the BEST lock candidate for a random current
     piece on a random board. Returns None if the board has no valid placements
@@ -92,17 +92,19 @@ def generate_sample(
     scores = [scorer.score(board, c) for c in candidates]
     best_score = max(scores)
     # The input board is the PRE-lock board (the network sees the current
-    # state + next piece, and must predict the value of the best placement).
+    # state + current piece + next piece, and must predict the value of the
+    # best placement).
     board_tensor = board_to_tensor(board)
+    cur_idx = piece_to_index(current)
     next_idx = piece_to_index(next_piece)
-    return board_tensor, next_idx, best_score
+    return board_tensor, cur_idx, next_idx, best_score
 
 
 def generate_dataset(
     n_samples: int,
     scorer: Scorer,
     rng: random.Random | None = None,
-) -> Iterator[tuple[torch.Tensor, int, float]]:
+) -> Iterator[tuple[torch.Tensor, int, int, float]]:
     """Generate n_samples training samples, skipping any that fail."""
     rng = rng or random.Random()
     produced = 0
@@ -147,8 +149,9 @@ def train(
     print(f"Generating {n_samples} training samples...")
     samples = list(generate_dataset(n_samples, scorer, rng))
     boards = torch.stack([s[0] for s in samples])  # [N, 1, 20, 10]
-    next_idxs = torch.tensor([s[1] for s in samples], dtype=torch.long)  # [N]
-    targets = torch.tensor([s[2] for s in samples], dtype=torch.float32)  # [N]
+    cur_idxs = torch.tensor([s[1] for s in samples], dtype=torch.long)  # [N]
+    next_idxs = torch.tensor([s[2] for s in samples], dtype=torch.long)  # [N]
+    targets = torch.tensor([s[3] for s in samples], dtype=torch.float32)  # [N]
     print(f"Generated {len(samples)} samples. Target stats: "
           f"min={targets.min():.2f} max={targets.max():.2f} "
           f"mean={targets.mean():.2f}")
@@ -169,10 +172,11 @@ def train(
         for i in range(0, n, batch_size):
             idx = perm[i:i + batch_size]
             b = boards[idx].to(device)
+            ci = cur_idxs[idx].to(device)
             ni = next_idxs[idx].to(device)
             t = targets[idx].to(device).unsqueeze(1)  # [B, 1]
             optimizer.zero_grad()
-            pred = net(b, ni)  # [B, 1]
+            pred = net(b, ci, ni)  # [B, 1]
             loss = loss_fn(pred, t)
             loss.backward()
             optimizer.step()

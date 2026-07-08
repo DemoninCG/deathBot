@@ -39,6 +39,7 @@ import pygame
 
 import deathbot_sim as ds
 from scorer import MockNetwork, Scorer, extract_features
+from piece_history import PieceQueue
 
 # Lazy-import torch + the NN so the visualizer still works without torch.
 _TORCH_AVAILABLE = False
@@ -111,6 +112,7 @@ class GameRunner:
         self.scorer = scorer
         self.rng = rng or random.Random()
         self.epsilon = epsilon
+        self.piece_queue = PieceQueue(self.rng)
         self.reset()
 
     def reset(self) -> None:
@@ -123,20 +125,25 @@ class GameRunner:
         self.pieces_placed: int = 0
         self.lines_cleared: int = 0
         self.alive: bool = True
+        self.piece_queue.reset()
         self._spawn_new_piece()
 
     def _spawn_new_piece(self) -> None:
-        self.current_piece = self.rng.choice(ALL_PIECES)
-        self.next_piece = self.rng.choice(ALL_PIECES)
+        # Advance the queue: the old next-piece becomes the new current piece.
+        self.current_piece = self.piece_queue.current
+        self.next_piece = self.piece_queue.next_piece
         self.current_candidates = self.board.search_locks(self.current_piece)
         if not self.current_candidates:
             self.alive = False
             self.current_scores = []
             self.best_idx = 0
             return
+        cur_idx = _PIECE_INDEX.get(self.current_piece, 0)
+        nxt_idx = _PIECE_INDEX.get(self.next_piece, 0)
         if hasattr(self.scorer, "score_batch"):
             self.current_scores = self.scorer.score_batch(
-                self.board, self.current_candidates)
+                self.board, self.current_candidates,
+                current_piece_idx=cur_idx, next_piece_idx=nxt_idx)
         else:
             self.current_scores = [
                 self.scorer.score(self.board, c) for c in self.current_candidates]
@@ -152,15 +159,57 @@ class GameRunner:
         else:
             cand = self.current_candidates[self.best_idx]
         self.board.lock(cand.piece)
-        self.lines_cleared += self.board.clear_lines()
+        lines = self.board.clear_lines()
+        self.lines_cleared += lines
         self.pieces_placed += 1
+        self.piece_queue.advance()  # next-piece becomes current
         self._spawn_new_piece()
         return cand
 
     @property
     def level(self) -> int:
-        """TAP level: +1 per piece placed, +1 per line cleared (tetrises = +4)."""
-        return self.pieces_placed + self.lines_cleared
+        """TAP level with level-stop: level increases by 1 per piece placed
+        and per line cleared, but PAUSES at every 100 boundary (99, 199, 299,
+        ...) until a line is cleared. Once a line is cleared at a stop, the
+        accumulated pieces advance the level past the boundary.
+
+        TAP Death starts at level 500; we display the offset from 500 for
+        readability (so the first piece is level 501). Actually TAP Death
+        starts at 0 and the internal level is 500, but for visualization we
+        just show the raw count with the stop logic.
+        """
+        raw_level = self.pieces_placed + self.lines_cleared
+        # Find the last level-stop boundary we've crossed.
+        # Level stops at 99, 199, 299, ... (every 100 levels, 0-indexed 99).
+        # The level cannot advance past 99, 199, etc. until a line is cleared.
+        # We track whether we've cleared a line since the last stop.
+        #
+        # Simplified: if we haven't cleared a line since hitting the boundary,
+        # cap at the boundary. We approximate this by checking if lines_cleared
+        # is enough to "unlock" each boundary we've passed.
+        #
+        # Each boundary at B=99,199,299,... requires at least 1 line clear
+        # to pass. So the max boundaries we can pass = lines_cleared.
+        # The effective level is:
+        #   raw_level, but capped at the (lines_cleared + 1)-th boundary.
+        if raw_level < 100:
+            return raw_level
+        # Number of 100-boundaries we've hit: floor(raw_level / 100)
+        # But each boundary past the first requires a line clear to unlock.
+        # Boundaries we're allowed to pass = lines_cleared (each line unlocks
+        # one boundary). Actually TAP is: at each x99, you need a line clear
+        # to proceed. So the number of boundaries you can cross = lines_cleared
+        # (assuming you cleared a line at each). If you haven't cleared enough
+        # lines, you're stuck at the last boundary.
+        boundaries_hit = raw_level // 100  # how many x99 boundaries we'd cross
+        boundaries_unlocked = self.lines_cleared  # each line clear unlocks one
+        # If we've hit more boundaries than we've unlocked, we're stuck at
+        # the last unlocked boundary (which is x99).
+        if boundaries_hit > boundaries_unlocked:
+            # Stuck at the (boundaries_unlocked)-th boundary.
+            # The boundary value is boundaries_unlocked * 100 - 1 (x99).
+            return boundaries_unlocked * 100 + 99
+        return raw_level
 
     @property
     def survival(self) -> int:
@@ -477,8 +526,10 @@ def main() -> None:
     stats = GameStats()
 
     test_candidates = test_board.search_locks(test_kind)
+    test_cur_idx = _PIECE_INDEX.get(test_kind, 0)
     if hasattr(scorer, "score_batch") and test_candidates:
-        test_scores = scorer.score_batch(test_board, test_candidates)
+        test_scores = scorer.score_batch(test_board, test_candidates,
+                                          current_piece_idx=test_cur_idx)
     else:
         test_scores = [scorer.score(test_board, c) for c in test_candidates]
     test_best_idx = (max(range(len(test_scores)), key=lambda i: test_scores[i])
@@ -500,7 +551,7 @@ def main() -> None:
     paused = False
     reduced_motion = False
     game_step_timer = 0.0
-    game_step_interval = 0.3
+    game_step_interval = 0.1
     game_over_pause = 0.0
     game_over_interval = 1.5
     test_cycle_speed = 8.0
@@ -532,7 +583,9 @@ def main() -> None:
                     scorer_name = "NeuralScorer" if use_nn else "MockScorer"
                     runner.scorer = scorer
                     if hasattr(scorer, "score_batch") and test_candidates:
-                        test_scores = scorer.score_batch(test_board, test_candidates)
+                        test_scores = scorer.score_batch(
+                            test_board, test_candidates,
+                            current_piece_idx=test_cur_idx)
                     else:
                         test_scores = [scorer.score(test_board, c) for c in test_candidates]
                     test_best_idx = (max(range(len(test_scores)),

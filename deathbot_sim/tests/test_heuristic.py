@@ -294,8 +294,9 @@ class TestDatasetGenerator:
         for _ in range(20):
             sample = generate_sample(scorer)
             if sample is not None:
-                board_tensor, next_idx, target = sample
+                board_tensor, cur_idx, next_idx, target = sample
                 assert board_tensor.shape == (1, 20, 10)
+                assert 0 <= cur_idx <= 6
                 assert 0 <= next_idx <= 6
                 assert isinstance(target, float)
                 return
@@ -329,8 +330,9 @@ class TestTrainingSmoke:
         # Just verify the network produces finite outputs after training.
         import torch
         b = torch.zeros(1, 1, 20, 10)
-        idx = torch.tensor([0], dtype=torch.long)
-        out = net(b, idx)
+        cur = torch.tensor([0], dtype=torch.long)
+        nxt = torch.tensor([0], dtype=torch.long)
+        out = net(b, cur, nxt)
         assert torch.isfinite(out).all()
         # Clean up the test weights file.
         import os

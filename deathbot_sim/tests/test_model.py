@@ -47,16 +47,18 @@ class TestTAPNetShapes:
     def test_single_sample_forward_shape(self):
         net = TAPNet()
         board = torch.zeros(1, 1, BOARD_HEIGHT, BOARD_WIDTH)
-        idx = torch.tensor([0], dtype=torch.long)
-        out = net(board, idx)
+        cur = torch.tensor([0], dtype=torch.long)
+        nxt = torch.tensor([0], dtype=torch.long)
+        out = net(board, cur, nxt)
         assert out.shape == (1, 1), f"expected (1,1), got {out.shape}"
 
     def test_batch_forward_shape(self):
         net = TAPNet()
         B = 8
         board = torch.zeros(B, 1, BOARD_HEIGHT, BOARD_WIDTH)
-        idx = torch.tensor([0] * B, dtype=torch.long)
-        out = net(board, idx)
+        cur = torch.tensor([0] * B, dtype=torch.long)
+        nxt = torch.tensor([0] * B, dtype=torch.long)
+        out = net(board, cur, nxt)
         assert out.shape == (B, 1), f"expected ({B},1), got {out.shape}"
 
     def test_layer_sizes_attribute(self):
@@ -64,26 +66,25 @@ class TestTAPNetShapes:
         # Effective layer sizes for the visualizer: [fused, 128, 1].
         assert net.layer_sizes == [_FUSED, 128, 1]
 
-    def test_fused_dim_is_3207(self):
-        # 64 channels * 10 * 5 (after pool) + 7 (next piece) = 3207.
-        assert _FUSED == 3207
+    def test_fused_dim_is_3214(self):
+        # 64 channels * 10 * 5 (after pool) + 7 (current) + 7 (next) = 3214.
+        assert _FUSED == 3214
 
     def test_param_count_is_lightweight(self):
-        # Sanity: should be under 500K params (lightweight for live play).
         net = TAPNet()
         n = sum(p.numel() for p in net.parameters())
         assert n < 500_000, f"param count {n} is too high (>500K)"
 
     def test_score_one_returns_python_float(self):
         net = TAPNet()
-        board = torch.zeros(BOARD_HEIGHT, BOARD_WIDTH)  # 2D, unsqueezed internally
-        score = net.score_one(board, 0)
+        board = torch.zeros(BOARD_HEIGHT, BOARD_WIDTH)
+        score = net.score_one(board, 0, 0)
         assert isinstance(score, float), f"expected float, got {type(score)}"
 
     def test_score_one_accepts_3d_tensor(self):
         net = TAPNet()
-        board = torch.zeros(1, BOARD_HEIGHT, BOARD_WIDTH)  # [1,20,10]
-        score = net.score_one(board, 0)
+        board = torch.zeros(1, BOARD_HEIGHT, BOARD_WIDTH)
+        score = net.score_one(board, 0, 0)
         assert isinstance(score, float)
 
 
@@ -92,18 +93,18 @@ class TestTAPNetShapes:
 class TestOutputActivation:
     def test_linear_output_is_unbounded(self):
         net = TAPNet(output="linear")
-        # With random init, output should be some unbounded float.
         board = torch.randn(1, 1, BOARD_HEIGHT, BOARD_WIDTH)
-        idx = torch.tensor([0], dtype=torch.long)
-        out = net(board, idx)
-        # No specific bound — just check it's a finite number.
+        cur = torch.tensor([0], dtype=torch.long)
+        nxt = torch.tensor([0], dtype=torch.long)
+        out = net(board, cur, nxt)
         assert torch.isfinite(out).all()
 
     def test_tanh_output_is_bounded(self):
         net = TAPNet(output="tanh")
         board = torch.randn(1, 1, BOARD_HEIGHT, BOARD_WIDTH) * 10
-        idx = torch.tensor([0], dtype=torch.long)
-        out = net(board, idx)
+        cur = torch.tensor([0], dtype=torch.long)
+        nxt = torch.tensor([0], dtype=torch.long)
+        out = net(board, cur, nxt)
         assert (out >= -1.0).all() and (out <= 1.0).all()
 
     def test_invalid_output_kind_raises(self):
@@ -118,22 +119,24 @@ class TestGradients:
         net = TAPNet()
         net.zero_grad()
         board = torch.randn(2, 1, BOARD_HEIGHT, BOARD_WIDTH)
-        idx = torch.tensor([0, 3], dtype=torch.long)
-        out = net(board, idx)
+        cur = torch.tensor([0, 3], dtype=torch.long)
+        nxt = torch.tensor([1, 4], dtype=torch.long)
+        out = net(board, cur, nxt)
         loss = out.sum()
         loss.backward()
         for name, p in net.named_parameters():
             assert p.grad is not None, f"{name} has no gradient"
             assert p.grad.abs().sum() > 0, f"{name} gradient is all zeros"
 
-    def test_gradient_flows_through_next_piece_input(self):
-        # The next-piece one-hot is concatenated; changing it should change
-        # the loss. Verify by checking the fc1 weights get gradients.
+    def test_gradient_flows_through_piece_inputs(self):
+        # Both current + next piece one-hots are concatenated; verify fc1
+        # weights get gradients (proving the piece inputs are wired in).
         net = TAPNet()
         net.zero_grad()
         board = torch.zeros(1, 1, BOARD_HEIGHT, BOARD_WIDTH)
-        idx = torch.tensor([0], dtype=torch.long)
-        net(board, idx).sum().backward()
+        cur = torch.tensor([0], dtype=torch.long)
+        nxt = torch.tensor([0], dtype=torch.long)
+        net(board, cur, nxt).sum().backward()
         assert net.fc1.weight.grad is not None
         assert net.fc1.weight.grad.abs().sum() > 0
 
@@ -223,16 +226,14 @@ class TestNeuralScorer:
         assert scorer.layer_sizes == [_FUSED, 128, 1]
 
     def test_score_with_different_next_piece(self):
-        # The network's output should depend on the next-piece input (it's
-        # part of the input). Different indices -> different scores (in
-        # general, for an untrained net with random init).
+        # The network's output should depend on the piece inputs. Different
+        # next-piece indices -> different scores (in general, for an untrained
+        # net with random init). Just check both are finite.
         scorer = NeuralScorer()
         board = ds.Board()
         locks = board.search_locks(ds.PieceType.T)
-        s0 = scorer.score_with_next(board, locks[0], 0)
-        s1 = scorer.score_with_next(board, locks[0], 1)
-        # They might coincidentally be equal, but the network *can* produce
-        # different outputs. Just check both are finite.
+        s0 = scorer.score_with_next(board, locks[0], 0, 0)
+        s1 = scorer.score_with_next(board, locks[0], 0, 1)
         assert isinstance(s0, float) and isinstance(s1, float)
         import math
         assert math.isfinite(s0) and math.isfinite(s1)

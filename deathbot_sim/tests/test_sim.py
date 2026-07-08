@@ -402,8 +402,8 @@ class TestIrsRoots:
             "I": 2,
             "O": 1,
             "T": 4,
-            "S": 4,
-            "Z": 4,
+            "S": 2,
+            "Z": 2,
             "J": 4,
             "L": 4,
         }
@@ -455,3 +455,140 @@ class TestGallery:
         assert any("OOO" in line for line in lines), (
             f"T should have a 3-wide row, got: {lines}"
         )
+
+
+# ----- pathfinder BFS (phase 1.3) ------------------------------------------
+
+class TestPathfinder:
+    def test_empty_board_has_candidates_for_all_pieces(self):
+        board = ds.Board()
+        for kind in ALL_PIECES:
+            locks = board.search_locks(kind)
+            assert len(locks) > 0, f"{kind!r} should have reachable locks on empty board"
+
+    def test_count_locks_matches_search(self):
+        board = ds.Board()
+        for kind in ALL_PIECES:
+            assert board.count_locks(kind) == len(board.search_locks(kind))
+
+    def test_o_piece_reaches_nine_horizontal_positions(self):
+        # O can't rotate; on an empty board it can occupy cols 0-1 through 8-9.
+        board = ds.Board()
+        locks = board.search_locks(ds.PieceType.O)
+        xs = {c.piece.x for c in locks}
+        assert len(xs) == 9, f"O should reach 9 x-positions, got {len(xs)}: {sorted(xs)}"
+        for c in locks:
+            assert c.piece.state == 0, "O candidate should be state 0"
+
+    def test_bare_spawn_drop_is_a_candidate(self):
+        # The IRS root with no inputs (empty path) should be present.
+        board = ds.Board()
+        for kind in ALL_PIECES:
+            locks = board.search_locks(kind)
+            bare = [c for c in locks if not c.inputs]
+            assert len(bare) >= 1, f"{kind!r} should have a bare-drop candidate (empty inputs)"
+
+    def test_candidates_reach_floor_on_empty_board(self):
+        board = ds.Board()
+        for kind in ALL_PIECES:
+            for c in board.search_locks(kind):
+                min_r = min(r for _c, r in c.piece.cells())
+                assert min_r == 0, f"{kind!r} candidate not at floor: {c.piece}"
+
+    def test_no_duplicate_state_x_pairs(self):
+        # BFS dedups by (state, x); no two candidates share that key.
+        board = ds.Board()
+        for kind in ALL_PIECES:
+            locks = board.search_locks(kind)
+            keys = {(c.piece.state, c.piece.x) for c in locks}
+            assert len(keys) == len(locks), f"{kind!r} has duplicate (state, x) candidates"
+
+    def test_t_reaches_all_four_rotation_states(self):
+        board = ds.Board()
+        locks = board.search_locks(ds.PieceType.T)
+        states = {c.piece.state for c in locks}
+        assert states == {0, 1, 2, 3}, f"T should reach states 0-3, got {sorted(states)}"
+
+    def test_i_reaches_both_rotation_states(self):
+        board = ds.Board()
+        locks = board.search_locks(ds.PieceType.I)
+        states = {c.piece.state for c in locks}
+        assert states == {0, 1}, f"I should reach states 0-1, got {sorted(states)}"
+
+    def test_s_reaches_both_rotation_states(self):
+        board = ds.Board()
+        locks = board.search_locks(ds.PieceType.S)
+        states = {c.piece.state for c in locks}
+        assert states == {0, 1}, f"S should reach states 0-1, got {sorted(states)}"
+
+    def test_inputs_are_valid_enum_values(self):
+        board = ds.Board()
+        for kind in ALL_PIECES:
+            for c in board.search_locks(kind):
+                for inp in c.inputs:
+                    assert inp in (
+                        ds.Input.Left,
+                        ds.Input.Right,
+                        ds.Input.RotateCw,
+                        ds.Input.RotateCcw,
+                        ds.Input.Neutral,
+                    ), f"unexpected input {inp} for {kind!r}"
+
+    def test_bfs_finds_shortest_paths_first(self):
+        # The bare drop has 0 inputs; at least one 1-input candidate exists.
+        board = ds.Board()
+        locks = board.search_locks(ds.PieceType.T)
+        lens = [len(c.inputs) for c in locks]
+        assert 0 in lens, "should be a 0-input candidate (bare drop)"
+        assert 1 in lens, "should be at least one 1-input candidate"
+
+    def test_full_board_candidates_have_empty_inputs(self):
+        # On a full board the piece can't move, so all candidates (if any)
+        # have empty input paths.
+        board = ds.Board()
+        for r in range(board.height):
+            for c in range(board.width):
+                board.set_cell(c, r)
+        for kind in ALL_PIECES:
+            for c in board.search_locks(kind):
+                assert not c.inputs, f"{kind!r} should have no inputs on full board"
+
+    def test_locks_decrease_when_stack_blocks_movement(self):
+        # A board with walls should yield fewer locks than an empty board.
+        empty = ds.Board()
+        walled = ds.Board()
+        # Build a 5-high wall in columns 3-6 across the spawn rows.
+        for c in range(3, 7):
+            for r in range(5):
+                walled.set_cell(c, r)
+        for kind in ALL_PIECES:
+            n_empty = empty.count_locks(kind)
+            n_walled = walled.count_locks(kind)
+            assert n_walled <= n_empty, (
+                f"{kind!r}: walled board ({n_walled}) should have <= "
+                f"empty board ({n_empty}) locks"
+            )
+
+
+# ----- pathfinder visualizer (smoke tests) --------------------------------
+
+class TestPathfinderViz:
+    def test_render_locks_overlay_returns_21_lines(self):
+        sys.path.insert(0, str(PYTHON_DIR))
+        from viz_pathfind import render_locks_overlay
+
+        board = ds.Board()
+        lines = render_locks_overlay(board, ds.PieceType.T)
+        assert len(lines) == 21
+        for line in lines:
+            board_part = line.split("  <-")[0]
+            assert len(board_part) == 10
+
+    def test_overlay_marks_reachable_cells(self):
+        sys.path.insert(0, str(PYTHON_DIR))
+        from viz_pathfind import render_locks_overlay
+
+        board = ds.Board()
+        lines = render_locks_overlay(board, ds.PieceType.T)
+        # At least one 'x' should appear (the T has reachable locks).
+        assert any("x" in line for line in lines), "overlay should mark reachable cells with 'x'"

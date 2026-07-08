@@ -13,15 +13,91 @@ pub mod pathfind;
 use pyo3::prelude::*;
 use pyo3::exceptions::PyValueError;
 
-/// Python-facing entry point. Exposes Board, Piece, and PieceType so the
-/// visualization harness and pytest suite can drive the simulator directly.
+/// Python-facing entry point. Exposes Board, Piece, PieceType, Input, and
+/// LockCandidate so the visualization harness and pytest suite can drive the
+/// simulator and pathfinder directly.
 #[pymodule]
 fn deathbot_sim(_py: Python, m: &Bound<'_, PyModule>) -> PyResult<()> {
     m.add("__version__", env!("CARGO_PKG_VERSION"))?;
     m.add_class::<PyBoard>()?;
     m.add_class::<PyPiece>()?;
+    m.add_class::<PyLockCandidate>()?;
     m.add("PieceType", _py.get_type_bound::<PyPieceType>())?;
+    m.add("Input", _py.get_type_bound::<PyInput>())?;
     Ok(())
+}
+
+// ---- Input enum (Python-facing) -----------------------------------------
+
+/// A single discrete input, matching the BFS edge labels. Use these to
+/// interpret a `LockCandidate.inputs` path.
+#[pyclass(name = "Input", eq, eq_int)]
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
+#[repr(u8)]
+pub enum PyInput {
+    RotateCw = 0,
+    RotateCcw = 1,
+    Left = 2,
+    Right = 3,
+    Neutral = 4,
+}
+
+impl PyInput {
+    fn from_inner(i: action::Input) -> Self {
+        match i {
+            action::Input::RotateCw => PyInput::RotateCw,
+            action::Input::RotateCcw => PyInput::RotateCcw,
+            action::Input::Left => PyInput::Left,
+            action::Input::Right => PyInput::Right,
+            action::Input::Neutral => PyInput::Neutral,
+        }
+    }
+}
+
+#[pymethods]
+impl PyInput {
+    fn __repr__(&self) -> String {
+        format!("Input::{:?}", self)
+    }
+}
+
+// ---- LockCandidate (Python-facing) --------------------------------------
+
+/// One reachable locking position + the input sequence that reaches it from
+/// the IRS root. The input sequence does NOT include a trailing Neutral —
+/// emit one to actually lock the piece in the real game.
+#[pyclass(name = "LockCandidate")]
+#[derive(Debug, Clone)]
+pub struct PyLockCandidate {
+    pub piece: PyPiece,
+    pub inputs: Vec<PyInput>,
+}
+
+#[pymethods]
+impl PyLockCandidate {
+    #[getter]
+    fn piece(&self) -> PyPiece {
+        PyPiece { inner: self.piece.inner }
+    }
+
+    /// The input sequence (list of Input enum values) from the IRS root.
+    #[getter]
+    fn inputs(&self) -> Vec<PyInput> {
+        self.inputs.clone()
+    }
+
+    /// The input sequence as a list of human-readable strings, e.g.
+    /// ["Left", "RotateCw", "Neutral"]. Convenience for debugging.
+    fn inputs_str(&self) -> Vec<String> {
+        self.inputs
+            .iter()
+            .map(|i| format!("{:?}", i))
+            .collect()
+    }
+
+    fn __repr__(&self) -> String {
+        format!("LockCandidate({:?}, {:?})", self.piece.inner, self.inputs)
+    }
 }
 
 // ---- PieceType enum (Python-facing) ---------------------------------------
@@ -308,6 +384,27 @@ impl PyBoard {
             .into_iter()
             .map(|p| PyPiece { inner: p })
             .collect()
+    }
+
+    // ---- Pathfinder (phase 1.3) -------------------------------------------
+
+    /// BFS over all reachable lock positions for `kind` on this board.
+    /// Returns a list of `LockCandidate`s, each with the grounded piece and
+    /// the input sequence (from the IRS root) that reaches it. Shortest paths
+    /// are found first (BFS order). Dedup by (state, x).
+    fn search_locks(&self, kind: PyPieceType) -> Vec<PyLockCandidate> {
+        pathfind::search_locks(&self.inner, kind.to_inner())
+            .into_iter()
+            .map(|c| PyLockCandidate {
+                piece: PyPiece { inner: c.piece },
+                inputs: c.inputs.iter().map(|&i| PyInput::from_inner(i)).collect(),
+            })
+            .collect()
+    }
+
+    /// Convenience: count of distinct reachable lock positions.
+    fn count_locks(&self, kind: PyPieceType) -> usize {
+        pathfind::count_locks(&self.inner, kind.to_inner())
     }
 
     fn __repr__(&self) -> String {

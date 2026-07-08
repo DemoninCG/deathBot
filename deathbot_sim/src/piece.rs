@@ -35,12 +35,16 @@ impl PieceType {
         PieceType::L,
     ];
 
-    /// Number of distinct rotation states: 4 for J/L/S/T/Z, 2 for I, 1 for O.
+    /// Number of distinct rotation states: 4 for J/L/T, 2 for I/S/Z, 1 for O.
+    /// S and Z have only 2 states in ARS (they toggle between horizontal and
+    /// vertical); their state 2 wraps to state 0, state 3 wraps to state 1.
     pub fn num_states(self) -> u8 {
         match self {
             PieceType::I => 2,
             PieceType::O => 1,
-            _ => 4,
+            PieceType::S => 2,
+            PieceType::Z => 2,
+            _ => 4, // J, L, T
         }
     }
 
@@ -58,12 +62,8 @@ impl PieceType {
             (PieceType::T, 3) => &T_3,
             (PieceType::S, 0) => &S_0,
             (PieceType::S, 1) => &S_1,
-            (PieceType::S, 2) => &S_2,
-            (PieceType::S, 3) => &S_3,
             (PieceType::Z, 0) => &Z_0,
             (PieceType::Z, 1) => &Z_1,
-            (PieceType::Z, 2) => &Z_2,
-            (PieceType::Z, 3) => &Z_3,
             (PieceType::J, 0) => &J_0,
             (PieceType::J, 1) => &J_1,
             (PieceType::J, 2) => &J_2,
@@ -85,7 +85,7 @@ impl PieceType {
 }
 
 // I piece — 2 states. Horizontal / vertical.
-static I_0: [(i8, i8); 4] = [(0, 1), (1, 1), (2, 1), (3, 1)];
+static I_0: [(i8, i8); 4] = [(0, 2), (1, 2), (2, 2), (3, 2)];
 static I_1: [(i8, i8); 4] = [(2, 0), (2, 1), (2, 2), (2, 3)];
 
 // O piece — 1 state. Immovable 2x2 block.
@@ -97,28 +97,24 @@ static T_1: [(i8, i8); 4] = [(1, 0), (1, 1), (2, 1), (1, 2)];
 static T_2: [(i8, i8); 4] = [(0, 1), (1, 1), (2, 1), (1, 2)];
 static T_3: [(i8, i8); 4] = [(1, 0), (0, 1), (1, 1), (1, 2)];
 
-// S piece — 4 states.
+// S piece — 2 states (horizontal / vertical).
 static S_0: [(i8, i8); 4] = [(1, 0), (2, 0), (0, 1), (1, 1)];
 static S_1: [(i8, i8); 4] = [(1, 0), (1, 1), (2, 1), (2, 2)];
-static S_2: [(i8, i8); 4] = [(1, 1), (2, 1), (0, 2), (1, 2)];
-static S_3: [(i8, i8); 4] = [(0, 0), (0, 1), (1, 1), (1, 2)];
 
-// Z piece — 4 states.
+// Z piece — 2 states (horizontal / vertical).
 static Z_0: [(i8, i8); 4] = [(0, 0), (1, 0), (1, 1), (2, 1)];
-static Z_1: [(i8, i8); 4] = [(2, 0), (1, 1), (2, 1), (1, 2)];
-static Z_2: [(i8, i8); 4] = [(0, 1), (1, 1), (1, 2), (2, 2)];
-static Z_3: [(i8, i8); 4] = [(1, 0), (0, 1), (1, 1), (0, 2)];
+static Z_1: [(i8, i8); 4] = [(1, 0), (0, 1), (1, 1), (0, 2)];
 
 // J piece — 4 states.
 static J_0: [(i8, i8); 4] = [(0, 0), (0, 1), (1, 1), (2, 1)];
 static J_1: [(i8, i8); 4] = [(1, 0), (2, 0), (1, 1), (1, 2)];
-static J_2: [(i8, i8); 4] = [(0, 1), (1, 1), (2, 1), (2, 2)];
+static J_2: [(i8, i8); 4] = [(0, 0), (1, 0), (2, 0), (2, 1)];
 static J_3: [(i8, i8); 4] = [(1, 0), (1, 1), (0, 2), (1, 2)];
 
 // L piece — 4 states.
 static L_0: [(i8, i8); 4] = [(2, 0), (0, 1), (1, 1), (2, 1)];
 static L_1: [(i8, i8); 4] = [(1, 0), (1, 1), (1, 2), (2, 2)];
-static L_2: [(i8, i8); 4] = [(0, 1), (1, 1), (2, 1), (0, 2)];
+static L_2: [(i8, i8); 4] = [(0, 0), (1, 0), (2, 0), (0, 1)];
 static L_3: [(i8, i8); 4] = [(0, 0), (1, 0), (1, 1), (1, 2)];
 
 /// A live piece on the field: type, current rotation state, and origin coords.
@@ -141,13 +137,16 @@ impl Piece {
 
     /// Spawn a piece in state 0 at its conventional spawn column.
     ///
-    /// Spawn y is chosen so the piece's top cells sit in the invisible buffer
-    /// row (row 20) and the rest in the top visible row (row 19). All current
-    /// spawn-state cells have `dy ∈ {0,1}`, so `y = 19` puts max cell row at 20.
-    /// TODO(1.2): verify exact TAP spawn x/y against the game; some pieces may
+    /// Spawn y is chosen so the piece's top cell (max dy in state 0) sits in
+    /// the invisible buffer row (row 20). Most pieces have max dy = 1, so
+    /// y = 19 puts their top cell at row 20. The I piece has max dy = 2, so
+    /// it spawns at y = 18 to keep its top cell at row 20.
+    /// TODO: verify exact TAP spawn x/y against the game; some pieces may
     /// spawn with a different y offset.
     pub fn spawn(kind: PieceType) -> Self {
-        Self::new(kind, 0, kind.spawn_x(), 19)
+        let max_dy = kind.cells(0).iter().map(|&(_, dy)| dy).max().unwrap_or(0);
+        let y = 20 - max_dy; // top cell lands at row 20 (invisible buffer)
+        Self::new(kind, 0, kind.spawn_x(), y)
     }
 
     /// Iterate absolute cell positions `(col, row)` occupied by this piece.
@@ -184,11 +183,19 @@ mod tests {
     fn piece_state_wrap() {
         assert_eq!(PieceType::I.num_states(), 2);
         assert_eq!(PieceType::O.num_states(), 1);
+        assert_eq!(PieceType::S.num_states(), 2);
+        assert_eq!(PieceType::Z.num_states(), 2);
         assert_eq!(PieceType::T.num_states(), 4);
+        assert_eq!(PieceType::J.num_states(), 4);
+        assert_eq!(PieceType::L.num_states(), 4);
         // I wraps state 2 -> 0.
         let p = Piece::new(PieceType::I, 0, 0, 0);
         assert_eq!(p.rotate_cw().state, 1);
         assert_eq!(p.rotate_cw().rotate_cw().state, 0);
+        // S wraps state 2 -> 0.
+        let s = Piece::new(PieceType::S, 0, 0, 0);
+        assert_eq!(s.rotate_cw().state, 1);
+        assert_eq!(s.rotate_cw().rotate_cw().state, 0);
         // O never changes state.
         let o = Piece::new(PieceType::O, 0, 0, 0);
         assert_eq!(o.rotate_cw().state, 0);

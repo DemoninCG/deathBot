@@ -19,6 +19,7 @@ Controls:
     SPACE  - pause/resume the lock cycling
     LEFT / RIGHT - manually step through candidates when paused
     R      - toggle reduced-motion mode (slower cycling)
+    N      - toggle between MockScorer and NeuralScorer (if torch installed)
     ESC    - quit
 """
 
@@ -34,6 +35,16 @@ import pygame
 
 import deathbot_sim as ds
 from scorer import MockNetwork, Scorer, extract_features
+
+# Lazy-import torch + the NN so the visualizer still works without torch.
+_TORCH_AVAILABLE = False
+try:
+    import torch  # noqa: F401
+    from neural_scorer import NeuralScorer
+    from model import TAPNet
+    _TORCH_AVAILABLE = True
+except ImportError:
+    pass
 
 # Make viz_pathfind importable for the board parser.
 HERE = Path(__file__).resolve().parent
@@ -109,15 +120,21 @@ def draw_network(
     if n_layers == 0:
         return
 
+    # Cap the displayed neurons per layer so the viz stays readable even for
+    # large layers (e.g. the 3207-dim fused input). We draw a representative
+    # sample and label the true size.
+    MAX_DISPLAY_NEURONS = 16
+    display_counts = [min(s, MAX_DISPLAY_NEURONS) for s in layer_sizes]
+
     # Compute neuron positions.
     layer_x = [
         rect.x + 40 + i * ((rect.width - 80) // max(1, n_layers - 1))
         for i in range(n_layers)
     ]
-    max_neurons = max(layer_sizes)
+    max_neurons = max(display_counts)
     neuron_r = max(6, min(18, (rect.height - 80) // (max(2, max_neurons) * 2)))
     neuron_positions: list[list[tuple[int, int]]] = []
-    for li, count in enumerate(layer_sizes):
+    for li, count in enumerate(display_counts):
         xs = layer_x[li]
         total_h = count * (neuron_r * 2 + 8)
         start_y = rect.y + 50 + (rect.height - 70 - total_h) // 2
@@ -146,10 +163,14 @@ def draw_network(
             pygame.draw.circle(surface, (r_col, g_col, b_col), (x, y), neuron_r)
             pygame.draw.circle(surface, NEURON_EDGE, (x, y), neuron_r, 1)
 
-    # Layer labels.
+    # Layer labels: show the TRUE size, with a sample-count marker if subsampled.
     for li, size in enumerate(layer_sizes):
         x = layer_x[li]
-        lbl = font.render(f"L{li}({size})", True, TEXT_DIM)
+        shown = display_counts[li]
+        label = f"L{li}({size})"
+        if shown < size:
+            label += f" …{shown}"
+        lbl = font.render(label, True, TEXT_DIM)
         surface.blit(lbl, (x - lbl.get_width() // 2, rect.bottom - 18))
 
 
@@ -278,10 +299,36 @@ DEMO_BOARDS = {
 }
 
 
+def make_scorer(use_nn: bool, weights_path: str | None = None) -> "MockNetwork | NeuralScorer":
+    """Construct the requested scorer. If use_nn and weights_path is given,
+    load the trained TAPNet weights from that file."""
+    if use_nn:
+        if not _TORCH_AVAILABLE:
+            print("torch not available; falling back to MockScorer")
+            return MockNetwork()
+        net = TAPNet()  # fresh net
+        if weights_path is not None:
+            from pathlib import Path
+            p = Path(weights_path)
+            if not p.is_absolute():
+                # resolve relative to the crate root (parent of python/)
+                p = HERE.parent / weights_path
+            if p.exists():
+                import torch
+                net.load_state_dict(torch.load(p, map_location="cpu"))
+                print(f"loaded NN weights from {p}")
+            else:
+                print(f"weights file {p} not found; using untrained net")
+        return NeuralScorer(net=net)
+    return MockNetwork()
+
+
 def main() -> None:
     args = sys.argv[1:]
     piece_name = "I"
     board_name = "stack"
+    use_nn = False
+    weights_path: str | None = None
     for i, a in enumerate(args):
         if a == "--piece" and i + 1 < len(args):
             piece_name = args[i + 1].upper()
@@ -289,6 +336,12 @@ def main() -> None:
             board_name = args[i + 1]
         elif a.startswith("--board="):
             board_name = a.split("=", 1)[1]
+        elif a == "--nn":
+            use_nn = True
+        elif a == "--weights" and i + 1 < len(args):
+            weights_path = args[i + 1]
+        elif a.startswith("--weights="):
+            weights_path = a.split("=", 1)[1]
     if piece_name not in PIECE_KINDS:
         print(f"unknown piece {piece_name!r}; choose from {list(PIECE_KINDS)}")
         sys.exit(1)
@@ -301,12 +354,16 @@ def main() -> None:
 
     kind = PIECE_KINDS[piece_name]
 
-    # Set up the scorer + "network".
-    net = MockNetwork()
+    # Set up the scorer + compute scores.
+    net = make_scorer(use_nn, weights_path)
 
     # Compute all lock candidates + their scores up front.
     candidates = board.search_locks(kind)
-    scores = [net.score(board, c) for c in candidates]
+    # Use batched scoring if available (NeuralScorer), else per-candidate.
+    if hasattr(net, "score_batch") and candidates:
+        scores = net.score_batch(board, candidates)
+    else:
+        scores = [net.score(board, c) for c in candidates]
     if candidates:
         best_idx = max(range(len(scores)), key=lambda i: scores[i])
     else:
@@ -355,6 +412,16 @@ def main() -> None:
                         current_idx = (current_idx + 1) % len(candidates)
                 elif event.key == pygame.K_r:
                     reduced_motion = not reduced_motion
+                elif event.key == pygame.K_n:
+                    # Toggle between MockScorer and NeuralScorer.
+                    use_nn = not use_nn
+                    net = make_scorer(use_nn)
+                    if hasattr(net, "score_batch") and candidates:
+                        scores = net.score_batch(board, candidates)
+                    else:
+                        scores = [net.score(board, c) for c in candidates]
+                    if candidates:
+                        best_idx = max(range(len(scores)), key=lambda i: scores[i])
 
         # Auto-cycle candidates.
         if not paused and candidates:
@@ -376,9 +443,10 @@ def main() -> None:
             font, small_font, test_rect, net,
         )
 
-        # Controls hint.
+        # Controls hint + current scorer name.
+        scorer_name = "NeuralScorer" if use_nn else "MockScorer"
         hint = small_font.render(
-            "SPACE pause | ←/→ step | R reduced-motion | ESC quit",
+            f"{scorer_name} | SPACE pause | ←/→ step | R reduced-motion | N swap scorer | ESC quit",
             True, TEXT_DIM,
         )
         screen.blit(hint, (PANEL_MARGIN, WINDOW_H - 18))

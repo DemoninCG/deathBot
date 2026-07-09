@@ -106,7 +106,7 @@ def play_game(
     rng: random.Random | None = None,
     *,
     epsilon: float = 0.1,
-    max_pieces: int = 500,
+    max_pieces: int = 1500,
     heuristic_scorer: Optional[HeuristicScorer] = None,
 ) -> list[tuple[torch.Tensor, int, int, float, float]]:
     """Play one full Death-mode game greedily with the scorer.
@@ -198,7 +198,7 @@ def generate_selfplay_dataset(
     *,
     epsilon: float = 0.1,
     gamma: float = 0.99,
-    max_pieces: int = 500,
+    max_pieces: int = 1500,
     survival_weight: float = 0.7,
     heuristic_weight: float = 0.3,
     heuristic_scorer: Optional[HeuristicScorer] = None,

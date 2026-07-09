@@ -18,8 +18,11 @@
 //!   3. Every visited grounded position is a lock candidate (under 20G the
 //!      piece is always grounded after drop). We record the grounded piece +
 //!      the input path. A final Neutral input (implicit) locks the piece.
-//!   4. Dedup nodes by (state, x) so the search is finite (at most
-//!      num_states * 10 nodes per root set).
+//!   4. Dedup nodes by (state, x, y) so the search is finite. Note: y is
+//!      included in the key because overhangs allow the same (state, x) to
+//!      ground at multiple heights (a piece resting on top of an overhang
+//!      vs. tucked below it). Deduping on (state, x) alone would silently
+//!      drop valid tucked positions.
 //!
 //! Output of the search is fed to the neural net (phase 2) for state
 //! evaluation; the argmax lock's input path is what gets enacted live.
@@ -42,9 +45,12 @@ pub struct LockCandidate {
     pub inputs: Vec<Input>,
 }
 
-/// Canonical BFS node key: (rotation_state, x). Under 20G, y is fully
-/// determined by dropping from any given (state, x), so we dedup on this pair.
-type NodeKey = (u8, i8);
+/// Canonical BFS node key: (rotation_state, x, y). We include y because under
+/// 20G the grounded y for a given (state, x) is NOT always unique: when the
+/// board has overhangs, a piece can be grounded at the same (state, x) at
+/// different heights (one on top of the overhang, one tucked below it).
+/// Deduping on (state, x) alone would silently drop valid tucked positions.
+type NodeKey = (u8, i8, i8);
 
 /// Search all reachable lock positions for `kind` on `board`, starting from
 /// the IRS root states. Returns a vec of `LockCandidate`s, each with the
@@ -60,7 +66,7 @@ pub fn search_locks(board: &Board, kind: PieceType) -> Vec<LockCandidate> {
     // 1. Seed with IRS roots, each dropped under 20G.
     for root in irs_root_states(board, kind) {
         let grounded = board.drop_20g(&root);
-        let key = (grounded.state, grounded.x);
+        let key = (grounded.state, grounded.x, grounded.y);
         if visited.insert(key) {
             candidates.push(LockCandidate {
                 piece: grounded,
@@ -75,7 +81,7 @@ pub fn search_locks(board: &Board, kind: PieceType) -> Vec<LockCandidate> {
         // Enumerate the 4 single-input edges: Left, Right, RotateCw, RotateCcw.
         for (input, child) in successors(board, &piece) {
             let grounded = board.drop_20g(&child);
-            let key = (grounded.state, grounded.x);
+            let key = (grounded.state, grounded.x, grounded.y);
             if visited.insert(key) {
                 let mut new_path = path.clone();
                 new_path.push(input);
@@ -191,13 +197,16 @@ mod tests {
     }
 
     #[test]
-    fn candidates_dedup_by_state_and_x() {
-        // No two candidates should share the same (state, x) — BFS dedups.
+    fn candidates_dedup_by_state_x_and_y() {
+        // No two candidates should share the same (state, x, y) — BFS dedups
+        // on the full grounded position. (y is included because overhangs
+        // allow the same (state, x) to ground at multiple heights.)
         let b = Board::new();
         for &kind in PieceType::ALL.iter() {
             let locks = search_locks(&b, kind);
-            let keys: HashSet<(u8, i8)> = locks.iter().map(|c| (c.piece.state, c.piece.x)).collect();
-            assert_eq!(keys.len(), locks.len(), "{:?} has duplicate (state, x) candidates", kind);
+            let keys: HashSet<(u8, i8, i8)> =
+                locks.iter().map(|c| (c.piece.state, c.piece.x, c.piece.y)).collect();
+            assert_eq!(keys.len(), locks.len(), "{:?} has duplicate (state, x, y) candidates", kind);
         }
     }
 

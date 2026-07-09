@@ -463,7 +463,7 @@ def draw_testing_panel(surface, board, candidates, scores, current_idx, best_idx
 # ---- Demo boards + scorer factory ----------------------------------------
 
 DEMO_BOARDS = {
-    "stack": "........../........../........../........../........#/......####/######.###/#########/#########/#########",
+    "stack": "........../........../........../........../........../.##.#...../.######.../#######.../######..../#########.",
     "empty": "........../........../........../........../........../........../........../........../........../..........",
 }
 
@@ -491,7 +491,7 @@ def make_scorer(use_nn: bool, weights_path: str | None = None):
 
 def main() -> None:
     args = sys.argv[1:]
-    piece_name = "I"
+    piece_name = "L"
     board_name = "stack"
     use_nn = False
     weights_path: str | None = None
@@ -551,7 +551,7 @@ def main() -> None:
     paused = False
     reduced_motion = False
     game_step_timer = 0.0
-    game_step_interval = 0.1
+    game_step_interval = 0.01
     game_over_pause = 0.0
     game_over_interval = 1.5
     test_cycle_speed = 8.0

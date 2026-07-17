@@ -148,8 +148,9 @@ class TAPNet(nn.Module):
             board_tensor = board_tensor.unsqueeze(0).unsqueeze(0)  # [1,1,20,10]
         elif board_tensor.dim() == 3:
             board_tensor = board_tensor.unsqueeze(0)  # [1,1,20,10] if [1,20,10]
-        cur = torch.tensor([current_piece_idx], dtype=torch.long)
-        nxt = torch.tensor([next_piece_idx], dtype=torch.long)
+        device = board_tensor.device
+        cur = torch.tensor([current_piece_idx], dtype=torch.long, device=device)
+        nxt = torch.tensor([next_piece_idx], dtype=torch.long, device=device)
         out = self.forward(board_tensor, cur, nxt)
         return float(out.item())
 

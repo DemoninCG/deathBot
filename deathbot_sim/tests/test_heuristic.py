@@ -4,10 +4,10 @@ Run with:
     python -m pytest tests/test_heuristic.py -v
 
 Covers:
-  - Feature extraction correctness (holes, overhangs, wells, pyramid weights).
+    - Feature extraction correctness (strict holes, cavities, wells, height).
   - HeuristicScorer implements the Scorer protocol.
   - The reward is sensible (empty board > stacked board; flat > holey).
-  - Pyramid weights are asymmetric (left gentler than right).
+    - Center-weighted height favors a 20G-friendly pyramid.
   - Dataset generator produces valid samples.
   - A tiny training run actually reduces the loss.
 """
@@ -30,13 +30,15 @@ import deathbot_sim as ds  # noqa: E402
 from heuristic import (  # noqa: E402
     HeuristicScorer,
     WEIGHTS,
-    PYRAMID_WEIGHTS,
-    pyramid_weight,
+    HEIGHT_WEIGHTS,
     extract_features,
     reward,
     count_holes,
-    count_overhangs,
-    max_well_depth,
+    count_accessible_cavities,
+    classify_roofed_cells,
+    well_depths,
+    well_cost,
+    spawn_danger,
     column_heights,
 )
 from scorer import Scorer  # noqa: E402
@@ -48,12 +50,11 @@ class TestFeatures:
     def test_empty_board_has_zero_features(self):
         b = ds.Board()
         feats = extract_features(b)
-        assert feats["aggregate_height"] == 0
-        assert feats["holes_mid"] == 0
-        assert feats["holes_edge"] == 0
-        assert feats["overhang"] == 0
-        assert feats["well_depth"] == 0
-        assert feats["pyramid"] == 0
+        assert feats["weighted_height"] == 0
+        assert feats["holes"] == 0
+        assert feats["accessible_cavities"] == 0
+        assert feats["well_cost"] == 0
+        assert feats["spawn_danger"] == 0
 
     def test_column_heights_simple(self):
         b = ds.Board()
@@ -66,47 +67,39 @@ class TestFeatures:
         assert h[1] == 0
 
     def test_holes_detected(self):
-        # Col 3: filled at rows 0 and 2, gap at row 1 -> 1 hole (mid col).
+        # The roofed gap is horizontally blocked on both sides.
         b = ds.Board()
+        b.set_cell(2, 0)
+        b.set_cell(2, 1)
         b.set_cell(3, 0)
         b.set_cell(3, 2)
+        b.set_cell(4, 0)
+        b.set_cell(4, 1)
         h = column_heights(b)
-        mid, edge = count_holes(b, h)
-        assert mid == 1, f"expected 1 mid hole, got {mid}"
-        assert edge == 0
+        assert count_holes(b, h) == 1
+        assert count_accessible_cavities(b, h) == 0
 
-    def test_edge_holes_vs_mid_holes(self):
-        # Same hole pattern in col 0 (edge) vs col 5 (mid).
-        b_edge = ds.Board()
-        b_edge.set_cell(0, 0)
-        b_edge.set_cell(0, 2)
-        b_mid = ds.Board()
-        b_mid.set_cell(5, 0)
-        b_mid.set_cell(5, 2)
-        h_e = column_heights(b_edge)
-        h_m = column_heights(b_mid)
-        mid_e, edge_e = count_holes(b_edge, h_e)
-        mid_m, edge_m = count_holes(b_mid, h_m)
-        assert edge_e == 1 and mid_e == 0
-        assert mid_m == 1 and edge_m == 0
-
-    def test_overhang_detected(self):
-        # An overhang: col 3 filled at rows 0, 2 (gap at row 1, but row 1 has
-        # a filled cell below it at row 0, and filled above at row 2).
-        # This is actually a hole (empty below height with filled below)...
-        # Let's build a proper overhang: a cell that's empty, has a filled
-        # cell directly below, and is above the solid stack top.
-        # Col 3: rows 0,1 filled (solid stack), row 2 empty, row 3 filled.
-        # Row 2 is above solid_top=1, has filled below (row 1), filled above
-        # (row 3) -> overhang.
+    def test_side_accessible_overhang_is_not_a_hole(self):
         b = ds.Board()
-        b.set_cell(3, 0)
-        b.set_cell(3, 1)
-        b.set_cell(3, 3)
+        b.set_cell(1, 0)
+        b.set_cell(1, 2)
         h = column_heights(b)
-        assert h[3] == 4  # height is 4 (rows 0,1,2 empty,3 filled)
-        overhangs = count_overhangs(b, h)
-        assert overhangs == 1, f"expected 1 overhang, got {overhangs}"
+        holes, cavities = classify_roofed_cells(b, h)
+        assert (1, 1) not in holes
+        assert (1, 1) in cavities
+
+    def test_holes_and_cavities_are_disjoint(self):
+        b = ds.Board()
+        b.set_cell(1, 0)
+        b.set_cell(1, 2)  # side-accessible cavity
+        b.set_cell(4, 0)
+        b.set_cell(4, 2)
+        b.set_cell(3, 1)
+        b.set_cell(5, 1)  # enclosed hole
+        holes, cavities = classify_roofed_cells(b)
+        assert set(holes).isdisjoint(cavities)
+        assert (1, 1) in cavities
+        assert (4, 1) in holes
 
     def test_well_depth_detected(self):
         # Col 5 is empty; cols 4 and 6 are height 3 -> well depth 3.
@@ -115,8 +108,8 @@ class TestFeatures:
             b.set_cell(4, r)
             b.set_cell(6, r)
         h = column_heights(b)
-        well = max_well_depth(b, h)
-        assert well == 3, f"expected well depth 3, got {well}"
+        assert 3 in well_depths(h)
+        assert well_cost(h) >= 3
 
     def test_one_row_well_not_punished(self):
         # A 1-row well (neighbor height 1, this col height 0) has depth 1,
@@ -125,57 +118,58 @@ class TestFeatures:
         b.set_cell(4, 0)
         b.set_cell(6, 0)
         h = column_heights(b)
-        well = max_well_depth(b, h)
-        assert well == 1
+        assert well_depths(h) == [1]
+        assert well_cost(h) == 0
+
+    def test_multiple_wells_are_all_counted(self):
+        heights = [3, 0, 3, 3, 0, 3, 3, 3, 3, 3]
+        assert well_depths(heights) == [3, 3]
+        assert well_cost(heights) == 6
+
+    def test_spawn_danger_is_non_linear_and_central(self):
+        safe = [14] * WIDTH
+        central = safe.copy()
+        central[4] = 17
+        edge = safe.copy()
+        edge[0] = 17
+        assert spawn_danger(safe) == 0
+        assert spawn_danger(central) == 9
+        assert spawn_danger(edge) == 0
 
 
-# ---- Pyramid weights ------------------------------------------------------
+# ---- Center-weighted height ----------------------------------------------
 
-class TestPyramidWeights:
+class TestHeightWeights:
     def test_peak_at_col_4(self):
-        # Column 4 (the 5th column) should have the lowest weight (the peak).
-        assert PYRAMID_WEIGHTS[4] == 1.0
+        assert HEIGHT_WEIGHTS[4] == min(HEIGHT_WEIGHTS)
 
     def test_left_side_gentler_than_right(self):
         # Symmetric distances from col 4: col 3 (dist 1) vs col 5 (dist 1).
         # Left (col 3) should be cheaper than right (col 5).
-        assert pyramid_weight(3) < pyramid_weight(5), (
-            f"left (col 3) {pyramid_weight(3)} should be < right (col 5) {pyramid_weight(5)}"
-        )
+        assert HEIGHT_WEIGHTS[3] < HEIGHT_WEIGHTS[5]
 
     def test_weights_v_shaped_around_col_4(self):
         # Weights decrease from col 0 to the peak at col 4, then increase
         # from col 4 to col 9 (V-shape, asymmetric).
         for c in range(4):
-            assert pyramid_weight(c) >= pyramid_weight(c + 1), (
-                f"left side should decrease toward peak: col {c} {pyramid_weight(c)} "
-                f"< col {c+1} {pyramid_weight(c+1)}"
-            )
+            assert HEIGHT_WEIGHTS[c] >= HEIGHT_WEIGHTS[c + 1]
         for c in range(4, 9):
-            assert pyramid_weight(c) <= pyramid_weight(c + 1), (
-                f"right side should increase from peak: col {c} {pyramid_weight(c)} "
-                f"> col {c+1} {pyramid_weight(c+1)}"
-            )
+            assert HEIGHT_WEIGHTS[c] <= HEIGHT_WEIGHTS[c + 1]
 
     def test_leftmost_less_than_rightmost(self):
         # Col 0 (dist 4, left) should be cheaper than col 9 (dist 5, right).
         # Even though col 9 is farther, the asymmetric slope means we should
         # verify the intended relationship.
-        assert pyramid_weight(0) < pyramid_weight(9), (
-            f"col 0 {pyramid_weight(0)} should be < col 9 {pyramid_weight(9)}"
-        )
+        assert HEIGHT_WEIGHTS[0] < HEIGHT_WEIGHTS[9]
 
 
 # ---- Reward function ------------------------------------------------------
 
 class TestReward:
     def test_empty_board_highest_reward(self):
-        # An empty board has no height, holes, overhangs, or wells — but it
-        # does have row_transitions (the surface is all empty, which counts
-        # as rough). Still, it should score higher than any stacked board.
         b = ds.Board()
         r_empty = reward(b)
-        assert r_empty < 0, f"empty board has row_transitions penalty: {r_empty}"
+        assert r_empty == 0
         # A stacked board should score worse.
         stacked = ds.Board()
         stacked.set_cell(0, 0)

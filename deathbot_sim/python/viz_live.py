@@ -551,7 +551,7 @@ def main() -> None:
     paused = False
     reduced_motion = False
     game_step_timer = 0.0
-    game_step_interval = 0.01
+    game_step_interval = 0.1
     game_over_pause = 0.0
     game_over_interval = 1.5
     test_cycle_speed = 8.0

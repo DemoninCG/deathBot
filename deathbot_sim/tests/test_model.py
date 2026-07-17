@@ -242,3 +242,23 @@ class TestNeuralScorer:
         scorer = NeuralScorer()
         board = ds.Board()
         assert scorer.score_batch(board, []) == []
+
+    def test_candidate_is_scored_after_line_clear(self):
+        class SumNet(TAPNet):
+            @torch.no_grad()
+            def score_one(self, board_tensor, current_piece_idx, next_piece_idx):
+                return float(board_tensor.sum().item())
+
+            def forward(self, board, current_piece_idx, next_piece_idx):
+                return board.flatten(1).sum(1, keepdim=True)
+
+        board = ds.Board()
+        for c in range(4, 10):
+            board.set_cell(c, 0)
+        candidates = board.search_locks(ds.PieceType.I)
+        clearing = [candidate for candidate in candidates
+                    if {tuple(cell) for cell in candidate.piece.cells()}
+                    == {(0, 0), (1, 0), (2, 0), (3, 0)}]
+        assert clearing
+        score = NeuralScorer(SumNet()).score(board, clearing[0])
+        assert score == 0.0

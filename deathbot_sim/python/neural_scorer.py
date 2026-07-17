@@ -17,8 +17,9 @@ from typing import Optional
 import torch
 
 import deathbot_sim as ds
-from model import TAPNet, board_to_tensor, piece_to_index
+from model import TAPNet, piece_to_index
 from scorer import Scorer
+from afterstate import make_afterstate
 
 
 class NeuralScorer:
@@ -66,14 +67,8 @@ class NeuralScorer:
         next_piece_idx: int,
     ) -> float:
         """Score a candidate with explicit current + next piece indices."""
-        # Simulate the lock on a copy of the board (one FFI call via
-        # clone_board, instead of 210 per-cell calls).
-        sim = board.clone_board()
-        sim.lock(candidate.piece)
-        # NOTE: we deliberately do NOT clear lines here — the network sees the
-        # raw locked state. The training target (phase 2.2) will encode whether
-        # line clears are good. Adjust if the heuristic wants pre-clear boards.
-        tensor = board_to_tensor(sim).to(self.device)
+        # Score the same post-lock, post-clear afterstate used for training.
+        tensor = make_afterstate(board, candidate).tensor.to(self.device)
         return self.net.score_one(tensor, current_piece_idx, next_piece_idx)
 
     def score_batch(
@@ -103,10 +98,7 @@ class NeuralScorer:
         cur = current_piece_idx if current_piece_idx is not None else piece_to_index(candidates[0].piece.kind)
         boards = []
         for c in candidates:
-            # Clone the board in one FFI call instead of 210 per-cell calls.
-            sim = board.clone_board()
-            sim.lock(c.piece)
-            boards.append(board_to_tensor(sim))
+            boards.append(make_afterstate(board, c).tensor)
         batch = torch.stack(boards, dim=0).to(self.device)  # [B, 1, 20, 10]
         cur_t = torch.tensor([cur] * len(candidates), dtype=torch.long, device=self.device)
         nxt_t = torch.tensor([nxt] * len(candidates), dtype=torch.long, device=self.device)

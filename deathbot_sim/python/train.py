@@ -4,11 +4,9 @@ The generator creates random board states by simulating random piece
 placements (using the pathfinder + a random valid lock). For each board, it:
   1. Picks a random "current piece" and "next piece".
   2. Runs the pathfinder to get all lock candidates for the current piece.
-  3. Computes the heuristic reward for each candidate's resulting board.
-  4. The TARGET is the reward of the BEST candidate (the network learns to
-     predict the value of the optimal placement, not the value of any random
-     placement). This is "imitation of the heuristic teacher."
-  5. Stores (board_tensor, next_piece_idx, target_reward) as a training sample.
+  3. Selects a candidate and constructs its post-lock, post-clear afterstate.
+  4. Uses that candidate's heuristic reward as its target.
+  5. Stores the afterstate with the placed and preview piece indices.
 
 The training loop is standard supervised regression: MSE loss between the
 network's output and the target reward, Adam optimizer, mini-batches.
@@ -38,9 +36,10 @@ HERE = Path(__file__).resolve().parent
 sys.path.insert(0, str(HERE))
 
 import deathbot_sim as ds
-from model import TAPNet, board_to_tensor, piece_to_index, PIECE_INDEX
-from heuristic import HeuristicScorer, reward
+from model import TAPNet, piece_to_index, PIECE_INDEX
+from heuristic import HeuristicScorer
 from scorer import Scorer
+from afterstate import make_afterstate
 
 
 # ---- Random board generation ---------------------------------------------
@@ -77,9 +76,8 @@ def generate_sample(
 ) -> tuple[torch.Tensor, int, int, float] | None:
     """Generate one training sample: (board_tensor, current_idx, next_idx, target).
 
-    The target is the reward of the BEST lock candidate for a random current
-    piece on a random board. Returns None if the board has no valid placements
-    for the chosen piece (shouldn't happen on non-full boards).
+    The target is the reward of one candidate's post-clear afterstate. Returns
+    None if the board has no valid placements for the chosen piece.
     """
     rng = rng or random.Random()
     board = random_board(max_pieces=rng.randint(5, 30), rng=rng)
@@ -88,16 +86,19 @@ def generate_sample(
     candidates = board.search_locks(current)
     if not candidates:
         return None
-    # Score all candidates with the heuristic; target = best reward.
-    scores = [scorer.score(board, c) for c in candidates]
-    best_score = max(scores)
-    # The input board is the PRE-lock board (the network sees the current
-    # state + current piece + next piece, and must predict the value of the
-    # best placement).
-    board_tensor = board_to_tensor(board)
+    # Teach the exact representation used during candidate ranking: one
+    # post-lock, post-clear afterstate and that candidate's own value.
+    candidate = rng.choice(candidates)
+    afterstate = make_afterstate(board, candidate)
+    if isinstance(scorer, HeuristicScorer):
+        target = scorer.score_afterstate(
+            afterstate.board, afterstate.lines_cleared)
+    else:
+        target = scorer.score(board, candidate)
+    board_tensor = afterstate.tensor
     cur_idx = piece_to_index(current)
     next_idx = piece_to_index(next_piece)
-    return board_tensor, cur_idx, next_idx, best_score
+    return board_tensor, cur_idx, next_idx, target
 
 
 def generate_dataset(

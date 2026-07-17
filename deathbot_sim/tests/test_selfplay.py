@@ -35,6 +35,12 @@ from selfplay import (  # noqa: E402
     generate_selfplay_dataset,
     train_selfplay,
     ReplayBuffer,
+    ReplaySample,
+    RewardNormalizer,
+    load_normalizer_checkpoint,
+    normalizer_sidecar_path,
+    save_normalizer_checkpoint,
+    select_candidate_index,
 )
 
 
@@ -47,8 +53,9 @@ class TestPlayGame:
         scorer = HeuristicScorer()
         import random
         rng = random.Random(42)
-        trajectory = play_game(scorer, rng, epsilon=0.0, max_pieces=100)
+        trajectory, lines = play_game(scorer, rng, epsilon=0.0, max_pieces=100)
         assert len(trajectory) > 0, "should place at least one piece"
+        assert isinstance(lines, int) and lines >= 0
         # Each element is (board_tensor, cur_idx, next_idx, heuristic_val, steps).
         for bt, ci, ni, hv, steps in trajectory:
             assert bt.shape == (1, 20, 10)
@@ -63,7 +70,7 @@ class TestPlayGame:
         scorer = HeuristicScorer()
         import random
         rng = random.Random(42)
-        trajectory = play_game(scorer, rng, epsilon=0.0, max_pieces=50)
+        trajectory, _ = play_game(scorer, rng, epsilon=0.0, max_pieces=50)
         assert len(trajectory) >= 2
         first_steps = trajectory[0][4]  # steps is now index 4
         last_steps = trajectory[-1][4]
@@ -79,8 +86,8 @@ class TestPlayGame:
         should produce different trajectories (in general)."""
         scorer = HeuristicScorer()
         import random
-        t1 = play_game(scorer, random.Random(1), epsilon=1.0, max_pieces=20)
-        t2 = play_game(scorer, random.Random(2), epsilon=1.0, max_pieces=20)
+        t1, _ = play_game(scorer, random.Random(1), epsilon=1.0, max_pieces=20)
+        t2, _ = play_game(scorer, random.Random(2), epsilon=1.0, max_pieces=20)
         # They might have different lengths or different boards.
         assert len(t1) > 0 and len(t2) > 0
 
@@ -88,7 +95,7 @@ class TestPlayGame:
         """A game with a very small max_pieces should still terminate."""
         scorer = HeuristicScorer()
         import random
-        trajectory = play_game(scorer, random.Random(42), epsilon=0.0, max_pieces=3)
+        trajectory, _ = play_game(scorer, random.Random(42), epsilon=0.0, max_pieces=3)
         assert len(trajectory) <= 3
 
     def test_no_candidates_means_empty_trajectory(self):
@@ -133,11 +140,31 @@ class TestDiscountedSurvival:
     def test_gamma_zero_gives_one_for_any_positive_steps(self):
         """With gamma=0, only the immediate step counts — any positive
         survival gets a target of 1.0 (one-step lookahead)."""
-        assert discounted_survival(1, gamma=0.0) == 0.0  # gamma^1 = 0
-        # Actually with gamma=0, the formula is 0 * (1 - 0^n) / (1 - 0) = 0.
-        # That's a degenerate case; let's just verify it's finite.
+        assert discounted_survival(1, gamma=0.0) == 1.0
         val = discounted_survival(5, gamma=0.0)
-        assert math.isfinite(val)
+        assert val == 1.0
+
+    def test_rejects_invalid_gamma(self):
+        with pytest.raises(ValueError):
+            discounted_survival(5, gamma=-0.1)
+        with pytest.raises(ValueError):
+            discounted_survival(5, gamma=1.1)
+
+
+class TestTopKExploration:
+    def test_greedy_selects_first_maximum(self):
+        assert select_candidate_index(
+            [1.0, 3.0, 3.0], random.Random(1), epsilon=0.0) == 1
+
+    def test_exploration_never_leaves_top_k(self):
+        rng = random.Random(42)
+        selected = {
+            select_candidate_index([10.0, 9.0, 8.0, -100.0], rng,
+                                   epsilon=1.0, top_k=2)
+            for _ in range(100)
+        }
+        assert selected <= {0, 1}
+        assert selected == {0, 1}
 
 
 # ---- MC dataset generator -------------------------------------------------
@@ -222,6 +249,27 @@ class TestTrainSelfplay:
         if test_path.exists():
             os.remove(test_path)
 
+    def test_legacy_weights_require_explicit_bootstrap_flag(self, tmp_path):
+        import torch
+        from model import TAPNet
+
+        legacy = tmp_path / "legacy.pt"
+        torch.save(TAPNet(output="linear").state_dict(), legacy)
+        output = tmp_path / "output.pt"
+
+        with pytest.raises(ValueError, match="allow-legacy-weights"):
+            train_selfplay(
+                n_rounds=1, games_per_round=1, epochs_per_round=1,
+                batch_size=8, weights_in=str(legacy), weights_out=str(output),
+            )
+
+        train_selfplay(
+            n_rounds=1, games_per_round=1, epochs_per_round=1,
+            batch_size=8, weights_in=str(legacy), weights_out=str(output),
+            allow_legacy_weights=True,
+        )
+        assert normalizer_sidecar_path(output).is_file()
+
 
 # ---- Replay buffer (#2) ---------------------------------------------------
 
@@ -271,6 +319,53 @@ class TestReplayBuffer:
             buf.push(torch.zeros(1, 20, 10), i, 0, float(i))
         sampled = buf.sample(10, random.Random(42))
         assert len(sampled) == 3  # only 3 in buffer
+
+    def test_discards_stale_generations(self):
+        import torch
+        buf = ReplayBuffer(capacity=100)
+        for generation in range(4):
+            buf.buffer.append(ReplaySample(
+                torch.zeros(1, 20, 10), 0, 0, 1.0, -1.0, generation))
+        buf.discard_before(2)
+        assert {sample.generation for sample in buf.buffer} == {2, 3}
+
+
+class TestRewardNormalizer:
+    def test_normalized_components_have_unit_scale(self):
+        import torch
+        samples = [
+            ReplaySample(torch.zeros(1, 20, 10), 0, 0,
+                         float(i), float(10 * i), 0)
+            for i in range(1, 6)
+        ]
+        normalizer = RewardNormalizer.fit(samples)
+        blended = [normalizer.blend(sample, 0.5, 0.5)
+                   for sample in samples]
+        assert abs(sum(blended) / len(blended)) < 1e-6
+
+    def test_checkpoint_round_trip_requires_matching_weights_and_config(self, tmp_path):
+        weights = tmp_path / "checkpoint.pt"
+        weights.write_bytes(b"test weights")
+        normalizer = RewardNormalizer(10.0, 2.0, -50.0, 8.0)
+        metadata = normalizer_sidecar_path(weights)
+        save_normalizer_checkpoint(
+            metadata, normalizer, weights_path=weights, gamma=0.99,
+            survival_weight=0.7, heuristic_weight=0.3)
+
+        assert load_normalizer_checkpoint(
+            metadata, weights_path=weights, gamma=0.99,
+            survival_weight=0.7, heuristic_weight=0.3) == normalizer
+
+        with pytest.raises(ValueError, match="target configuration"):
+            load_normalizer_checkpoint(
+                metadata, weights_path=weights, gamma=0.99,
+                survival_weight=0.8, heuristic_weight=0.2)
+
+        weights.write_bytes(b"different weights")
+        with pytest.raises(ValueError, match="does not match weights"):
+            load_normalizer_checkpoint(
+                metadata, weights_path=weights, gamma=0.99,
+                survival_weight=0.7, heuristic_weight=0.3)
 
 
 # ---- Reward shaping (#1) --------------------------------------------------

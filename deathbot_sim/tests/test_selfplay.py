@@ -37,9 +37,6 @@ from selfplay import (  # noqa: E402
     ReplayBuffer,
     ReplaySample,
     RewardNormalizer,
-    load_normalizer_checkpoint,
-    normalizer_sidecar_path,
-    save_normalizer_checkpoint,
     select_candidate_index,
 )
 
@@ -249,27 +246,6 @@ class TestTrainSelfplay:
         if test_path.exists():
             os.remove(test_path)
 
-    def test_legacy_weights_require_explicit_bootstrap_flag(self, tmp_path):
-        import torch
-        from model import TAPNet
-
-        legacy = tmp_path / "legacy.pt"
-        torch.save(TAPNet(output="linear").state_dict(), legacy)
-        output = tmp_path / "output.pt"
-
-        with pytest.raises(ValueError, match="allow-legacy-weights"):
-            train_selfplay(
-                n_rounds=1, games_per_round=1, epochs_per_round=1,
-                batch_size=8, weights_in=str(legacy), weights_out=str(output),
-            )
-
-        train_selfplay(
-            n_rounds=1, games_per_round=1, epochs_per_round=1,
-            batch_size=8, weights_in=str(legacy), weights_out=str(output),
-            allow_legacy_weights=True,
-        )
-        assert normalizer_sidecar_path(output).is_file()
-
 
 # ---- Replay buffer (#2) ---------------------------------------------------
 
@@ -342,30 +318,6 @@ class TestRewardNormalizer:
         blended = [normalizer.blend(sample, 0.5, 0.5)
                    for sample in samples]
         assert abs(sum(blended) / len(blended)) < 1e-6
-
-    def test_checkpoint_round_trip_requires_matching_weights_and_config(self, tmp_path):
-        weights = tmp_path / "checkpoint.pt"
-        weights.write_bytes(b"test weights")
-        normalizer = RewardNormalizer(10.0, 2.0, -50.0, 8.0)
-        metadata = normalizer_sidecar_path(weights)
-        save_normalizer_checkpoint(
-            metadata, normalizer, weights_path=weights, gamma=0.99,
-            survival_weight=0.7, heuristic_weight=0.3)
-
-        assert load_normalizer_checkpoint(
-            metadata, weights_path=weights, gamma=0.99,
-            survival_weight=0.7, heuristic_weight=0.3) == normalizer
-
-        with pytest.raises(ValueError, match="target configuration"):
-            load_normalizer_checkpoint(
-                metadata, weights_path=weights, gamma=0.99,
-                survival_weight=0.8, heuristic_weight=0.2)
-
-        weights.write_bytes(b"different weights")
-        with pytest.raises(ValueError, match="does not match weights"):
-            load_normalizer_checkpoint(
-                metadata, weights_path=weights, gamma=0.99,
-                survival_weight=0.7, heuristic_weight=0.3)
 
 
 # ---- Reward shaping (#1) --------------------------------------------------

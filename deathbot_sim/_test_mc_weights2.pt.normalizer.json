@@ -1,6 +1,6 @@
 {
   "format_version": 1,
-  "weights_sha256": "4e61d2daae24b6cbbe93d9796bce4f74292c3409a8001131d7d4356c60b8c9e2",
+  "weights_sha256": "b22e8c648dd6965e2fd1d08f55a76e728d4c812078e86a6e1c1962dd02d131d1",
   "target_config": {
     "gamma": 0.99,
     "survival_weight": 0.7,
@@ -9,7 +9,7 @@
   "normalizer": {
     "survival_mean": 9.191211287200447,
     "survival_std": 5.0785389659033315,
-    "heuristic_mean": -323.11249999999995,
-    "heuristic_std": 311.39558317155047
+    "heuristic_mean": -322.4514127764128,
+    "heuristic_std": 292.4503829394301
   }
 }

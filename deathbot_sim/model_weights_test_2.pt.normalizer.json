@@ -1,0 +1,15 @@
+{
+  "format_version": 1,
+  "weights_sha256": "6a4bdc30317619c44cb842b37ca6d53a7f74c9e17b11906d55b8fa42fa509fd9",
+  "target_config": {
+    "gamma": 0.99,
+    "survival_weight": 0.7,
+    "heuristic_weight": 0.3
+  },
+  "normalizer": {
+    "survival_mean": 74.40347261229626,
+    "survival_std": 26.430096877872487,
+    "heuristic_mean": -219.71631904477945,
+    "heuristic_std": 180.36913622085962
+  }
+}

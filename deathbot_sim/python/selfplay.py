@@ -24,8 +24,6 @@ Run:
 from __future__ import annotations
 
 import argparse
-import hashlib
-import json
 import math
 import random
 import sys
@@ -108,83 +106,6 @@ class RewardNormalizer:
         survival = (sample.survival - self.survival_mean) / self.survival_std
         heuristic = (sample.heuristic - self.heuristic_mean) / self.heuristic_std
         return sw * survival + hw * heuristic
-
-
-NORMALIZER_FORMAT_VERSION = 1
-
-
-def normalizer_sidecar_path(weights_path: Path) -> Path:
-    """Return the metadata path paired with a model-weight checkpoint."""
-    return weights_path.with_name(f"{weights_path.name}.normalizer.json")
-
-
-def _file_sha256(path: Path) -> str:
-    return hashlib.sha256(path.read_bytes()).hexdigest()
-
-
-def _target_config(gamma: float, survival_weight: float,
-                   heuristic_weight: float) -> dict[str, float]:
-    return {
-        "gamma": gamma,
-        "survival_weight": survival_weight,
-        "heuristic_weight": heuristic_weight,
-    }
-
-
-def save_normalizer_checkpoint(path: Path, normalizer: RewardNormalizer, *,
-                               weights_path: Path, gamma: float,
-                               survival_weight: float,
-                               heuristic_weight: float) -> None:
-    """Save target-scale metadata that must accompany a resumable checkpoint."""
-    payload = {
-        "format_version": NORMALIZER_FORMAT_VERSION,
-        "weights_sha256": _file_sha256(weights_path),
-        "target_config": _target_config(
-            gamma, survival_weight, heuristic_weight),
-        "normalizer": {
-            "survival_mean": normalizer.survival_mean,
-            "survival_std": normalizer.survival_std,
-            "heuristic_mean": normalizer.heuristic_mean,
-            "heuristic_std": normalizer.heuristic_std,
-        },
-    }
-    path.parent.mkdir(parents=True, exist_ok=True)
-    path.write_text(json.dumps(payload, indent=2) + "\n", encoding="utf-8")
-
-
-def load_normalizer_checkpoint(path: Path, *, weights_path: Path, gamma: float,
-                               survival_weight: float,
-                               heuristic_weight: float) -> RewardNormalizer:
-    """Load and validate the normalizer paired with ``weights_path``.
-
-    The target configuration is deliberately immutable when resuming. Changing
-    it changes the meaning of a trained network's output and can destabilize
-    ranking just as surely as replacing the normalizer itself.
-    """
-    try:
-        payload = json.loads(path.read_text(encoding="utf-8"))
-    except (OSError, json.JSONDecodeError) as exc:
-        raise ValueError(f"could not read normalizer checkpoint {path}: {exc}") from exc
-    if payload.get("format_version") != NORMALIZER_FORMAT_VERSION:
-        raise ValueError(f"unsupported normalizer checkpoint format: {path}")
-    if payload.get("weights_sha256") != _file_sha256(weights_path):
-        raise ValueError(
-            f"normalizer checkpoint {path} does not match weights {weights_path}")
-    expected = _target_config(gamma, survival_weight, heuristic_weight)
-    if payload.get("target_config") != expected:
-        raise ValueError(
-            "target configuration differs from the checkpoint metadata; "
-            "keep gamma and reward weights unchanged when resuming")
-    try:
-        data = payload["normalizer"]
-        return RewardNormalizer(
-            survival_mean=float(data["survival_mean"]),
-            survival_std=float(data["survival_std"]),
-            heuristic_mean=float(data["heuristic_mean"]),
-            heuristic_std=float(data["heuristic_std"]),
-        )
-    except (KeyError, TypeError, ValueError) as exc:
-        raise ValueError(f"invalid normalizer checkpoint: {path}") from exc
 
 
 class ReplayBuffer:
@@ -406,7 +327,6 @@ def train_selfplay(
     weights_in: Optional[str] = None,
     weights_out: str = "model_weights.pt",
     device: str = "cpu",
-    allow_legacy_weights: bool = False,
 ) -> TAPNet:
     """Train TAPNet via MC self-play with replay buffer + reward shaping.
 
@@ -425,27 +345,11 @@ def train_selfplay(
     # Build the network.
     net = TAPNet(output="linear")
     net.to(device)
-    normalizer: RewardNormalizer | None = None
     if weights_in is not None:
         p = HERE.parent / weights_in if not Path(weights_in).is_absolute() else Path(weights_in)
         if p.exists():
             net.load_state_dict(torch.load(p, map_location=device))
             print(f"Loaded initial weights from {p}")
-            metadata_path = normalizer_sidecar_path(p)
-            if not metadata_path.is_file():
-                if not allow_legacy_weights:
-                    raise ValueError(
-                        f"cannot safely resume {p}: missing normalizer metadata "
-                        f"{metadata_path}. To deliberately bootstrap a new target scale "
-                        "from legacy weights, pass --allow-legacy-weights.")
-                print("No normalizer metadata found; bootstrapping a new target "
-                      "scale from legacy weights.")
-            else:
-                normalizer = load_normalizer_checkpoint(
-                    metadata_path, weights_path=p, gamma=gamma,
-                    survival_weight=survival_weight,
-                    heuristic_weight=heuristic_weight)
-                print(f"Loaded reward normalization from {metadata_path}")
         else:
             print(f"Weights file {p} not found; starting from scratch.")
     optimizer = torch.optim.Adam(net.parameters(), lr=lr)
@@ -454,6 +358,7 @@ def train_selfplay(
     # Replay buffer (#2) + heuristic scorer for reward shaping (#1).
     replay = ReplayBuffer(capacity=replay_capacity)
     heuristic_scorer = HeuristicScorer() if heuristic_weight > 0 else None
+    normalizer: RewardNormalizer | None = None
 
     for round_idx in range(n_rounds):
         # --- Self-play phase ---
@@ -549,14 +454,7 @@ def train_selfplay(
         # preserves progress. Overwrites the output file each round.
         out_path = HERE.parent / weights_out
         torch.save(net.state_dict(), out_path)
-        assert normalizer is not None
-        metadata_path = normalizer_sidecar_path(out_path)
-        save_normalizer_checkpoint(
-            metadata_path, normalizer, weights_path=out_path, gamma=gamma,
-            survival_weight=survival_weight,
-            heuristic_weight=heuristic_weight)
         print(f"  Checkpointed weights to {out_path} (after round {round_idx + 1})")
-        print(f"  Checkpointed normalization to {metadata_path}")
 
     print(f"\nSaved final weights to {HERE.parent / weights_out}")
     net.eval()
@@ -590,9 +488,6 @@ def main() -> None:
     parser.add_argument("--weights-in", type=str, default=None, help="initial weights to load")
     parser.add_argument("--weights-out", type=str, default="model_weights.pt",
                         help="output weights path")
-    parser.add_argument("--allow-legacy-weights", action="store_true",
-                        help="bootstrap new normalization from weights without metadata; "
-                             "only use for pre-sidecar legacy checkpoints")
     parser.add_argument("--device", type=str, default="cpu", help="device (cpu/cuda)")
     args = parser.parse_args()
 
@@ -614,7 +509,6 @@ def main() -> None:
         weights_in=args.weights_in,
         weights_out=args.weights_out,
         device=args.device,
-        allow_legacy_weights=args.allow_legacy_weights,
     )
 
 

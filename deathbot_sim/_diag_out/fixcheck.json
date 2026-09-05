@@ -1,0 +1,38 @@
+{
+  "E1_current": {
+    "name": "E1_current",
+    "script": "C:\\My Things\\HTML\\Demonin's Item Shop\\other\\deathBot\\deathbot_sim\\python\\selfplay.py",
+    "argv": [
+      "--rounds",
+      "2",
+      "--games",
+      "8",
+      "--epochs",
+      "3",
+      "--seed",
+      "42",
+      "--weights-in",
+      "C:\\My Things\\HTML\\Demonin's Item Shop\\other\\deathBot\\model_weights_snapshot7.pt",
+      "--weights-out",
+      "C:\\My Things\\HTML\\Demonin's Item Shop\\other\\deathBot\\deathbot_sim\\_diag_out\\final_E1_current.pt"
+    ],
+    "start_weights": "C:\\My Things\\HTML\\Demonin's Item Shop\\other\\deathBot\\model_weights_snapshot7.pt",
+    "rounds": {
+      "1": {
+        "eval_mean": 546.6,
+        "eval_median": 492,
+        "eval_min": 257,
+        "eval_max": 877,
+        "eval_s": 27.8
+      },
+      "2": {
+        "eval_mean": 342.4,
+        "eval_median": 273,
+        "eval_min": 134,
+        "eval_max": 580,
+        "eval_s": 18.9
+      }
+    },
+    "train_s": 120.6
+  }
+}

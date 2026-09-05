@@ -1,0 +1,39 @@
+Loaded initial weights from C:\My Things\HTML\Demonin's Item Shop\other\deathBot\model_weights_snapshot7.pt
+
+=== Round 1/4 (epsilon=0.100) ===
+  Playing 25 games...
+  Collected 2406 new samples. Replay buffer: 2406 samples.
+  Target stats: min=-229.8 max=54.6 mean=-63.7
+    epoch 1/3: loss=362.2931 (37 batches from buffer of 2406)
+    epoch 2/3: loss=176.7063 (37 batches from buffer of 2406)
+    epoch 3/3: loss=160.9469 (37 batches from buffer of 2406)
+  Checkpointed weights to C:\My Things\HTML\Demonin's Item Shop\other\deathBot\deathbot_sim\_diag_out\final_E5_legacy_mp500.pt (after round 1)
+
+=== Round 2/4 (epsilon=0.090) ===
+  Playing 25 games...
+  Collected 2277 new samples. Replay buffer: 4683 samples.
+  Target stats: min=-243.8 max=48.2 mean=-76.5
+    epoch 1/3: loss=146.7749 (73 batches from buffer of 4683)
+    epoch 2/3: loss=132.9159 (73 batches from buffer of 4683)
+    epoch 3/3: loss=132.5201 (73 batches from buffer of 4683)
+  Checkpointed weights to C:\My Things\HTML\Demonin's Item Shop\other\deathBot\deathbot_sim\_diag_out\final_E5_legacy_mp500.pt (after round 2)
+
+=== Round 3/4 (epsilon=0.081) ===
+  Playing 25 games...
+  Collected 2271 new samples. Replay buffer: 6954 samples.
+  Target stats: min=-248.1 max=46.3 mean=-70.5
+    epoch 1/3: loss=142.0338 (108 batches from buffer of 6954)
+    epoch 2/3: loss=133.6295 (108 batches from buffer of 6954)
+    epoch 3/3: loss=132.3917 (108 batches from buffer of 6954)
+  Checkpointed weights to C:\My Things\HTML\Demonin's Item Shop\other\deathBot\deathbot_sim\_diag_out\final_E5_legacy_mp500.pt (after round 3)
+
+=== Round 4/4 (epsilon=0.073) ===
+  Playing 25 games...
+  Collected 2266 new samples. Replay buffer: 9220 samples.
+  Target stats: min=-223.6 max=46.2 mean=-62.7
+    epoch 1/3: loss=126.7780 (144 batches from buffer of 9220)
+    epoch 2/3: loss=116.0806 (144 batches from buffer of 9220)
+    epoch 3/3: loss=119.4924 (144 batches from buffer of 9220)
+  Checkpointed weights to C:\My Things\HTML\Demonin's Item Shop\other\deathBot\deathbot_sim\_diag_out\final_E5_legacy_mp500.pt (after round 4)
+
+Saved final weights to C:\My Things\HTML\Demonin's Item Shop\other\deathBot\deathbot_sim\_diag_out\final_E5_legacy_mp500.pt

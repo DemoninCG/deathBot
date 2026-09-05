@@ -223,28 +223,21 @@ class TestTrainSelfplay:
         if test_path.exists():
             os.remove(test_path)
 
-    def test_can_load_heuristic_weights_as_start(self):
-        """If we pass weights_in pointing to a nonexistent file, it should
-        just start from scratch (not crash)."""
-        net = train_selfplay(
-            n_rounds=1,
-            games_per_round=2,
-            epochs_per_round=1,
-            batch_size=8,
-            seed=42,
-            weights_in="_nonexistent_weights.pt",
-            weights_out="_test_mc_weights2.pt",
-        )
-        import torch
-        b = torch.zeros(1, 1, 20, 10)
-        cur = torch.tensor([0], dtype=torch.long)
-        nxt = torch.tensor([0], dtype=torch.long)
-        out = net(b, cur, nxt)
-        assert torch.isfinite(out).all()
-        import os
-        test_path = PYTHON_DIR.parent / "_test_mc_weights2.pt"
-        if test_path.exists():
-            os.remove(test_path)
+    def test_missing_weights_in_fails_loudly(self):
+        """Passing weights_in pointing to a nonexistent file must raise —
+        the 2026-07 collapse was partially caused by silent from-scratch
+        fallbacks producing mislabeled checkpoints."""
+        with pytest.raises(FileNotFoundError):
+            train_selfplay(
+                n_rounds=1,
+                games_per_round=2,
+                epochs_per_round=1,
+                batch_size=8,
+                seed=42,
+                eval_games=0,
+                weights_in="_nonexistent_weights.pt",
+                weights_out="_test_mc_weights2.pt",
+            )
 
 
 # ---- Replay buffer (#2) ---------------------------------------------------

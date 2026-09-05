@@ -1,0 +1,29 @@
+Loaded initial weights from C:\My Things\HTML\Demonin's Item Shop\other\deathBot\model_weights_snapshot7.pt
+  Baseline eval (3 games, seeds 9001..): mean=564.0 max=1017
+  Value-function anchor from warm start: mean=-50.73 std=60.19
+
+=== Round 1/2 (epsilon=0.100) ===
+  Playing 8 games...
+  Reward normalization — survival mean=51.40 std=23.71; heuristic mean=-256.02 std=210.26
+  Value-function anchor (on round-1 rollouts): mean=-93.56 std=81.08
+  Collected 1274 samples from 8 games. Replay buffer: 1274.
+  Survival  — pieces: min=104 avg=159.2 max=236 | lines: avg=47.4 max=79
+  Targets   — min=-328.74 avg=-93.56 max=29.37 (survival*0.7+heuristic*0.3)
+    epoch 1/3: loss=24.3683 (19 batches from buffer of 1274)
+    epoch 2/3: loss=20.9505 (19 batches from buffer of 1274)
+    epoch 3/3: loss=20.4458 (19 batches from buffer of 1274)
+  Eval (8 games, seeds 9001..): mean=369.9 med=345.5 max=629 min=180
+  Checkpointed weights to C:\My Things\HTML\Demonin's Item Shop\other\deathBot\deathbot_sim\_diag_out\final_E1_current.pt (after round 1)
+
+=== Round 2/2 (epsilon=0.090) ===
+  Playing 8 games...
+  Collected 1501 samples from 8 games. Replay buffer: 2775.
+  Survival  — pieces: min=104 avg=187.6 max=259 | lines: avg=58.5 max=88
+  Targets   — min=-346.54 avg=-82.29 max=33.94 (survival*0.7+heuristic*0.3)
+    epoch 1/3: loss=21.6559 (43 batches from buffer of 2775)
+    epoch 2/3: loss=20.3789 (43 batches from buffer of 2775)
+    epoch 3/3: loss=20.2417 (43 batches from buffer of 2775)
+  Eval (8 games, seeds 9001..): mean=485.1 med=375.5 max=1128 min=329
+  Checkpointed weights to C:\My Things\HTML\Demonin's Item Shop\other\deathBot\deathbot_sim\_diag_out\final_E1_current.pt (after round 2)
+
+Saved final weights to C:\My Things\HTML\Demonin's Item Shop\other\deathBot\deathbot_sim\_diag_out\final_E1_current.pt

@@ -1,0 +1,2955 @@
+{
+  "args": {
+    "games": 30,
+    "seed": 42,
+    "max_pieces": 1500,
+    "workers": 8,
+    "threads_per_worker": 1,
+    "verbose": false,
+    "json": "c:\\My Things\\HTML\\Demonin's Item Shop\\other\\deathBot\\deathbot_sim\\_sweep_2026-09-04.json",
+    "compare": null
+  },
+  "games_per_ckpt": 30,
+  "seed0": 42,
+  "max_pieces": 1500,
+  "results": [
+    {
+      "name": "_diagnostic_one_round.pt",
+      "weights": "C:\\My Things\\HTML\\Demonin's Item Shop\\other\\deathBot\\deathbot_sim\\_diagnostic_one_round.pt",
+      "summary": {
+        "mean_pieces": 42.4,
+        "median_pieces": 42.5,
+        "stdev_pieces": 6.322374063048109,
+        "min_pieces": 26,
+        "max_pieces": 56,
+        "mean_lines": 2.4,
+        "capped_games": 0,
+        "n_games": 30
+      },
+      "games": [
+        {
+          "seed": 42,
+          "pieces": 44,
+          "lines": 2,
+          "capped": false,
+          "seconds": 1.7101102999877185
+        },
+        {
+          "seed": 43,
+          "pieces": 39,
+          "lines": 0,
+          "capped": false,
+          "seconds": 1.0444298000074923
+        },
+        {
+          "seed": 44,
+          "pieces": 37,
+          "lines": 1,
+          "capped": false,
+          "seconds": 1.2700726999901235
+        },
+        {
+          "seed": 45,
+          "pieces": 33,
+          "lines": 0,
+          "capped": false,
+          "seconds": 0.8007221999578178
+        },
+        {
+          "seed": 46,
+          "pieces": 50,
+          "lines": 5,
+          "capped": false,
+          "seconds": 1.294339400017634
+        },
+        {
+          "seed": 47,
+          "pieces": 48,
+          "lines": 3,
+          "capped": false,
+          "seconds": 1.0393105999100953
+        },
+        {
+          "seed": 48,
+          "pieces": 39,
+          "lines": 3,
+          "capped": false,
+          "seconds": 0.8600975999142975
+        },
+        {
+          "seed": 49,
+          "pieces": 37,
+          "lines": 2,
+          "capped": false,
+          "seconds": 1.0406939999666065
+        },
+        {
+          "seed": 50,
+          "pieces": 48,
+          "lines": 3,
+          "capped": false,
+          "seconds": 1.142063400009647
+        },
+        {
+          "seed": 51,
+          "pieces": 43,
+          "lines": 1,
+          "capped": false,
+          "seconds": 1.3734783998224884
+        },
+        {
+          "seed": 52,
+          "pieces": 49,
+          "lines": 5,
+          "capped": false,
+          "seconds": 1.1168049001134932
+        },
+        {
+          "seed": 53,
+          "pieces": 48,
+          "lines": 4,
+          "capped": false,
+          "seconds": 1.1443080001045018
+        },
+        {
+          "seed": 54,
+          "pieces": 51,
+          "lines": 4,
+          "capped": false,
+          "seconds": 1.1568263000808656
+        },
+        {
+          "seed": 55,
+          "pieces": 56,
+          "lines": 6,
+          "capped": false,
+          "seconds": 1.3324743998236954
+        },
+        {
+          "seed": 56,
+          "pieces": 38,
+          "lines": 1,
+          "capped": false,
+          "seconds": 0.856132399989292
+        },
+        {
+          "seed": 57,
+          "pieces": 42,
+          "lines": 0,
+          "capped": false,
+          "seconds": 0.8781747000757605
+        },
+        {
+          "seed": 58,
+          "pieces": 46,
+          "lines": 3,
+          "capped": false,
+          "seconds": 1.0742409999947995
+        },
+        {
+          "seed": 59,
+          "pieces": 46,
+          "lines": 2,
+          "capped": false,
+          "seconds": 0.8515226999297738
+        },
+        {
+          "seed": 60,
+          "pieces": 44,
+          "lines": 2,
+          "capped": false,
+          "seconds": 0.8381834998726845
+        },
+        {
+          "seed": 61,
+          "pieces": 44,
+          "lines": 1,
+          "capped": false,
+          "seconds": 0.8904029000550508
+        },
+        {
+          "seed": 62,
+          "pieces": 44,
+          "lines": 2,
+          "capped": false,
+          "seconds": 0.856116000097245
+        },
+        {
+          "seed": 63,
+          "pieces": 34,
+          "lines": 0,
+          "capped": false,
+          "seconds": 0.5630331998690963
+        },
+        {
+          "seed": 64,
+          "pieces": 37,
+          "lines": 2,
+          "capped": false,
+          "seconds": 0.8390438000205904
+        },
+        {
+          "seed": 65,
+          "pieces": 41,
+          "lines": 4,
+          "capped": false,
+          "seconds": 1.064084199955687
+        },
+        {
+          "seed": 66,
+          "pieces": 38,
+          "lines": 1,
+          "capped": false,
+          "seconds": 1.2057035001926124
+        },
+        {
+          "seed": 67,
+          "pieces": 50,
+          "lines": 4,
+          "capped": false,
+          "seconds": 1.4124274998903275
+        },
+        {
+          "seed": 68,
+          "pieces": 42,
+          "lines": 2,
+          "capped": false,
+          "seconds": 0.8189628999680281
+        },
+        {
+          "seed": 69,
+          "pieces": 37,
+          "lines": 4,
+          "capped": false,
+          "seconds": 0.8627210999839008
+        },
+        {
+          "seed": 70,
+          "pieces": 26,
+          "lines": 3,
+          "capped": false,
+          "seconds": 0.6337925000116229
+        },
+        {
+          "seed": 71,
+          "pieces": 41,
+          "lines": 2,
+          "capped": false,
+          "seconds": 1.6077843001112342
+        }
+      ]
+    },
+    {
+      "name": "model_weights.pt",
+      "weights": "C:\\My Things\\HTML\\Demonin's Item Shop\\other\\deathBot\\deathbot_sim\\model_weights.pt",
+      "summary": {
+        "mean_pieces": 502.8666666666667,
+        "median_pieces": 430.0,
+        "stdev_pieces": 314.16037342396487,
+        "min_pieces": 126,
+        "max_pieces": 1316,
+        "mean_lines": 184.63333333333333,
+        "capped_games": 0,
+        "n_games": 30
+      },
+      "games": [
+        {
+          "seed": 42,
+          "pieces": 690,
+          "lines": 260,
+          "capped": false,
+          "seconds": 18.183021399891004
+        },
+        {
+          "seed": 43,
+          "pieces": 152,
+          "lines": 44,
+          "capped": false,
+          "seconds": 3.0403923999983817
+        },
+        {
+          "seed": 44,
+          "pieces": 826,
+          "lines": 314,
+          "capped": false,
+          "seconds": 23.677488199900836
+        },
+        {
+          "seed": 45,
+          "pieces": 362,
+          "lines": 129,
+          "capped": false,
+          "seconds": 9.160399600164965
+        },
+        {
+          "seed": 46,
+          "pieces": 1316,
+          "lines": 509,
+          "capped": false,
+          "seconds": 26.26217420003377
+        },
+        {
+          "seed": 47,
+          "pieces": 514,
+          "lines": 189,
+          "capped": false,
+          "seconds": 9.598838400095701
+        },
+        {
+          "seed": 48,
+          "pieces": 679,
+          "lines": 256,
+          "capped": false,
+          "seconds": 12.007497699931264
+        },
+        {
+          "seed": 49,
+          "pieces": 133,
+          "lines": 36,
+          "capped": false,
+          "seconds": 2.479760699905455
+        },
+        {
+          "seed": 50,
+          "pieces": 348,
+          "lines": 123,
+          "capped": false,
+          "seconds": 6.491643599933013
+        },
+        {
+          "seed": 51,
+          "pieces": 664,
+          "lines": 249,
+          "capped": false,
+          "seconds": 12.11696120002307
+        },
+        {
+          "seed": 52,
+          "pieces": 661,
+          "lines": 248,
+          "capped": false,
+          "seconds": 12.064032400026917
+        },
+        {
+          "seed": 53,
+          "pieces": 438,
+          "lines": 159,
+          "capped": false,
+          "seconds": 7.963199999881908
+        },
+        {
+          "seed": 54,
+          "pieces": 313,
+          "lines": 107,
+          "capped": false,
+          "seconds": 5.703133299946785
+        },
+        {
+          "seed": 55,
+          "pieces": 981,
+          "lines": 375,
+          "capped": false,
+          "seconds": 20.48794519994408
+        },
+        {
+          "seed": 56,
+          "pieces": 210,
+          "lines": 67,
+          "capped": false,
+          "seconds": 4.380692800041288
+        },
+        {
+          "seed": 57,
+          "pieces": 978,
+          "lines": 374,
+          "capped": false,
+          "seconds": 21.222602900117636
+        },
+        {
+          "seed": 58,
+          "pieces": 135,
+          "lines": 38,
+          "capped": false,
+          "seconds": 2.5259354999288917
+        },
+        {
+          "seed": 59,
+          "pieces": 191,
+          "lines": 60,
+          "capped": false,
+          "seconds": 3.5314574998337775
+        },
+        {
+          "seed": 60,
+          "pieces": 422,
+          "lines": 153,
+          "capped": false,
+          "seconds": 7.571933300001547
+        },
+        {
+          "seed": 61,
+          "pieces": 594,
+          "lines": 221,
+          "capped": false,
+          "seconds": 10.672069599851966
+        },
+        {
+          "seed": 62,
+          "pieces": 445,
+          "lines": 161,
+          "capped": false,
+          "seconds": 7.181352199986577
+        },
+        {
+          "seed": 63,
+          "pieces": 126,
+          "lines": 34,
+          "capped": false,
+          "seconds": 1.981085600098595
+        },
+        {
+          "seed": 64,
+          "pieces": 376,
+          "lines": 134,
+          "capped": false,
+          "seconds": 5.785703199915588
+        },
+        {
+          "seed": 65,
+          "pieces": 233,
+          "lines": 77,
+          "capped": false,
+          "seconds": 3.5420753001235425
+        },
+        {
+          "seed": 66,
+          "pieces": 955,
+          "lines": 366,
+          "capped": false,
+          "seconds": 14.933384800096974
+        },
+        {
+          "seed": 67,
+          "pieces": 644,
+          "lines": 241,
+          "capped": false,
+          "seconds": 10.020005899947137
+        },
+        {
+          "seed": 68,
+          "pieces": 310,
+          "lines": 108,
+          "capped": false,
+          "seconds": 4.779735800111666
+        },
+        {
+          "seed": 69,
+          "pieces": 267,
+          "lines": 89,
+          "capped": false,
+          "seconds": 6.792857000138611
+        },
+        {
+          "seed": 70,
+          "pieces": 942,
+          "lines": 361,
+          "capped": false,
+          "seconds": 17.60866459994577
+        },
+        {
+          "seed": 71,
+          "pieces": 181,
+          "lines": 57,
+          "capped": false,
+          "seconds": 2.6891632999759167
+        }
+      ]
+    },
+    {
+      "name": "model_weights_afterstate_bootstrap.pt",
+      "weights": "C:\\My Things\\HTML\\Demonin's Item Shop\\other\\deathBot\\deathbot_sim\\model_weights_afterstate_bootstrap.pt",
+      "summary": {
+        "mean_pieces": 30.6,
+        "median_pieces": 29.5,
+        "stdev_pieces": 6.322374063048109,
+        "min_pieces": 20,
+        "max_pieces": 43,
+        "mean_lines": 0.3,
+        "capped_games": 0,
+        "n_games": 30
+      },
+      "games": [
+        {
+          "seed": 42,
+          "pieces": 25,
+          "lines": 0,
+          "capped": false,
+          "seconds": 1.091916099889204
+        },
+        {
+          "seed": 43,
+          "pieces": 38,
+          "lines": 1,
+          "capped": false,
+          "seconds": 1.0197083000093699
+        },
+        {
+          "seed": 44,
+          "pieces": 43,
+          "lines": 2,
+          "capped": false,
+          "seconds": 1.324932900024578
+        },
+        {
+          "seed": 45,
+          "pieces": 31,
+          "lines": 0,
+          "capped": false,
+          "seconds": 0.8716136000584811
+        },
+        {
+          "seed": 46,
+          "pieces": 29,
+          "lines": 0,
+          "capped": false,
+          "seconds": 0.6351393000222743
+        },
+        {
+          "seed": 47,
+          "pieces": 22,
+          "lines": 0,
+          "capped": false,
+          "seconds": 0.5336728000547737
+        },
+        {
+          "seed": 48,
+          "pieces": 29,
+          "lines": 0,
+          "capped": false,
+          "seconds": 0.7196454999502748
+        },
+        {
+          "seed": 49,
+          "pieces": 38,
+          "lines": 0,
+          "capped": false,
+          "seconds": 0.8011447000317276
+        },
+        {
+          "seed": 50,
+          "pieces": 30,
+          "lines": 0,
+          "capped": false,
+          "seconds": 0.5927298001479357
+        },
+        {
+          "seed": 51,
+          "pieces": 23,
+          "lines": 0,
+          "capped": false,
+          "seconds": 0.5173756000585854
+        },
+        {
+          "seed": 52,
+          "pieces": 20,
+          "lines": 0,
+          "capped": false,
+          "seconds": 0.5376565000042319
+        },
+        {
+          "seed": 53,
+          "pieces": 28,
+          "lines": 0,
+          "capped": false,
+          "seconds": 0.4778183000162244
+        },
+        {
+          "seed": 54,
+          "pieces": 31,
+          "lines": 0,
+          "capped": false,
+          "seconds": 0.7715510001871735
+        },
+        {
+          "seed": 55,
+          "pieces": 32,
+          "lines": 0,
+          "capped": false,
+          "seconds": 0.7146618000697345
+        },
+        {
+          "seed": 56,
+          "pieces": 40,
+          "lines": 1,
+          "capped": false,
+          "seconds": 1.1155180998612195
+        },
+        {
+          "seed": 57,
+          "pieces": 28,
+          "lines": 0,
+          "capped": false,
+          "seconds": 0.9760202998295426
+        },
+        {
+          "seed": 58,
+          "pieces": 21,
+          "lines": 0,
+          "capped": false,
+          "seconds": 0.4264948000200093
+        },
+        {
+          "seed": 59,
+          "pieces": 40,
+          "lines": 1,
+          "capped": false,
+          "seconds": 0.8031099999789149
+        },
+        {
+          "seed": 60,
+          "pieces": 26,
+          "lines": 0,
+          "capped": false,
+          "seconds": 0.8644428998231888
+        },
+        {
+          "seed": 61,
+          "pieces": 26,
+          "lines": 0,
+          "capped": false,
+          "seconds": 0.5744061998557299
+        },
+        {
+          "seed": 62,
+          "pieces": 39,
+          "lines": 2,
+          "capped": false,
+          "seconds": 0.7259927000850439
+        },
+        {
+          "seed": 63,
+          "pieces": 29,
+          "lines": 0,
+          "capped": false,
+          "seconds": 0.5714019001461565
+        },
+        {
+          "seed": 64,
+          "pieces": 38,
+          "lines": 1,
+          "capped": false,
+          "seconds": 0.7920289998874068
+        },
+        {
+          "seed": 65,
+          "pieces": 21,
+          "lines": 0,
+          "capped": false,
+          "seconds": 0.4771696999669075
+        },
+        {
+          "seed": 66,
+          "pieces": 34,
+          "lines": 0,
+          "capped": false,
+          "seconds": 0.5413361000828445
+        },
+        {
+          "seed": 67,
+          "pieces": 29,
+          "lines": 1,
+          "capped": false,
+          "seconds": 0.48549939994700253
+        },
+        {
+          "seed": 68,
+          "pieces": 28,
+          "lines": 0,
+          "capped": false,
+          "seconds": 0.7409873001743108
+        },
+        {
+          "seed": 69,
+          "pieces": 30,
+          "lines": 0,
+          "capped": false,
+          "seconds": 0.6652337000705302
+        },
+        {
+          "seed": 70,
+          "pieces": 33,
+          "lines": 0,
+          "capped": false,
+          "seconds": 0.6082303000148386
+        },
+        {
+          "seed": 71,
+          "pieces": 37,
+          "lines": 0,
+          "capped": false,
+          "seconds": 0.7628029000479728
+        }
+      ]
+    },
+    {
+      "name": "model_weights_git_snapshot8.pt",
+      "weights": "C:\\My Things\\HTML\\Demonin's Item Shop\\other\\deathBot\\model_weights_git_snapshot8.pt",
+      "summary": {
+        "mean_pieces": 387.56666666666666,
+        "median_pieces": 359.0,
+        "stdev_pieces": 169.46583082170858,
+        "min_pieces": 163,
+        "max_pieces": 796,
+        "mean_lines": 138.43333333333334,
+        "capped_games": 0,
+        "n_games": 30
+      },
+      "games": [
+        {
+          "seed": 42,
+          "pieces": 706,
+          "lines": 266,
+          "capped": false,
+          "seconds": 17.848063600016758
+        },
+        {
+          "seed": 43,
+          "pieces": 350,
+          "lines": 124,
+          "capped": false,
+          "seconds": 7.558023099787533
+        },
+        {
+          "seed": 44,
+          "pieces": 187,
+          "lines": 58,
+          "capped": false,
+          "seconds": 4.959613300161436
+        },
+        {
+          "seed": 45,
+          "pieces": 309,
+          "lines": 107,
+          "capped": false,
+          "seconds": 10.018817499978468
+        },
+        {
+          "seed": 46,
+          "pieces": 413,
+          "lines": 148,
+          "capped": false,
+          "seconds": 12.587560100015253
+        },
+        {
+          "seed": 47,
+          "pieces": 611,
+          "lines": 227,
+          "capped": false,
+          "seconds": 12.202213000040501
+        },
+        {
+          "seed": 48,
+          "pieces": 206,
+          "lines": 66,
+          "capped": false,
+          "seconds": 4.0999932999257
+        },
+        {
+          "seed": 49,
+          "pieces": 358,
+          "lines": 126,
+          "capped": false,
+          "seconds": 6.929314400069416
+        },
+        {
+          "seed": 50,
+          "pieces": 243,
+          "lines": 81,
+          "capped": false,
+          "seconds": 4.664567700121552
+        },
+        {
+          "seed": 51,
+          "pieces": 588,
+          "lines": 218,
+          "capped": false,
+          "seconds": 10.788261200068519
+        },
+        {
+          "seed": 52,
+          "pieces": 344,
+          "lines": 120,
+          "capped": false,
+          "seconds": 6.226708199828863
+        },
+        {
+          "seed": 53,
+          "pieces": 387,
+          "lines": 139,
+          "capped": false,
+          "seconds": 7.128193600103259
+        },
+        {
+          "seed": 54,
+          "pieces": 666,
+          "lines": 249,
+          "capped": false,
+          "seconds": 12.35675109992735
+        },
+        {
+          "seed": 55,
+          "pieces": 796,
+          "lines": 301,
+          "capped": false,
+          "seconds": 15.460466200020164
+        },
+        {
+          "seed": 56,
+          "pieces": 233,
+          "lines": 77,
+          "capped": false,
+          "seconds": 4.3464116000104696
+        },
+        {
+          "seed": 57,
+          "pieces": 577,
+          "lines": 214,
+          "capped": false,
+          "seconds": 10.850284600164741
+        },
+        {
+          "seed": 58,
+          "pieces": 431,
+          "lines": 155,
+          "capped": false,
+          "seconds": 9.039198199985549
+        },
+        {
+          "seed": 59,
+          "pieces": 395,
+          "lines": 141,
+          "capped": false,
+          "seconds": 8.641324900090694
+        },
+        {
+          "seed": 60,
+          "pieces": 380,
+          "lines": 137,
+          "capped": false,
+          "seconds": 8.061451699817553
+        },
+        {
+          "seed": 61,
+          "pieces": 163,
+          "lines": 50,
+          "capped": false,
+          "seconds": 2.7191776998806745
+        },
+        {
+          "seed": 62,
+          "pieces": 402,
+          "lines": 144,
+          "capped": false,
+          "seconds": 9.451342399930581
+        },
+        {
+          "seed": 63,
+          "pieces": 568,
+          "lines": 210,
+          "capped": false,
+          "seconds": 12.622583799995482
+        },
+        {
+          "seed": 64,
+          "pieces": 269,
+          "lines": 93,
+          "capped": false,
+          "seconds": 5.10074369981885
+        },
+        {
+          "seed": 65,
+          "pieces": 360,
+          "lines": 128,
+          "capped": false,
+          "seconds": 6.970426799962297
+        },
+        {
+          "seed": 66,
+          "pieces": 285,
+          "lines": 98,
+          "capped": false,
+          "seconds": 5.097847500117496
+        },
+        {
+          "seed": 67,
+          "pieces": 487,
+          "lines": 178,
+          "capped": false,
+          "seconds": 7.972238899907097
+        },
+        {
+          "seed": 68,
+          "pieces": 261,
+          "lines": 88,
+          "capped": false,
+          "seconds": 4.275126400170848
+        },
+        {
+          "seed": 69,
+          "pieces": 194,
+          "lines": 60,
+          "capped": false,
+          "seconds": 2.9915838001761585
+        },
+        {
+          "seed": 70,
+          "pieces": 166,
+          "lines": 50,
+          "capped": false,
+          "seconds": 2.689312699949369
+        },
+        {
+          "seed": 71,
+          "pieces": 292,
+          "lines": 100,
+          "capped": false,
+          "seconds": 4.630127499811351
+        }
+      ]
+    },
+    {
+      "name": "model_weights_snapshot1.pt",
+      "weights": "C:\\My Things\\HTML\\Demonin's Item Shop\\other\\deathBot\\model_weights_snapshot1.pt",
+      "summary": {
+        "mean_pieces": 67.6,
+        "median_pieces": 64.0,
+        "stdev_pieces": 20.006205933711392,
+        "min_pieces": 40,
+        "max_pieces": 139,
+        "mean_lines": 14.7,
+        "capped_games": 0,
+        "n_games": 30
+      },
+      "games": [
+        {
+          "seed": 42,
+          "pieces": 69,
+          "lines": 16,
+          "capped": false,
+          "seconds": 1.9725457997992635
+        },
+        {
+          "seed": 43,
+          "pieces": 68,
+          "lines": 15,
+          "capped": false,
+          "seconds": 2.058424700051546
+        },
+        {
+          "seed": 44,
+          "pieces": 65,
+          "lines": 14,
+          "capped": false,
+          "seconds": 1.572231600061059
+        },
+        {
+          "seed": 45,
+          "pieces": 49,
+          "lines": 9,
+          "capped": false,
+          "seconds": 1.1271178999450058
+        },
+        {
+          "seed": 46,
+          "pieces": 88,
+          "lines": 21,
+          "capped": false,
+          "seconds": 2.0067351998295635
+        },
+        {
+          "seed": 47,
+          "pieces": 40,
+          "lines": 3,
+          "capped": false,
+          "seconds": 1.0860137999989092
+        },
+        {
+          "seed": 48,
+          "pieces": 49,
+          "lines": 8,
+          "capped": false,
+          "seconds": 1.4165439000353217
+        },
+        {
+          "seed": 49,
+          "pieces": 61,
+          "lines": 12,
+          "capped": false,
+          "seconds": 1.6448867998551577
+        },
+        {
+          "seed": 50,
+          "pieces": 72,
+          "lines": 16,
+          "capped": false,
+          "seconds": 2.0991024000104517
+        },
+        {
+          "seed": 51,
+          "pieces": 78,
+          "lines": 20,
+          "capped": false,
+          "seconds": 1.8297500999178737
+        },
+        {
+          "seed": 52,
+          "pieces": 85,
+          "lines": 22,
+          "capped": false,
+          "seconds": 1.9518778999336064
+        },
+        {
+          "seed": 53,
+          "pieces": 81,
+          "lines": 19,
+          "capped": false,
+          "seconds": 1.7857949999161065
+        },
+        {
+          "seed": 54,
+          "pieces": 53,
+          "lines": 9,
+          "capped": false,
+          "seconds": 1.149237599922344
+        },
+        {
+          "seed": 55,
+          "pieces": 87,
+          "lines": 21,
+          "capped": false,
+          "seconds": 2.032970800064504
+        },
+        {
+          "seed": 56,
+          "pieces": 103,
+          "lines": 28,
+          "capped": false,
+          "seconds": 3.2715924000367522
+        },
+        {
+          "seed": 57,
+          "pieces": 59,
+          "lines": 12,
+          "capped": false,
+          "seconds": 1.5488631001207978
+        },
+        {
+          "seed": 58,
+          "pieces": 67,
+          "lines": 14,
+          "capped": false,
+          "seconds": 2.0220519001595676
+        },
+        {
+          "seed": 59,
+          "pieces": 63,
+          "lines": 12,
+          "capped": false,
+          "seconds": 2.181289100088179
+        },
+        {
+          "seed": 60,
+          "pieces": 139,
+          "lines": 43,
+          "capped": false,
+          "seconds": 4.390115400077775
+        },
+        {
+          "seed": 61,
+          "pieces": 59,
+          "lines": 11,
+          "capped": false,
+          "seconds": 2.698336800094694
+        },
+        {
+          "seed": 62,
+          "pieces": 55,
+          "lines": 11,
+          "capped": false,
+          "seconds": 2.631588000105694
+        },
+        {
+          "seed": 63,
+          "pieces": 42,
+          "lines": 7,
+          "capped": false,
+          "seconds": 1.153009600006044
+        },
+        {
+          "seed": 64,
+          "pieces": 81,
+          "lines": 20,
+          "capped": false,
+          "seconds": 2.2204454001039267
+        },
+        {
+          "seed": 65,
+          "pieces": 60,
+          "lines": 11,
+          "capped": false,
+          "seconds": 2.0648564000148326
+        },
+        {
+          "seed": 66,
+          "pieces": 67,
+          "lines": 14,
+          "capped": false,
+          "seconds": 1.8426224999129772
+        },
+        {
+          "seed": 67,
+          "pieces": 62,
+          "lines": 13,
+          "capped": false,
+          "seconds": 1.4999448999296874
+        },
+        {
+          "seed": 68,
+          "pieces": 73,
+          "lines": 17,
+          "capped": false,
+          "seconds": 1.5438186000101268
+        },
+        {
+          "seed": 69,
+          "pieces": 48,
+          "lines": 7,
+          "capped": false,
+          "seconds": 1.1313384999521077
+        },
+        {
+          "seed": 70,
+          "pieces": 55,
+          "lines": 8,
+          "capped": false,
+          "seconds": 1.1657884998712689
+        },
+        {
+          "seed": 71,
+          "pieces": 50,
+          "lines": 8,
+          "capped": false,
+          "seconds": 1.073209699941799
+        }
+      ]
+    },
+    {
+      "name": "model_weights_snapshot2.pt",
+      "weights": "C:\\My Things\\HTML\\Demonin's Item Shop\\other\\deathBot\\model_weights_snapshot2.pt",
+      "summary": {
+        "mean_pieces": 127.5,
+        "median_pieces": 119.0,
+        "stdev_pieces": 40.8401003072158,
+        "min_pieces": 52,
+        "max_pieces": 243,
+        "mean_lines": 35.86666666666667,
+        "capped_games": 0,
+        "n_games": 30
+      },
+      "games": [
+        {
+          "seed": 42,
+          "pieces": 109,
+          "lines": 30,
+          "capped": false,
+          "seconds": 3.1908608998637646
+        },
+        {
+          "seed": 43,
+          "pieces": 197,
+          "lines": 64,
+          "capped": false,
+          "seconds": 4.214082999853417
+        },
+        {
+          "seed": 44,
+          "pieces": 243,
+          "lines": 81,
+          "capped": false,
+          "seconds": 5.437862999970093
+        },
+        {
+          "seed": 45,
+          "pieces": 153,
+          "lines": 45,
+          "capped": false,
+          "seconds": 3.9437601000536233
+        },
+        {
+          "seed": 46,
+          "pieces": 117,
+          "lines": 31,
+          "capped": false,
+          "seconds": 2.479216600069776
+        },
+        {
+          "seed": 47,
+          "pieces": 118,
+          "lines": 31,
+          "capped": false,
+          "seconds": 2.300319100031629
+        },
+        {
+          "seed": 48,
+          "pieces": 102,
+          "lines": 26,
+          "capped": false,
+          "seconds": 2.635669199982658
+        },
+        {
+          "seed": 49,
+          "pieces": 52,
+          "lines": 10,
+          "capped": false,
+          "seconds": 1.3630353000480682
+        },
+        {
+          "seed": 50,
+          "pieces": 120,
+          "lines": 33,
+          "capped": false,
+          "seconds": 3.2197243000846356
+        },
+        {
+          "seed": 51,
+          "pieces": 179,
+          "lines": 56,
+          "capped": false,
+          "seconds": 5.454471699893475
+        },
+        {
+          "seed": 52,
+          "pieces": 110,
+          "lines": 28,
+          "capped": false,
+          "seconds": 2.537460899911821
+        },
+        {
+          "seed": 53,
+          "pieces": 97,
+          "lines": 23,
+          "capped": false,
+          "seconds": 3.1170581998303533
+        },
+        {
+          "seed": 54,
+          "pieces": 107,
+          "lines": 30,
+          "capped": false,
+          "seconds": 3.197717299917713
+        },
+        {
+          "seed": 55,
+          "pieces": 87,
+          "lines": 19,
+          "capped": false,
+          "seconds": 2.082317099906504
+        },
+        {
+          "seed": 56,
+          "pieces": 129,
+          "lines": 36,
+          "capped": false,
+          "seconds": 3.765697799855843
+        },
+        {
+          "seed": 57,
+          "pieces": 117,
+          "lines": 31,
+          "capped": false,
+          "seconds": 2.3504137999843806
+        },
+        {
+          "seed": 58,
+          "pieces": 193,
+          "lines": 61,
+          "capped": false,
+          "seconds": 3.8087288001552224
+        },
+        {
+          "seed": 59,
+          "pieces": 135,
+          "lines": 38,
+          "capped": false,
+          "seconds": 2.4931779000908136
+        },
+        {
+          "seed": 60,
+          "pieces": 113,
+          "lines": 29,
+          "capped": false,
+          "seconds": 2.0663600000552833
+        },
+        {
+          "seed": 61,
+          "pieces": 64,
+          "lines": 11,
+          "capped": false,
+          "seconds": 1.1431170001160353
+        },
+        {
+          "seed": 62,
+          "pieces": 143,
+          "lines": 42,
+          "capped": false,
+          "seconds": 2.9057253000792116
+        },
+        {
+          "seed": 63,
+          "pieces": 100,
+          "lines": 27,
+          "capped": false,
+          "seconds": 1.984979399945587
+        },
+        {
+          "seed": 64,
+          "pieces": 166,
+          "lines": 51,
+          "capped": false,
+          "seconds": 2.8753082999028265
+        },
+        {
+          "seed": 65,
+          "pieces": 137,
+          "lines": 40,
+          "capped": false,
+          "seconds": 2.566952999914065
+        },
+        {
+          "seed": 66,
+          "pieces": 136,
+          "lines": 38,
+          "capped": false,
+          "seconds": 2.4218464998994023
+        },
+        {
+          "seed": 67,
+          "pieces": 74,
+          "lines": 15,
+          "capped": false,
+          "seconds": 1.6505553000606596
+        },
+        {
+          "seed": 68,
+          "pieces": 136,
+          "lines": 38,
+          "capped": false,
+          "seconds": 2.7678604000248015
+        },
+        {
+          "seed": 69,
+          "pieces": 141,
+          "lines": 42,
+          "capped": false,
+          "seconds": 2.72785359993577
+        },
+        {
+          "seed": 70,
+          "pieces": 158,
+          "lines": 48,
+          "capped": false,
+          "seconds": 2.9160886998288333
+        },
+        {
+          "seed": 71,
+          "pieces": 92,
+          "lines": 22,
+          "capped": false,
+          "seconds": 1.5540044999215752
+        }
+      ]
+    },
+    {
+      "name": "model_weights_snapshot3.pt",
+      "weights": "C:\\My Things\\HTML\\Demonin's Item Shop\\other\\deathBot\\model_weights_snapshot3.pt",
+      "summary": {
+        "mean_pieces": 358.06666666666666,
+        "median_pieces": 344.0,
+        "stdev_pieces": 133.72022603396508,
+        "min_pieces": 109,
+        "max_pieces": 609,
+        "mean_lines": 126.8,
+        "capped_games": 0,
+        "n_games": 30
+      },
+      "games": [
+        {
+          "seed": 42,
+          "pieces": 109,
+          "lines": 29,
+          "capped": false,
+          "seconds": 3.0934635000303388
+        },
+        {
+          "seed": 43,
+          "pieces": 566,
+          "lines": 210,
+          "capped": false,
+          "seconds": 13.031589700141922
+        },
+        {
+          "seed": 44,
+          "pieces": 609,
+          "lines": 227,
+          "capped": false,
+          "seconds": 14.528127399971709
+        },
+        {
+          "seed": 45,
+          "pieces": 343,
+          "lines": 121,
+          "capped": false,
+          "seconds": 11.201202600030228
+        },
+        {
+          "seed": 46,
+          "pieces": 373,
+          "lines": 131,
+          "capped": false,
+          "seconds": 10.070404999889433
+        },
+        {
+          "seed": 47,
+          "pieces": 407,
+          "lines": 148,
+          "capped": false,
+          "seconds": 8.257432100130245
+        },
+        {
+          "seed": 48,
+          "pieces": 328,
+          "lines": 114,
+          "capped": false,
+          "seconds": 6.411909400019795
+        },
+        {
+          "seed": 49,
+          "pieces": 234,
+          "lines": 77,
+          "capped": false,
+          "seconds": 4.578879100037739
+        },
+        {
+          "seed": 50,
+          "pieces": 447,
+          "lines": 162,
+          "capped": false,
+          "seconds": 8.851830900181085
+        },
+        {
+          "seed": 51,
+          "pieces": 435,
+          "lines": 157,
+          "capped": false,
+          "seconds": 7.767433000029996
+        },
+        {
+          "seed": 52,
+          "pieces": 470,
+          "lines": 171,
+          "capped": false,
+          "seconds": 8.535470900125802
+        },
+        {
+          "seed": 53,
+          "pieces": 236,
+          "lines": 79,
+          "capped": false,
+          "seconds": 4.303887099958956
+        },
+        {
+          "seed": 54,
+          "pieces": 365,
+          "lines": 130,
+          "capped": false,
+          "seconds": 6.241656099911779
+        },
+        {
+          "seed": 55,
+          "pieces": 266,
+          "lines": 90,
+          "capped": false,
+          "seconds": 4.815107499947771
+        },
+        {
+          "seed": 56,
+          "pieces": 326,
+          "lines": 114,
+          "capped": false,
+          "seconds": 5.925507700070739
+        },
+        {
+          "seed": 57,
+          "pieces": 423,
+          "lines": 152,
+          "capped": false,
+          "seconds": 7.3514485999476165
+        },
+        {
+          "seed": 58,
+          "pieces": 548,
+          "lines": 202,
+          "capped": false,
+          "seconds": 10.423152200179175
+        },
+        {
+          "seed": 59,
+          "pieces": 345,
+          "lines": 121,
+          "capped": false,
+          "seconds": 6.5121913000475615
+        },
+        {
+          "seed": 60,
+          "pieces": 334,
+          "lines": 117,
+          "capped": false,
+          "seconds": 5.905743800103664
+        },
+        {
+          "seed": 61,
+          "pieces": 323,
+          "lines": 113,
+          "capped": false,
+          "seconds": 6.079660299932584
+        },
+        {
+          "seed": 62,
+          "pieces": 270,
+          "lines": 91,
+          "capped": false,
+          "seconds": 5.6480724001303315
+        },
+        {
+          "seed": 63,
+          "pieces": 428,
+          "lines": 155,
+          "capped": false,
+          "seconds": 8.423696900019422
+        },
+        {
+          "seed": 64,
+          "pieces": 523,
+          "lines": 192,
+          "capped": false,
+          "seconds": 10.259948400082067
+        },
+        {
+          "seed": 65,
+          "pieces": 457,
+          "lines": 165,
+          "capped": false,
+          "seconds": 10.636115100001916
+        },
+        {
+          "seed": 66,
+          "pieces": 586,
+          "lines": 218,
+          "capped": false,
+          "seconds": 11.71981449984014
+        },
+        {
+          "seed": 67,
+          "pieces": 279,
+          "lines": 94,
+          "capped": false,
+          "seconds": 5.130962600000203
+        },
+        {
+          "seed": 68,
+          "pieces": 198,
+          "lines": 64,
+          "capped": false,
+          "seconds": 3.6635517000686377
+        },
+        {
+          "seed": 69,
+          "pieces": 170,
+          "lines": 51,
+          "capped": false,
+          "seconds": 3.0062601999379694
+        },
+        {
+          "seed": 70,
+          "pieces": 175,
+          "lines": 58,
+          "capped": false,
+          "seconds": 2.766641499940306
+        },
+        {
+          "seed": 71,
+          "pieces": 169,
+          "lines": 51,
+          "capped": false,
+          "seconds": 2.498191900085658
+        }
+      ]
+    },
+    {
+      "name": "model_weights_snapshot4.pt",
+      "weights": "C:\\My Things\\HTML\\Demonin's Item Shop\\other\\deathBot\\model_weights_snapshot4.pt",
+      "summary": {
+        "mean_pieces": 263.56666666666666,
+        "median_pieces": 209.0,
+        "stdev_pieces": 144.76584740439523,
+        "min_pieces": 112,
+        "max_pieces": 769,
+        "mean_lines": 89.0,
+        "capped_games": 0,
+        "n_games": 30
+      },
+      "games": [
+        {
+          "seed": 42,
+          "pieces": 200,
+          "lines": 64,
+          "capped": false,
+          "seconds": 5.018656500149518
+        },
+        {
+          "seed": 43,
+          "pieces": 137,
+          "lines": 41,
+          "capped": false,
+          "seconds": 3.2978654999751598
+        },
+        {
+          "seed": 44,
+          "pieces": 204,
+          "lines": 65,
+          "capped": false,
+          "seconds": 5.186565899988636
+        },
+        {
+          "seed": 45,
+          "pieces": 112,
+          "lines": 28,
+          "capped": false,
+          "seconds": 3.2536673999857157
+        },
+        {
+          "seed": 46,
+          "pieces": 223,
+          "lines": 72,
+          "capped": false,
+          "seconds": 4.6979657001793385
+        },
+        {
+          "seed": 47,
+          "pieces": 202,
+          "lines": 62,
+          "capped": false,
+          "seconds": 5.0725581999868155
+        },
+        {
+          "seed": 48,
+          "pieces": 171,
+          "lines": 52,
+          "capped": false,
+          "seconds": 5.042249199934304
+        },
+        {
+          "seed": 49,
+          "pieces": 204,
+          "lines": 67,
+          "capped": false,
+          "seconds": 6.039930999977514
+        },
+        {
+          "seed": 50,
+          "pieces": 250,
+          "lines": 84,
+          "capped": false,
+          "seconds": 9.861322100041434
+        },
+        {
+          "seed": 51,
+          "pieces": 240,
+          "lines": 80,
+          "capped": false,
+          "seconds": 5.6821351000107825
+        },
+        {
+          "seed": 52,
+          "pieces": 403,
+          "lines": 145,
+          "capped": false,
+          "seconds": 8.53845959994942
+        },
+        {
+          "seed": 53,
+          "pieces": 381,
+          "lines": 135,
+          "capped": false,
+          "seconds": 7.481557099847123
+        },
+        {
+          "seed": 54,
+          "pieces": 395,
+          "lines": 142,
+          "capped": false,
+          "seconds": 8.193880599923432
+        },
+        {
+          "seed": 55,
+          "pieces": 267,
+          "lines": 90,
+          "capped": false,
+          "seconds": 4.938086699927226
+        },
+        {
+          "seed": 56,
+          "pieces": 162,
+          "lines": 47,
+          "capped": false,
+          "seconds": 2.9415676998905838
+        },
+        {
+          "seed": 57,
+          "pieces": 202,
+          "lines": 63,
+          "capped": false,
+          "seconds": 3.7789656999520957
+        },
+        {
+          "seed": 58,
+          "pieces": 280,
+          "lines": 95,
+          "capped": false,
+          "seconds": 5.691335699986666
+        },
+        {
+          "seed": 59,
+          "pieces": 292,
+          "lines": 101,
+          "capped": false,
+          "seconds": 5.421762299956754
+        },
+        {
+          "seed": 60,
+          "pieces": 204,
+          "lines": 64,
+          "capped": false,
+          "seconds": 3.9170069999527186
+        },
+        {
+          "seed": 61,
+          "pieces": 126,
+          "lines": 33,
+          "capped": false,
+          "seconds": 2.484627699945122
+        },
+        {
+          "seed": 62,
+          "pieces": 130,
+          "lines": 37,
+          "capped": false,
+          "seconds": 2.5954297001007944
+        },
+        {
+          "seed": 63,
+          "pieces": 214,
+          "lines": 69,
+          "capped": false,
+          "seconds": 4.177470699883997
+        },
+        {
+          "seed": 64,
+          "pieces": 294,
+          "lines": 100,
+          "capped": false,
+          "seconds": 6.023672999814153
+        },
+        {
+          "seed": 65,
+          "pieces": 536,
+          "lines": 199,
+          "capped": false,
+          "seconds": 10.564958899980411
+        },
+        {
+          "seed": 66,
+          "pieces": 489,
+          "lines": 179,
+          "capped": false,
+          "seconds": 10.526607600040734
+        },
+        {
+          "seed": 67,
+          "pieces": 141,
+          "lines": 41,
+          "capped": false,
+          "seconds": 2.8794908998534083
+        },
+        {
+          "seed": 68,
+          "pieces": 170,
+          "lines": 52,
+          "capped": false,
+          "seconds": 2.9333516999613494
+        },
+        {
+          "seed": 69,
+          "pieces": 134,
+          "lines": 38,
+          "capped": false,
+          "seconds": 2.9499578999821097
+        },
+        {
+          "seed": 70,
+          "pieces": 375,
+          "lines": 134,
+          "capped": false,
+          "seconds": 8.836118099978194
+        },
+        {
+          "seed": 71,
+          "pieces": 769,
+          "lines": 291,
+          "capped": false,
+          "seconds": 16.02023550006561
+        }
+      ]
+    },
+    {
+      "name": "model_weights_snapshot5.pt",
+      "weights": "C:\\My Things\\HTML\\Demonin's Item Shop\\other\\deathBot\\model_weights_snapshot5.pt",
+      "summary": {
+        "mean_pieces": 481.23333333333335,
+        "median_pieces": 440.5,
+        "stdev_pieces": 326.4288150031609,
+        "min_pieces": 128,
+        "max_pieces": 1500,
+        "mean_lines": 176.03333333333333,
+        "capped_games": 1,
+        "n_games": 30
+      },
+      "games": [
+        {
+          "seed": 42,
+          "pieces": 175,
+          "lines": 53,
+          "capped": false,
+          "seconds": 4.296681500039995
+        },
+        {
+          "seed": 43,
+          "pieces": 1001,
+          "lines": 384,
+          "capped": false,
+          "seconds": 28.518325800076127
+        },
+        {
+          "seed": 44,
+          "pieces": 490,
+          "lines": 179,
+          "capped": false,
+          "seconds": 10.050453000003472
+        },
+        {
+          "seed": 45,
+          "pieces": 795,
+          "lines": 301,
+          "capped": false,
+          "seconds": 15.828437299933285
+        },
+        {
+          "seed": 46,
+          "pieces": 128,
+          "lines": 35,
+          "capped": false,
+          "seconds": 2.5241634999401867
+        },
+        {
+          "seed": 47,
+          "pieces": 341,
+          "lines": 120,
+          "capped": false,
+          "seconds": 6.449364800006151
+        },
+        {
+          "seed": 48,
+          "pieces": 500,
+          "lines": 183,
+          "capped": false,
+          "seconds": 9.43396919989027
+        },
+        {
+          "seed": 49,
+          "pieces": 506,
+          "lines": 185,
+          "capped": false,
+          "seconds": 9.451240599853918
+        },
+        {
+          "seed": 50,
+          "pieces": 586,
+          "lines": 217,
+          "capped": false,
+          "seconds": 11.243522600037977
+        },
+        {
+          "seed": 51,
+          "pieces": 642,
+          "lines": 240,
+          "capped": false,
+          "seconds": 12.522837199969217
+        },
+        {
+          "seed": 52,
+          "pieces": 323,
+          "lines": 113,
+          "capped": false,
+          "seconds": 6.340699700172991
+        },
+        {
+          "seed": 53,
+          "pieces": 601,
+          "lines": 224,
+          "capped": false,
+          "seconds": 11.361912099877372
+        },
+        {
+          "seed": 54,
+          "pieces": 284,
+          "lines": 97,
+          "capped": false,
+          "seconds": 5.648963600164279
+        },
+        {
+          "seed": 55,
+          "pieces": 418,
+          "lines": 151,
+          "capped": false,
+          "seconds": 8.937711199978366
+        },
+        {
+          "seed": 56,
+          "pieces": 1500,
+          "lines": 590,
+          "capped": true,
+          "seconds": 33.07030949997716
+        },
+        {
+          "seed": 57,
+          "pieces": 669,
+          "lines": 251,
+          "capped": false,
+          "seconds": 12.742776099825278
+        },
+        {
+          "seed": 58,
+          "pieces": 477,
+          "lines": 173,
+          "capped": false,
+          "seconds": 8.14243260002695
+        },
+        {
+          "seed": 59,
+          "pieces": 262,
+          "lines": 88,
+          "capped": false,
+          "seconds": 4.555592600023374
+        },
+        {
+          "seed": 60,
+          "pieces": 238,
+          "lines": 78,
+          "capped": false,
+          "seconds": 4.017839200096205
+        },
+        {
+          "seed": 61,
+          "pieces": 207,
+          "lines": 65,
+          "capped": false,
+          "seconds": 3.0905912998132408
+        },
+        {
+          "seed": 62,
+          "pieces": 181,
+          "lines": 56,
+          "capped": false,
+          "seconds": 2.89928189991042
+        },
+        {
+          "seed": 63,
+          "pieces": 523,
+          "lines": 193,
+          "capped": false,
+          "seconds": 8.11605710000731
+        },
+        {
+          "seed": 64,
+          "pieces": 286,
+          "lines": 98,
+          "capped": false,
+          "seconds": 4.210184599971399
+        },
+        {
+          "seed": 65,
+          "pieces": 1348,
+          "lines": 523,
+          "capped": false,
+          "seconds": 21.50096040009521
+        },
+        {
+          "seed": 66,
+          "pieces": 494,
+          "lines": 181,
+          "capped": false,
+          "seconds": 10.718874499900267
+        },
+        {
+          "seed": 67,
+          "pieces": 463,
+          "lines": 169,
+          "capped": false,
+          "seconds": 9.799242000095546
+        },
+        {
+          "seed": 68,
+          "pieces": 263,
+          "lines": 88,
+          "capped": false,
+          "seconds": 4.0357092001941055
+        },
+        {
+          "seed": 69,
+          "pieces": 285,
+          "lines": 98,
+          "capped": false,
+          "seconds": 4.117076600203291
+        },
+        {
+          "seed": 70,
+          "pieces": 159,
+          "lines": 48,
+          "capped": false,
+          "seconds": 2.0622264000121504
+        },
+        {
+          "seed": 71,
+          "pieces": 292,
+          "lines": 100,
+          "capped": false,
+          "seconds": 4.31231650011614
+        }
+      ]
+    },
+    {
+      "name": "model_weights_snapshot6.pt",
+      "weights": "C:\\My Things\\HTML\\Demonin's Item Shop\\other\\deathBot\\model_weights_snapshot6.pt",
+      "summary": {
+        "mean_pieces": 480.73333333333335,
+        "median_pieces": 448.5,
+        "stdev_pieces": 267.32698992101393,
+        "min_pieces": 142,
+        "max_pieces": 1112,
+        "mean_lines": 176.03333333333333,
+        "capped_games": 0,
+        "n_games": 30
+      },
+      "games": [
+        {
+          "seed": 42,
+          "pieces": 1112,
+          "lines": 429,
+          "capped": false,
+          "seconds": 29.92170950002037
+        },
+        {
+          "seed": 43,
+          "pieces": 556,
+          "lines": 207,
+          "capped": false,
+          "seconds": 11.260617000050843
+        },
+        {
+          "seed": 44,
+          "pieces": 896,
+          "lines": 345,
+          "capped": false,
+          "seconds": 17.020707900170237
+        },
+        {
+          "seed": 45,
+          "pieces": 292,
+          "lines": 100,
+          "capped": false,
+          "seconds": 5.386974300025031
+        },
+        {
+          "seed": 46,
+          "pieces": 178,
+          "lines": 54,
+          "capped": false,
+          "seconds": 3.0059209999162704
+        },
+        {
+          "seed": 47,
+          "pieces": 476,
+          "lines": 174,
+          "capped": false,
+          "seconds": 8.609037899877876
+        },
+        {
+          "seed": 48,
+          "pieces": 473,
+          "lines": 173,
+          "capped": false,
+          "seconds": 8.673641000175849
+        },
+        {
+          "seed": 49,
+          "pieces": 318,
+          "lines": 111,
+          "capped": false,
+          "seconds": 5.606941100209951
+        },
+        {
+          "seed": 50,
+          "pieces": 667,
+          "lines": 251,
+          "capped": false,
+          "seconds": 12.86288270005025
+        },
+        {
+          "seed": 51,
+          "pieces": 514,
+          "lines": 188,
+          "capped": false,
+          "seconds": 10.212015299824998
+        },
+        {
+          "seed": 52,
+          "pieces": 455,
+          "lines": 165,
+          "capped": false,
+          "seconds": 9.007407899945974
+        },
+        {
+          "seed": 53,
+          "pieces": 296,
+          "lines": 103,
+          "capped": false,
+          "seconds": 6.678175700129941
+        },
+        {
+          "seed": 54,
+          "pieces": 1112,
+          "lines": 428,
+          "capped": false,
+          "seconds": 23.70782019989565
+        },
+        {
+          "seed": 55,
+          "pieces": 142,
+          "lines": 41,
+          "capped": false,
+          "seconds": 3.5117002001497895
+        },
+        {
+          "seed": 56,
+          "pieces": 379,
+          "lines": 137,
+          "capped": false,
+          "seconds": 8.459999499842525
+        },
+        {
+          "seed": 57,
+          "pieces": 693,
+          "lines": 260,
+          "capped": false,
+          "seconds": 13.02101119980216
+        },
+        {
+          "seed": 58,
+          "pieces": 420,
+          "lines": 151,
+          "capped": false,
+          "seconds": 7.884114000014961
+        },
+        {
+          "seed": 59,
+          "pieces": 525,
+          "lines": 193,
+          "capped": false,
+          "seconds": 8.210244500078261
+        },
+        {
+          "seed": 60,
+          "pieces": 451,
+          "lines": 163,
+          "capped": false,
+          "seconds": 7.182813300052658
+        },
+        {
+          "seed": 61,
+          "pieces": 533,
+          "lines": 196,
+          "capped": false,
+          "seconds": 7.947689699940383
+        },
+        {
+          "seed": 62,
+          "pieces": 544,
+          "lines": 203,
+          "capped": false,
+          "seconds": 8.374832100002095
+        },
+        {
+          "seed": 63,
+          "pieces": 203,
+          "lines": 65,
+          "capped": false,
+          "seconds": 3.182837000116706
+        },
+        {
+          "seed": 64,
+          "pieces": 446,
+          "lines": 162,
+          "capped": false,
+          "seconds": 7.199623699998483
+        },
+        {
+          "seed": 65,
+          "pieces": 281,
+          "lines": 96,
+          "capped": false,
+          "seconds": 4.450872200075537
+        },
+        {
+          "seed": 66,
+          "pieces": 214,
+          "lines": 69,
+          "capped": false,
+          "seconds": 3.0779176999349147
+        },
+        {
+          "seed": 67,
+          "pieces": 1063,
+          "lines": 409,
+          "capped": false,
+          "seconds": 22.297399299917743
+        },
+        {
+          "seed": 68,
+          "pieces": 298,
+          "lines": 104,
+          "capped": false,
+          "seconds": 4.430594899924472
+        },
+        {
+          "seed": 69,
+          "pieces": 293,
+          "lines": 100,
+          "capped": false,
+          "seconds": 4.212544000009075
+        },
+        {
+          "seed": 70,
+          "pieces": 186,
+          "lines": 58,
+          "capped": false,
+          "seconds": 2.546414599986747
+        },
+        {
+          "seed": 71,
+          "pieces": 406,
+          "lines": 146,
+          "capped": false,
+          "seconds": 5.615549500100315
+        }
+      ]
+    },
+    {
+      "name": "model_weights_snapshot7.pt",
+      "weights": "C:\\My Things\\HTML\\Demonin's Item Shop\\other\\deathBot\\model_weights_snapshot7.pt",
+      "summary": {
+        "mean_pieces": 502.8666666666667,
+        "median_pieces": 430.0,
+        "stdev_pieces": 314.16037342396487,
+        "min_pieces": 126,
+        "max_pieces": 1316,
+        "mean_lines": 184.63333333333333,
+        "capped_games": 0,
+        "n_games": 30
+      },
+      "games": [
+        {
+          "seed": 42,
+          "pieces": 690,
+          "lines": 260,
+          "capped": false,
+          "seconds": 13.985375399934128
+        },
+        {
+          "seed": 43,
+          "pieces": 152,
+          "lines": 44,
+          "capped": false,
+          "seconds": 2.650778899900615
+        },
+        {
+          "seed": 44,
+          "pieces": 826,
+          "lines": 314,
+          "capped": false,
+          "seconds": 15.042394099989906
+        },
+        {
+          "seed": 45,
+          "pieces": 362,
+          "lines": 129,
+          "capped": false,
+          "seconds": 6.475705099990591
+        },
+        {
+          "seed": 46,
+          "pieces": 1316,
+          "lines": 509,
+          "capped": false,
+          "seconds": 24.845962299965322
+        },
+        {
+          "seed": 47,
+          "pieces": 514,
+          "lines": 189,
+          "capped": false,
+          "seconds": 10.292785200057551
+        },
+        {
+          "seed": 48,
+          "pieces": 679,
+          "lines": 256,
+          "capped": false,
+          "seconds": 12.431601900141686
+        },
+        {
+          "seed": 49,
+          "pieces": 133,
+          "lines": 36,
+          "capped": false,
+          "seconds": 2.452497099991888
+        },
+        {
+          "seed": 50,
+          "pieces": 348,
+          "lines": 123,
+          "capped": false,
+          "seconds": 7.125407600076869
+        },
+        {
+          "seed": 51,
+          "pieces": 664,
+          "lines": 249,
+          "capped": false,
+          "seconds": 13.997715400066227
+        },
+        {
+          "seed": 52,
+          "pieces": 661,
+          "lines": 248,
+          "capped": false,
+          "seconds": 12.942493200069293
+        },
+        {
+          "seed": 53,
+          "pieces": 438,
+          "lines": 159,
+          "capped": false,
+          "seconds": 11.002207500161603
+        },
+        {
+          "seed": 54,
+          "pieces": 313,
+          "lines": 107,
+          "capped": false,
+          "seconds": 6.797936099814251
+        },
+        {
+          "seed": 55,
+          "pieces": 981,
+          "lines": 375,
+          "capped": false,
+          "seconds": 18.062680599978194
+        },
+        {
+          "seed": 56,
+          "pieces": 210,
+          "lines": 67,
+          "capped": false,
+          "seconds": 3.29692540015094
+        },
+        {
+          "seed": 57,
+          "pieces": 978,
+          "lines": 374,
+          "capped": false,
+          "seconds": 16.061515799956396
+        },
+        {
+          "seed": 58,
+          "pieces": 135,
+          "lines": 38,
+          "capped": false,
+          "seconds": 2.000690700020641
+        },
+        {
+          "seed": 59,
+          "pieces": 191,
+          "lines": 60,
+          "capped": false,
+          "seconds": 2.9240584999788553
+        },
+        {
+          "seed": 60,
+          "pieces": 422,
+          "lines": 153,
+          "capped": false,
+          "seconds": 6.19410780002363
+        },
+        {
+          "seed": 61,
+          "pieces": 594,
+          "lines": 221,
+          "capped": false,
+          "seconds": 9.508267199853435
+        },
+        {
+          "seed": 62,
+          "pieces": 445,
+          "lines": 161,
+          "capped": false,
+          "seconds": 6.875361999962479
+        },
+        {
+          "seed": 63,
+          "pieces": 126,
+          "lines": 34,
+          "capped": false,
+          "seconds": 1.8677157999482006
+        },
+        {
+          "seed": 64,
+          "pieces": 376,
+          "lines": 134,
+          "capped": false,
+          "seconds": 6.395981699926779
+        },
+        {
+          "seed": 65,
+          "pieces": 233,
+          "lines": 77,
+          "capped": false,
+          "seconds": 4.94018440018408
+        },
+        {
+          "seed": 66,
+          "pieces": 955,
+          "lines": 366,
+          "capped": false,
+          "seconds": 18.027805300196633
+        },
+        {
+          "seed": 67,
+          "pieces": 644,
+          "lines": 241,
+          "capped": false,
+          "seconds": 9.174889300018549
+        },
+        {
+          "seed": 68,
+          "pieces": 310,
+          "lines": 108,
+          "capped": false,
+          "seconds": 3.9014503001235425
+        },
+        {
+          "seed": 69,
+          "pieces": 267,
+          "lines": 89,
+          "capped": false,
+          "seconds": 3.2945081999059767
+        },
+        {
+          "seed": 70,
+          "pieces": 942,
+          "lines": 361,
+          "capped": false,
+          "seconds": 11.172394799999893
+        },
+        {
+          "seed": 71,
+          "pieces": 181,
+          "lines": 57,
+          "capped": false,
+          "seconds": 2.0000815000385046
+        }
+      ]
+    },
+    {
+      "name": "model_weights_snapshot8.pt",
+      "weights": "C:\\My Things\\HTML\\Demonin's Item Shop\\other\\deathBot\\model_weights_snapshot8.pt",
+      "summary": {
+        "mean_pieces": 31.633333333333333,
+        "median_pieces": 32.0,
+        "stdev_pieces": 5.095524292562244,
+        "min_pieces": 23,
+        "max_pieces": 42,
+        "mean_lines": 0.2,
+        "capped_games": 0,
+        "n_games": 30
+      },
+      "games": [
+        {
+          "seed": 42,
+          "pieces": 32,
+          "lines": 0,
+          "capped": false,
+          "seconds": 0.6508118000347167
+        },
+        {
+          "seed": 43,
+          "pieces": 40,
+          "lines": 0,
+          "capped": false,
+          "seconds": 0.7578054999466985
+        },
+        {
+          "seed": 44,
+          "pieces": 35,
+          "lines": 0,
+          "capped": false,
+          "seconds": 0.7474466999992728
+        },
+        {
+          "seed": 45,
+          "pieces": 26,
+          "lines": 0,
+          "capped": false,
+          "seconds": 0.636630899971351
+        },
+        {
+          "seed": 46,
+          "pieces": 30,
+          "lines": 0,
+          "capped": false,
+          "seconds": 0.6270453999750316
+        },
+        {
+          "seed": 47,
+          "pieces": 28,
+          "lines": 0,
+          "capped": false,
+          "seconds": 0.5667870999313891
+        },
+        {
+          "seed": 48,
+          "pieces": 32,
+          "lines": 0,
+          "capped": false,
+          "seconds": 0.7104772999882698
+        },
+        {
+          "seed": 49,
+          "pieces": 37,
+          "lines": 0,
+          "capped": false,
+          "seconds": 0.7486328000668436
+        },
+        {
+          "seed": 50,
+          "pieces": 28,
+          "lines": 0,
+          "capped": false,
+          "seconds": 0.5489324000664055
+        },
+        {
+          "seed": 51,
+          "pieces": 23,
+          "lines": 0,
+          "capped": false,
+          "seconds": 0.5775680998340249
+        },
+        {
+          "seed": 52,
+          "pieces": 37,
+          "lines": 1,
+          "capped": false,
+          "seconds": 0.6342101998161525
+        },
+        {
+          "seed": 53,
+          "pieces": 31,
+          "lines": 0,
+          "capped": false,
+          "seconds": 0.6799858000595123
+        },
+        {
+          "seed": 54,
+          "pieces": 39,
+          "lines": 1,
+          "capped": false,
+          "seconds": 0.7591677000746131
+        },
+        {
+          "seed": 55,
+          "pieces": 28,
+          "lines": 0,
+          "capped": false,
+          "seconds": 0.5373466000892222
+        },
+        {
+          "seed": 56,
+          "pieces": 42,
+          "lines": 1,
+          "capped": false,
+          "seconds": 0.804818700067699
+        },
+        {
+          "seed": 57,
+          "pieces": 27,
+          "lines": 0,
+          "capped": false,
+          "seconds": 0.5129490999970585
+        },
+        {
+          "seed": 58,
+          "pieces": 25,
+          "lines": 0,
+          "capped": false,
+          "seconds": 0.467608799925074
+        },
+        {
+          "seed": 59,
+          "pieces": 24,
+          "lines": 0,
+          "capped": false,
+          "seconds": 0.4004824000876397
+        },
+        {
+          "seed": 60,
+          "pieces": 31,
+          "lines": 0,
+          "capped": false,
+          "seconds": 0.6891447999514639
+        },
+        {
+          "seed": 61,
+          "pieces": 23,
+          "lines": 0,
+          "capped": false,
+          "seconds": 0.5067992000840604
+        },
+        {
+          "seed": 62,
+          "pieces": 28,
+          "lines": 0,
+          "capped": false,
+          "seconds": 0.5654404000379145
+        },
+        {
+          "seed": 63,
+          "pieces": 33,
+          "lines": 0,
+          "capped": false,
+          "seconds": 0.5188609000761062
+        },
+        {
+          "seed": 64,
+          "pieces": 34,
+          "lines": 1,
+          "capped": false,
+          "seconds": 0.5737153999507427
+        },
+        {
+          "seed": 65,
+          "pieces": 34,
+          "lines": 1,
+          "capped": false,
+          "seconds": 0.7307505998760462
+        },
+        {
+          "seed": 66,
+          "pieces": 34,
+          "lines": 1,
+          "capped": false,
+          "seconds": 0.5181497999001294
+        },
+        {
+          "seed": 67,
+          "pieces": 36,
+          "lines": 0,
+          "capped": false,
+          "seconds": 0.6000850999262184
+        },
+        {
+          "seed": 68,
+          "pieces": 28,
+          "lines": 0,
+          "capped": false,
+          "seconds": 0.6912670000456274
+        },
+        {
+          "seed": 69,
+          "pieces": 37,
+          "lines": 0,
+          "capped": false,
+          "seconds": 0.6976166998501867
+        },
+        {
+          "seed": 70,
+          "pieces": 35,
+          "lines": 0,
+          "capped": false,
+          "seconds": 0.7046012999489903
+        },
+        {
+          "seed": 71,
+          "pieces": 32,
+          "lines": 0,
+          "capped": false,
+          "seconds": 0.5612496000248939
+        }
+      ]
+    },
+    {
+      "name": "model_weights_test_2.pt",
+      "weights": "C:\\My Things\\HTML\\Demonin's Item Shop\\other\\deathBot\\deathbot_sim\\model_weights_test_2.pt",
+      "summary": {
+        "mean_pieces": 334.8666666666667,
+        "median_pieces": 298.5,
+        "stdev_pieces": 187.40178730486397,
+        "min_pieces": 126,
+        "max_pieces": 1000,
+        "mean_lines": 117.26666666666667,
+        "capped_games": 0,
+        "n_games": 30
+      },
+      "games": [
+        {
+          "seed": 42,
+          "pieces": 447,
+          "lines": 163,
+          "capped": false,
+          "seconds": 8.265047800028697
+        },
+        {
+          "seed": 43,
+          "pieces": 377,
+          "lines": 135,
+          "capped": false,
+          "seconds": 6.7247474999167025
+        },
+        {
+          "seed": 44,
+          "pieces": 126,
+          "lines": 34,
+          "capped": false,
+          "seconds": 2.387665299931541
+        },
+        {
+          "seed": 45,
+          "pieces": 301,
+          "lines": 104,
+          "capped": false,
+          "seconds": 6.081031900132075
+        },
+        {
+          "seed": 46,
+          "pieces": 159,
+          "lines": 47,
+          "capped": false,
+          "seconds": 3.0450718000065535
+        },
+        {
+          "seed": 47,
+          "pieces": 374,
+          "lines": 133,
+          "capped": false,
+          "seconds": 8.028461300069466
+        },
+        {
+          "seed": 48,
+          "pieces": 382,
+          "lines": 136,
+          "capped": false,
+          "seconds": 7.176660299999639
+        },
+        {
+          "seed": 49,
+          "pieces": 254,
+          "lines": 84,
+          "capped": false,
+          "seconds": 5.212903699837625
+        },
+        {
+          "seed": 50,
+          "pieces": 241,
+          "lines": 79,
+          "capped": false,
+          "seconds": 4.994049799861386
+        },
+        {
+          "seed": 51,
+          "pieces": 212,
+          "lines": 67,
+          "capped": false,
+          "seconds": 4.945947800064459
+        },
+        {
+          "seed": 52,
+          "pieces": 700,
+          "lines": 262,
+          "capped": false,
+          "seconds": 14.205727899912745
+        },
+        {
+          "seed": 53,
+          "pieces": 679,
+          "lines": 255,
+          "capped": false,
+          "seconds": 15.993067399831489
+        },
+        {
+          "seed": 54,
+          "pieces": 267,
+          "lines": 91,
+          "capped": false,
+          "seconds": 5.602259099949151
+        },
+        {
+          "seed": 55,
+          "pieces": 220,
+          "lines": 71,
+          "capped": false,
+          "seconds": 4.404086800059304
+        },
+        {
+          "seed": 56,
+          "pieces": 197,
+          "lines": 61,
+          "capped": false,
+          "seconds": 3.8958600000478327
+        },
+        {
+          "seed": 57,
+          "pieces": 314,
+          "lines": 109,
+          "capped": false,
+          "seconds": 6.732763099949807
+        },
+        {
+          "seed": 58,
+          "pieces": 466,
+          "lines": 170,
+          "capped": false,
+          "seconds": 7.6330322998110205
+        },
+        {
+          "seed": 59,
+          "pieces": 200,
+          "lines": 63,
+          "capped": false,
+          "seconds": 3.2493487000465393
+        },
+        {
+          "seed": 60,
+          "pieces": 1000,
+          "lines": 384,
+          "capped": false,
+          "seconds": 15.708073500078171
+        },
+        {
+          "seed": 61,
+          "pieces": 328,
+          "lines": 114,
+          "capped": false,
+          "seconds": 5.170722400071099
+        },
+        {
+          "seed": 62,
+          "pieces": 220,
+          "lines": 71,
+          "capped": false,
+          "seconds": 3.3465238998178393
+        },
+        {
+          "seed": 63,
+          "pieces": 127,
+          "lines": 35,
+          "capped": false,
+          "seconds": 2.2140560001134872
+        },
+        {
+          "seed": 64,
+          "pieces": 184,
+          "lines": 57,
+          "capped": false,
+          "seconds": 2.883061300031841
+        },
+        {
+          "seed": 65,
+          "pieces": 205,
+          "lines": 65,
+          "capped": false,
+          "seconds": 3.2620564000681043
+        },
+        {
+          "seed": 66,
+          "pieces": 296,
+          "lines": 101,
+          "capped": false,
+          "seconds": 4.697857100050896
+        },
+        {
+          "seed": 67,
+          "pieces": 388,
+          "lines": 138,
+          "capped": false,
+          "seconds": 6.207135399803519
+        },
+        {
+          "seed": 68,
+          "pieces": 327,
+          "lines": 113,
+          "capped": false,
+          "seconds": 6.877216399880126
+        },
+        {
+          "seed": 69,
+          "pieces": 225,
+          "lines": 75,
+          "capped": false,
+          "seconds": 4.83673970005475
+        },
+        {
+          "seed": 70,
+          "pieces": 383,
+          "lines": 138,
+          "capped": false,
+          "seconds": 8.228970100171864
+        },
+        {
+          "seed": 71,
+          "pieces": 447,
+          "lines": 163,
+          "capped": false,
+          "seconds": 7.300741799874231
+        }
+      ]
+    }
+  ]
+}

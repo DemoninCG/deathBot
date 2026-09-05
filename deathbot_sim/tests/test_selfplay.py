@@ -219,9 +219,10 @@ class TestTrainSelfplay:
         out = net(b, cur, nxt)
         assert torch.isfinite(out).all()
         import os
-        test_path = PYTHON_DIR.parent / "_test_mc_weights.pt"
-        if test_path.exists():
-            os.remove(test_path)
+        for suffix in ("", ".best.pt"):
+            test_path = PYTHON_DIR.parent / f"_test_mc_weights.pt{suffix}"
+            if test_path.exists():
+                os.remove(test_path)
 
     def test_missing_weights_in_fails_loudly(self):
         """Passing weights_in pointing to a nonexistent file must raise —

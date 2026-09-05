@@ -1,0 +1,83 @@
+{
+  "weights": "C:\\My Things\\HTML\\Demonin's Item Shop\\other\\deathBot\\model_weights_snapshot9.pt",
+  "weights_sha256": "229bbe2a91bab6b1d6a58f25440e7504711aabe8dfc26d24dad9ee0461be46ed",
+  "bank": "C:\\My Things\\HTML\\Demonin's Item Shop\\other\\deathBot\\deathbot_sim\\_diag_out\\state_bank_snapshot9_32games.npz",
+  "steps": 400,
+  "batch_size": 64,
+  "lr": 1e-05,
+  "rank_weight": 0.5,
+  "rank_temp": 50.0,
+  "rank_batch": 8,
+  "gamma": 0.999,
+  "td_scale": 10.0,
+  "td_shift": 5.0,
+  "seed": 42,
+  "bootstrap_coverage": 22984,
+  "arms": {
+    "P4_rank_fitd": {
+      "train_s": 61.6,
+      "mean_pieces": 594.75,
+      "median_pieces": 529.5,
+      "capped": 1,
+      "per_seed": [
+        669,
+        826,
+        1500,
+        361,
+        647,
+        545,
+        670,
+        514,
+        206,
+        454,
+        488,
+        257
+      ],
+      "states_compared": 199,
+      "mean_kendall": 0.9680094732273042,
+      "top1_agreement": 0.9698492462311558,
+      "mean_top_margin_delta": -0.18786173429920447
+    },
+    "P3_fitd": {
+      "train_s": 13.9,
+      "mean_pieces": 792.1666666666666,
+      "median_pieces": 740.5,
+      "capped": 0,
+      "per_seed": [
+        716,
+        647,
+        500,
+        854,
+        495,
+        765,
+        1101,
+        480,
+        694,
+        1019,
+        886,
+        1349
+      ],
+      "states_compared": 199,
+      "mean_kendall": 0.9843683996126613,
+      "top1_agreement": 0.9698492462311558,
+      "mean_top_margin_delta": 0.050855043545440216
+    }
+  },
+  "ref_snapshot9": {
+    "mean_pieces": 773.9166666666666,
+    "per_seed": [
+      350,
+      917,
+      1152,
+      279,
+      1147,
+      905,
+      649,
+      605,
+      527,
+      729,
+      527,
+      1500
+    ]
+  }
+}

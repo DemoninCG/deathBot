@@ -1,0 +1,97 @@
+{
+  "args": {
+    "bank": "..\\_diag_out\\state_bank_snapshot9_32games.npz",
+    "arms": [
+      "D4_offpolicy"
+    ],
+    "scale": 30.0,
+    "shift": 15.0,
+    "steps": 400,
+    "batch_size": 64,
+    "lr": 1e-05,
+    "seed": 42,
+    "screen_games": 12,
+    "screen_seed0": 2000,
+    "workers": 8,
+    "save_arms": true,
+    "out": "..\\_diag_out\\_final_D4.json"
+  },
+  "snap9": "C:\\My Things\\HTML\\Demonin's Item Shop\\other\\deathBot\\model_weights_snapshot9.pt",
+  "arms": {
+    "D4_offpolicy": {
+      "mean_pieces": 875.3333333333334,
+      "median_pieces": 893.0,
+      "min_pieces": 115,
+      "max_pieces": 1410,
+      "capped": 0,
+      "per_seed": [
+        1148,
+        115,
+        1037,
+        623,
+        710,
+        790,
+        1344,
+        1410,
+        1000,
+        541,
+        825,
+        961
+      ],
+      "train_s": 77.5,
+      "paired_vs_snap9": {
+        "mean_delta": 81.25,
+        "t": 0.47089286870380553,
+        "ci95": [
+          -257.5833333333333,
+          377.5833333333333
+        ],
+        "wins": 8,
+        "losses": 4,
+        "ties": 0
+      }
+    }
+  },
+  "ref_snap9": {
+    "mean_pieces": 794.0833333333334,
+    "median_pieces": 756.5,
+    "min_pieces": 176,
+    "max_pieces": 1500,
+    "capped": 2,
+    "per_seed": [
+      995,
+      1500,
+      1500,
+      452,
+      726,
+      176,
+      510,
+      787,
+      923,
+      812,
+      706,
+      442
+    ]
+  },
+  "ref_snap7": {
+    "mean_pieces": 568.5833333333334,
+    "median_pieces": 535.0,
+    "min_pieces": 340,
+    "max_pieces": 1093,
+    "capped": 0,
+    "per_seed": [
+      1093,
+      340,
+      598,
+      432,
+      461,
+      739,
+      554,
+      600,
+      385,
+      688,
+      417,
+      516
+    ]
+  }
+}

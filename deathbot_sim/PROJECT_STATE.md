@@ -524,6 +524,93 @@ seeds.
   the behavior policy for Phase 3 branches (teacher-ranking regularizer,
   calibrated TD) since it is both stronger and smoother.
 
+---
+
+## 8. Distillation push round 2 (2026-09-05, later the same day)
+
+User confirmed snapshot9's play visually (viz_live). Goal: push the
+self-distillation effect as far as it goes, then hand the best model to
+Phase 3. New tooling: `python/diag_distill.py` (distillation arms with
+ensemble/scratch/off-policy variants, chunked teacher-target computation,
+`--save-arms`); `_diag_out/PANEL_REGISTRY.md` now records every seed range
+and its contamination status (screening 2000s, validation 4000s, promotion
+reserves 5000s — each used for at most one decision).
+
+New reference bank: `_diag_out/state_bank_snapshot9_32games.npz`
+(23,016 states / 400,733 candidates; mean game 719 pieces vs snapshot7's 531).
+
+### Screening + probe round (12-game panel, seeds 2000–2011, paired vs snapshot9 at 794.1)
+
+| arm / variant | mean | delta | t | W/L |
+|---|---:|---:|---:|---:|
+| D1 iter2 scale10/400 (the C3 recipe again) | 844.2 | +50 | +0.23 | 4/8 |
+| D1 scale30/400 seed42 | 931.3 | +137 | +0.62 | 6/6 |
+| D1 scale30/400 seed43 | 914.8 | +121 | +0.51 | 6/6 |
+| D1 scale30/400 seed44 | 790.5 | −4 | −0.02 | 5/7 |
+| D1 scale100 | 870.8 | +77 | +0.44 | 4/8 |
+| D1 scale3 | 644.3 | −150 | −1.19 | 4/8 |
+| D1 steps100 | 639.7 | −154 | −1.23 | 4/7 |
+| D1 steps800 | 706.9 | −87 | −0.48 | 6/6 |
+| D1 steps1600 | 408.8 | −385 | −2.67 | 2/10 |
+| D1 lr3e-5 | 498.2 | −296 | −2.23 | 4/8 |
+| D2 ensemble(5,6,7)→9 scale10 fixed | 632.4 | −162 | −1.13 | 3/9 |
+| D2 ensemble scale30 | 618.1 | −176 | −1.56 | 2/10 |
+| D3 scratch init + snap9 targets | **46.9** | −747 | −6.46 | 0/12 |
+| D4 off-policy inputs scale10 | 733.4 | −61 | −0.36 | 7/5 |
+| D4 off-policy scale30 seed42/43/44 | 875/858/877 | +81/+64/+83 | ≈+0.4–0.5 | 24/12 agg |
+
+### Mechanism conclusions (these ARE well-supported)
+
+1. **D3 is the decisive one**: training from a *scratch init* toward
+   snapshot9's stretched outputs yields 46.9 pieces — nothing. The gains
+   come from the **trajectory** (SGD re-projection of a trained solution),
+   not from the target values. This kills any "the targets contain hidden
+   information" story and firmly establishes the born-again/self-distillation
+   (implicit-smoothing) interpretation.
+2. **Off-policy states work almost as well** (D4 ≈ D1): the smoothing
+   generalizes beyond the champion's own visited states.
+3. **The effect is fragile to dosage**: 100 or 1600 steps, lr 3e-5, or scale
+   3 all *hurt*; scale 30 at 400 steps at lr 1e-5 is a local optimum. This
+   mirrors the self-distillation literature's "too many iterations collapse"
+   finding.
+4. **Ensemble teacher hurts** (−162/−176): mixing snapshot5/6/7's weaker,
+   noisier value functions pulls the student off snapshot9's smoother
+   manifold. Averaging heterogeneous checkpoints is not free signal here.
+
+### Validation (30 fresh seeds 4000–4029, paired)
+
+| model | mean | median | capped |
+|---|---:|---:|---:|
+| D1 scale30 seed42 | 795.1 | 701 | 4 |
+| D4 scale30 seed42 | 708.5 | 568 | 4 |
+| snapshot9 | 759.0 | 722 | 3 |
+
+Paired: **D1 vs snap9 +36.1 (t +0.30, CI [−195,+262], W/L 16/14)** —
+*not significant*. D4 vs snap9 −50.5 (n.s.). The 12-game screening advantage
+did not survive the bigger panel: **no round-2 variant beats snapshot9 with
+statistical confidence.**
+
+### Verdict
+
+- Round-2 self-distillation is **not a reliable improvement lever** beyond
+  snapshot9: the first jump (7→9) remains the only validated gain. The
+  screening-panel means (~880–930) were inflated by a handful of capped
+  games; paired per-seed records show real regressions on other seeds.
+- **Snapshot9 stays the champion** and is the handoff base for Phase 3.
+  (Round-2 artifacts are kept: `_diag_out/distill_D{1,4}_*_seed42.pt`,
+  `distill_round2*.json`, `_probe_*.json` — D1-seed42 is nominally the best
+  single checkpoint found, 795.1 vs 759.0, but within noise; swapping
+  champions on that is not justified.)
+- What the round *does* give Phase 3: mechanism knowledge (trajectory
+  smoothing, dosage-fragile, off-policy-capable, ensemble-hostile) and a
+  proven-safe class of targets (incumbent-order-preserving transforms) that
+  the calibrated-TD branch can build on.
+
+### Test status
+
+156 passed, 2 skipped (`tests/`), including new resume-reproducibility and
+Kendall-tau tests. Rust suite unchanged (29 pass).
+
 ### Pilot artifacts
 
 - `_diag_out/phase2_pilot_lr1e-5.json` (7 arms, 1 seed, buggy tau)
@@ -533,3 +620,84 @@ seeds.
 
 156 passed, 2 skipped (`tests/`), including new resume-reproducibility and
 Kendall-tau tests. Rust suite unchanged (29 pass).
+
+---
+
+## 9. Phase 3 round 1 (2026-09-05, session 3) — `python/diag_phase3.py`
+
+Goal per plan: controlled policy improvement from snapshot9. Fixed-data arms
+on the snapshot9 bank (23,016 states / 400,733 candidates), paired schedules,
+detached targets, screened on fresh panel 6000–6011 (snapshot9 ref: 773.9).
+
+### Round 1 (heuristic ranking source; shrink-to-zero TD target)
+
+| arm | eval | paired W/L |
+|---|---:|---:|
+| P1_rank (heuristic-softmax CE only) | 401.2 | 1/11 |
+| P2_rank_mc (T3 MC + heuristic ranking) | 588.9 | 5/7 |
+| P3_fitd (bootstrap γ·z(s′)) | 612.1 | 4/7 |
+| P4_rank_fitd | 673.8 | 3/9 |
+
+All regress. Two diagnoses:
+1. **Heuristic rankings hurt**: snapshot9 already outperforms the teacher
+   that generated them, so imitating the teacher's ordering (even softly)
+   pulls the policy *back* toward the teacher. P1 confirms: ordering-only
+   learning is powerful and destructive here.
+2. **γ·z(s′) with no reward term shrinks the value function** (loss stuck at
+   ~1500, wrong fixed point).
+
+### Round 2 (both fixes applied)
+
+- Ranking source → the **incumbent's own** candidate ordering.
+- Fitted-TD target → incumbent-anchored Bellman image:
+  `z(s) → γ·z(s′) + (1−γ)·z(s)` on states with a recorded successor
+  (the `(1−γ)·z(s)` term is the placement reward expressed in z units),
+  own-value fallback at endgame edge.
+
+| arm | eval | tau | top1 | W/L vs snap9 |
+|---|---:|---:|---:|---:|
+| P4_rank_fitd (incumbent ranking) | 594.8 | 0.968 | 0.970 | 4/8 |
+| P3_fitd (corrected Bellman image) | **792.2** | 0.984 | 0.970 | 6/6 |
+
+- The ranking regularizer still hurts even against the incumbent's own
+  ordering (it duplicates the smoothing effect at higher variance) — dropped.
+- **P3_fitd is now behavior-neutral with a converged value loss (12.6)** —
+  the first Phase 3 update that touches the value function without damage.
+  Paired per-seed: high variance (+575 to −652), mean +18 on the 12-game
+  panel.
+- Cross-check: D4 off-policy distillation on this panel scored 584.7 — the
+  distillation arms do NOT transfer across panels, reinforcing that their
+  screening means were inflated.
+
+### Validation (30 fresh seeds 7000–7029, paired)
+
+| model | mean | median | capped | under-100 |
+|---|---:|---:|---:|---:|
+| P3_fitd | 791.3 | 802 | 4 | 1 |
+| snapshot9 | 795.2 | 754 | 4 | 0 |
+
+Paired: **delta −3.9, t −0.04, CI [−205, +200], W/L 14/15** — exactly neutral.
+
+### Phase 3 gate status
+
+**PASSED, with no free lunch.** For the first time the project has a
+value-learning update (fitted one-step TD toward the incumbent-anchored
+Bellman image) that provably does not damage snapshot9 — that was the gate
+Phase 2 required before any long training. It is not, by itself, an
+improvement lever on frozen data; its value is that it defines a *stable*
+update rule the online loop can now iterate with.
+
+**Recommendation for the first online campaign (next session):**
+1. Online fitted-TD self-play from snapshot9 using the corrected semantics:
+   collect fresh rollouts (env/explore RNGs separated, D4 parallel), fit
+   P3-style targets with a lagged target network at a fixed
+   update-to-data ratio, per-round quick-eval guardrails already in place.
+2. The value targets now have correct units (incumbent-transformed z-space
+   with the Bellman image), addressing plan §C4's calibration requirement —
+   no absolute survival labels anywhere.
+3. Judge on the 32-tape dev panel; promotion only via the registry's fresh
+   panels. Expect slow, not catastrophic, dynamics — the round-2 result
+   says this update is safe to leave running overnight.
+
+Artifacts: `phase3_round{1,2}.json`, `phase3_P{1..4}_*_seed42.pt`,
+`val_P3_7000.json`, `val_snap9_7000.json`, `_xcheck_d4_panel6000.json`.

@@ -1,0 +1,195 @@
+[
+  {
+    "weights": "C:\\My Things\\HTML\\Demonin's Item Shop\\other\\deathBot\\model_weights_snapshot9.pt",
+    "sha256": "229bbe2a91bab6b1d6a58f25440e7504711aabe8dfc26d24dad9ee0461be46ed",
+    "games": [
+      {
+        "seed": 7000,
+        "pieces": 1453,
+        "lines": 564,
+        "capped": false
+      },
+      {
+        "seed": 7001,
+        "pieces": 347,
+        "lines": 122,
+        "capped": false
+      },
+      {
+        "seed": 7002,
+        "pieces": 1093,
+        "lines": 421,
+        "capped": false
+      },
+      {
+        "seed": 7003,
+        "pieces": 788,
+        "lines": 299,
+        "capped": false
+      },
+      {
+        "seed": 7004,
+        "pieces": 549,
+        "lines": 203,
+        "capped": false
+      },
+      {
+        "seed": 7005,
+        "pieces": 503,
+        "lines": 185,
+        "capped": false
+      },
+      {
+        "seed": 7006,
+        "pieces": 508,
+        "lines": 186,
+        "capped": false
+      },
+      {
+        "seed": 7007,
+        "pieces": 462,
+        "lines": 168,
+        "capped": false
+      },
+      {
+        "seed": 7008,
+        "pieces": 1378,
+        "lines": 534,
+        "capped": false
+      },
+      {
+        "seed": 7009,
+        "pieces": 768,
+        "lines": 290,
+        "capped": false
+      },
+      {
+        "seed": 7010,
+        "pieces": 624,
+        "lines": 233,
+        "capped": false
+      },
+      {
+        "seed": 7011,
+        "pieces": 428,
+        "lines": 154,
+        "capped": false
+      },
+      {
+        "seed": 7012,
+        "pieces": 262,
+        "lines": 88,
+        "capped": false
+      },
+      {
+        "seed": 7013,
+        "pieces": 270,
+        "lines": 91,
+        "capped": false
+      },
+      {
+        "seed": 7014,
+        "pieces": 739,
+        "lines": 280,
+        "capped": false
+      },
+      {
+        "seed": 7015,
+        "pieces": 1500,
+        "lines": 589,
+        "capped": true
+      },
+      {
+        "seed": 7016,
+        "pieces": 844,
+        "lines": 322,
+        "capped": false
+      },
+      {
+        "seed": 7017,
+        "pieces": 952,
+        "lines": 365,
+        "capped": false
+      },
+      {
+        "seed": 7018,
+        "pieces": 209,
+        "lines": 67,
+        "capped": false
+      },
+      {
+        "seed": 7019,
+        "pieces": 1500,
+        "lines": 591,
+        "capped": true
+      },
+      {
+        "seed": 7020,
+        "pieces": 1500,
+        "lines": 591,
+        "capped": true
+      },
+      {
+        "seed": 7021,
+        "pieces": 506,
+        "lines": 187,
+        "capped": false
+      },
+      {
+        "seed": 7022,
+        "pieces": 887,
+        "lines": 339,
+        "capped": false
+      },
+      {
+        "seed": 7023,
+        "pieces": 877,
+        "lines": 334,
+        "capped": false
+      },
+      {
+        "seed": 7024,
+        "pieces": 332,
+        "lines": 117,
+        "capped": false
+      },
+      {
+        "seed": 7025,
+        "pieces": 483,
+        "lines": 177,
+        "capped": false
+      },
+      {
+        "seed": 7026,
+        "pieces": 477,
+        "lines": 173,
+        "capped": false
+      },
+      {
+        "seed": 7027,
+        "pieces": 1109,
+        "lines": 427,
+        "capped": false
+      },
+      {
+        "seed": 7028,
+        "pieces": 1009,
+        "lines": 387,
+        "capped": false
+      },
+      {
+        "seed": 7029,
+        "pieces": 1500,
+        "lines": 589,
+        "capped": true
+      }
+    ],
+    "mean_pieces": 795.2333333333333,
+    "median_pieces": 753.5,
+    "stdev_pieces": 421.14128052343614,
+    "min_pieces": 209,
+    "max_pieces": 1500,
+    "mean_lines": 302.43333333333334,
+    "capped_games": 4
+  }
+]

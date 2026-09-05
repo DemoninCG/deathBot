@@ -5,6 +5,7 @@ from __future__ import annotations
 import argparse
 import hashlib
 import json
+import os
 import random
 import statistics
 import sys
@@ -55,8 +56,15 @@ def resolve_weights(path: str) -> Path:
 
 def evaluate_weights(path: str, *, games: int = 100, seed: int = 42,
                      max_pieces: int = 1500, device: str = "cpu",
-                     verbose: bool = False) -> EvaluationResult:
-    """Evaluate one checkpoint greedily on independent seeds ``seed..seed+games``."""
+                     verbose: bool = False,
+                     legacy_lockout: bool = False) -> EvaluationResult:
+    """Evaluate one checkpoint greedily on independent seeds ``seed..seed+games``.
+
+    ``legacy_lockout=True`` restores the historical game-over semantics
+    (above-field cells silently dropped, game continues) so the 2026-09-04
+    benchmark numbers stay reproducible. Default (False) uses the corrected
+    semantics where a lockout placement ends the game.
+    """
     if games < 1:
         raise ValueError("games must be at least 1")
     weights_path = resolve_weights(path)
@@ -69,7 +77,7 @@ def evaluate_weights(path: str, *, games: int = 100, seed: int = 42,
     for game_seed in range(seed, seed + games):
         trajectory, lines = play_game(
             scorer, random.Random(game_seed), epsilon=0.0,
-            max_pieces=max_pieces)
+            max_pieces=max_pieces, legacy_lockout=legacy_lockout)
         result = GameResult(game_seed, len(trajectory), lines,
                             len(trajectory) >= max_pieces)
         results.append(result)
@@ -105,6 +113,89 @@ def print_result(result: EvaluationResult) -> None:
     print(f"  Capped — {result.capped_games}/{len(result.games)}")
 
 
+# ---- Parallel game-level evaluation (phase D3, 2026-09) --------------------
+
+def _eval_one_game(args: tuple) -> dict:
+    """Worker: play ONE greedy game. Spawn-safe; re-imports lazily."""
+    import os
+    os.environ.setdefault("OMP_NUM_THREADS", "1")
+    os.environ.setdefault("MKL_NUM_THREADS", "1")
+    import torch
+    torch.set_num_threads(1)
+
+    (here, weights_path, seed, max_pieces, legacy_lockout) = args
+    import sys
+    sys.path.insert(0, here)
+    from model import TAPNet
+    from neural_scorer import NeuralScorer
+    from selfplay import play_game
+    import random as _random
+
+    net = TAPNet(output="linear")
+    net.load_state_dict(torch.load(weights_path, map_location="cpu"))
+    net.eval()
+    scorer = NeuralScorer(net=net, device="cpu")
+    import time
+    t0 = time.perf_counter()
+    trajectory, lines = play_game(scorer, _random.Random(seed), epsilon=0.0,
+                                  max_pieces=max_pieces,
+                                  legacy_lockout=legacy_lockout)
+    return {
+        "seed": seed,
+        "pieces": len(trajectory),
+        "lines": lines,
+        "capped": len(trajectory) >= max_pieces,
+        "seconds": time.perf_counter() - t0,
+    }
+
+
+def evaluate_weights_parallel(
+    path: str, *, games: int = 100, seed: int = 42,
+    max_pieces: int = 1500, workers: int | None = None,
+    legacy_lockout: bool = False,
+) -> EvaluationResult:
+    """Greedy evaluation with games sharded across processes.
+
+    Phase D3: the historical evaluator parallelized only across checkpoints,
+    so a single-checkpoint run occupied one core. This shards GAMES across
+    workers; each game keeps its fixed seed, so results are identical to the
+    serial evaluator for any worker count.
+    """
+    if games < 1:
+        raise ValueError("games must be at least 1")
+    weights_path = resolve_weights(path)
+    if workers is None:
+        workers = max(1, min(games, (os.cpu_count() or 2)))
+    if workers <= 1:
+        return evaluate_weights(path, games=games, seed=seed,
+                                max_pieces=max_pieces,
+                                legacy_lockout=legacy_lockout)
+    from concurrent.futures import ProcessPoolExecutor, as_completed
+    here = str(HERE)
+    jobs = [(here, str(weights_path), s, max_pieces, legacy_lockout)
+            for s in range(seed, seed + games)]
+    results: list[GameResult] = []
+    with ProcessPoolExecutor(max_workers=workers) as pool:
+        for res in pool.map(_eval_one_game, jobs):
+            results.append(GameResult(res["seed"], res["pieces"],
+                                      res["lines"], res["capped"]))
+    results.sort(key=lambda r: r.seed)
+    pieces = [r.pieces for r in results]
+    lines = [r.lines for r in results]
+    return EvaluationResult(
+        weights=str(weights_path),
+        sha256=hashlib.sha256(weights_path.read_bytes()).hexdigest(),
+        games=results,
+        mean_pieces=statistics.fmean(pieces),
+        median_pieces=statistics.median(pieces),
+        stdev_pieces=statistics.stdev(pieces) if len(pieces) > 1 else 0.0,
+        min_pieces=min(pieces),
+        max_pieces=max(pieces),
+        mean_lines=statistics.fmean(lines),
+        capped_games=sum(r.capped for r in results),
+    )
+
+
 def main() -> None:
     parser = argparse.ArgumentParser(
         description="Greedy fixed-seed evaluation with no exploration or training.")
@@ -115,14 +206,30 @@ def main() -> None:
                         help="first independent game seed")
     parser.add_argument("--max-pieces", type=int, default=1500)
     parser.add_argument("--device", default="cpu")
+    parser.add_argument("--workers", type=int, default=None,
+                        help="parallel game workers (default: cpu_count; "
+                             "1 = serial)")
+    parser.add_argument("--legacy-lockout", action="store_true",
+                        help="use historical lockout semantics (reproduces "
+                             "the 2026-09-04 benchmark; default is corrected "
+                             "semantics where lockout placements lose)")
     parser.add_argument("--verbose", action="store_true")
     parser.add_argument("--json", type=str, default=None,
                         help="optional output path for machine-readable results")
     args = parser.parse_args()
 
-    results = [evaluate_weights(
-        path, games=args.games, seed=args.seed, max_pieces=args.max_pieces,
-        device=args.device, verbose=args.verbose) for path in args.weights]
+    results = []
+    for path in args.weights:
+        if args.workers is not None and args.workers > 1:
+            results.append(evaluate_weights_parallel(
+                path, games=args.games, seed=args.seed,
+                max_pieces=args.max_pieces, workers=args.workers,
+                legacy_lockout=args.legacy_lockout))
+        else:
+            results.append(evaluate_weights(
+                path, games=args.games, seed=args.seed,
+                max_pieces=args.max_pieces, device=args.device,
+                verbose=args.verbose, legacy_lockout=args.legacy_lockout))
     for result in results:
         print_result(result)
 

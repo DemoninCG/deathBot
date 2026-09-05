@@ -191,6 +191,88 @@ class HeuristicScorer:
     def score_afterstate(self, board: "ds.Board", lines_cleared: int = 0) -> float:
         return self._reward(board, lines_cleared)
 
+    def _weighted_reward_batch(
+        self, packed_rows, lines_cleared: list[int],
+    ) -> dict[str, list[float]]:
+        """Vectorized heuristic rewards for a batch of packed row bitmasks.
+
+        Phase D5: computes every feature from 21-row uint32 bitmasks
+        (bottom-first, exactly ``Board.row_bits()`` format) without per-cell
+        FFI calls, so batched rewards match per-board ``score_afterstate``
+        exactly — including content in the invisible row 20, which the
+        20-row tensor encoding silently drops.
+
+        Args: ``packed_rows`` [B, 21] uint32 array (or list of 21-int lists),
+        ``lines_cleared`` per board. Returns a dict with a ``rewards`` list
+        matching ``_reward(board, lines)`` per board.
+        """
+        import numpy as np
+
+        rows = np.asarray(packed_rows, dtype=np.uint64)
+        if rows.ndim == 1:
+            rows = rows[None, :]
+        assert rows.ndim == 2 and rows.shape[1] == 21, (
+            f"expected [B, 21] packed rows, got {rows.shape}")
+        w = self.weights
+        rewards: list[float] = []
+        for b in range(rows.shape[0]):
+            occ = np.zeros((21, 10), dtype=bool)
+            for r in range(21):
+                bits = int(rows[b, r])
+                for c in range(10):
+                    if bits & (1 << c):
+                        occ[r, c] = True
+            heights = np.zeros(10, dtype=np.int64)
+            for r in range(20, -1, -1):
+                filled = occ[r] & (heights == 0)
+                heights[filled] = r + 1
+
+            weighted_height = sum(
+                float(heights[c]) * HEIGHT_WEIGHTS[c] for c in range(10))
+
+            holes_count = 0
+            hole_depth_sum = 0
+            accessible_count = 0
+            max_h = int(heights.max()) if heights.max() > 0 else 0
+            for row in range(max_h):
+                row_occ = occ[row]
+                left_acc = np.cumprod(~row_occ, dtype=bool)
+                right_acc = np.cumprod(~row_occ[::-1], dtype=bool)[::-1]
+                for col in range(10):
+                    if row >= heights[col] or row_occ[col]:
+                        continue
+                    if left_acc[col] or right_acc[col]:
+                        accessible_count += 1
+                    else:
+                        holes_count += 1
+                        hole_depth_sum += int(occ[row + 1:, col].sum())
+
+            well = 0
+            for col in range(10):
+                if col == 0:
+                    depth = heights[1] - heights[0]
+                elif col == 9:
+                    depth = heights[8] - heights[9]
+                else:
+                    depth = min(heights[col - 1], heights[col + 1]) - heights[col]
+                if depth > 0:
+                    well += (depth - 1) * depth // 2
+
+            spawn = sum(
+                max(0, int(heights[c]) - SPAWN_DANGER_HEIGHT) ** 2
+                for c in SPAWN_COLUMNS)
+
+            rewards.append(
+                w["weighted_height"] * float(weighted_height)
+                + w["holes"] * holes_count
+                + w["hole_depth"] * hole_depth_sum
+                + w["accessible_cavities"] * accessible_count
+                + w["well_cost"] * well
+                + w["spawn_danger"] * spawn
+                + w.get("lines_cleared", 0.0) * lines_cleared[b]
+            )
+        return {"rewards": rewards}
+
     def score_batch(
         self, board: "ds.Board", candidates: list["ds.LockCandidate"],
         current_piece_idx: int | None = None, next_piece_idx: int | None = None,

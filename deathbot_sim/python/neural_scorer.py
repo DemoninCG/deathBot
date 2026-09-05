@@ -14,12 +14,13 @@ from __future__ import annotations
 
 from typing import Optional
 
+import numpy as np
 import torch
 
 import deathbot_sim as ds
 from model import TAPNet, piece_to_index
 from scorer import Scorer
-from afterstate import make_afterstate
+from afterstate import make_afterstate, flat_rows_to_tensor
 
 
 class NeuralScorer:
@@ -96,6 +97,38 @@ class NeuralScorer:
         # If current_piece_idx is not given, infer from the first candidate
         # (all candidates for a given piece type share the same type).
         cur = current_piece_idx if current_piece_idx is not None else piece_to_index(candidates[0].piece.kind)
+
+        # Fast path (phase D5): if the candidates came straight from
+        # Board.search_locks, we can re-run the search + lock + clear for
+        # every candidate in ONE Rust call and decode the packed rows with
+        # numpy. Candidates constructed by other means fall back to the
+        # per-candidate path (verified numerically identical: the packed
+        # rows are produced by the same lock + clear semantics).
+        bulk = getattr(board, "lock_candidates_full", None)
+        if bulk is not None and candidates and getattr(candidates[0], "piece", None) is not None:
+            # Re-derive the piece kind from the first candidate so the Rust
+            # search returns exactly the same candidate list (BFS order).
+            try:
+                kind = candidates[0].piece.kind
+                (states, xs, ys, lockouts, flat_rows, lines) = bulk(kind)
+                n = len(states)
+                matches = (
+                    n == len(candidates)
+                    and all(
+                        s == c.piece.state and x == c.piece.x and y == c.piece.y
+                        for s, x, y, c in zip(states, xs, ys, candidates)
+                    )
+                )
+            except Exception:
+                matches = False
+            if matches:
+                boards = flat_rows_to_tensor(flat_rows, n).to(self.device)
+                cur_t = torch.tensor([cur] * n, dtype=torch.long, device=self.device)
+                nxt_t = torch.tensor([nxt] * n, dtype=torch.long, device=self.device)
+                with torch.no_grad():
+                    out = self.net(boards, cur_t, nxt_t)  # [B, 1]
+                return [float(x) for x in out.squeeze(1).tolist()]
+
         boards = []
         for c in candidates:
             boards.append(make_afterstate(board, c).tensor)

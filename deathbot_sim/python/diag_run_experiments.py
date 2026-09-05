@@ -100,17 +100,25 @@ def run_training_subprocess(script: Path, argv: list[str], round_dir: Path,
 
 def run_experiment(name: str, script: Path, extra_cli: list[str],
                    start_weights: Path, rounds: int, games: int, epochs: int,
-                   eval_games: int, out_dir: Path) -> dict:
-    round_dir = out_dir / f"rounds_{name}"
+                   eval_games: int, out_dir: Path,
+                   legacy_lockout: bool = False) -> dict:
+    # Unique per-run directory: reusing round dirs across runs let stale
+    # rNN.pt files from an older experiment be evaluated as if current.
+    run_stamp = time.strftime("%Y%m%d_%H%M%S")
+    round_dir = out_dir / f"rounds_{name}_{run_stamp}"
     round_dir.mkdir(parents=True, exist_ok=True)
-    log_path = out_dir / f"train_{name}.log"
+    log_path = out_dir / f"train_{name}_{run_stamp}.log"
     argv = ["--rounds", str(rounds), "--games", str(games),
             "--epochs", str(epochs), "--seed", "42",
             "--weights-in", str(start_weights),
-            "--weights-out", str(out_dir / f"final_{name}.pt"),
+            "--weights-out", str(out_dir / f"final_{name}_{run_stamp}.pt"),
             *extra_cli]
+    if legacy_lockout and script.name == "selfplay.py":
+        argv.append("--legacy-lockout")
     result: dict = {"name": name, "script": str(script), "argv": argv,
-                    "start_weights": str(start_weights), "rounds": {}}
+                    "start_weights": str(start_weights),
+                    "run_stamp": run_stamp,
+                    "round_dir": str(round_dir), "rounds": {}}
     t0 = time.perf_counter()
     try:
         run_training_subprocess(script, argv, round_dir, log_path)
@@ -168,9 +176,18 @@ def main() -> None:
     ap.add_argument("--weights-in", default="model_weights_snapshot7.pt")
     ap.add_argument("--experiments", nargs="*", default=None,
                     help="subset: E1_current E2_legacy E3_refit E4_current_scratch")
-    ap.add_argument("--out", default="../_diag_out/experiments.json")
+    ap.add_argument("--out", default=None,
+                    help="output JSON (default: _diag_out/experiments_<stamp>.json "
+                         "— a fresh file per run, so old results are never "
+                         "overwritten)")
+    ap.add_argument("--legacy-lockout", action="store_true",
+                    help="pass --legacy-lockout to current-code experiments "
+                         "(historical game-over semantics)")
     args = ap.parse_args()
 
+    stamp = time.strftime("%Y%m%d_%H%M%S")
+    if args.out is None:
+        args.out = f"../_diag_out/experiments_{stamp}.json"
     out_file = (HERE / args.out).resolve()
     out_file.parent.mkdir(parents=True, exist_ok=True)
     out_dir = out_file.parent
@@ -185,16 +202,20 @@ def main() -> None:
         subprocess.run([PY, "-c", code], check=True, cwd=str(HERE))
 
     defs = {
+        # NOTE: E3_refit (selfplay_refit.py) and E7_raw_targets
+        # (selfplay_rawnorm.py) referenced modules deleted during the
+        # 2026-09-05 cleanup; their archived results remain in _diag_out/.
+        # Current-code experiments below all support the A2/A3/A4 fixes.
         "E1_current": (HERE / "selfplay.py", [], snap7),
         "E2_legacy": (HERE / "_legacy" / "selfplay.py", [], snap7),
-        "E3_refit": (HERE / "selfplay_refit.py", [], snap7),
         "E4_current_scratch": (HERE / "selfplay.py", [], empty),
         "E5_legacy_mp500": (HERE / "_legacy" / "selfplay.py",
                             ["--max-pieces", "500"], snap7),
         "E6_legacy_bigbuffer": (HERE / "_legacy" / "selfplay.py",
                                 ["--replay-capacity", "400000"], snap7),
-        "E7_raw_targets": (HERE / "selfplay_rawnorm.py", [], snap7),
         "E8_legacy_fullscale": (HERE / "_legacy" / "selfplay.py", [], snap7),
+        "E9_corrected_lockout": (HERE / "selfplay.py",
+                                 [], snap7),
     }
     names = args.experiments or list(defs)
     jobs = [(name, defs[name][0], defs[name][1], defs[name][2])
@@ -211,7 +232,8 @@ def main() -> None:
         futs = {
             pool.submit(run_experiment, name, script, extra, start,
                         args.rounds, args.games, args.epochs,
-                        args.eval_games, out_dir): name
+                        args.eval_games, out_dir,
+                        args.legacy_lockout): name
             for name, script, extra, start in jobs
         }
         for fut in as_completed(futs):

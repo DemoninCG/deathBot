@@ -1,0 +1,111 @@
+{
+  "weights": "C:\\My Things\\HTML\\Demonin's Item Shop\\other\\deathBot\\model_weights_snapshot7.pt",
+  "weights_sha256": "36139a2cff64b54b74dd8a00d7ecd427688f90ff38f8138d16da10e6ee7761ce",
+  "bank": "C:\\My Things\\HTML\\Demonin's Item Shop\\other\\deathBot\\deathbot_sim\\_diag_out\\state_bank_snapshot7_32games.npz",
+  "steps": 400,
+  "batch_size": 64,
+  "lr": 1e-05,
+  "loss": "smoothl1",
+  "seed": 42,
+  "anchor_mean": -85.0100326538086,
+  "anchor_std": 70.78878784179688,
+  "arms": {
+    "C2_selfdistill": {
+      "train_s": 19.5,
+      "mean_pieces": 532.5,
+      "median_pieces": 462.5,
+      "min_pieces": 333,
+      "max_pieces": 1017,
+      "per_seed": [
+        344,
+        1017,
+        334,
+        483,
+        718,
+        442,
+        589,
+        333
+      ],
+      "states_compared": 198,
+      "mean_kendall": 1.0,
+      "top1_agreement": 1.0,
+      "mean_top_margin_delta": 0.0
+    },
+    "C3_affine_fit": {
+      "train_s": 18.6,
+      "mean_pieces": 897.625,
+      "median_pieces": 865.5,
+      "min_pieces": 275,
+      "max_pieces": 1500,
+      "per_seed": [
+        674,
+        275,
+        1287,
+        1500,
+        1500,
+        334,
+        554,
+        1057
+      ],
+      "states_compared": 198,
+      "mean_kendall": 0.8126208823363459,
+      "top1_agreement": 0.8535353535353535,
+      "mean_top_margin_delta": 5.597373840784786
+    },
+    "T1_raw_mc": {
+      "train_s": 14.2,
+      "mean_pieces": 66.5,
+      "median_pieces": 64.5,
+      "min_pieces": 40,
+      "max_pieces": 93,
+      "per_seed": [
+        70,
+        61,
+        90,
+        49,
+        67,
+        62,
+        93,
+        40
+      ],
+      "states_compared": 198,
+      "mean_kendall": 0.6330569370392332,
+      "top1_agreement": 0.4595959595959596,
+      "mean_top_margin_delta": -3.272167322009501
+    },
+    "T3_anchor_mc": {
+      "train_s": 20.0,
+      "mean_pieces": 402.25,
+      "median_pieces": 353.5,
+      "min_pieces": 143,
+      "max_pieces": 677,
+      "per_seed": [
+        612,
+        309,
+        180,
+        621,
+        677,
+        278,
+        143,
+        398
+      ],
+      "states_compared": 198,
+      "mean_kendall": 0.8715769223277108,
+      "top1_agreement": 0.8181818181818182,
+      "mean_top_margin_delta": -1.0246044740532383
+    }
+  },
+  "incumbent": {
+    "mean_pieces": 532.5,
+    "per_seed": [
+      344,
+      1017,
+      334,
+      483,
+      718,
+      442,
+      589,
+      333
+    ]
+  }
+}

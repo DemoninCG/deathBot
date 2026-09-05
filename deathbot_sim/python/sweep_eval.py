@@ -116,7 +116,8 @@ def cosine(a: torch.Tensor, b: torch.Tensor) -> float:
 
 def _evaluate_one(args: tuple) -> dict:
     """Worker: greedy games for a single checkpoint. Returns per-game rows."""
-    (weights_path, games, seed, max_pieces, torch_threads, verbose) = args
+    (weights_path, games, seed, max_pieces, torch_threads, verbose,
+     legacy_lockout) = args
     torch.set_num_threads(torch_threads)
     from model import TAPNet
     from neural_scorer import NeuralScorer
@@ -133,7 +134,7 @@ def _evaluate_one(args: tuple) -> dict:
         t0 = time.perf_counter()
         trajectory, lines = play_game(
             scorer, random.Random(game_seed), epsilon=0.0,
-            max_pieces=max_pieces)
+            max_pieces=max_pieces, legacy_lockout=legacy_lockout)
         pieces = len(trajectory)
         rows.append({
             "seed": game_seed,
@@ -175,7 +176,12 @@ def main() -> None:
     parser.add_argument("--games", type=int, default=30)
     seeds = None
     parser.add_argument("--seed", type=int, default=42)
-    parser.add_argument("--max-pieces", type=int, default=3000)
+    parser.add_argument("--max-pieces", type=int, default=1500,
+                        help="piece cap (1500 = the documented benchmark; "
+                             "older sweeps used 3000)")
+    parser.add_argument("--legacy-lockout", action="store_true",
+                        help="use historical lockout semantics (reproduces "
+                             "the 2026-09-04 benchmark numbers)")
     parser.add_argument("--workers", type=int, default=max(1, (os.cpu_count() or 2)))
     parser.add_argument("--threads-per-worker", type=int, default=1)
     parser.add_argument("--verbose", action="store_true")
@@ -217,7 +223,8 @@ def main() -> None:
         print(row)
 
     jobs = [(str(p), args.games, args.seed, args.max_pieces,
-             args.threads_per_worker, args.verbose) for p in checkpoints]
+             args.threads_per_worker, args.verbose, args.legacy_lockout)
+            for p in checkpoints]
     t0 = time.perf_counter()
     per_ckpt = {}
     with ProcessPoolExecutor(max_workers=args.workers) as pool:

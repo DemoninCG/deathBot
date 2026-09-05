@@ -9,6 +9,7 @@ pub mod piece;
 pub mod rotation;
 pub mod action;
 pub mod pathfind;
+pub mod bulk;
 
 use pyo3::prelude::*;
 use pyo3::exceptions::PyValueError;
@@ -426,6 +427,75 @@ impl PyBoard {
     /// Convenience: count of distinct reachable lock positions.
     fn count_locks(&self, kind: PyPieceType) -> usize {
         pathfind::count_locks(&self.inner, kind.to_inner())
+    }
+
+    /// Bulk lock+clear every reachable candidate for `kind` in ONE FFI call.
+    ///
+    /// Returns `(rows, lines)` where `rows` is a flat list of
+    /// `len(candidates) * 21` u32 bitmasks (candidate-major order, matching
+    /// the order returned by `search_locks`) and `lines` is one line-count
+    /// per candidate. This replaces the N×(clone_board + lock + clear_lines
+    /// + row_bits) FFI round-trips in the Python trainer with a single call.
+    ///
+    /// NOTE: lockout (cells above the field) is NOT checked here — mirrors
+    /// the historical semantics where the caller must filter. Python-side
+    /// rollout code checks `locks_out` before committing.
+    fn lock_candidates_rows(&self, kind: PyPieceType) -> (Vec<u32>, Vec<usize>) {
+        let candidates = pathfind::search_locks(&self.inner, kind.to_inner());
+        let results = bulk::lock_candidates(&self.inner, &candidates);
+        let mut rows = Vec::with_capacity(candidates.len() * board::HEIGHT);
+        let mut lines = Vec::with_capacity(candidates.len());
+        for res in &results {
+            rows.extend_from_slice(&res.rows);
+            lines.push(res.lines_cleared);
+        }
+        (rows, lines)
+    }
+
+    /// Bulk search + lock + clear with FULL per-candidate metadata, all in
+    /// one FFI crossing:
+    ///   (state, x, y, locks_out, rows_flat, lines)
+    ///   - state/x/y per candidate (the grounded piece)
+    ///   - locks_out: whether locking this candidate would end the game
+    ///   - rows_flat: len(candidates) * 21 u32 bitmasks (post-lock, post-clear)
+    ///   - lines: one line count per candidate
+    #[pyo3(signature = (kind))]
+    fn lock_candidates_full(
+        &self,
+        kind: PyPieceType,
+    ) -> (Vec<i8>, Vec<i8>, Vec<i8>, Vec<bool>, Vec<u32>, Vec<usize>) {
+        let candidates = pathfind::search_locks(&self.inner, kind.to_inner());
+        let results = bulk::lock_candidates(&self.inner, &candidates);
+        let n = candidates.len();
+        let mut states = Vec::with_capacity(n);
+        let mut xs = Vec::with_capacity(n);
+        let mut ys = Vec::with_capacity(n);
+        let mut lockouts = Vec::with_capacity(n);
+        let mut rows = Vec::with_capacity(n * board::HEIGHT);
+        let mut lines = Vec::with_capacity(n);
+        for (cand, res) in candidates.iter().zip(results.iter()) {
+            states.push(cand.piece.state as i8);
+            xs.push(cand.piece.x);
+            ys.push(cand.piece.y);
+            lockouts.push(self.inner.locks_out(&cand.piece));
+            rows.extend_from_slice(&res.rows);
+            lines.push(res.lines_cleared);
+        }
+        (states, xs, ys, lockouts, rows, lines)
+    }
+
+    /// Reconstruct a board from 21 row bitmasks (bottom-first), e.g. the
+    /// packed rows returned by `lock_candidates_rows`.
+    #[staticmethod]
+    fn from_row_bits(rows: Vec<u32>) -> PyResult<PyBoard> {
+        if rows.len() != board::HEIGHT {
+            return Err(PyValueError::new_err(format!(
+                "expected {} row bitmasks, got {}",
+                board::HEIGHT,
+                rows.len()
+            )));
+        }
+        Ok(PyBoard { inner: bulk::board_from_rows(&rows) })
     }
 
     fn __repr__(&self) -> String {

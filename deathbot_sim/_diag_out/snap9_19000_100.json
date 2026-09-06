@@ -1,0 +1,615 @@
+[
+  {
+    "weights": "C:\\My Things\\HTML\\Demonin's Item Shop\\other\\deathBot\\model_weights_snapshot9.pt",
+    "sha256": "229bbe2a91bab6b1d6a58f25440e7504711aabe8dfc26d24dad9ee0461be46ed",
+    "games": [
+      {
+        "seed": 19000,
+        "pieces": 1377,
+        "lines": 535,
+        "capped": false
+      },
+      {
+        "seed": 19001,
+        "pieces": 284,
+        "lines": 98,
+        "capped": false
+      },
+      {
+        "seed": 19002,
+        "pieces": 1036,
+        "lines": 397,
+        "capped": false
+      },
+      {
+        "seed": 19003,
+        "pieces": 1244,
+        "lines": 481,
+        "capped": false
+      },
+      {
+        "seed": 19004,
+        "pieces": 453,
+        "lines": 164,
+        "capped": false
+      },
+      {
+        "seed": 19005,
+        "pieces": 300,
+        "lines": 104,
+        "capped": false
+      },
+      {
+        "seed": 19006,
+        "pieces": 444,
+        "lines": 160,
+        "capped": false
+      },
+      {
+        "seed": 19007,
+        "pieces": 358,
+        "lines": 126,
+        "capped": false
+      },
+      {
+        "seed": 19008,
+        "pieces": 300,
+        "lines": 103,
+        "capped": false
+      },
+      {
+        "seed": 19009,
+        "pieces": 354,
+        "lines": 124,
+        "capped": false
+      },
+      {
+        "seed": 19010,
+        "pieces": 435,
+        "lines": 157,
+        "capped": false
+      },
+      {
+        "seed": 19011,
+        "pieces": 441,
+        "lines": 160,
+        "capped": false
+      },
+      {
+        "seed": 19012,
+        "pieces": 879,
+        "lines": 336,
+        "capped": false
+      },
+      {
+        "seed": 19013,
+        "pieces": 1500,
+        "lines": 588,
+        "capped": true
+      },
+      {
+        "seed": 19014,
+        "pieces": 445,
+        "lines": 161,
+        "capped": false
+      },
+      {
+        "seed": 19015,
+        "pieces": 294,
+        "lines": 101,
+        "capped": false
+      },
+      {
+        "seed": 19016,
+        "pieces": 400,
+        "lines": 143,
+        "capped": false
+      },
+      {
+        "seed": 19017,
+        "pieces": 183,
+        "lines": 56,
+        "capped": false
+      },
+      {
+        "seed": 19018,
+        "pieces": 761,
+        "lines": 288,
+        "capped": false
+      },
+      {
+        "seed": 19019,
+        "pieces": 293,
+        "lines": 101,
+        "capped": false
+      },
+      {
+        "seed": 19020,
+        "pieces": 728,
+        "lines": 275,
+        "capped": false
+      },
+      {
+        "seed": 19021,
+        "pieces": 1152,
+        "lines": 447,
+        "capped": false
+      },
+      {
+        "seed": 19022,
+        "pieces": 1431,
+        "lines": 556,
+        "capped": false
+      },
+      {
+        "seed": 19023,
+        "pieces": 542,
+        "lines": 200,
+        "capped": false
+      },
+      {
+        "seed": 19024,
+        "pieces": 424,
+        "lines": 153,
+        "capped": false
+      },
+      {
+        "seed": 19025,
+        "pieces": 843,
+        "lines": 320,
+        "capped": false
+      },
+      {
+        "seed": 19026,
+        "pieces": 855,
+        "lines": 325,
+        "capped": false
+      },
+      {
+        "seed": 19027,
+        "pieces": 581,
+        "lines": 216,
+        "capped": false
+      },
+      {
+        "seed": 19028,
+        "pieces": 812,
+        "lines": 308,
+        "capped": false
+      },
+      {
+        "seed": 19029,
+        "pieces": 647,
+        "lines": 241,
+        "capped": false
+      },
+      {
+        "seed": 19030,
+        "pieces": 371,
+        "lines": 132,
+        "capped": false
+      },
+      {
+        "seed": 19031,
+        "pieces": 1107,
+        "lines": 426,
+        "capped": false
+      },
+      {
+        "seed": 19032,
+        "pieces": 1500,
+        "lines": 589,
+        "capped": true
+      },
+      {
+        "seed": 19033,
+        "pieces": 339,
+        "lines": 119,
+        "capped": false
+      },
+      {
+        "seed": 19034,
+        "pieces": 581,
+        "lines": 216,
+        "capped": false
+      },
+      {
+        "seed": 19035,
+        "pieces": 696,
+        "lines": 261,
+        "capped": false
+      },
+      {
+        "seed": 19036,
+        "pieces": 211,
+        "lines": 68,
+        "capped": false
+      },
+      {
+        "seed": 19037,
+        "pieces": 575,
+        "lines": 213,
+        "capped": false
+      },
+      {
+        "seed": 19038,
+        "pieces": 326,
+        "lines": 115,
+        "capped": false
+      },
+      {
+        "seed": 19039,
+        "pieces": 1500,
+        "lines": 593,
+        "capped": true
+      },
+      {
+        "seed": 19040,
+        "pieces": 319,
+        "lines": 111,
+        "capped": false
+      },
+      {
+        "seed": 19041,
+        "pieces": 620,
+        "lines": 232,
+        "capped": false
+      },
+      {
+        "seed": 19042,
+        "pieces": 313,
+        "lines": 109,
+        "capped": false
+      },
+      {
+        "seed": 19043,
+        "pieces": 1081,
+        "lines": 416,
+        "capped": false
+      },
+      {
+        "seed": 19044,
+        "pieces": 514,
+        "lines": 190,
+        "capped": false
+      },
+      {
+        "seed": 19045,
+        "pieces": 1265,
+        "lines": 490,
+        "capped": false
+      },
+      {
+        "seed": 19046,
+        "pieces": 462,
+        "lines": 168,
+        "capped": false
+      },
+      {
+        "seed": 19047,
+        "pieces": 405,
+        "lines": 145,
+        "capped": false
+      },
+      {
+        "seed": 19048,
+        "pieces": 313,
+        "lines": 109,
+        "capped": false
+      },
+      {
+        "seed": 19049,
+        "pieces": 571,
+        "lines": 213,
+        "capped": false
+      },
+      {
+        "seed": 19050,
+        "pieces": 923,
+        "lines": 352,
+        "capped": false
+      },
+      {
+        "seed": 19051,
+        "pieces": 1500,
+        "lines": 590,
+        "capped": true
+      },
+      {
+        "seed": 19052,
+        "pieces": 648,
+        "lines": 243,
+        "capped": false
+      },
+      {
+        "seed": 19053,
+        "pieces": 828,
+        "lines": 315,
+        "capped": false
+      },
+      {
+        "seed": 19054,
+        "pieces": 659,
+        "lines": 246,
+        "capped": false
+      },
+      {
+        "seed": 19055,
+        "pieces": 300,
+        "lines": 103,
+        "capped": false
+      },
+      {
+        "seed": 19056,
+        "pieces": 1500,
+        "lines": 590,
+        "capped": true
+      },
+      {
+        "seed": 19057,
+        "pieces": 391,
+        "lines": 140,
+        "capped": false
+      },
+      {
+        "seed": 19058,
+        "pieces": 457,
+        "lines": 167,
+        "capped": false
+      },
+      {
+        "seed": 19059,
+        "pieces": 1195,
+        "lines": 462,
+        "capped": false
+      },
+      {
+        "seed": 19060,
+        "pieces": 432,
+        "lines": 156,
+        "capped": false
+      },
+      {
+        "seed": 19061,
+        "pieces": 1500,
+        "lines": 590,
+        "capped": true
+      },
+      {
+        "seed": 19062,
+        "pieces": 993,
+        "lines": 381,
+        "capped": false
+      },
+      {
+        "seed": 19063,
+        "pieces": 917,
+        "lines": 350,
+        "capped": false
+      },
+      {
+        "seed": 19064,
+        "pieces": 484,
+        "lines": 177,
+        "capped": false
+      },
+      {
+        "seed": 19065,
+        "pieces": 352,
+        "lines": 127,
+        "capped": false
+      },
+      {
+        "seed": 19066,
+        "pieces": 927,
+        "lines": 354,
+        "capped": false
+      },
+      {
+        "seed": 19067,
+        "pieces": 1142,
+        "lines": 440,
+        "capped": false
+      },
+      {
+        "seed": 19068,
+        "pieces": 904,
+        "lines": 345,
+        "capped": false
+      },
+      {
+        "seed": 19069,
+        "pieces": 377,
+        "lines": 135,
+        "capped": false
+      },
+      {
+        "seed": 19070,
+        "pieces": 443,
+        "lines": 161,
+        "capped": false
+      },
+      {
+        "seed": 19071,
+        "pieces": 650,
+        "lines": 244,
+        "capped": false
+      },
+      {
+        "seed": 19072,
+        "pieces": 1339,
+        "lines": 520,
+        "capped": false
+      },
+      {
+        "seed": 19073,
+        "pieces": 547,
+        "lines": 202,
+        "capped": false
+      },
+      {
+        "seed": 19074,
+        "pieces": 1056,
+        "lines": 406,
+        "capped": false
+      },
+      {
+        "seed": 19075,
+        "pieces": 1500,
+        "lines": 597,
+        "capped": true
+      },
+      {
+        "seed": 19076,
+        "pieces": 291,
+        "lines": 103,
+        "capped": false
+      },
+      {
+        "seed": 19077,
+        "pieces": 566,
+        "lines": 209,
+        "capped": false
+      },
+      {
+        "seed": 19078,
+        "pieces": 500,
+        "lines": 184,
+        "capped": false
+      },
+      {
+        "seed": 19079,
+        "pieces": 408,
+        "lines": 146,
+        "capped": false
+      },
+      {
+        "seed": 19080,
+        "pieces": 886,
+        "lines": 338,
+        "capped": false
+      },
+      {
+        "seed": 19081,
+        "pieces": 460,
+        "lines": 167,
+        "capped": false
+      },
+      {
+        "seed": 19082,
+        "pieces": 790,
+        "lines": 299,
+        "capped": false
+      },
+      {
+        "seed": 19083,
+        "pieces": 1479,
+        "lines": 576,
+        "capped": false
+      },
+      {
+        "seed": 19084,
+        "pieces": 390,
+        "lines": 139,
+        "capped": false
+      },
+      {
+        "seed": 19085,
+        "pieces": 711,
+        "lines": 268,
+        "capped": false
+      },
+      {
+        "seed": 19086,
+        "pieces": 497,
+        "lines": 182,
+        "capped": false
+      },
+      {
+        "seed": 19087,
+        "pieces": 830,
+        "lines": 315,
+        "capped": false
+      },
+      {
+        "seed": 19088,
+        "pieces": 213,
+        "lines": 69,
+        "capped": false
+      },
+      {
+        "seed": 19089,
+        "pieces": 990,
+        "lines": 379,
+        "capped": false
+      },
+      {
+        "seed": 19090,
+        "pieces": 218,
+        "lines": 72,
+        "capped": false
+      },
+      {
+        "seed": 19091,
+        "pieces": 321,
+        "lines": 111,
+        "capped": false
+      },
+      {
+        "seed": 19092,
+        "pieces": 968,
+        "lines": 371,
+        "capped": false
+      },
+      {
+        "seed": 19093,
+        "pieces": 496,
+        "lines": 182,
+        "capped": false
+      },
+      {
+        "seed": 19094,
+        "pieces": 694,
+        "lines": 262,
+        "capped": false
+      },
+      {
+        "seed": 19095,
+        "pieces": 621,
+        "lines": 232,
+        "capped": false
+      },
+      {
+        "seed": 19096,
+        "pieces": 636,
+        "lines": 239,
+        "capped": false
+      },
+      {
+        "seed": 19097,
+        "pieces": 545,
+        "lines": 202,
+        "capped": false
+      },
+      {
+        "seed": 19098,
+        "pieces": 1403,
+        "lines": 545,
+        "capped": false
+      },
+      {
+        "seed": 19099,
+        "pieces": 1007,
+        "lines": 387,
+        "capped": false
+      }
+    ],
+    "mean_pieces": 707.49,
+    "median_pieces": 581.0,
+    "stdev_pieces": 383.88764915234924,
+    "min_pieces": 183,
+    "max_pieces": 1500,
+    "mean_lines": 267.09,
+    "capped_games": 7
+  }
+]

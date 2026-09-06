@@ -14,6 +14,8 @@ Two panels in one window:
 
 Run:
     python viz_live.py --nn --weights model_weights.pt
+    python viz_live.py --nn --weights ../../model_weights_snapshot9.pt --two-ply
+    python viz_live.py --nn --weights ../../model_weights_snapshot9.pt --two-ply --line-bonus 1,3,5,8
     python viz_live.py --piece T --board stack
     python viz_live.py --help
 
@@ -103,6 +105,79 @@ _PIECE_INDEX = {
 
 
 # ---- Game runner (continuous play) ---------------------------------------
+
+class TwoPlyVizScorer:
+    """Scorer-protocol adapter around full-expansion 2-ply lookahead.
+
+    Implements the same `score`/`score_batch` interface as NeuralScorer so
+    GameRunner works unchanged: `score_batch` returns the 2-ply value
+    P2(s,a) = v(afterstate) + gamma * max_b v(next-afterstates) for every
+    candidate, with dying branches at -1e6 and lockout branches at -inf
+    (masked out of selection by GameRunner's argmax only when a survivor
+    exists). Full expansion (no top-k filter) — this is the validated
+    snapshot9+2-ply configuration, not the truncated beams.
+    """
+
+    def __init__(self, net, *, gamma_ply: float = 0.999,
+                 line_bonus: dict | None = None) -> None:
+        from two_ply import TwoPlyScorer, DEAD_PENALTY
+        self._two_ply = TwoPlyScorer(net, beam=10**9, gamma_ply=gamma_ply,
+                                     line_bonus=line_bonus)
+        self._dead = DEAD_PENALTY
+        self.net = net
+
+    def score(self, board, candidate) -> float:
+        return self.score_batch(board, [candidate])[0]
+
+    def score_batch(self, board, candidates, current_piece_idx=None,
+                    next_piece_idx=None) -> list[float]:
+        import numpy as np
+        if not candidates:
+            return []
+        two_ply = self._two_ply
+        # 1-ply values + successors for all viable candidates.
+        kind = candidates[0].piece.kind
+        placed = two_ply._placements(board, kind)
+        succs1, vals1 = placed[0], placed[1]
+        lines1 = placed[2] if len(placed) > 3 else [0] * len(vals1)
+        if not vals1:
+            return [float("-inf")] * len(candidates)
+        # Map viable-list position -> candidate index (lockouts excluded
+        # from _placements; search_locks order matches candidates order).
+        viable_pos = [i for i, c in enumerate(candidates)
+                      if not board.locks_out(c.piece)]
+        # Next-piece kind for the 2nd ply: prefer the explicit index the
+        # runner passes; fall back to the candidate kind approximation.
+        next_kind = self._kind_from_idx(next_piece_idx, fallback=kind)
+        out = [float("-inf")] * len(candidates)
+        for local, cand_idx in enumerate(viable_pos):
+            placed2 = two_ply._placements(succs1[local], next_kind)
+            succs2, vals2 = placed2[0], placed2[1]
+            if not vals2:
+                out[cand_idx] = self._dead
+            else:
+                bonus = float(two_ply.line_bonus.get(int(lines1[local]), 0.0))
+                out[cand_idx] = (vals1[local] + bonus
+                                 + two_ply.gamma_ply * max(vals2))
+        return out
+
+    @staticmethod
+    def _kind_from_idx(idx, *, fallback):
+        import deathbot_sim as _ds
+        if idx is None:
+            return fallback
+        if not isinstance(idx, int):
+            try:
+                idx = int(idx)
+            except (TypeError, ValueError):
+                return fallback
+        order = [_ds.PieceType.I, _ds.PieceType.O, _ds.PieceType.T,
+                 _ds.PieceType.S, _ds.PieceType.Z, _ds.PieceType.J,
+                 _ds.PieceType.L]
+        if 0 <= idx < len(order):
+            return order[idx]
+        return fallback
+
 
 class GameRunner:
     """Plays one Death-mode game step at a time using a scorer."""
@@ -338,6 +413,9 @@ def draw_game_panel(
     stat_line("level", f"{runner.level}", stats_y, STAT_GOOD)
     stat_line("pieces", f"{runner.pieces_placed}", stats_y + 16)
     stat_line("lines", f"{runner.lines_cleared}", stats_y + 32)
+    if runner.pieces_placed:
+        stat_line("l/100", f"{100.0 * runner.lines_cleared / runner.pieces_placed:.1f}",
+                  stats_y + 48)
 
     agg_x = stats_x + 180
 
@@ -401,7 +479,8 @@ def draw_board(surface, board, piece, rect, cell_px, piece_color=ACTIVE, *,
 
 
 def draw_testing_panel(surface, board, candidates, scores, current_idx, best_idx,
-                       font, small_font, rect, net) -> None:
+                       font, small_font, rect, net,
+                       candidate_lines: list[int] | None = None) -> None:
     pygame.draw.rect(surface, PANEL_BG, rect)
     pygame.draw.rect(surface, GRID, rect, 1)
     surface.blit(font.render("Testing (lock candidates)", True, TEXT),
@@ -442,8 +521,16 @@ def draw_testing_panel(surface, board, candidates, scores, current_idx, best_idx
         y = scores_y + 20 + i * 18
         color = BEST if orig_idx == best_idx else TEXT
         c = candidates[orig_idx]
+        line_tag = ""
+        if candidate_lines is not None and orig_idx < len(candidate_lines):
+            n = int(candidate_lines[orig_idx])
+            if n == 4:
+                line_tag = "  TETRIS"
+                color = (255, 220, 80)
+            elif n > 0:
+                line_tag = f"  +{n}"
         surface.blit(small_font.render(
-            f"#{i+1}  s={sc:+.3f}  st={c.piece.state} x={c.piece.x}", True, color),
+            f"#{i+1}  s={sc:+.3f}  st={c.piece.state} x={c.piece.x}{line_tag}", True, color),
             (scores_x, y))
         bar_w = max(0, min(120, int(sc * 40 + 60)))
         pygame.draw.rect(surface, SCORE_BAR, (scores_x + 180, y + 4, bar_w, 8))
@@ -468,7 +555,9 @@ DEMO_BOARDS = {
 }
 
 
-def make_scorer(use_nn: bool, weights_path: str | None = None):
+def make_scorer(use_nn: bool, weights_path: str | None = None,
+                 two_ply: bool = False, gamma_ply: float = 0.999,
+                 line_bonus: dict | None = None):
     if use_nn:
         if not _TORCH_AVAILABLE:
             print("torch not available; falling back to MockScorer")
@@ -483,6 +572,12 @@ def make_scorer(use_nn: bool, weights_path: str | None = None):
                 print(f"loaded NN weights from {p}")
             else:
                 print(f"weights file {p} not found; using untrained net")
+        net.eval()
+        if two_ply:
+            print(f"using full-expansion 2-ply lookahead (gamma={gamma_ply}, "
+                  f"line_bonus={line_bonus})")
+            return TwoPlyVizScorer(net, gamma_ply=gamma_ply,
+                                   line_bonus=line_bonus)
         return NeuralScorer(net=net)
     return MockNetwork()
 
@@ -495,6 +590,9 @@ def main() -> None:
     board_name = "stack"
     use_nn = False
     weights_path: str | None = None
+    use_two_ply = False
+    gamma_ply = 0.999
+    line_bonus: dict | None = None
     for i, a in enumerate(args):
         if a == "--piece" and i + 1 < len(args):
             piece_name = args[i + 1].upper()
@@ -508,6 +606,19 @@ def main() -> None:
             weights_path = args[i + 1]
         elif a.startswith("--weights="):
             weights_path = a.split("=", 1)[1]
+        elif a == "--two-ply":
+            use_two_ply = True
+        elif a == "--gamma-ply" and i + 1 < len(args):
+            gamma_ply = float(args[i + 1])
+        elif a.startswith("--gamma-ply="):
+            gamma_ply = float(a.split("=", 1)[1])
+        elif a == "--line-bonus" and i + 1 < len(args):
+            # "1,3,5,8" -> {1:1.0, 2:3.0, 3:5.0, 4:8.0} (z-units)
+            vals = [float(x) for x in args[i + 1].split(",")]
+            line_bonus = {n + 1: v for n, v in enumerate(vals)}
+        elif a.startswith("--line-bonus="):
+            vals = [float(x) for x in a.split("=", 1)[1].split(",")]
+            line_bonus = {n + 1: v for n, v in enumerate(vals)}
     if piece_name not in PIECE_KINDS:
         print(f"unknown piece {piece_name!r}; choose from {list(PIECE_KINDS)}")
         sys.exit(1)
@@ -518,8 +629,10 @@ def main() -> None:
         test_board = _parse_board(board_name)
     test_kind = PIECE_KINDS[piece_name]
 
-    scorer = make_scorer(use_nn, weights_path)
-    scorer_name = "NeuralScorer" if use_nn else "MockScorer"
+    scorer = make_scorer(use_nn, weights_path, two_ply=use_two_ply,
+                         gamma_ply=gamma_ply, line_bonus=line_bonus)
+    scorer_name = ("TwoPly(snapshot9)" if (use_nn and use_two_ply)
+                   else "NeuralScorer" if use_nn else "MockScorer")
 
     rng = random.Random(42)
     runner = GameRunner(scorer, rng, epsilon=0.0)
@@ -532,6 +645,13 @@ def main() -> None:
                                           current_piece_idx=test_cur_idx)
     else:
         test_scores = [scorer.score(test_board, c) for c in test_candidates]
+    try:
+        _res = test_board.lock_candidates_full(test_kind)
+        test_lines = [int(x) for x in _res[5]]
+        if len(test_lines) != len(test_candidates):
+            test_lines = [0] * len(test_candidates)
+    except Exception:
+        test_lines = [0] * len(test_candidates)
     test_best_idx = (max(range(len(test_scores)), key=lambda i: test_scores[i])
                      if test_scores else 0)
     test_current_idx = 0
@@ -579,8 +699,14 @@ def main() -> None:
                     reduced_motion = not reduced_motion
                 elif event.key == pygame.K_n:
                     use_nn = not use_nn
-                    scorer = make_scorer(use_nn, weights_path)
-                    scorer_name = "NeuralScorer" if use_nn else "MockScorer"
+                    scorer = make_scorer(use_nn, weights_path,
+                                         two_ply=use_two_ply,
+                                         gamma_ply=gamma_ply,
+                                         line_bonus=line_bonus)
+                    scorer_name = ("TwoPly(snapshot9)"
+                                   if (use_nn and use_two_ply)
+                                   else "NeuralScorer" if use_nn
+                                   else "MockScorer")
                     runner.scorer = scorer
                     if hasattr(scorer, "score_batch") and test_candidates:
                         test_scores = scorer.score_batch(
@@ -628,7 +754,8 @@ def main() -> None:
                         game_rect, game_step_timer, game_step_interval)
         draw_testing_panel(screen, test_board, test_candidates, test_scores,
                            test_current_idx, test_best_idx,
-                           font, small_font, test_rect, scorer)
+                           font, small_font, test_rect, scorer,
+                           candidate_lines=test_lines)
 
         hint = small_font.render(
             f"{scorer_name} | SPACE pause | <-/-> test step | R slow | "

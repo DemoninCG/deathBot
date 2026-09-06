@@ -701,3 +701,262 @@ update rule the online loop can now iterate with.
 
 Artifacts: `phase3_round{1,2}.json`, `phase3_P{1..4}_*_seed42.pt`,
 `val_P3_7000.json`, `val_snap9_7000.json`, `_xcheck_d4_panel6000.json`.
+
+---
+
+## 10. Online fitted-TD session 1 (2026-09-05, session 4) — `python/train_fitd.py`
+
+First online campaign, deliberately small: 3 rounds × 8 games × 200 Adam
+updates (batch 64, lr 1e-5, γ=0.999, ε=0.05, target-net refresh every 2
+rounds) from snapshot9. Transitions carry successor boards, so every batch
+uses the Bellman-image target from Phase 3 round 2:
+`z(s) → γ·z_tgt(s′) + (1−γ)·z_online(s)` with a lagged target net; terminals
+(no successor) fall back to `z_online(s)`. New tooling: `train_fitd.py`
+(dev-panel freshness assertion, `.best.pt` tracking, per-round JSON).
+
+Dev panel: `_diag_out/dev_panel_fitd1_32.json` (seeds 11000–11031, fresh;
+registry updated). Snapshot9 dev baseline: 703.2.
+
+### Per-round trajectory (32-tape dev panel)
+
+| round | transitions | rollout pieces avg | loss | dev mean | Δ vs start |
+|---|---:|---:|---:|---:|---:|
+| start | — | — | — | 703.2 | — |
+| 1 | 2838 | 355 | 11.7 | 602.4 | −100.8 |
+| 2 | 2430 | 304 | 10.9 | **824.8** | **+121.6** |
+| 3 | 2923 | 365 | 11.6 | 571.7 | −131.6 |
+
+Round-to-round swings (±120) dwarf the trend: with 8 games/round the
+*rollout* variance alone (150–838 pieces) dominates. The round-2 "best"
+was kept by the guardrail; note the target net refreshed between rounds 2
+and 3.
+
+### Final tight-CI screen (100 paired games, seeds 12000–12099, never used before)
+
+| model | mean | median | capped | under-100 |
+|---|---:|---:|---:|---:|
+| fitd1.best (round 2) | 749.2 | 680 | 11 | 0 |
+| snapshot9 | 665.9 | 536 | 9 | 0 |
+
+Paired: **delta +83.3, t +1.36, 95% CI [−34, +202], W/T/L 54/0/46**.
+Positive but **not significant** at n=100 (paired SD 615 — one 1500-cap
+game swings the mean by 15). No degradation either: under-100 deaths 0/0,
+so the stable-update property held online exactly as the Phase 3 gate
+predicted.
+
+### What session 1 establishes
+
+1. **The online loop is safe.** Three rounds of live Bellman-image fitting
+   produced no collapse (the historical failure mode) — the Phase 3 gate
+   transfers from fixed data to the online loop.
+2. **A plausible positive signal (+83)** that needs more data or more
+   training to confirm. The CI math: at paired-SD ~615, reaching t≥2
+   requires either ~4× the games (400) or a larger true effect (more
+   rounds of training before testing).
+3. **Session-level measurement noise is the bottleneck.** Per-round dev
+   means (±120 on 32 tapes) cannot resolve round-level improvements; only
+   the final 100+ game screen can.
+
+### Session 2 plan (bigger before longer)
+
+- 8 rounds × 16 games × 400 updates (≈8× session 1's transitions), same
+  hyperparameters, then a **400-game** paired final screen (CI ±~60 at
+  SD 615 — resolvable if the +83 effect is real).
+- If the effect confirms: longer unattended sessions and the 8000s
+  promotion panel. If it decays to zero: the Bellman image alone is only a
+  stabilizer, and the next lever is *targeted* exploration data (the plan's
+  paired-rollout branch) rather than more of the same updates.
+
+Artifacts: `fitd_session1.{pt,pt.best.pt,json}`,
+`fitd1_final_100games.json`, `snap9_100games.json`,
+`dev_panel_fitd1_32.json`.
+
+---
+
+## 11. Online fitted-TD session 2 (2026-09-05, session 4 cont.) — the verdict
+
+8 rounds × 16 games × 400 updates (~8× session 1's transition volume; 46,632
+transitions in replay), same Bellman-image update, target net refreshed every
+3 rounds. Dev panel 13000s: snapshot9 baseline 747.0.
+
+Dev trajectory: 784 → 726 → 686 → 658 → 681 → **844.1 (best, round 6)** →
+698 → 837. Same pattern as session 1: round-to-round swings (±100) swamp any
+trend; the "best" is again a mid-session round that happened to land high.
+
+### Final screen: 400 paired games (seeds 14000–14399, never used before)
+
+| model | mean | median | capped | under-100 |
+|---|---:|---:|---:|---:|
+| fitd2.best (round 6) | 777.8 | 673 | 56 | 1 |
+| snapshot9 | 762.6 | 692 | 38 | 0 |
+
+Paired: **delta +15.1, t +0.51, 95% CI [−42, +73], W/L 194/204, paired SD
+590.** Statistically indistinguishable from zero.
+
+### The verdict on fitted-TD self-play (2 sessions, ~30k updates total)
+
+1. **Session 1's +83 (n=100) did not survive.** At n=400 the effect is +15
+   ± 58. Combined with session 1's CI [−34, +202], the honest conclusion is:
+   **fitted-TD Bellman-image self-play is a *stabilizer*, not an improver** —
+   it holds the policy at snapshot9's level (through 8 rounds and ~47k
+   transitions of live training with zero degradation, which the July code
+   could never do) but does not climb.
+2. This matches the Phase 3 fixed-data prediction exactly: the Bellman image
+   of the incumbent's own function has no new information to give. Fitting
+   the function toward its own bootstrap image converges to… itself. The
+   +83 was panel luck; the 400-game number is the truth.
+3. **What the stability is still worth:** the loop is now a safe chassis.
+   Whatever improvement signal we plug in (better data, better targets) can
+   be run overnight without catastrophic risk — the thing that was missing
+   all along.
+
+### Where improvement must come from next (evidence-ranked)
+
+The fixed-data campaign showed the only arm that ever *improved* play was
+fitting toward a *strictly monotone transform of the incumbent's outputs*
+(C3 → snapshot9, +230 validated) — trajectory smoothing, not new information.
+TD on the incumbent's own function is also self-referential but *not*
+smoothing (it bootstraps rather than regresses to fixed targets). The
+untested levers, in order of expected value:
+
+1. **Combine them**: alternate distillation rounds (C3-style, scale 30 /
+   400 steps — the proven smoothing lever) with fitted-TD rounds in the
+   same online loop. Distillation provides the compressive step, TD the
+   consistency check.
+2. **Real evaluation signal into the Bellman image**: the current "reward"
+   is implicit (the (1−γ)·z(s) term). A measured per-placement shaping term
+   (e.g. heuristic delta on the successor, scaled into z units) would give
+   the bootstrap something to be right about. Must be validated with the
+   Phase 2 fixed-data controls first — any absolute signal is poison until
+   proven otherwise.
+3. **Targeted exploration data** (plan's paired-rollout branch): the ε=0.05
+   rollouts average ~350 pieces vs ~750 greedy — training states are heavily
+   weighted toward weak-game situations. A collector that biases toward
+   near-death states (where value estimates matter most) would change what
+   the same updates can learn.
+
+Artifacts: `fitd_session2.{pt,pt.best.pt,json}`,
+`fitd2_final_400games.json`, `snap9_400games.json`,
+`dev_panel_fitd2_32.json`.
+
+---
+
+## 12. Standard-levers campaign (2026-09-06) — search, policy-gradient, counterfactuals
+
+The user challenged whether the unusual distillation/TD path was really more
+promising than standard methods. Three standard levers were tested head-to-head.
+
+### Experiment 1: 2-ply lookahead (`two_ply.py`, `diag_two_ply.py`) — **REVERSED 2026-09-06: full expansion is a large validated win**
+
+`P2(s,a) = v(afterstate) + γ·max_b v(next-afterstates)`, full expansion over
+ALL viable 1-ply candidates (beam=100 ≥ bank max 35/state; the code's
+`beam` is a top-k expansion filter, not a search width).
+
+The original screen (beams {1,3,5,10}, panel 17000s) was a **truncation
+artifact, not a 2-ply result**: unexpanded candidates keep `final = v1`
+while expanded ones get `v1 + γ·max(v2)` with `max(v2)` almost always
+negative, so beam < n_candidates systematically prefers *unexpanded bad
+moves* (beam=1 provably picks 1-ply rank 2 on a checked state). The
+"uncalibrated values" diagnosis was wrong — a bank probe (150 states)
+showed v1 and max(v2) on the SAME scale (means −213.3 vs −213.7, corr
+0.99, mean |diff| 13.1 vs across-state std 116).
+
+Corrected results (snapshot9 weights, corrected lockout, cap 1500):
+
+| panel | beam-0 (1-ply) | beam-100 (full 2-ply) | paired delta | t | W/L/T |
+|---|---|---|---|---|---|
+| 3000–3029 ad-hoc pilot | 603.1 (1/30 cap) | **1500.0 (30/30 cap)** | +896.9 | — | 29/0/1* |
+| 20000–20029 fresh validation | 994.6 (8/30 cap) | **1500.0 (30/30 cap)** | **+505.4** | **+6.16** | 22/0/8 |
+
+\* pilot made no decision (see registry note); the 20000s panel is the
+decision panel. Cap probe (seeds 20100–20103, cap 5000): beam-100 **4/4
+capped at 5000** (~1998 lines/game); beam-0 1040.5 on the same seeds.
+**The 1500 cap truncates every 2-ply game — true means are understated.**
+
+Cost: ~400 s/game at cap 1500 (~16× 1-ply; was 1.7–6.8 s/game for the
+broken truncated beams). No training involved — pure inference-time search.
+
+Also fixed: `play_game_2ply`'s lines counter double-cleared (bulk rows are
+already post-clear; `clear_lines()` re-reported 0). Lines now read from
+`lock_candidates_full` index 5 (verified: 76 lines/200 pieces on seeds
+3000/3001 vs 0 before).
+
+Artifacts: `two_ply_full30.json` (pilot), `two_ply_fresh20000.json`
+(validation), `two_ply_cap5000.json` (cap probe).
+
+### Experiment 2: policy-gradient labels (`diag_sil.py`) — **neutral at n=100**
+
+Self-imitation learning (Oh et al. 2018 style, Bellman-shaped advantage in
+z-units): `A = [γ·z(s′) + (1−γ)·z(s)] − z(s)`, policy-softmax CE toward
+advantage-weighted taken actions; value head untouched — no value regression
+anywhere, so the failure mode of Phase 2 cannot occur by construction.
+
+Screen (12 games, panel 18000s, snapshot9 ref 631.5): SIL1 865.9 (+234),
+SIL3 856.4 (+225), SIL10 745.2 (+114) — all positive, 8/4 W/L.
+
+**Final (100 paired games, fresh seeds 19000–19099):**
+
+| model | mean | median |
+|---|---:|---:|
+| SIL1 (T=1) | 739.4 | 620 |
+| SIL3 (T=3) | 709.6 | 592 |
+| snapshot9 | 707.5 | 581 |
+
+SIL1 vs snap9: **+31.9, t +0.53, CI [−84, +148], W/L 55/44** — the +234
+screen signal shrank to noise at n=100. Same pattern as the fitd sessions:
+12-game screens are unreliable; 100 games resolves ~±120.
+
+### Experiment 3: paired-rollout counterfactual labels (`diag_paired.py`) — **weak signal, quantified**
+
+100 ambiguous states (incumbent top-2 margin ≤ 2.0; 6,237 such states in the
+bank): chosen move vs top-2 rivals, 3 shared future tapes, 80-piece greedy
+continuation. Cost 5.4 s/state.
+
+Findings:
+- The incumbent's chosen move beats its best rival **84%** of the time —
+  snapshot9's 1-ply choices are already good.
+- Within-state survival spread: mean 5.2 pieces, **median 0** — most
+  ambiguous ties are genuinely equivalent at 80-piece horizon.
+- Mean chosen-minus-best-rival: −1.0 pieces; only 4% of states have a rival
+  better by >5 pieces, 10% worse by >5.
+- The signal exists but is small and rare: ~4 exploitable states per 100
+  ambiguous states, at 5 s/state. Scaled to the whole bank (~6.2k ambiguous
+  states), that's ~9 hours of labeling for maybe ~250 informative
+  comparisons — a slow but genuinely causal signal.
+
+### Campaign verdict (updated 2026-09-06)
+
+| lever | screening promise | confirmed at scale |
+|---|---|---|
+| **full-expansion 2-ply** | 30/30 capped | **+505, t +6.16 (30 fresh games); 4/4 × 5000-cap** ✅ |
+| SIL policy-gradient | +234 | **+32 ± 116 (n.s.)** |
+| paired rollouts | small (5.2 ± 5.2) | signal exists, expensive |
+
+The "snapshot9 is at its 1-ply plateau" framing still holds for *1-ply
+greedy play* — but it no longer bounds what the system can do, because
+**search multiplies the value of the existing network enormously**, exactly
+the AlphaZero lesson §12 anticipated under the wrong premise (no separate
+calibrated head was needed). The remaining questions are all about search,
+not representation:
+
+1. **Adopt full 2-ply as the playing policy** (snapshot9 weights unchanged).
+   Next: measure the true ceiling with uncapped/long-cap games, and try
+   cheap variants that keep most of the gain: top-k expansion (e.g. beam 5–8
+   over FULLY expanded top-k with a de-biased `v1 + γ·(max(v2)−mean(v2))`
+   form so partial expansion is valid), and γ_ply sensitivity.
+2. **Better representation is deprioritized** — it addressed a 1-ply
+   bottleneck that search just bypassed. Revisit only if 3-ply or
+   search-aware training stalls.
+3. **Training direction changes**: distill/search-aware targets (e.g. distill
+   2-ply choices back into the 1-ply net for a fast policy, or fitd-TD on
+   2-ply rollouts) now have a teacher worth imitating — unlike the heuristic
+   or the 1-ply incumbent. The fitd loop remains the safe chassis for this.
+4. **Baselines**: snapshot9 + full 2-ply is the new champion configuration
+   (no new weights file — same snapshot9, new inference). Keep SIL1/fitd
+   results as 1-ply references.
+
+Artifacts: `two_ply.py`, `diag_two_ply.py`, `two_ply_screen{,_v2}.json`,
+`two_ply_full30.json`, `two_ply_fresh20000.json`, `two_ply_cap5000.json`,
+`diag_sil.py`, `sil_screen.json`, `sil_T{1,3,10}_seed42.pt`,
+`sil{1,3}_final_100.json`, `snap9_19000_100.json`, `diag_paired.py`,
+`paired_labels.npz`.

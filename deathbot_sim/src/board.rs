@@ -85,7 +85,92 @@ impl Board {
     /// Drop the piece under 20G gravity: shift it down as far as it stays
     /// valid. Returns the grounded piece. Assumes the piece is currently
     /// valid; if not, returns it unchanged.
+    ///
+    /// Fast path (item 6): compute the drop distance column-wise from the
+    /// board rows instead of stepping one row at a time. For each piece cell
+    /// column, the piece may fall until its lowest cell in that column sits
+    /// just above the stack top (or the floor). The binding constraint over
+    /// the 4 cells gives the drop in O(cells), not O(height).
     pub fn drop_20g(&self, p: &Piece) -> Piece {
+        // Per-column lowest cell dy of the piece (at most 4 distinct cols).
+        let cells = p.kind.cells(p.state);
+        // min over cells of (lowest row index available below the cell).
+        let mut drop: i8 = i8::MAX;
+        // Track lowest dy per absolute column to handle multi-cell columns.
+        let mut seen: [(i8, i8); 4] = [(i8::MAX, i8::MAX); 4];
+        let mut ncols = 0usize;
+        for &(dx, dy) in cells {
+            let c = p.x + dx;
+            let r = p.y + dy;
+            // Find existing slot for this column.
+            let mut slot = None;
+            for i in 0..ncols {
+                if seen[i].0 == c {
+                    slot = Some(i);
+                    break;
+                }
+            }
+            match slot {
+                Some(i) => {
+                    if dy < seen[i].1 {
+                        seen[i].1 = dy;
+                    }
+                }
+                None => {
+                    seen[ncols] = (c, dy);
+                    ncols += 1;
+                }
+            }
+            let _ = r;
+        }
+        if ncols == 0 {
+            return *p;
+        }
+        for i in 0..ncols {
+            let (c, low_dy) = seen[i];
+            if c < 0 || c >= WIDTH as i8 {
+                return *p; // invalid horizontally: keep old behavior
+            }
+            // Highest occupied row in this column below the piece top.
+            let mut top: i32 = -1;
+            for r in (0..HEIGHT as i32).rev() {
+                if self.rows[r as usize] & (1 << c) != 0 {
+                    top = r;
+                    break;
+                }
+            }
+            // Lowest piece cell absolute row = p.y + low_dy; it must stay
+            // above `top`, so drop <= (p.y + low_dy) - (top + 1).
+            let avail = p.y as i32 + low_dy as i32 - (top + 1);
+            let avail = avail.clamp(0, 127) as i8;
+            if avail < drop {
+                drop = avail;
+                if drop == 0 {
+                    break;
+                }
+            }
+        }
+        if drop == i8::MAX {
+            return *p;
+        }
+        // Verify with the exact predicate (overhangs can make the column-top
+        // bound optimistic when cells interlock); fall back to stepping only
+        // if the analytic drop is invalid.
+        let mut cur = p.translate(0, -(drop as i8));
+        if self.is_valid(&cur) {
+            // Try to go further (bound can be conservative near overhangs? no
+            // — it is exact for column stacks; the check below only extends).
+            loop {
+                let next = cur.translate(0, -1);
+                if self.is_valid(&next) {
+                    cur = next;
+                } else {
+                    break;
+                }
+            }
+            return cur;
+        }
+        // Fallback: historical stepping from the original position.
         let mut cur = *p;
         loop {
             let next = cur.translate(0, -1);

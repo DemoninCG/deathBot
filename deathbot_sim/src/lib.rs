@@ -498,6 +498,48 @@ impl PyBoard {
         Ok(PyBoard { inner: bulk::board_from_rows(&rows) })
     }
 
+    /// Reconstruct MANY boards in one FFI call (item 4): `flat` is
+    /// N*21 u32 bitmasks (candidate-major). Returns N Board objects.
+    #[staticmethod]
+    fn from_row_bits_bulk(flat: Vec<u32>) -> PyResult<Vec<PyBoard>> {
+        if flat.len() % board::HEIGHT != 0 {
+            return Err(PyValueError::new_err(format!(
+                "expected a multiple of {} row bitmasks, got {}",
+                board::HEIGHT,
+                flat.len()
+            )));
+        }
+        Ok(bulk::boards_from_rows_flat(&flat)
+            .into_iter()
+            .map(|inner| PyBoard { inner })
+            .collect())
+    }
+
+    /// Scoring-only bulk path (item 5): search + lock + clear with NO
+    /// input-path allocation. Same BFS order as `search_locks`.
+    /// Returns (state, x, y, locks_out, rows_flat, lines).
+    fn lock_candidates_fast(
+        &self,
+        kind: PyPieceType,
+    ) -> (Vec<i8>, Vec<i8>, Vec<i8>, Vec<bool>, Vec<u32>, Vec<usize>) {
+        let (pieces, results, lockouts) =
+            bulk::search_and_lock(&self.inner, kind.to_inner());
+        let n = pieces.len();
+        let mut states = Vec::with_capacity(n);
+        let mut xs = Vec::with_capacity(n);
+        let mut ys = Vec::with_capacity(n);
+        let mut rows = Vec::with_capacity(n * board::HEIGHT);
+        let mut lines = Vec::with_capacity(n);
+        for ((p, res), _lo) in pieces.iter().zip(results.iter()).zip(lockouts.iter()) {
+            states.push(p.state as i8);
+            xs.push(p.x);
+            ys.push(p.y);
+            rows.extend_from_slice(&res.rows);
+            lines.push(res.lines_cleared);
+        }
+        (states, xs, ys, lockouts, rows, lines)
+    }
+
     fn __repr__(&self) -> String {
         format!("Board({}x{})", board::WIDTH, board::HEIGHT)
     }

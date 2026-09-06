@@ -65,18 +65,18 @@ def load_net(path: Path) -> TAPNet:
 
 def bank_inputs_on_policy(bank) -> tuple[torch.Tensor, torch.Tensor, torch.Tensor]:
     """(boards, cur, nxt) for each state's chosen candidate (bank-frozen)."""
-    from afterstate import rows_to_tensor
+    from afterstate import flat_rows_to_tensor
+    import numpy as np
     placed, nxt = bank._replay_piece_ids()
     n = bank.n_states
-    boards = torch.empty((n, 1, 20, 10))
-    cur = torch.empty(n, dtype=torch.long)
-    nxt_t = torch.empty(n, dtype=torch.long)
-    for s in range(n):
-        lo, hi = bank.candidate_slice(s)
-        rows = bank.cand_rows[lo * 21:hi * 21].reshape(hi - lo, 21)
-        boards[s] = rows_to_tensor(rows[int(bank.chosen_idx[s])])
-        cur[s] = piece_to_index(placed[s])
-        nxt_t[s] = piece_to_index(nxt[s])
+    # Item 11: gather chosen rows with fancy indexing, decode in ONE call
+    # (was: one rows_to_tensor call per state, ~23k forwards of overhead).
+    lo = np.asarray(bank.cand_offsets[:-1], dtype=np.int64)
+    chosen = lo + np.asarray(bank.chosen_idx, dtype=np.int64)
+    rows = np.asarray(bank.cand_rows, dtype=np.uint32).reshape(-1, 21)[chosen]
+    boards = flat_rows_to_tensor(rows, n)
+    cur = torch.tensor([piece_to_index(p) for p in placed], dtype=torch.long)
+    nxt_t = torch.tensor([piece_to_index(q) for q in nxt], dtype=torch.long)
     return boards, cur, nxt_t
 
 
@@ -86,17 +86,20 @@ def bank_inputs_off_policy(bank) -> tuple[torch.Tensor, torch.Tensor, torch.Tens
     from the bank (real champion-visited pre-boards) but the (board,
     afterstate) pairs cover placements the policy rejected."""
     from afterstate import flat_rows_to_tensor
+    import numpy as np
     n_cand = int(bank.cand_offsets[-1])
-    rows = bank.cand_rows.reshape(n_cand, 21)
-    boards = flat_rows_to_tensor(bank.cand_rows, n_cand)
-    # Piece identities: replay queues and expand per candidate count.
+    boards = flat_rows_to_tensor(np.asarray(bank.cand_rows, dtype=np.uint32),
+                                 n_cand)
+    # Piece identities: replay queues and expand per candidate count with
+    # repeat_interleave (was: per-state Python slice loop over 23k states).
     placed, nxt = bank._replay_piece_ids()
-    cur = torch.empty(n_cand, dtype=torch.long)
-    nxt_t = torch.empty(n_cand, dtype=torch.long)
-    for s in range(bank.n_states):
-        lo, hi = bank.candidate_slice(s)
-        cur[lo:hi] = piece_to_index(placed[s])
-        nxt_t[lo:hi] = piece_to_index(nxt[s])
+    counts = np.diff(np.asarray(bank.cand_offsets, dtype=np.int64))
+    cur = torch.repeat_interleave(
+        torch.tensor([piece_to_index(p) for p in placed], dtype=torch.long),
+        torch.tensor(counts, dtype=torch.long))
+    nxt_t = torch.repeat_interleave(
+        torch.tensor([piece_to_index(q) for q in nxt], dtype=torch.long),
+        torch.tensor(counts, dtype=torch.long))
     return boards, cur, nxt_t
 
 

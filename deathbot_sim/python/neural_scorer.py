@@ -104,7 +104,10 @@ class NeuralScorer:
         # numpy. Candidates constructed by other means fall back to the
         # per-candidate path (verified numerically identical: the packed
         # rows are produced by the same lock + clear semantics).
-        bulk = getattr(board, "lock_candidates_full", None)
+        # Item 5: prefer the path-free `lock_candidates_fast` (no input-path
+        # alloc); fall back to lock_candidates_full.
+        bulk = getattr(board, "lock_candidates_fast", None) or getattr(
+            board, "lock_candidates_full", None)
         if bulk is not None and candidates and getattr(candidates[0], "piece", None) is not None:
             # Re-derive the piece kind from the first candidate so the Rust
             # search returns exactly the same candidate list (BFS order).
@@ -125,8 +128,12 @@ class NeuralScorer:
                 boards = flat_rows_to_tensor(flat_rows, n).to(self.device)
                 cur_t = torch.tensor([cur] * n, dtype=torch.long, device=self.device)
                 nxt_t = torch.tensor([nxt] * n, dtype=torch.long, device=self.device)
-                with torch.no_grad():
-                    out = self.net(boards, cur_t, nxt_t)  # [B, 1]
+                fast = getattr(self.net, "score_batch_fast", None)
+                with torch.inference_mode():
+                    if fast is not None and cur == nxt:
+                        out = fast(boards, cur_t)  # [B, 1]
+                    else:
+                        out = self.net(boards, cur_t, nxt_t)  # [B, 1]
                 return [float(x) for x in out.squeeze(1).tolist()]
 
         boards = []

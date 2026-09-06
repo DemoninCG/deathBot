@@ -29,6 +29,8 @@ from model import board_to_tensor
 
 BOARD_ROWS = 21  # 20 visible + 1 invisible buffer row
 COL_MASKS = np.array([1 << c for c in range(10)], dtype=np.uint32)
+# Hoisted shift vector for the vectorized decoder below.
+_COL_SHIFTS = np.arange(10, dtype=np.uint32)
 
 
 def rows_to_tensor(rows: np.ndarray) -> torch.Tensor:
@@ -37,14 +39,18 @@ def rows_to_tensor(rows: np.ndarray) -> torch.Tensor:
     Bitmask rows are bottom-first (matching ``Board.row_bits()``); the tensor
     is top-first, matching ``model.board_to_tensor``. The invisible row is
     excluded (visible rows only), exactly like the historical encoding.
+
+    Speed path (2026-09 item 9): one broadcast bit-test over the whole batch
+    with hoisted constants, a single strided flip view, and one contiguous
+    float32 materialization.
     """
     rows = np.asarray(rows, dtype=np.uint32)
     single = rows.ndim == 1
     if single:
         rows = rows[None, :]
     visible = rows[:, :20]  # [B, 20] bottom-first
-    col_masks = np.array([1 << c for c in range(10)], dtype=np.uint32)
-    grid = ((visible[:, :, None] & col_masks[None, None, :]) != 0).astype(np.float32)
+    # (visible[..., None] >> shifts) & 1 — one vectorized op, no per-cell loop.
+    grid = ((visible[:, :, None] >> _COL_SHIFTS) & 1).astype(np.float32)
     grid = np.ascontiguousarray(grid[:, ::-1, :])  # top-first [B, 20, 10]
     t = torch.from_numpy(grid).unsqueeze(1)  # [B, 1, 20, 10]
     if single:

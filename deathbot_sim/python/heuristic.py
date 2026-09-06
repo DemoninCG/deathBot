@@ -214,64 +214,59 @@ class HeuristicScorer:
         assert rows.ndim == 2 and rows.shape[1] == 21, (
             f"expected [B, 21] packed rows, got {rows.shape}")
         w = self.weights
-        rewards: list[float] = []
-        for b in range(rows.shape[0]):
-            occ = np.zeros((21, 10), dtype=bool)
-            for r in range(21):
-                bits = int(rows[b, r])
-                for c in range(10):
-                    if bits & (1 << c):
-                        occ[r, c] = True
-            heights = np.zeros(10, dtype=np.int64)
-            for r in range(20, -1, -1):
-                filled = occ[r] & (heights == 0)
-                heights[filled] = r + 1
-
-            weighted_height = sum(
-                float(heights[c]) * HEIGHT_WEIGHTS[c] for c in range(10))
-
-            holes_count = 0
-            hole_depth_sum = 0
-            accessible_count = 0
-            max_h = int(heights.max()) if heights.max() > 0 else 0
-            for row in range(max_h):
-                row_occ = occ[row]
-                left_acc = np.cumprod(~row_occ, dtype=bool)
-                right_acc = np.cumprod(~row_occ[::-1], dtype=bool)[::-1]
-                for col in range(10):
-                    if row >= heights[col] or row_occ[col]:
-                        continue
-                    if left_acc[col] or right_acc[col]:
-                        accessible_count += 1
-                    else:
-                        holes_count += 1
-                        hole_depth_sum += int(occ[row + 1:, col].sum())
-
-            well = 0
-            for col in range(10):
-                if col == 0:
-                    depth = heights[1] - heights[0]
-                elif col == 9:
-                    depth = heights[8] - heights[9]
-                else:
-                    depth = min(heights[col - 1], heights[col + 1]) - heights[col]
-                if depth > 0:
-                    well += (depth - 1) * depth // 2
-
-            spawn = sum(
-                max(0, int(heights[c]) - SPAWN_DANGER_HEIGHT) ** 2
-                for c in SPAWN_COLUMNS)
-
-            rewards.append(
-                w["weighted_height"] * float(weighted_height)
-                + w["holes"] * holes_count
-                + w["hole_depth"] * hole_depth_sum
-                + w["accessible_cavities"] * accessible_count
-                + w["well_cost"] * well
-                + w["spawn_danger"] * spawn
-                + w.get("lines_cleared", 0.0) * lines_cleared[b]
-            )
-        return {"rewards": rewards}
+        # Item 12: fully vectorized over the batch. occ[B,21,10] via one
+        # broadcast; heights via argmax on reversed occupancy (no per-cell
+        # Python loops); per-row side-accessibility via cumulative products
+        # along the column axis.
+        B = rows.shape[0]
+        shifts = np.arange(10, dtype=np.uint64)
+        occ = ((rows[:, :, None] >> shifts) & 1).astype(bool)  # [B,21,10]
+        # Heights: topmost occupied row + 1 per column (0 when empty).
+        # Per-column top: reverse column occupancy, argmax per column.
+        col_rev = occ[:, ::-1, :]                      # [B,21,10] top-first
+        col_has = col_rev.any(axis=1)                  # [B,10]
+        col_top = np.argmax(col_rev, axis=1)           # [B,10] 0=row20
+        heights = np.where(col_has, 21 - col_top, 0).astype(np.int64)
+        weighted_height = (heights * np.asarray(
+            HEIGHT_WEIGHTS, dtype=np.float64)).sum(axis=1)
+        max_h = heights.max(axis=1)                    # [B]
+        holes_count = np.zeros(B, dtype=np.int64)
+        hole_depth_sum = np.zeros(B, dtype=np.int64)
+        accessible_count = np.zeros(B, dtype=np.int64)
+        # Row loop is over <=21 rows but fully vectorized across B and cols.
+        for row in range(21):
+            row_occ = occ[:, row, :]                   # [B,10]
+            # Empty cells strictly below their column top.
+            below_top = row < heights
+            empty = ~row_occ & below_top
+            left_acc = np.logical_and.accumulate(~row_occ, axis=1)
+            right_acc = np.logical_and.accumulate(~row_occ[:, ::-1],
+                                                  axis=1)[:, ::-1]
+            side = left_acc | right_acc
+            holes_count += (empty & ~side).sum(axis=1)
+            accessible_count += (empty & side).sum(axis=1)
+            # Blocks strictly above each hole cell in its column.
+            above = occ[:, row + 1:, :].sum(axis=1)    # [B,10]
+            hole_depth_sum += ((empty & ~side) * above).sum(axis=1)
+        hl = heights.astype(np.int64)
+        left_n = np.empty_like(hl)
+        left_n[:, 0] = hl[:, 1] - hl[:, 0]
+        left_n[:, -1] = hl[:, -2] - hl[:, -1]
+        mid = np.minimum(hl[:, :-2], hl[:, 2:]) - hl[:, 1:-1]
+        left_n[:, 1:-1] = mid
+        well = np.where(left_n > 0, (left_n - 1) * left_n // 2, 0).sum(axis=1)
+        spawn = np.maximum(
+            0, hl[:, list(SPAWN_COLUMNS)] - SPAWN_DANGER_HEIGHT) ** 2
+        spawn = spawn.sum(axis=1)
+        lc = np.asarray(lines_cleared, dtype=np.float64)
+        rewards = (w["weighted_height"] * weighted_height
+                   + w["holes"] * holes_count
+                   + w["hole_depth"] * hole_depth_sum
+                   + w["accessible_cavities"] * accessible_count
+                   + w["well_cost"] * well
+                   + w["spawn_danger"] * spawn
+                   + w.get("lines_cleared", 0.0) * lc)
+        return {"rewards": [float(v) for v in rewards]}
 
     def score_batch(
         self, board: "ds.Board", candidates: list["ds.LockCandidate"],

@@ -1,7 +1,17 @@
 # deathBot — Project State & Training Plan Handoff
 
-*Prepared 2026-09-05 after a full diagnostic + patching campaign. Intended as a
+*Prepared 2026-09-05 after a full diagnostic + patching campaign; updated
+2026-09-06 (evening) for the survival-solved → style era. Intended as a
 complete briefing for a fresh reviewer (human or AI) so no context is lost.*
+
+**Where things stand (2026-09-06 evening):** survival is solved by
+*inference*, not weights — **snapshot9 + full-expansion 2-ply caps every
+game** (30/30 at cap 1500, 4/4 at cap 5000). The active program is *style*:
+the bot survives but plays flat (near-zero Tetrises), and the goal is
+Tetris-seeking play that is impressive to watch and useful for human
+training. Eval protocol has shifted to **cap 300** (every game caps; style
+metrics carry the signal). See §12 (search reversal) and the new §13
+(style era).
 
 ---
 
@@ -18,6 +28,18 @@ series, built as a Rust simulator + Python neural network:
   board → fused with current-piece + next-piece one-hots (3214 dims) →
   128→1 linear head. Outputs a single "how good is this board" value.
 - **`python/selfplay.py`** — Monte Carlo self-play trainer (heavily patched, see §3).
+  Survival-era tool; not the current lever (see §13).
+- **`python/two_ply.py`** — **the current playing policy.** Full-expansion
+  2-ply lookahead (`TwoPlyScorer`, `play_game_2ply`, style-metric
+  `play_game_2ply_style` + `style_summary`, optional survivors-only
+  `line_bonus`). Validated §12; style-bias extension §13.
+- **`python/diag_two_ply.py`** — 2-ply screen driver (default **cap 300**,
+  per-game clears breakdowns, lines/100 + Tetris-share reporting).
+- **`python/diag_tetris_bias.py`** — Tetris-bias k-sweep driver (§13).
+- **`python/diag_p2t_distill.py`** — 2-ply→1-ply preference distillation (§13).
+- **`python/viz_live.py`** — live pygame visualizer; supports `--two-ply`
+  (full-expansion 2-ply) and `--line-bonus "1,3,5,8"` (z-unit per-clear
+  bonuses), per-candidate `+n`/`TETRIS` tags, live `l/100` stat.
 - **`python/heuristic.py`** — hand-crafted survival heuristic used as dense reward
   shaping in the 0.7 survival + 0.3 heuristic blended target.
 - **`python/sweep_eval.py`** — checkpoint sweep tool: greedy games on fixed seeds,
@@ -48,7 +70,8 @@ Greedy eval = mean pieces survived over 30 fixed seeds (42–71), 1500-piece cap
 
 | File | Meaning | Eval (mean pieces) |
 |---|---|---|
-| `model_weights_snapshot7.pt` | **Champion.** Best of the healthy session-1 climb (Jul 8–9). The reference baseline everything is compared against. | **502.9** |
+| `model_weights_snapshot9.pt` (workspace root, sha `229bbe2a…`) | **Champion weights.** C3 self-distillation of snapshot7 (§7 follow-up, +231 × 2 panels). The weights half of the current champion *configuration*. | **~740 fresh-panel** (1-ply); **caps everything** (2-ply, §12) |
+| `model_weights_snapshot7.pt` | Best of the healthy session-1 climb (Jul 8–9). Superseded by snapshot9 as weights; kept as the collapse-investigation reference baseline. | **502.9** |
 | `model_weights_snapshot1..6.pt` | Session-1 progression (67.6 → 127.5 → 358.1 → 263.6 → 481.2 → 480.7). Historical value only. | see left |
 | `model_weights_snapshot8.pt` | **The catastrophic collapse** (2026-07-17). Proof artifact of the squash bug: identical architecture, plays 16× worse. | 31.6 |
 | `model_weights.pt` (crate root) | Byte-identical to snapshot7 (sha `36139a2c…`). The "current weights" slot the visualizer loads. | 502.9 |
@@ -72,7 +95,9 @@ JSONs) and superseded scripts (`diag_train_probe.py`, `selfplay_refit.py`,
 `selfplay_rawnorm.py` — their findings are recorded in §4).
 
 **Remaining `_diag_out/`**: logs + result JSONs only (the evidence trail;
-a few MB total, no weights).
+a few MB total) **plus a small number of style-era arm checkpoints**
+(`p2t_T1/T3_seed42.pt` — kept because they are the only record of the
+distillation negative; everything else is JSON).
 
 ### Known identities (verify with `python sweep_eval.py`)
 
@@ -175,53 +200,16 @@ resumed. The labels chase the policy downward instead of holding the bar.
 
 ---
 
-## 4. Suggested next steps (in priority order)
+## 4. Suggested next steps (in priority order) — SUPERSEDED 2026-09-06
 
-The safety fixes are done; **improving beyond 503 needs the target semantics to
-change**, not just guardrails.
-
-1. **Relative/advantage targets.** Replace absolute survival labels with a
-   relative signal, e.g. normalize against the round's best game or label
-   states by *within-game ranking* vs the policy's current prediction. Weak
-   rollouts then carry ranking information instead of dragging absolute values
-   down. Highest-leverage single change.
-2. **Absolute elite threshold.** Keep only games ≥ some absolute bar (e.g.
-   450 pieces, near snapshot7's level), even if that discards 95% of rollouts.
-   The relative top-20% filter ratchets down; an absolute bar does not.
-3. **Advantage-weighted updates (AWR-style).** Weight each sample by
-   `exp((target − net_prediction)/β)`. Outcomes the net already believes are
-   better get ~zero weight — directly implements "don't learn from games worse
-   than you play."
-4. **N-step / TD(λ) bootstrapped targets.** Pure MC ignores the current value
-   function, which is what lets labels drag it around. A short-horizon return
-   that bootstraps from the network's own value (e.g. 5-step) anchors training
-   and should stop the decay entirely.
-5. **Representation decision.** All adapted models score *afterstates*, but
-   snapshot7 was trained on *pre-lock* boards — the legacy-code runs recovered
-   precisely because they used the representation snapshot7 expects. Either
-   (a) commit to afterstates and distill snapshot7's rankings on afterstate
-   boards first (supervised warm-up, then self-play), or (b) run the next
-   campaign on the legacy pre-lock representation with the new guardrails.
-   Do not mix them mid-run.
-6. **Ops notes.** Always pass absolute `--weights-out` paths (relative paths
-   resolve against the crate root, not the cwd — one run wrote outside the
-   project); use `sweep_eval.py --json` after every run and keep the JSONs as
-   the evidence trail; long runs should be launched so they survive terminal
-   pauses; `model_weights_snapshot7.pt` is the single canonical baseline —
-   protect it (a git-tracked copy would be prudent).
-
-### A concrete recipe for the next attempt (combining the above)
-
-- Start: fresh copy of `model_weights_snapshot7.pt`.
-- Representation: pre-lock (legacy `NeuralScorer` semantics) OR afterstate +
-  distillation warm-up — pick one, stay consistent.
-- Targets: 5-step bootstrapped return, advantage-weighted (β ≈ 1.0 in
-  anchor-scale units), γ = 0.99.
-- Data: elite games only, absolute threshold ≥ 400 pieces; top up the buffer
-  from previous elite rounds; capacity 400k.
-- Guardrails already in place: per-round eval, `.best.pt`, rollback.
-- Judge progress on the 30-seed benchmark (`sweep_eval.py --games 30`), never
-  on single-round evals (8-game evals swing ±150 pieces).
+This section is kept for history. Its program (beat 503 via better 1-ply
+*targets*) was overtaken twice: first by snapshot9's self-distillation jump
+(§7 follow-up), then decisively by full-expansion 2-ply search (§12), which
+solved survival with no training at all. The active program is *style*
+(Tetris-seeking play under a survival gate) — see §13 for the current plan
+and next steps. Do not launch §4-recipe training runs; the 1-ply target
+family it describes (MC/elite/AWR/TD on absolute survival) is documented as
+neutral-or-harmful in §§7–11.
 
 ---
 
@@ -960,3 +948,113 @@ Artifacts: `two_ply.py`, `diag_two_ply.py`, `two_ply_screen{,_v2}.json`,
 `diag_sil.py`, `sil_screen.json`, `sil_T{1,3,10}_seed42.pt`,
 `sil{1,3}_final_100.json`, `snap9_19000_100.json`, `diag_paired.py`,
 `paired_labels.npz`.
+
+---
+
+## 13. Style era (2026-09-06 evening) — survival solved, now play *well*
+
+**Trigger:** live visualization (`viz_live.py --two-ply`) confirmed
+snapshot9 + full 2-ply "plays practically forever." Goal restated by the
+user: reward *good* play (Tetrises most, singles least) so the bot is
+impressive to watch and useful for human training. Survival is now a
+*gate* (cap rate must not drop), not the objective.
+
+**Protocol change:** evals run at **cap 300** (every survival-capable game
+caps; style metrics carry the signal). Core metrics per game: clears
+breakdown {0,1,2,3,4}, lines/100, Tetris share of scoring moves, cap rate.
+`two_ply.py` gained `play_game_2ply_style()` + `style_summary()`;
+`TwoPlyScorer` gained a survivors-only `line_bonus` (dying/lockout
+penalties untouched, so survival ordering is preserved by construction);
+`diag_two_ply.py` defaults to cap 300 with clears reporting; `viz_live.py`
+gained `--line-bonus "1,3,5,8"`, per-candidate `+n`/`TETRIS` tags, live
+`l/100`.
+
+### 13.1 Style baseline — both policies are flat-stackers
+
+snapshot9, seeds 20104–20133 (fresh, CONSUMED), cap 300
+(`two_ply_style30.json`):
+
+| | beam-0 (1-ply) | beam-100 (full 2-ply) |
+|---|---|---|
+| pieces / lines | 295.2 / 110.3 (28/30 cap) | 300.0 / 117.8 (30/30 cap) |
+| clears {0/1/2/3/4} | 5958/2546/301/47/**5** | 5848/2798/328/25/**1** |
+| Tetris share | 0.17% | 0.03% |
+
+6 Tetrises in ~18k placements combined. 2-ply's extra lines come from more
+singles/doubles, not bigger clears. There is no latent Tetris preference to
+amplify — a style bias must *create* the behavior. (First run of this screen
+had empty `per_seed_clears` for beam-0 — that path used
+`selfplay.play_game`, lines-only. Fixed so both beams use
+`play_game_2ply_style`; numbers above are the fixed re-run.)
+
+### 13.2 Tetris-bias k-sweep — clean negative
+
+Guideline-shaped bonus on survivors only, `{1:k/8, 2:3k/8, 3:5k/8, 4:k}`
+for k = 5/15/40 (sub-margin → dominant vs ~10.5 within-state spread).
+Seeds 20134–20163 (fresh, CONSUMED), cap 300 (`two_ply_tetris_k.json`,
+driver `diag_tetris_bias.py`):
+
+| arm | lines | Tetrises | paired Δlines | cap |
+|---|---|---|---|---|
+| base | 117.7 | 0 | — | 30/30 |
+| k5 | 117.1 | 0 | −0.6, t −2.01 | 30/30 |
+| k15 | 117.4 | 0 | −0.2, t −0.88 | 30/30 |
+| k40 | 117.6 | 2 | −0.0, t −0.10 | 30/30 |
+
+The bonus flips only 6–14/9000 moves by ±1–6 lines. The value function
+outvotes even 4×-dominant k on nearly every state. **Static per-clear
+bonuses don't create Tetris play.** Survival gate passes everywhere (the
+survivors-only construction works). Next: a *setup* (well-shaping) term,
+not larger k — Tetrises need a prepared well several pieces out, which a
+one-move clear bonus can't see.
+
+### 13.3 2-ply→1-ply distillation — neutral-to-negative
+
+`diag_p2t_distill.py`: 4000 bank states labeled with full-2-ply argmax
+(geometry-verified; 864/4000 = 21.6% disagreement vs 1-ply — real signal),
+then 400 preference-only CE steps (T=1/3, no value regression possible).
+Screened 1-ply, seeds 20164–20193 (fresh, CONSUMED), cap 300
+(`p2t_distill.json`, `p2t_T1/T3_seed42.pt` kept as the record of the
+negative):
+
+| arm | pieces | lines | paired Δlines vs snap9 1-ply (294.4/109.2) | cap |
+|---|---|---|---|---|
+| P2T1 | 290.1 | 106.7 | −2.5, t −0.71 | 26/30 |
+| P2T3 | 292.9 | 109.9 | +0.7, t +0.22 | 28/30 |
+
+Fitting the teacher's picks on frozen states doesn't transfer to play —
+same signature as SIL/fitd. Likely cause: the disagreements sit exactly
+where 1-ply valuation is wrong, and matching argmax there without the
+lookahead that justifies it memorizes picks, not reasons. (First run
+crashed at the screen stage — closure passed to ProcessPoolExecutor isn't
+picklable on Windows; fixed with a module-level worker.)
+
+### 13.4 Viz for human training — done
+
+`--line-bonus "1,3,5,8"` flag (z-unit per-clear bonuses through the viz
+scorer), live `l/100`, gold `TETRIS` tags in the testing panel. Smoke-tested;
+suite green. Example:
+`viz_live.py --nn --weights ../../model_weights_snapshot9.pt --two-ply --line-bonus 1,3,5,8`
+
+### Planned next steps (evidence order)
+
+1. **Well-shaping setup bonus (search-time).** Bonus for holding a deep,
+   clean well (depth 8–9, zero holes) on surviving branches — rewards the
+   Tetris *setup state* the value function avoids, instead of the clear
+   itself. Screen at cap 300 on fresh 20194+ with the survival gate (30/30
+   cap) + Tetris-share signal. If search shows Tetrises, *then* distill that
+   behavior — distilling flat-stacking 2-ply (§13.3) was distilling the
+   wrong teacher.
+2. **Training-target change on top of (1).** fitd-style TD whose shaping
+   reward is the well/line signal from (1) once proven in search; or CE
+   distillation of well-seeking 2-ply choices. Absolute survival labels stay
+   banned (§§7–11).
+3. **Search speed.** Full 2-ply is ~16× 1-ply cost — worth paying while it
+   buys survival + style, but the bill comes due for long screens: top-k
+   with a de-biased `v1 + γ·(max(v2)−mean(v2))` form, γ_ply sensitivity.
+   Only after (1) gives something worth speeding up.
+4. **Panel discipline continues:** one decision per fresh panel; next free
+   range is **20194+** (cap-300 style) / 5000s reserves for promotion.
+   Standing champion configuration: **snapshot9 weights + full 2-ply**
+   (same `.pt`, new inference); P2T/k-bonus arms are negatives, kept as
+   JSONs (+ 2 P2T checkpoints as the distillation record).

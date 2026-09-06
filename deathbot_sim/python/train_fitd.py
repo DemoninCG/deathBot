@@ -99,6 +99,15 @@ def collect_rollouts(net: TAPNet, *, games: int, base_seed: int,
 
     transitions: list[Transition] = []
     lengths: list[int] = []
+    # Item 12: pack tensor->rows via bit ops (no per-cell Python loops).
+    _shifts = np.arange(10, dtype=np.uint32)
+    def _tensor_to_rows(bt: torch.Tensor) -> np.ndarray:
+        grid = (bt.squeeze(0).numpy() > 0.5)  # [20, 10] top-first bool
+        bottom_first = grid[::-1, :]          # [20, 10] row0=bottom
+        rows = np.zeros(21, dtype=np.uint32)
+        rows[:20] = (bottom_first.astype(np.uint32)
+                     * (1 << _shifts)).sum(axis=1)
+        return rows
     for g in range(games):
         env_rng = random.Random(base_seed + g)
         explore_rng = random.Random(base_seed + g + 7_000_000_001)
@@ -109,22 +118,13 @@ def collect_rollouts(net: TAPNet, *, games: int, base_seed: int,
             max_pieces=max_pieces, heuristic_scorer=None,
             legacy_lockout=False, explore_rng=explore_rng)
         traj = result.trajectory
+        # Pre-convert all boards once (successor of step i == board of i+1).
+        all_rows = [_tensor_to_rows(bt) for (bt, _ci, _ni, _hv) in traj]
         for i in range(len(traj)):
             bt, ci, ni, _hv = traj[i]
-            grid = (bt.squeeze(0).numpy() > 0.5).astype(np.uint32)
-            rows = np.zeros(21, dtype=np.uint32)
-            for r in range(20):
-                for c in range(10):
-                    if grid[19 - r, c]:
-                        rows[r] |= np.uint32(1 << c)
+            rows = all_rows[i]
             if i + 1 < len(traj):
-                nb = traj[i + 1][0]
-                ngrid = (nb.squeeze(0).numpy() > 0.5).astype(np.uint32)
-                nrows = np.zeros(21, dtype=np.uint32)
-                for r in range(20):
-                    for c in range(10):
-                        if ngrid[19 - r, c]:
-                            nrows[r] |= np.uint32(1 << c)
+                nrows = all_rows[i + 1]
                 transitions.append(Transition(
                     rows, ci, ni, nrows, traj[i + 1][1], traj[i + 1][2],
                     False, generation))

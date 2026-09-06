@@ -8,7 +8,8 @@
 //! encoding with numpy.
 
 use crate::board::{Board, HEIGHT, WIDTH};
-use crate::pathfind::LockCandidate;
+use crate::pathfind::{search_placements, LockCandidate};
+use crate::piece::Piece;
 
 /// Result rows for one candidate after lock+clear.
 pub struct CandidateResult {
@@ -62,6 +63,60 @@ pub fn board_from_rows(rows: &[u32]) -> Board {
         b.rows[r] = bits & COL_MASK;
     }
     b
+}
+
+/// Reconstruct many boards at once (item 4): one allocation for N boards,
+/// avoiding N separate FFI crossings from Python.
+pub fn boards_from_rows_flat(flat: &[u32]) -> Vec<Board> {
+    flat.chunks(HEIGHT)
+        .map(|rows| board_from_rows(rows))
+        .collect()
+}
+
+/// Lock+clear for path-free placements (item 5 fast path): same semantics as
+/// `lock_candidates` but takes grounded `Piece`s directly (from
+/// `search_placements`), skipping LockCandidate/input-path construction.
+pub fn lock_pieces(board: &Board, pieces: &[Piece]) -> Vec<CandidateResult> {
+    pieces
+        .iter()
+        .map(|piece| {
+            let mut rows = board.rows;
+            for (c, r) in piece.cells_iter() {
+                if (0..WIDTH as i8).contains(&c) && (0..HEIGHT as i8).contains(&r) {
+                    rows[r as usize] |= 1 << c;
+                }
+            }
+            let mut cleared = 0usize;
+            let mut write = 0usize;
+            for read in 0..HEIGHT {
+                if rows[read] & COL_MASK == COL_MASK {
+                    cleared += 1;
+                } else {
+                    if write != read {
+                        rows[write] = rows[read];
+                    }
+                    write += 1;
+                }
+            }
+            for r in write..HEIGHT {
+                rows[r] = 0;
+            }
+            CandidateResult { rows, lines_cleared: cleared }
+        })
+        .collect()
+}
+
+/// Full scoring fast path (items 4/5): search placements + lock + clear +
+/// lockout flags in one call, with no input-path allocation. Returns
+/// (pieces, results, lockouts) in the same BFS order as `search_locks`.
+pub fn search_and_lock(
+    board: &Board,
+    kind: crate::piece::PieceType,
+) -> (Vec<Piece>, Vec<CandidateResult>, Vec<bool>) {
+    let pieces = search_placements(board, kind);
+    let results = lock_pieces(board, &pieces);
+    let lockouts = pieces.iter().map(|p| board.locks_out(p)).collect();
+    (pieces, results, lockouts)
 }
 
 #[cfg(test)]

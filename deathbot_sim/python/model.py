@@ -87,6 +87,12 @@ class TAPNet(nn.Module):
         # Effective layer sizes for the visualizer: [fused, 128, 1].
         # (The conv stack is summarized as the fused feature dimension.)
         self.layer_sizes = [_FUSED, 128, 1]
+        # Pre-built one-hot lookup buffers (registered so they follow .to()
+        # device moves and are excluded from state_dict checkpoints).
+        self.register_buffer("_cur_eye", torch.eye(NUM_PIECES),
+                             persistent=False)
+        self.register_buffer("_nxt_eye", torch.eye(NUM_PIECES),
+                             persistent=False)
 
     def forward(
         self,
@@ -110,13 +116,11 @@ class TAPNet(nn.Module):
         x = self.pool(x)                   # [B, 64, 10, 5]
         x = torch.flatten(x, 1)            # [B, 3200]
 
-        # Current + next piece one-hots: [B, 7] each.
-        cur_oh = torch.nn.functional.one_hot(
-            current_piece_idx, num_classes=NUM_PIECES
-        ).float()
-        next_oh = torch.nn.functional.one_hot(
-            next_piece_idx, num_classes=NUM_PIECES
-        ).float()
+        # Current + next piece one-hots via embedding-style lookup on
+        # pre-built identity buffers (item 8: avoids per-call one_hot
+        # construction + float cast in the hot 2-ply loop).
+        cur_oh = self._cur_eye[current_piece_idx]
+        next_oh = self._nxt_eye[next_piece_idx]
 
         # Fusion: conv features + current piece + next piece.
         x = torch.cat([x, cur_oh, next_oh], dim=1)  # [B, 3214]
@@ -126,6 +130,23 @@ class TAPNet(nn.Module):
         x = self.fc2(x)                      # [B, 1]
         x = self.out_act(x)                  # [B, 1]
         return x
+
+    def score_batch_fast(self, boards: torch.Tensor,
+                         piece_idx: torch.Tensor) -> torch.Tensor:
+        """Fused fast path for 2-ply scoring (item 8).
+
+        `piece_idx` is used for BOTH current and next inputs (the standard
+        2-ply approximation), saving one embedding lookup + concat arg.
+        Caller must run under `torch.inference_mode()`.
+        """
+        x = self.relu(self.conv1(boards))
+        x = self.relu(self.conv2(x))
+        x = self.pool(x)
+        x = torch.flatten(x, 1)
+        oh = self._cur_eye[piece_idx]
+        x = torch.cat([x, oh, oh], dim=1)
+        x = self.relu(self.fc1(x))
+        return self.fc2(x)
 
     @torch.no_grad()
     def score_one(

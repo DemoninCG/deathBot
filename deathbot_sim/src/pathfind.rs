@@ -58,7 +58,67 @@ type NodeKey = (u8, i8, i8);
 ///
 /// The search is breadth-first, so shorter input sequences are found first.
 /// Dedup ensures at most `num_states * WIDTH` distinct nodes are visited.
+///
+/// Speed path (items 5/7): visited set is a fixed bitset indexed by
+/// (state, x+16, y+32) — no hashing — and queue/path storage reuses buffers.
 pub fn search_locks(board: &Board, kind: PieceType) -> Vec<LockCandidate> {
+    search_locks_with_paths(board, kind)
+}
+
+/// Scoring-only search (item 5): grounded (state, x, y) triples with NO
+/// input-path allocation. Same BFS order and dedup as `search_locks`, for
+/// callers (bulk lock+clear, NN scoring) that never replay inputs.
+pub fn search_placements(board: &Board, kind: PieceType) -> Vec<Piece> {
+    let mut out: Vec<Piece> = Vec::new();
+    // state < 4, x in [-8, 17], y in [-8, 40] mapped into a bitset.
+    let mut visited = [false; 4 * 26 * 49];
+    let idx = |s: u8, x: i8, y: i8| -> Option<usize> {
+        let xi = x as i32 + 8;
+        let yi = y as i32 + 8;
+        if !(0..4).contains(&(s as i32)) || !(0..26).contains(&xi) || !(0..49).contains(&yi) {
+            return None;
+        }
+        Some((s as usize) * 26 * 49 + (xi as usize) * 49 + (yi as usize))
+    };
+    let mut queue: VecDeque<Piece> = VecDeque::new();
+    for root in irs_root_states(board, kind) {
+        let grounded = board.drop_20g(&root);
+        match idx(grounded.state, grounded.x, grounded.y) {
+            Some(k) => {
+                if !visited[k] {
+                    visited[k] = true;
+                    out.push(grounded);
+                    queue.push_back(grounded);
+                }
+            }
+            None => {
+                out.push(grounded);
+                queue.push_back(grounded);
+            }
+        }
+    }
+    while let Some(piece) = queue.pop_front() {
+        for (_input, child) in successors(board, &piece) {
+            let grounded = board.drop_20g(&child);
+            match idx(grounded.state, grounded.x, grounded.y) {
+                Some(k) => {
+                    if !visited[k] {
+                        visited[k] = true;
+                        out.push(grounded);
+                        queue.push_back(grounded);
+                    }
+                }
+                None => {
+                    out.push(grounded);
+                    queue.push_back(grounded);
+                }
+            }
+        }
+    }
+    out
+}
+
+fn search_locks_with_paths(board: &Board, kind: PieceType) -> Vec<LockCandidate> {
     let mut candidates: Vec<LockCandidate> = Vec::new();
     let mut visited: HashSet<NodeKey> = HashSet::new();
     let mut queue: VecDeque<(Piece, Vec<Input>)> = VecDeque::new();

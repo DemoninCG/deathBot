@@ -203,23 +203,49 @@ def main() -> None:
         net.train()
         opt = torch.optim.Adam(net.parameters(), lr=args.lr)
         losses = []
-        t1 = time.perf_counter()
-        for step in range(args.steps):
-            idx = schedule[step]
-            opt.zero_grad()
-            total = cand_boards.new_zeros(())
+        # Item 10: precompute per-state slices once; each step does ONE
+        # forward over the concatenated candidates of the whole minibatch,
+        # then segments log_softmax per state (no per-state net calls).
+        step_batches: list[tuple[torch.Tensor, torch.Tensor, torch.Tensor,
+                                 torch.Tensor, list[int]]] = []
+        for idx in schedule:
+            boards_list, cur_list, nxt_list, tgt_list, lens = [], [], [], [], []
             for s in idx:
                 lo, hi = int(cand_offsets[s]), int(cand_offsets[s + 1])
                 if hi - lo < 2:
                     continue
-                scores = net(cand_boards[lo:hi], cand_cur[lo:hi],
-                             cand_nxt[lo:hi]).flatten()
-                logp = F.log_softmax(scores / temp, dim=0)
-                total = total + (-logp[int(teacher[s])])
-            if total.requires_grad:
-                total = total / max(1, len(idx))
-                total.backward()
-                opt.step()
+                boards_list.append(cand_boards[lo:hi])
+                cur_list.append(cand_cur[lo:hi])
+                nxt_list.append(cand_nxt[lo:hi])
+                tgt_list.append(int(teacher[s]))
+                lens.append(hi - lo)
+            if not boards_list:
+                step_batches.append(None)
+                continue
+            step_batches.append((torch.cat(boards_list), torch.cat(cur_list),
+                                 torch.cat(nxt_list),
+                                 torch.tensor(tgt_list, dtype=torch.long),
+                                 lens))
+        t1 = time.perf_counter()
+        for step in range(args.steps):
+            pre = step_batches[step]
+            if pre is None:
+                losses.append(0.0)
+                continue
+            b_all, c_all, n_all, tgt_all, lens = pre
+            opt.zero_grad()
+            scores_all = net(b_all, c_all, n_all).flatten()
+            # Segmented log_softmax: split concatenated scores per state.
+            total = scores_all.new_zeros(())
+            off = 0
+            for li, t in zip(lens, tgt_all):
+                seg = scores_all[off:off + li]
+                off += li
+                logp = F.log_softmax(seg / temp, dim=0)
+                total = total + (-logp[int(t)])
+            total = total / max(1, len(lens))
+            total.backward()
+            opt.step()
             losses.append(float(total.detach()))
             if (step + 1) % 100 == 0:
                 print(f"  step {step + 1}/{args.steps}: "

@@ -135,6 +135,17 @@
     bonus (well-shaping term) rather than larger k
     (file: two_ply_tetris_k.json).
 
+- seeds: 20164-20193
+  protocol: corrected-lockout, cap 300 (2-ply distillation screen)
+  status: CONSUMED
+  history: P2T 2026-09-06 (4000 bank states labeled with full-2-ply argmax,
+    21.6% disagreement vs 1-ply; 400 CE steps): P2T1 290.1 pcs / 106.7
+    lines (26/30 cap), P2T3 292.9 / 109.9 (28/30); paired vs snap9 1-ply
+    (294.4 / 109.2, 27/30): dLines −2.5 (t−0.71) / +0.7 (t+0.22) —
+    NEUTRAL-to-negative. DECISION: 1-ply CE distillation of 2-ply choices
+    does not transfer; do not pursue without a new mechanism
+    (files: p2t_distill.json, p2t_T1/T3_seed42.pt).
+
 - seeds: 20104-20133
   protocol: corrected-lockout, cap 300 (style baseline)
   status: CONSUMED

@@ -146,15 +146,30 @@
     does not transfer; do not pursue without a new mechanism
     (files: p2t_distill.json, p2t_T1/T3_seed42.pt).
 
-- seeds: 20104-20133
-  protocol: corrected-lockout, cap 300 (style baseline)
+- seeds: 20194-20223
+  protocol: corrected-lockout, cap 300 (style-head Phase B screen)
   status: CONSUMED
-  history: style baseline 2026-09-06 (snapshot9, cap 300): beam-0 295.2 pcs /
-    110.3 lines (28/30 cap) vs beam-100 300.0 / 117.8 (30/30 cap); clears
-    beam-0 {0:5958, 1:2546, 2:301, 3:47, 4:5}, beam-100 {0:5848, 1:2798,
-    2:328, 3:25, 4:1} — DECISION: both policies are near-zero-Tetris
-    flat-stackers; style work (Tetris-bias search term) approved
-    (file: two_ply_style30.json).
+  history: Phase B 2026-09-06 (standardized features, survival-weighted
+    pairs, calibrated style, veto 25, ONE head swept over alphas):
+    a0 283.9/104.8 (26/30, ref) / a0.5 287.2/106.2 / a1.0 294.6/109.3
+    (27/30, best) / a2.0 283.5/103.6 (23/30); paired dLines vs a0 all
+    |t|<1.1 — head is SURVIVAL-SAFE but style-neutral. DECISION: keep the
+    decoupled head + veto as the chassis; style signal must come from a
+    well-seeking teacher, not flat-2-ply disagreements
+    (files: style_head_B.json, style_head_seed42.pt).
+
+- seeds: 20224-20253
+  protocol: corrected-lockout, cap 300 (well-seeking teacher screen)
+  status: CONSUMED
+  history: well-bonus sweep 2026-09-06 (full 2-ply + survivors-only
+    well_setup_score, w 0/5/15/40): lines 117.0/116.9/116.9/117.3,
+    tetrises 2/2/2/4, paired dLines −0.1/−0.1/+0.3 (|t|<1.4), cap 30/30
+    everywhere; mean_well 0.0001→0.0036 (w40 still ~never holds a well).
+    Availability probe: only 36/2000 bank states (1.8%) HAVE any
+    well-setup candidate. DECISION: single-move candidate bonuses cannot
+    create wells — the policy never generates the precursor states. Next:
+    multi-move well scaffolding or training-time representation change;
+    see §14.3 (files: well_bonus.json).
 
 - seeds: 5000-5999
   protocol: corrected-lockout, cap 1500

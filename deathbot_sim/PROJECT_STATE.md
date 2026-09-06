@@ -1045,10 +1045,9 @@ suite green. Example:
    cap) + Tetris-share signal. If search shows Tetrises, *then* distill that
    behavior — distilling flat-stacking 2-ply (§13.3) was distilling the
    wrong teacher.
-2. **Training-target change on top of (1).** fitd-style TD whose shaping
-   reward is the well/line signal from (1) once proven in search; or CE
-   distillation of well-seeking 2-ply choices. Absolute survival labels stay
-   banned (§§7–11).
+2. **Training-target change on top of (1).** Decoupled style head (see
+   §14): frozen survival net + trainable style module combined at search
+   only. Absolute survival labels stay banned (§§7–11).
 3. **Search speed.** Full 2-ply is ~16× 1-ply cost — worth paying while it
    buys survival + style, but the bill comes due for long screens: top-k
    with a de-biased `v1 + γ·(max(v2)−mean(v2))` form, γ_ply sensitivity.
@@ -1058,3 +1057,145 @@ suite green. Example:
    Standing champion configuration: **snapshot9 weights + full 2-ply**
    (same `.pt`, new inference); P2T/k-bonus arms are negatives, kept as
    JSONs (+ 2 P2T checkpoints as the distillation record).
+
+---
+
+## 14. Perf pass + decoupled style head (2026-09-06 night)
+
+External perf agent (commit `3599071`): ~7% 2-ply speedup. Profiling result
+stands — `conv2d` + `max_pool` ≈ 90% of `choose`; nothing outside the conv
+moves the needle. Kept wins: batched ply-2 forward, `lock_candidates_fast`
+/ `from_row_bits_bulk` FFI, `score_batch_fast` + one-hot buffers,
+vectorized heuristic/train packing, segmented P2T CE, `bench_speed.py`.
+Rust suite 26+3 green; Python 156 passed / 2 skipped after merge.
+
+Implication for style: 2-ply cost is FLOPs-bound. Further speedups need a
+smaller net or fewer forwards (top-k, §13 step 3) — not more Python
+micro-opts.
+
+Perf follow-up (same night): the fast path returns a **5-tuple** (no lines
+list) vs the full path's 6-tuple, and `play_game_2ply` /
+`play_game_2ply_style` briefly read `res[5]` off whichever path was bound —
+`IndexError` on any game played through `lock_candidates_fast`. Fixed by
+pinning both line-reporting loops to the FULL `lock_candidates_full` path
+(cost negligible next to `choose()`); `TwoPlyScorer.choose` keeps the fast
+path (it never reads lines except via `_placements_from_bulk`). New
+`tests/test_bulk_contract.py` pins the contract (300-piece games report
+lines>0, clears sum to pieces and lines). Full suite now **165 passed, 2
+skipped**.
+
+Training-target consequence (user direction): P2T shared-weight
+distillation was neutral-to-negative (§13.3), so style training moved to a
+**decoupled head** — `python/style_head.py`: frozen snapshot9 survival
+value + small trainable style MLP over heuristic features, combined only
+at search (`v + α·style`, survivors only, dying/lockout penalties
+untouched).
+
+### 14.1 Style-head Phase A — collapse (the concern was justified)
+
+864/4000 disagreement pairs, loss 1.17→0.91, screened at α=15 on fresh
+20194–20223 (cap 300): **24.1 pcs / 0.0 lines, 0/30 cap**
+(`style_head_A.json`). Diagnosis (measured, not guessed): the head learned
+mean +86 / sd 41 over candidates with within-state spread 11.4 vs survival
+spread ~10.5 — α·style spanned ~+39/+2877 against survival margins ~11, so
+style *dominated* ranking. Worse, the teacher direction isn't well-building
+at all: mean(feat₂ₚₗᵧ−feat₁ₚₗᵧ) = wheight +1.94, holedepth +1.02,
+lines −0.12, deepwell −0.01 — imitating flat-stacking 2-ply disagreements
+as static preference is lethal, exactly as suspected.
+
+### 14.2 Foundational fixes + Phase B — safe but style-neutral
+
+Hardened the chassis (all in `style_head.py` / `diag_style_head.py`, tested):
+- **Feature standardization** (`fit_feature_stats`/`apply_stats` — raw spans
+  O(100)→O(1), lines std was 0.09 vs wheight 52).
+- **Survival-weighted pairs** (`exp(margin/10)`, capped at 1): all 864
+  teacher picks sit *below* their 1-ply rival in survival value (mean −5.53,
+  0/864 ≥ 0, mean weight 0.66) — training now discounts the harmful ones.
+- **Per-state calibration** (`calibrated()`: minus state-mean — only
+  within-state ranking reaches the combination) and a **survival veto gate**
+  (`combined_scores(..., veto_margin=25)`: >25 below best-v is −inf before
+  style applies). α=0 reproduces the survival policy by construction.
+- Driver now supports `--alphas` sweeps over one trained head (no
+  retraining) and persists feat stats inside the checkpoint
+  (`style_head_seed42.pt` is now a dict bundle).
+
+Phase B (same 864 pairs, 400 steps, veto 25, panel 20194–20223 reused for
+the sweep — one head, four alphas, no reselection across panels):
+
+| α | pieces | lines | cap | Tetrises | paired Δlines vs α=0 |
+|---|---|---|---|---|---|
+| 0.0 (ref) | 283.9 | 104.8 | 26/30 | 8 | — |
+| 0.5 | 287.2 | 106.2 | 26/30 | 4 | +1.4, t +0.27 |
+| 1.0 | 294.6 | 109.3 | 27/30 | 2 | +4.5, t +0.95 |
+| 2.0 | 283.5 | 103.6 | 23/30 | 5 | −1.2, t −0.20 |
+
+(`style_head_B.json`.) The head is **survival-safe but style-neutral**
+(all |t|<1.1): the veto + calibration fixed the collapse without finding
+any Tetris signal — because the teacher still has ~0 Tetrises in it.
+Distilling flat-2-ply disagreement, however safely, cannot teach wells.
+
+### What §14 gates (updated plan)
+
+1. **Well-seeking teacher first (§14.3 below — now CLOSED as a negative).**
+   The decoupled head + veto is a safe chassis (7 head tests + 2 contract
+   tests green), but the well bonus produced no well-building teacher (see
+   §14.3). Do not train the head against flat-2-ply disagreement again.
+2. **Next: the foundational-representation branch (§14.4).** Single-move
+   search bonuses cannot create wells (availability 1.8%); training
+   against 2-ply choices cannot transfer (§13.3, §14.1–14.2). The remaining
+   lever with a mechanism is changing what the value function can *see*
+   (well/depth input channels or a separate value head) — §14.4 is the
+   plan.
+3. **Search speed after style pays** (top-k de-biased, γ sensitivity).
+   Standing champion unchanged: **snapshot9 + full 2-ply**; Phase-A
+   checkpoint superseded by the Phase-B bundle (`style_head_seed42.pt`).
+
+### 14.3 Well-seeking teacher — clean negative, mechanism found
+
+`well_setup_score()` (`two_ply.py`: one deep ≥6 clean well, no holes, no
+second well >3, height-scaled; unit-tested in `tests/test_well_bonus.py`)
+wired as a survivors-only `well_weight` bonus in `TwoPlyScorer.choose`
+(`play_game_2ply_style(..., well_weight=w)` accumulates mean well score;
+driver `diag_well_bonus.py`). Screened w = 0/5/15/40 on fresh 20224–20253
+(cap 300, `well_bonus.json`):
+
+| w | lines | Tetrises | paired Δlines | cap | mean well |
+|---|---|---|---|---|---|
+| 0 | 117.0 | 2 | — | 30/30 | 0.0001 |
+| 5 | 116.9 | 2 | −0.1, t −1.00 | 30/30 | 0.0003 |
+| 15 | 116.9 | 2 | −0.1, t −0.63 | 30/30 | 0.0007 |
+| 40 | 117.3 | 4 | +0.3, t +1.39 | 30/30 | 0.0036 |
+
+Even w=40 (4×-dominant) leaves mean well at 0.0036 — the bonus is never
+*available*, not merely outvoted. Availability probe (2000 bank states,
+every candidate scored): only **36/2000 states (1.8%) have ANY well-setup
+candidate** (mean max score 0.0089). The flat-stacking policy never
+generates precursor states, so no single-move candidate bonus — clear or
+well — can select what doesn't exist. This closes the search-bonus branch:
+Tetris play needs states the current policy never visits, which requires
+either multi-move scaffolding (reward well-depth *trajectories*) or a
+training-time change so the value function itself generates them.
+
+### 14.4 Next: foundational representation (planned, not started)
+
+All three cheaper branches are now closed with mechanism: clear bonus
+(§13.2), pick distillation (§13.3, §14.1–14.2), well bonus (§14.3). The
+common cause is representational, not incentive: the conv net sees 20×10
+occupancy + 2 piece one-hots and must re-derive hole/well/height structure
+the heuristic computes exactly — and every training signal so far
+regresses rankings the survival value already owns. The plan, in order:
+
+1. **Well/depth input channels** (smallest change): append exact per-column
+   height + well-depth planes (and/or hole mask) to the board tensor,
+   distill snapshot9's rankings onto the new encoding first (C3-style
+   supervised warm-up, behavior-neutral gate on a fresh panel), *then*
+   run well-seeking search on top. Gate: warm-up must reproduce 1-ply play
+   before any style bonus is added.
+2. **Separate value head** if (1) alone doesn't transfer: two-headed net
+   (frozen survival trunk + trainable style head over trunk features, not
+   raw heuristic feats) so style sees what survival sees.
+3. **Multi-move scaffolding** as the fallback: reward well-depth deltas
+   across consecutive placements (online fitd-style, capped panels with
+   the survival gate), not single-move setup states.
+4. Panels: next free range is **20254+** (cap-300 style); champion
+   unchanged (**snapshot9 + full 2-ply**).

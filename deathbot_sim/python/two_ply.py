@@ -43,6 +43,69 @@ from piece_history import PieceQueue
 DEAD_PENALTY = -1e6
 
 
+def well_setup_score(rows21, lines_cleared: int = 0) -> float:
+    """Tetris-well setup quality of a post-clear afterstate, in [0, 1].
+
+    Rewards exactly one deep (depth>=6), clean well: a single column at
+    least 6 below its HIGHER neighbor-wall, with no holes anywhere and no
+    second well deeper than 3. Fresh clears don't disqualify (the well that
+    just paid off scores via the afterstate that remains), but a board that
+    just cleared 4 with no well standing scores 0 — the bonus is for the
+    SETUP, not the payoff. Flat boards score ~0 (no well yet); holey or
+    multi-well chaos scores 0.
+    """
+    import numpy as _np
+    rows = _np.asarray(rows21, dtype=_np.uint32).reshape(-1)
+    occ = _np.zeros((21, 10), dtype=bool)
+    for r in range(21):
+        bits = int(rows[r])
+        for c in range(10):
+            if bits & (1 << c):
+                occ[r, c] = True
+    heights = _np.zeros(10, dtype=int)
+    for c in range(10):
+        col = _np.where(occ[:, c])[0]
+        heights[c] = int(col.max()) + 1 if len(col) else 0
+    # Any hole anywhere disqualifies (a Tetris well must be clean).
+    max_h = int(heights.max()) if heights.max() > 0 else 0
+    for row in range(max_h):
+        row_occ = occ[row]
+        left = _np.cumprod(~row_occ)
+        right = _np.cumprod(~row_occ[::-1])[::-1]
+        for col in range(10):
+            if row >= heights[col] or row_occ[col]:
+                continue
+            if not (left[col] or right[col]):
+                return 0.0
+    # Well depths per column (higher-neighbor wall definition).
+    depths = []
+    for col in range(10):
+        if col == 0:
+            d = heights[1] - heights[0]
+        elif col == 9:
+            d = heights[8] - heights[9]
+        else:
+            d = max(heights[col - 1], heights[col + 1]) - heights[col]
+        depths.append(int(d))
+    order = sorted(range(10), key=lambda c: -depths[c])
+    best, second = depths[order[0]], depths[order[1]]
+    if best < 6 or second > 3:
+        return 0.0
+    if best >= 9:
+        depth_score = 1.0
+    elif best == 8:
+        depth_score = 0.8
+    elif best == 7:
+        depth_score = 0.6
+    else:  # best == 6
+        depth_score = 0.4
+    # Tall stacks make any well dangerous; scale down above height 14.
+    top = int(heights.max())
+    height_factor = 1.0 if top <= 14 else max(0.0, 1.0 - (top - 14) / 6.0)
+    _ = lines_cleared  # payoff counted by line_bonus; setup is the state
+    return depth_score * height_factor
+
+
 class TwoPlyScorer:
     """Score candidates with 1-ply value + gamma * best next-ply value.
 
@@ -51,16 +114,28 @@ class TwoPlyScorer:
     branches keep their penalties, so survival ordering is preserved and
     the bonus only re-ranks among safe moves. Guideline-style weights
     (e.g. {1:1, 2:3, 3:5, 4:8} scaled into z-units) reward Tetrises most.
+
+    Optional well shaping: ``well_bonus`` adds ``well_weight * well_score``
+    (z-units) for the RESULTING afterstate on surviving branches only, where
+    ``well_score`` in [0, 1] measures a deep, clean, single Tetris well
+    (see :func:`well_setup_score`). Unlike the clear bonus (which rewards
+    the payoff move), this rewards the multi-move SETUP state — holding an
+    open well while the stack stays low and hole-free. ``well_weight`` is
+    scaled like line_bonus (within-state v1 spread ~10.5).
     """
 
     def __init__(self, net, *, beam: int = 5, gamma_ply: float = 0.999,
                  device: str = "cpu",
-                 line_bonus: dict | None = None) -> None:
+                 line_bonus: dict | None = None,
+                 well_bonus: float = 0.0,
+                 well_weight: float = 0.0) -> None:
         self.net = net
         self.beam = beam
         self.gamma_ply = gamma_ply
         self.device = device
         self.line_bonus = dict(line_bonus) if line_bonus else {}
+        # well_bonus is the legacy scalar name; well_weight is preferred.
+        self.well_weight = float(well_weight or well_bonus or 0.0)
 
     def _placements_from_bulk(self, bulk, kind):
         """Ply-1 scoring from an already-fetched `lock_candidates_full` tuple."""
@@ -84,6 +159,10 @@ class TwoPlyScorer:
                 v = self.net(boards, cur, cur).flatten().tolist()
         packed = [rows_per[i] for i in viable]
         lines_list = [int(lines[i]) for i in viable]
+        if self.well_weight:
+            well_list = [well_setup_score(rows_per[i], int(lines[i]))
+                         for i in viable]
+            return packed, v, lines_list, True, well_list
         return packed, v, lines_list, True
 
     def _bulk(self, board, kind):
@@ -121,6 +200,7 @@ class TwoPlyScorer:
         res = self._placements_from_bulk(bulk, current)
         packed1, vals1 = res[0], res[1]
         lines1 = res[2] if len(res) > 3 else [0] * len(vals1)
+        wells1 = res[4] if len(res) > 4 else [0.0] * len(vals1)
         if not vals1:
             return viable[0]
         if self.beam <= 0:
@@ -187,6 +267,8 @@ class TwoPlyScorer:
                     seg = all_v[off:off + branch_counts[bpos]]
                     off += branch_counts[bpos]
                     bonus = float(self.line_bonus.get(int(lines1[j]), 0.0))
+                    if self.well_weight:
+                        bonus += self.well_weight * float(wells1[j])
                     final[j] = vals1[j] + bonus + self.gamma_ply * max(seg)
         else:
             for j in beam:
@@ -204,12 +286,14 @@ def play_game_2ply(net, rng: random.Random, *, beam: int = 5,
     board = ds.Board()
     pq = PieceQueue(rng)
     scorer = TwoPlyScorer(net, beam=beam, gamma_ply=gamma_ply)
-    _bulk_fn = getattr(board, "lock_candidates_fast", None)
     pieces = 0
     lines_total = 0
     while pieces < max_pieces:
-        res = (_bulk_fn(pq.current) if _bulk_fn is not None
-               else board.lock_candidates_full(pq.current))
+        # NOTE: the fast bulk path returns 5-tuples (no lines list); the
+        # full path returns 6-tuples with lines_cleared at index 5. Always
+        # use the FULL path here: this function's contract reports lines,
+        # and the per-decision cost difference is negligible next to choose().
+        res = board.lock_candidates_full(pq.current)
         n_cands = len(res[0])
         if n_cands == 0:
             return pieces, lines_total, "no_candidates"
@@ -237,6 +321,8 @@ def play_game_2ply_style(net, rng: random.Random, *, beam: int = 100,
                          gamma_ply: float = 0.999, epsilon: float = 0.0,
                          max_pieces: int = 300,
                          line_bonus: dict | None = None,
+                         well_weight: float = 0.0,
+                         well_stats: dict | None = None,
                          explore_rng: random.Random | None = None):
     """Style-metric game: same rules as play_game_2ply, but also returns a
     per-clear breakdown {0,1,2,3,4: counts} for Tetris-rate analysis.
@@ -245,34 +331,40 @@ def play_game_2ply_style(net, rng: random.Random, *, beam: int = 100,
     With survival solved, callers use a LOW cap (e.g. 300) so every game
     caps and style metrics (lines/piece, tetris share) carry the signal.
     `line_bonus` (e.g. {1:.., 4:..} in z-units) rewards clears on surviving
-    branches only — survival ordering is preserved.
+    branches only — survival ordering is preserved. `well_weight` adds the
+    well-setup bonus (see TwoPlyScorer); pass `well_stats` dict to also
+    accumulate mean well_setup_score per game (diagnostic for §14).
     """
     explore_rng = explore_rng or rng
     board = ds.Board()
     pq = PieceQueue(rng)
     scorer = TwoPlyScorer(net, beam=beam, gamma_ply=gamma_ply,
-                          line_bonus=line_bonus)
-    _bulk_fn = getattr(board, "lock_candidates_fast", None)
+                          line_bonus=line_bonus, well_weight=well_weight)
     pieces = 0
     lines_total = 0
     clears: dict[int, int] = {0: 0, 1: 0, 2: 0, 3: 0, 4: 0}
     while pieces < max_pieces:
-        res = (_bulk_fn(pq.current) if _bulk_fn is not None
-               else board.lock_candidates_full(pq.current))
-        n_cands = len(res[0])
+        # Always the FULL bulk path (6-tuple with lines_cleared); the fast
+        # path has no lines list (perf-pass regression, fixed here).
+        bulk = board.lock_candidates_full(pq.current)
+        n_cands = len(bulk[0])
         if n_cands == 0:
             return pieces, lines_total, clears, "no_candidates"
-        if all(res[3]):
+        if all(bulk[3]):
             return pieces, lines_total, clears, "lockout"
         pick = scorer.choose(board, pq.current, pq.next_piece)
         if epsilon > 0 and explore_rng.random() < epsilon:
-            viable = [i for i, lo in enumerate(res[3]) if not lo]
+            viable = [i for i, lo in enumerate(bulk[3]) if not lo]
             pick = explore_rng.choice(viable)
-        n = int(res[5][pick])
+        n = int(bulk[5][pick])
         lines_total += n
         clears[n] = clears.get(n, 0) + 1
         rows = np.asarray(
-            res[4], dtype=np.uint32).reshape(n_cands, 21)[pick]
+            bulk[4], dtype=np.uint32).reshape(n_cands, 21)[pick]
+        if well_stats is not None:
+            well_stats["sum"] = well_stats.get("sum", 0.0) + well_setup_score(
+                rows, n)
+            well_stats["n"] = well_stats.get("n", 0) + 1
         board = ds.Board.from_row_bits([int(v) for v in rows])
         pq.advance()
         pieces += 1

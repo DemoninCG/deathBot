@@ -16,6 +16,7 @@ Run:
     python viz_live.py --nn --weights model_weights.pt
     python viz_live.py --nn --weights ../../model_weights_snapshot9.pt --two-ply
     python viz_live.py --nn --weights ../../model_weights_snapshot9.pt --two-ply --line-bonus 1,3,5,8
+    python viz_live.py --nn --weights ../../model_weights_snapshot9.pt --two-ply --line-bonus 1,3,5,8 --phi-lambda 20
     python viz_live.py --piece T --board stack
     python viz_live.py --help
 
@@ -119,12 +120,25 @@ class TwoPlyVizScorer:
     """
 
     def __init__(self, net, *, gamma_ply: float = 0.999,
-                 line_bonus: dict | None = None) -> None:
+                 line_bonus: dict | None = None,
+                 phi_lambda: float = 0.0, well_col: int = 9) -> None:
         from two_ply import TwoPlyScorer, DEAD_PENALTY
         self._two_ply = TwoPlyScorer(net, beam=10**9, gamma_ply=gamma_ply,
                                      line_bonus=line_bonus)
         self._dead = DEAD_PENALTY
         self.net = net
+        # Stylish config (§17.1): dense designated-well potential as
+        # style_fn, combined with style_alpha=1.0 on surviving branches
+        # only (mirrors TwoPlyScorer.choose; dead branches stay dead).
+        # phi_lambda=0 disables it (pure champion path, style_fn=None).
+        self._style_alpha = 1.0 if phi_lambda else 0.0
+        self._style_fn = None
+        if phi_lambda:
+            from well_potential import style_fn_factory
+            self._style_fn = style_fn_factory(well_col=well_col,
+                                               scale=float(phi_lambda))
+        self._phi_lambda = float(phi_lambda)
+        self._well_col = int(well_col)
 
     def score(self, board, candidate) -> float:
         return self.score_batch(board, [candidate])[0]
@@ -146,6 +160,34 @@ class TwoPlyVizScorer:
         # from _placements; search_locks order matches candidates order).
         viable_pos = [i for i, c in enumerate(candidates)
                       if not board.locks_out(c.piece)]
+        # Dense-Phi style values, aligned to viable order. Bulk order is
+        # assumed to match search_locks order (same assumption the ply-1
+        # mapping above already relies on).
+        style_vals: list[float] | None = None
+        if self._style_fn is not None and self._style_alpha != 0.0:
+            full = board.lock_candidates_full(kind)
+            n_full = len(full[0])
+            # _placements uses the fast bulk path when available, which
+            # follows search_placements order, NOT search_locks order. Only
+            # reuse rows by index when the orders provably match; otherwise
+            # fall back to per-candidate lock+clear (slow but correct).
+            rows_full = np.asarray(full[4], dtype=np.uint32).reshape(
+                n_full, 21)
+            lines_full = [int(x) for x in full[5]]
+            if n_full == len(candidates):
+                packed_viable = [rows_full[i] for i in viable_pos]
+                lines_viable = [lines_full[i] for i in viable_pos]
+            else:
+                import deathbot_sim as _ds2
+                packed_viable, lines_viable = [], []
+                for i in viable_pos:
+                    sim = board.clone_board()
+                    sim.lock(candidates[i].piece)
+                    nl = sim.clear_lines()
+                    packed_viable.append(
+                        np.asarray(sim.row_bits(), dtype=np.uint32))
+                    lines_viable.append(int(nl))
+            style_vals = list(self._style_fn(packed_viable, lines_viable))
         # Next-piece kind for the 2nd ply: prefer the explicit index the
         # runner passes; fall back to the candidate kind approximation.
         next_kind = self._kind_from_idx(next_piece_idx, fallback=kind)
@@ -157,8 +199,11 @@ class TwoPlyVizScorer:
                 out[cand_idx] = self._dead
             else:
                 bonus = float(two_ply.line_bonus.get(int(lines1[local]), 0.0))
-                out[cand_idx] = (vals1[local] + bonus
-                                 + two_ply.gamma_ply * max(vals2))
+                s = (vals1[local] + bonus
+                     + two_ply.gamma_ply * max(vals2))
+                if style_vals is not None:
+                    s += self._style_alpha * float(style_vals[local])
+                out[cand_idx] = s
         return out
 
     @staticmethod
@@ -557,7 +602,8 @@ DEMO_BOARDS = {
 
 def make_scorer(use_nn: bool, weights_path: str | None = None,
                  two_ply: bool = False, gamma_ply: float = 0.999,
-                 line_bonus: dict | None = None):
+                 line_bonus: dict | None = None,
+                 phi_lambda: float = 0.0, well_col: int = 9):
     if use_nn:
         if not _TORCH_AVAILABLE:
             print("torch not available; falling back to MockScorer")
@@ -575,9 +621,12 @@ def make_scorer(use_nn: bool, weights_path: str | None = None,
         net.eval()
         if two_ply:
             print(f"using full-expansion 2-ply lookahead (gamma={gamma_ply}, "
-                  f"line_bonus={line_bonus})")
+                  f"line_bonus={line_bonus}, phi_lambda={phi_lambda}, "
+                  f"well_col={well_col})")
             return TwoPlyVizScorer(net, gamma_ply=gamma_ply,
-                                   line_bonus=line_bonus)
+                                   line_bonus=line_bonus,
+                                   phi_lambda=phi_lambda,
+                                   well_col=well_col)
         return NeuralScorer(net=net)
     return MockNetwork()
 
@@ -593,6 +642,8 @@ def main() -> None:
     use_two_ply = False
     gamma_ply = 0.999
     line_bonus: dict | None = None
+    phi_lambda = 0.0
+    well_col = 9
     for i, a in enumerate(args):
         if a == "--piece" and i + 1 < len(args):
             piece_name = args[i + 1].upper()
@@ -619,6 +670,16 @@ def main() -> None:
         elif a.startswith("--line-bonus="):
             vals = [float(x) for x in a.split("=", 1)[1].split(",")]
             line_bonus = {n + 1: v for n, v in enumerate(vals)}
+        elif a == "--phi-lambda" and i + 1 < len(args):
+            # Dense designated-well potential scale (z-units, §17.1).
+            # 0 = pure champion; 20 = validated stylish config.
+            phi_lambda = float(args[i + 1])
+        elif a.startswith("--phi-lambda="):
+            phi_lambda = float(a.split("=", 1)[1])
+        elif a == "--well-col" and i + 1 < len(args):
+            well_col = int(args[i + 1])
+        elif a.startswith("--well-col="):
+            well_col = int(a.split("=", 1)[1])
     if piece_name not in PIECE_KINDS:
         print(f"unknown piece {piece_name!r}; choose from {list(PIECE_KINDS)}")
         sys.exit(1)
@@ -630,9 +691,14 @@ def main() -> None:
     test_kind = PIECE_KINDS[piece_name]
 
     scorer = make_scorer(use_nn, weights_path, two_ply=use_two_ply,
-                         gamma_ply=gamma_ply, line_bonus=line_bonus)
-    scorer_name = ("TwoPly(snapshot9)" if (use_nn and use_two_ply)
-                   else "NeuralScorer" if use_nn else "MockScorer")
+                         gamma_ply=gamma_ply, line_bonus=line_bonus,
+                         phi_lambda=phi_lambda, well_col=well_col)
+    if use_nn and use_two_ply and phi_lambda:
+        scorer_name = f"Stylish(lam={phi_lambda:g},well={well_col})"
+    elif use_nn and use_two_ply:
+        scorer_name = "TwoPly(snapshot9)"
+    else:
+        scorer_name = "NeuralScorer" if use_nn else "MockScorer"
 
     rng = random.Random(42)
     runner = GameRunner(scorer, rng, epsilon=0.0)
@@ -702,11 +768,17 @@ def main() -> None:
                     scorer = make_scorer(use_nn, weights_path,
                                          two_ply=use_two_ply,
                                          gamma_ply=gamma_ply,
-                                         line_bonus=line_bonus)
-                    scorer_name = ("TwoPly(snapshot9)"
-                                   if (use_nn and use_two_ply)
-                                   else "NeuralScorer" if use_nn
-                                   else "MockScorer")
+                                         line_bonus=line_bonus,
+                                         phi_lambda=phi_lambda,
+                                         well_col=well_col)
+                    if use_nn and use_two_ply and phi_lambda:
+                        scorer_name = (f"Stylish(lam={phi_lambda:g},"
+                                       f"well={well_col})")
+                    elif use_nn and use_two_ply:
+                        scorer_name = "TwoPly(snapshot9)"
+                    else:
+                        scorer_name = ("NeuralScorer" if use_nn
+                                       else "MockScorer")
                     runner.scorer = scorer
                     if hasattr(scorer, "score_batch") and test_candidates:
                         test_scores = scorer.score_batch(

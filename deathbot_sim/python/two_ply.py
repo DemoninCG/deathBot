@@ -122,13 +122,28 @@ class TwoPlyScorer:
     the payoff move), this rewards the multi-move SETUP state — holding an
     open well while the stack stays low and hole-free. ``well_weight`` is
     scaled like line_bonus (within-state v1 spread ~10.5).
+
+    Optional decoupled style (§15.1.1 zero-style contract): ``style_fn`` is
+    a callable ``(packed_rows_list, lines_list) -> list[float]`` evaluated
+    on the viable ply-1 afterstates, combined as
+    ``final + style_alpha * style`` on SURVIVING branches only (dead
+    branches stay at DEAD_PENALTY; lockouts are already excluded). When
+    ``style_fn is None`` or ``style_alpha == 0``, ``choose`` takes the
+    byte-identical champion path (style_fn is not even called), so α=0
+    reproduces snapshot9 + full 2-ply exactly. ``veto_margin`` optionally
+    masks candidates more than that far (z-units) below the best pre-style
+    final value to -inf BEFORE style is added (survival-first gate;
+    a heuristic, not a certified constraint).
     """
 
     def __init__(self, net, *, beam: int = 5, gamma_ply: float = 0.999,
                  device: str = "cpu",
                  line_bonus: dict | None = None,
                  well_bonus: float = 0.0,
-                 well_weight: float = 0.0) -> None:
+                 well_weight: float = 0.0,
+                 style_fn=None,
+                 style_alpha: float = 0.0,
+                 veto_margin: float | None = None) -> None:
         self.net = net
         self.beam = beam
         self.gamma_ply = gamma_ply
@@ -136,6 +151,9 @@ class TwoPlyScorer:
         self.line_bonus = dict(line_bonus) if line_bonus else {}
         # well_bonus is the legacy scalar name; well_weight is preferred.
         self.well_weight = float(well_weight or well_bonus or 0.0)
+        self.style_fn = style_fn
+        self.style_alpha = float(style_alpha)
+        self.veto_margin = None if veto_margin is None else float(veto_margin)
 
     def _placements_from_bulk(self, bulk, kind):
         """Ply-1 scoring from an already-fetched `lock_candidates_full` tuple."""
@@ -204,7 +222,25 @@ class TwoPlyScorer:
         if not vals1:
             return viable[0]
         if self.beam <= 0:
-            best_local = max(range(len(vals1)), key=lambda j: (vals1[j], -j))
+            # 1-ply path also honors style_fn (§15 contract: α=0 identical;
+            # α≠0 re-ranks viable 1-ply candidates). Dead/lockout already out.
+            use_style_1p = (self.style_fn is not None
+                            and self.style_alpha != 0.0)
+            if not use_style_1p:
+                best_local = max(range(len(vals1)),
+                                 key=lambda j: (vals1[j], -j))
+                return viable[best_local]
+            style_vals_1p = list(
+                self.style_fn(packed1, [int(x) for x in lines1]))
+            finals_1p = [float(vals1[j]) + self.style_alpha * float(
+                style_vals_1p[j]) for j in range(len(vals1))]
+            if self.veto_margin is not None:
+                best_pre_1p = max(float(vals1[j]) for j in range(len(vals1)))
+                finals_1p = [f if (best_pre_1p - float(vals1[j]))
+                             <= self.veto_margin else float("-inf")
+                             for j, f in enumerate(finals_1p)]
+            best_local = max(range(len(vals1)),
+                             key=lambda j: (finals_1p[j], -j))
             return viable[best_local]
         order = sorted(range(len(vals1)), key=lambda j: -vals1[j])
         beam = order[: self.beam]
@@ -273,6 +309,25 @@ class TwoPlyScorer:
         else:
             for j in beam:
                 final[j] = DEAD_PENALTY
+        # §15 zero-style contract: style applies ONLY on surviving branches,
+        # and α=0/None skips it entirely (byte-identical champion path).
+        use_style = (self.style_fn is not None and self.style_alpha != 0.0)
+        if use_style:
+            style_vals = list(self.style_fn(packed1, [int(x) for x in lines1]))
+            assert len(style_vals) == len(vals1), (len(style_vals), len(vals1))
+            if self.veto_margin is not None:
+                best_pre = max(float(final[j]) for j in range(len(vals1))
+                               if float(final[j]) > DEAD_PENALTY / 2)
+                for j in range(len(vals1)):
+                    if float(final[j]) <= DEAD_PENALTY / 2:
+                        continue  # dead branches stay dead, veto or not
+                    if (best_pre - float(final[j])) > self.veto_margin:
+                        final[j] = float("-inf")
+            for j in range(len(vals1)):
+                f = float(final[j])
+                if f <= DEAD_PENALTY / 2 or f == float("-inf"):
+                    continue
+                final[j] = f + self.style_alpha * float(style_vals[j])
         best_local = max(range(len(final)), key=lambda j: (final[j], -j))
         return viable[best_local]
 
@@ -323,6 +378,9 @@ def play_game_2ply_style(net, rng: random.Random, *, beam: int = 100,
                          line_bonus: dict | None = None,
                          well_weight: float = 0.0,
                          well_stats: dict | None = None,
+                         style_fn=None,
+                         style_alpha: float = 0.0,
+                         veto_margin: float | None = None,
                          explore_rng: random.Random | None = None):
     """Style-metric game: same rules as play_game_2ply, but also returns a
     per-clear breakdown {0,1,2,3,4: counts} for Tetris-rate analysis.
@@ -339,7 +397,9 @@ def play_game_2ply_style(net, rng: random.Random, *, beam: int = 100,
     board = ds.Board()
     pq = PieceQueue(rng)
     scorer = TwoPlyScorer(net, beam=beam, gamma_ply=gamma_ply,
-                          line_bonus=line_bonus, well_weight=well_weight)
+                          line_bonus=line_bonus, well_weight=well_weight,
+                          style_fn=style_fn, style_alpha=style_alpha,
+                          veto_margin=veto_margin)
     pieces = 0
     lines_total = 0
     clears: dict[int, int] = {0: 0, 1: 0, 2: 0, 3: 0, 4: 0}

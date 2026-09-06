@@ -171,6 +171,46 @@
     multi-move well scaffolding or training-time representation change;
     see §14.3 (files: well_bonus.json).
 
+- seeds: 20254-20283
+  protocol: corrected-lockout, cap 300 (dense-potential λ sweep, §17)
+  status: CONSUMED
+  history: dense sweep 2026-09-06 (full 2-ply + dense Phi style_fn +
+    {1:1,2:3,3:5,4:8} completion bonus, λ 0/2/5/10/20): Tetrises 4/3/4/15/34,
+    cap 30/30 everywhere; λ=0 reference 300.0/118.1 (zero-style contract
+    holds — full 2-ply champion reproduced). DECISION: dense setup incentive
+    creates Tetris play where thresholded bonuses could not; λ=10 candidate
+    for validation, λ=20 strongest style (0.38 Tetris/100, share 0.014)
+    pending survival-gate confirmation on long games
+    (file: dense_sweep.json).
+
+- seeds: 20350-20359
+  protocol: corrected-lockout, cap 300 (rollout probe vs champion baseline)
+  status: CONSUMED
+  history: rollout probe 2026-09-06 (top-3+3 roots, K=4 tapes, D=6,
+    controller continuation): 300.0/112.6, 2 Tetrises (0.07/100), 10/10
+    vs champion 300.0/116.5, 0 Tetrises, 10/10 — directionally stylish
+    but ~10x weaker per compute than dense Phi; continuation (dies ~100pcs)
+    is the ceiling. DECISION: rollouts gated on a surviving continuation
+    (files: rollout_probe.json, rollout_baseline.json).
+
+- seeds: 20400-20415
+  protocol: corrected-lockout, cap 300 (TEACHER DATA — not a selection panel)
+  status: CONSUMED
+  history: λ=20 teacher bank 2026-09-06 (16 games → 4683 states, clears
+    {0:3370, 1:996, 2:239, 3:64, 4:14}; 15/16 capped, one 183-pc death —
+    stylish but not death-proof). Used for DAgger round-0 head training
+    (file: teacher_bank_lam20.npz).
+
+- seeds: 20450-20479
+  protocol: corrected-lockout, cap 300 (teacher-head screen)
+  status: CONSUMED
+  history: DAgger round-0 head 2026-09-06 (4520 pairs, 400 steps, veto 25):
+    a0 298.8/112.1 (28/30, 6 tet) / a1 291.2/106.7 (24/30, 9 tet) /
+    a2 277.2/99.7 (22/30, 13 tet) / a4 174.6/53.6 (2/30, 19 tet) —
+    style TRANSFERS to 1-ply but gate fails above a~1. DECISION: round-1
+    with piece ids + tighter veto (file: teacher_head.json,
+    teacher_head_seed42.pt).
+
 - seeds: 5000-5999
   protocol: corrected-lockout, cap 1500
   status: reserved → future promotion panels (allocate 300 at a time)

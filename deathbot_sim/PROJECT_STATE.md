@@ -1176,26 +1176,333 @@ Tetris play needs states the current policy never visits, which requires
 either multi-move scaffolding (reward well-depth *trajectories*) or a
 training-time change so the value function itself generates them.
 
-### 14.4 Next: foundational representation (planned, not started)
+### 14.4 Next: foundational representation (SUPERSEDED 2026-09-06 — see §15)
 
-All three cheaper branches are now closed with mechanism: clear bonus
+~~All three cheaper branches are now closed with mechanism: clear bonus
 (§13.2), pick distillation (§13.3, §14.1–14.2), well bonus (§14.3). The
-common cause is representational, not incentive: the conv net sees 20×10
-occupancy + 2 piece one-hots and must re-derive hole/well/height structure
-the heuristic computes exactly — and every training signal so far
-regresses rankings the survival value already owns. The plan, in order:
+common cause is representational, not incentive~~ — this diagnosis was
+rejected on independent review (see `AI_plan_response.txt` + §15). The
+§14.3 result closes only *thresholded* single-move bonuses (a ≥6-deep
+all-or-nothing detector rewarded from flat-stack states, availability
+1.8%), not incentives in general. Height/well/hole channels are derivable
+from occupancy — they add inductive bias, not motive — and distilling a
+flat teacher was never a test of Tetris style. §14.4's order (representation
+first, scaffolding as fallback) is therefore reversed by §15.
 
-1. **Well/depth input channels** (smallest change): append exact per-column
-   height + well-depth planes (and/or hole mask) to the board tensor,
-   distill snapshot9's rankings onto the new encoding first (C3-style
-   supervised warm-up, behavior-neutral gate on a fresh panel), *then*
-   run well-seeking search on top. Gate: warm-up must reproduce 1-ply play
-   before any style bonus is added.
-2. **Separate value head** if (1) alone doesn't transfer: two-headed net
-   (frozen survival trunk + trainable style head over trunk features, not
-   raw heuristic feats) so style sees what survival sees.
-3. **Multi-move scaffolding** as the fallback: reward well-depth deltas
-   across consecutive placements (online fitd-style, capped panels with
-   the survival gate), not single-move setup states.
-4. Panels: next free range is **20254+** (cap-300 style); champion
+---
+
+## 15. Revised style plan (2026-09-06, independent-review reorder)
+
+Independent review (`AI_plan_response.txt`) accepted: snapshot9 + full
+2-ply stays the champion configuration, but **representation is NOT the
+next lever**. The missing ingredient is a signal that values the *path*
+to a Tetris. Prior work rewarded completed/near-completed setups while
+collecting data from a policy that avoids building them. Fix incentives
+and scaffolding first; touch representation only when fitting/
+generalization diagnostics demand it.
+
+### 15.0 Safety-contract corrections (do first)
+
+1. **"Survivors-only" is not a survival guarantee.** Masking immediate
+   deaths / 2-ply deaths does not protect against positions that die 10
+   pieces later. Likewise: freezing the survival net protects its weights,
+   not the combined policy; the veto gate is a heuristic, not a certified
+   constraint; mean-subtraction does not bound style influence within a
+   candidate set (pairwise gaps unchanged). Treat all of these as
+   engineering guardrails, and validate style policies on long games +
+   difficult tapes, not just cap-300 screens.
+2. **Zero-style contract (broken — fix before any more style screens).**
+   `style_head_B` α=0 scored 26/30 cap while the champion full-2-ply
+   scores 30/30 on the same protocol: the style harness runs **1-ply +
+   style**, not the champion policy, so α=0 does not reproduce the
+   champion. Contract going forward: **style weight zero must reproduce
+   the champion's chosen actions, terminal handling, and game results
+   exactly** (action agreement on a fixed bank + identical cap rate).
+   Includes wiring the style combination through `TwoPlyScorer` (not a
+   separate 1-ply worker) and a regression test pinning it.
+3. **Survival is demonstrated, not proven.** 30/30 caps at 300 (or even
+   4/4 at 5000) still permit ~9.5%/game failure at a one-sided 95% bound
+   on the short horizon. Keep cap-300 for cheap screening, but promote
+   only on long games + hard sequences.
+
+### 15.1 Order of work (evidence order, revised)
+
+1. **Zero-style harness fix (§15.0.2).** Style combination lives inside
+   `TwoPlyScorer.choose` (optional `style_fn` + `style_alpha` +
+   `veto_margin`); `None`/α=0 is byte-identical to today's champion path.
+   Bank action-agreement test + cap-rate check. No style decisions until
+   this gate passes.
+2. **Seeded well diagnostics** (`diag_seeded_wells.py`): clean 1-deep
+   precursor, 2–3-row partials, Tetris-ready well, ready well with
+   delayed I, nearly-blocked well, high-stack must-abandon. Report per
+   class: build / preserve / cash-out / recover. If the scorer takes
+   seeded Tetrises but never builds from empty → horizon/incentive
+   problem. If it rejects a reachable Tetris → inspect scoring/
+   transition logic first. These states double as a later curriculum.
+3. **Designated-well dense potential + explicit controller.**
+   Fixed well column (not argmax-depth — prevents well-switching reward
+   hacking). Dense features from actually-visited states: rows filled
+   except well, partial outside-well fill, clean well depth with credit
+   below 4, well obstructions, holes/covered holes outside well, surface
+   roughness outside well, reachable I-clear opportunity, stack-height /
+   placement-diversity risk. Form
+   `S(a) = Q_base,2ply(s,a) + λ·Φ(s_a) + β·R_clear(s,a)` with Φ a
+   *potential* (saturate past a usable 4-line setup; never unbounded
+   depth) and an explicit Tetris-completion reward (setup-only objectives
+   punish cashing out). Small finite-state controller
+   BUILD → CASH-OUT → BUILD with RECOVER available; ARS/20G reachability,
+   not heights alone; sides not assumed interchangeable. Success here
+   proves representation is not the prerequisite.
+4. **Sampled multi-step rollouts with a style-capable continuation.**
+   Root candidates × sampled future tapes (preview-correct: only the true
+   preview is known; beyond it sample the TAP randomizer), continuation
+   = well controller / dense-style policy (NOT the flat champion, which
+   dismantles setups and reports zero value). Common random numbers per
+   comparison. Trigger expensive planning selectively (well start/abandon,
+   competing plans, drought, risk threshold) rather than every placement.
+5. **Train/distill only from a demonstrably stylish teacher**
+   (controller actions, rollout winners, human demos, Tetris-reward
+   returns, trajectory preferences). DAgger (label states the student
+   visits), not frozen-bank CE. Decoupled head stays the chassis
+   (frozen survival + zero-init style branch); old absolute-survival
+   labels stay banned. A genuine style critic target is
+   `V_style(s) ← r_style + γ·V_style,tgt(s′)`, optionally with
+   potential shaping `r′ = r + η[γΦ(s′)−Φ(s)]` (standard discount/
+   terminal conditions for the invariance claim) — the old
+   `z ← γz′ + (1−γ)z` update is not a task reward and must not be
+   relabeled as one.
+6. **Representation last, with a clean gate.** Only if good style targets
+   exist that the net cannot fit/generalize. If tried: copy weights,
+   zero-init new-channel conv weights (exact function preservation) —
+   not C3-affine warm-up (which changes rankings). Same for any residual
+   style branch.
+7. **Search hygiene.** Drop the `v1 + γ(max−mean)` partial-expansion
+   form (best-sibling advantage ≠ absolute continuation quality);
+   expand shortlisted roots fully, keep shortlists diverse enough to
+   retain setup moves, cache duplicate leaves. Optimize small heuristic
+   weight vectors (5–15 dims) with CEM/random search under a survival
+   constraint on paired tapes before training 430K params.
+
+### 15.2 Metrics (lines/100 is conserved — stop optimizing it)
+
+During stable survival, `L = (4P + B_start − B_end)/10 → ~40/100`
+regardless of singles vs Tetrises. Report instead: Tetrises/100,
+fraction of cleared lines in Tetrises, Tetris share of clear events,
+setup→Tetris conversion, time-between-Tetrises, height/recovery stats,
+long-horizon failure rate. Keep lines/100 as a health check only. For
+human training: plan legibility + input-sequence executability.
+
+Panels: next free range is **20254+** (cap-300 style); champion
    unchanged (**snapshot9 + full 2-ply**).
+
+---
+
+## 16. §15 implementation — zero-style contract + dense potential (2026-09-06 night)
+
+### 16.1 Zero-style contract — FIXED in `TwoPlyScorer`
+
+`TwoPlyScorer` takes optional `style_fn(packed_rows, lines) -> [float]`,
+`style_alpha`, `veto_margin`. Style applies to SURVIVING 2-ply branches
+only (dead branches stay at `DEAD_PENALTY`; lockouts already excluded);
+`style_fn=None`/α=0 skips it without calling `style_fn` (byte-identical
+champion path). The beam≤0 1-ply path honors the same contract.
+`play_game_2ply_style` forwards the three params. New
+`tests/test_style_contract.py`: α=0 action-agreement vs the champion on
+120 bank states (style_fn call-count 0), dead-branch non-resurrection,
+veto-0 == champion pick. **5/5 pass**; full suite **176 passed, 2 skipped**.
+
+### 16.2 Seeded well diagnostics — `diag_seeded_wells.py`, mechanism found
+
+Six hand-built states (fixed well col 9), champion full-2-ply picks:
+
+| case | cur | bulk lines | dPhi | depth bef→aft | verdict |
+|---|---|---:|---:|---:|---|
+| precursor1 | T | 4 | −0.64 | 1→0 | avoids-setup |
+| partial2 | L | 4 | +0.03 | 2→2 | builds-ish |
+| ready | I | 8 | −4.50 | 4→0 | CASH-OUT ✓ |
+| delayed_I | T | 5 | −5.02 | 4→0 | damaged-setup |
+| blocked | I | 8 | −4.50 | 4→0 | (same as ready) |
+| highstack | O | 14 | +0.28 | 2→2 | (sweeps stack) |
+
+Two findings: **(a)** the scorer DOES cash out a ready well with I
+(depth 4→0), so scoring/transition logic is sound — the problem is
+purely incentive/horizon, exactly the review's prediction. **(b)** the
+"bulk lines" numbers are inflated: `lock_candidates_full` compacts ALL
+full rows, and solid-height suite boards have full rows below the well
+floor — a Tetris there also sweeps pre-existing rows (8/14-line reports).
+Suite verdicts use depth-collapse + lines≥4, not exact counts; a future
+`shelf` (capped-well) case should give exact Tetris counts. Also:
+`delayed_I` (T with a ready well) burns the setup instead of preserving
+it — expected under zero setup incentive; the dense potential (§16.3) is
+the fix to test, not a scorer bug.
+
+### 16.3 Dense designated-well potential — `well_potential.py`
+
+`dense_well_features()` + `well_potential()` (fixed well col 9, default
+weights = inspection start, not a teacher): rows-full-except-well counted
+at/above the well floor only (buried full rows are flat stack, not setup),
+partial outside-well fill, `min(depth,4)/4` credit from depth 1 (the old
+≥6 gate is gone), well-open, `tetris_ready`, hole/roughness/height
+penalties, saturation past a usable setup. `style_fn_factory()` adapts it
+to the `TwoPlyScorer` style interface (scale = Phi→z units; completion
+reward stays in `line_bonus`, never in Phi).
+
+### Next (still §15 order) — SUPERSEDED by §17 results below (2026-09-06 night)
+
+1. λ-scale sweep — DONE (§17.1): dense Phi creates Tetris play (λ=20:
+   34 Tetrises, 30/30 cap). Teacher gate PASSED.
+2. DAgger round-0 — DONE (§17.4): head distills λ=20 teacher's well
+   direction into 1-ply student (α=2: 13 Tetrises, 22/30 cap; α=4:
+   19 Tetrises but 2/30 cap — veto too loose for 1-ply).
+3. Rollouts — DONE as a probe (§17.3): controller continuation is the
+   weak link, not the planning idea; deprioritized until a surviving
+   continuation exists.
+4. Representation stays deferred (§15.1.6 gate holds — no fitting failure
+   shown; the style signal now exists without it).
+
+---
+
+## 17. §15 campaign results (2026-09-06 night) — dense incentive works
+
+### 17.1 Dense-potential λ sweep — FIRST TETRIS SIGNAL (`diag_dense_sweep.py`)
+
+Full 2-ply + dense Phi `style_fn` (fixed col 9) + `{1:1,2:3,3:5,4:8}`
+completion bonus, 30 games cap 300, FRESH panel 20254–20283 (CONSUMED).
+λ=0 arm is bonus-free (zero-style contract: 300.0 pcs / 118.1 lines,
+30/30 cap — champion reproduced exactly). File: `dense_sweep.json`
+(wall 1632 s).
+
+| λ | pieces | lines | Tetrises | T/100 | T-share | lines-in-Tetris | cap | mean Φ |
+|---|---:|---:|---:|---:|---:|---:|---:|---:|
+| 0 | 300.0 | 118.1 | 4 | 0.04 | 0.001 | 0.005 | 30 | 0.000 |
+| 2 | 300.0 | 117.8 | 3 | 0.03 | 0.001 | 0.003 | 30 | 0.281 |
+| 5 | 300.0 | 116.7 | 4 | 0.04 | 0.001 | 0.005 | 30 | 0.413 |
+| 10 | 300.0 | 115.7 | 15 | 0.17 | 0.005 | 0.017 | 30 | 0.720 |
+| 20 | 300.0 | 110.8 | 34 | 0.38 | 0.014 | 0.041 | 30 | 1.142 |
+
+Paired dLines vs λ=0: −0.3 (t−0.90) / −1.4 (t−2.71) / −2.4 (t−4.36) /
+−7.3 (t−10.61). Survival gate HOLDS at every λ (30/30 cap): the cost of
+style is lines/game (−7 at λ=20), not death — exactly the §15 trade the
+review predicted (lines/100 is conserved only under flat survival; wells
+hold cells back, so lines dip while Tetris share rises 10×).
+
+Why this succeeded where §13.2/§14.3 failed: availability probe on 500
+bank states — maxΦ>0.5 on **123/500 (24.6%)** vs 1.8% for the ≥6-deep
+gate; mean within-state Φ spread **1.245**, spread>0.3 on 403/500. Dense
+Phi scores precursors the flat policy actually visits. Correlation
+check: mean within-state corr(v1, Φ) = **+0.122** (only 6/196 states
+< −0.5) — Phi is a genuinely NEW axis, not a survival echo, and mostly
+does not oppose survival (hence the gate holds).
+
+Bug fixed en route: `dense_well_features` indexed `occ[21]` on near-death
+stacks (heights can exceed the 21-row bitmask via lockout-tracked cells) —
+clamped `top`/`hw` to 21 and broke the `rows_full` loop at 21
+(`well_potential.py`; contract tests still 5/5).
+
+Panel: 20254–20283 CONSUMED (registry updated).
+
+### 17.2 Explicit controller — NEGATIVE as a player, kept as a tool
+
+`well_controller.py` (BUILD→CASH-OUT→BUILD + RECOVER, NN-free, fixed col 9):
+pure max-Phi BUILD drifts upward and dies ~91–115 pcs (lockout top-21);
+lowest-top gating extends survival only to ~115–200 pcs with 0 Tetrises.
+Even the hand-built heuristic baseline dies at 108 on seed 20254 — 20G
+Death punishes any non-NN survival sense. Cash-out override test (NN
+survival + forced take-any-≥4-clear): 300/300 cap on 3 seeds but 0
+Tetrises — the champion never OPENS a well, so there is nothing to cash
+out. Verdict: the controller is NOT a player and NOT a full-game teacher;
+its value is as a rollout CONTINUATION and a seeded-suite probe. The
+review's "diagnostic and teacher" framing holds for the diagnostic half;
+the teacher half needs the λ=20 2-ply policy (§17.1), not the raw
+controller.
+
+### 17.3 Sampled multi-step rollouts — probe NEGATIVE, mechanism clear
+
+`diag_rollout.py` (root shortlist top-3+3, K=4 tapes, D=6, common random
+numbers, preview-correct, controller continuation, v1 anchor): 10 games
+cap 300, seeds 20350–20359: **300.0 pcs / 112.6 lines, 2 Tetrises
+(0.07/100, share 0.002), 10/10 cap** (wall 863 s) vs champion baseline on
+the SAME seeds **300.0 / 116.5, 0 Tetrises, 10/10** (`rollout_probe.json`,
+`rollout_baseline.json`; baseline wall 179 s, ~5× cheaper). Rollout adds
++2 Tetrises at −4 lines — directionally stylish but ~10× weaker per
+compute than λ=10/20 single-move Phi. Mechanism: the continuation is the
+ceiling — the controller dies at ~100 pcs, so 6-deep simulated futures
+penalize exactly the setup paths they should reward (death-penalty −50
+fires on well-building tapes). Planning is NOT closed as an idea; it is
+gated on a surviving continuation (λ=20 2-ply itself, once distilled
+fast). Until then: deprioritized. (Also fixed: default `--workers` 8→4;
+co-running with the sweep OOM-killed workers — `BrokenProcessPool`.)
+
+### 17.4 DAgger round-0: λ=20 teacher → 1-ply style head — TRANSFERS
+
+`collect_teacher_bank.py`: 16 teacher games (λ=20, seeds 20400–20415) →
+**4683 states, clears {0:3370, 1:996, 2:239, 3:64, 4:14}** — 15/16 capped
+(one 183-pc game: λ=20 is stylish but not death-proof; the survival gate
+at cap 300 is 30/30 only for the sweep panel, and longer/drought games
+can still kill it). `train_teacher_head.py`: 4520/4683 pairs (teacher
+pick vs lowest-Phi candidate — piece-id-free; teacher-bank has no piece
+ids), 400 steps margin-ranking, feat direction
+wheight −9.5 / holedepth −3.8 / cav −2.6 / wellcost +2.6 / spawn −1.7 /
+lines +0.35 / deepwell +0.95 — the head learns the WELL direction (lower,
+cleaner, deeper-well), opposite sign to the flat-2-ply Phase-A direction
+(wheight +1.94, holedepth +1.02). Screened FRESH 20450–20479 (CONSUMED),
+1-ply + α·style with veto 25 (`teacher_head.json`):
+
+| α | pieces | lines | cap | Tetrises |
+|---|---:|---:|---:|---:|
+| 0.0 (ref) | 298.8 | 112.1 | 28/30 | 6 |
+| 1.0 | 291.2 | 106.7 | 24/30 | 9 |
+| 2.0 | 293.5→277.2 | 99.7 | 22/30 | 13 |
+| 4.0 | 174.6 | 53.6 | 2/30 | 19 |
+
+Style TRANSFERS to the fast 1-ply student (9→13 Tetrises vs 6 ref) but the
+survival gate FAILS above α≈1 (28→22→2/30 cap): the 1-ply student has no
+lookahead to refuse death, and veto-25 on 1-ply values is too loose. Two
+caveats: (a) α=0 ref itself is 28/30 (this panel runs harsher tapes than
+the sweep panel — λ=0 full-2-ply reference on 20450+ was not run, so the
+2-cap deficit vs 30/30 is panel difficulty, not a contract break; the
+§16 bank-agreement test still holds); (b) pairs use lowest-Phi as the
+flat side (no survival margins — teacher bank stores no piece ids), so
+the Phase-B survival weighting is absent; storing piece ids in the bank
+is the fix.
+
+### 17.5 What §17 gates (decision)
+
+1. **λ=20 2-ply + completion bonus is the first well-building teacher.**
+   Standing stylish configuration (not the survival champion — that stays
+   snapshot9 + full 2-ply): same weights, `style_fn` λ=20 + `{1:1,2:3,3:5,
+   4:8}` bonus. Cost: −7 lines/game at cap 300, survival 30/30 on the
+   sweep panel.
+2. **Next: DAgger round-1 with piece ids + tighter veto.** Store
+   (placed, preview) ids in the teacher bank → restore survival-margin
+   weighting → retrain → screen with veto {10, 25} × α {0.5, 1.0} on fresh
+   20480+. Goal: keep α=1-style Tetrises (9–13) at ≥28/30 cap.
+3. **Then: long-game survival gate** for the stylish config (cap 1500+,
+   drought tapes): §15.0.3 requires promotion beyond cap-300.
+4. **Rollouts gated** on a surviving continuation (§17.3); **controller**
+   stays a probe, not a teacher (§17.2); **representation** still deferred
+   (no fitting failure; §15.1.6 gate holds).
+5. Panels: 20254–20283 (sweep), 20350–20359 (rollout probe + baseline),
+   20400–20415 (teacher bank — training data, not a selection panel),
+   20450–20479 (head screen) all CONSUMED. Next free: **20480+**
+   (cap-300 style); 5000s reserves for promotion.
+
+### 17.6 Stylish config in the live visualizer (2026-09-07)
+
+`viz_live.py` now supports the §17.1 stylish config directly
+(`TwoPlyVizScorer` takes `phi_lambda`/`well_col`; `--phi-lambda`,
+`--well-col` CLI flags; scorer label shows `Stylish(lam=..,well=..)`).
+Validated stylish command (same snapshot9 weights, no new `.pt`):
+
+```
+viz_live.py --nn --weights ../model_weights_snapshot9.pt --two-ply --line-bonus 1,3,5,8 --phi-lambda 20
+```
+
+(`--well-col 9` is the default.) Parity pinned by
+`tests/test_viz_stylish.py`: viz stylish picks == sweep-path
+`TwoPlyScorer(style_fn)` picks on 60 bank states; `--phi-lambda 0`
+(or omitting it) == pure champion. Caveat carried over from the viz
+adapter: ply-2 expansion inside `TwoPlyVizScorer.score_batch` still uses
+the fast `search_placements` order while style rows are read per-candidate
+only when bulk/search orders disagree (fallback lock+clear); the parity
+test above guards the combined result.

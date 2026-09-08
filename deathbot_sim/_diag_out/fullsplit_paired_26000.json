@@ -1,0 +1,162 @@
+{
+  "args": {
+    "games": 8,
+    "seed": 26000,
+    "max_pieces": 1500,
+    "legacy_lockout": false,
+    "workers": 4,
+    "threads_per_worker": 1,
+    "verbose": false,
+    "json": "../_diag_out/fullsplit_paired_26000.json",
+    "compare": null
+  },
+  "games_per_ckpt": 8,
+  "seed0": 26000,
+  "max_pieces": 1500,
+  "results": [
+    {
+      "name": "fullsplit_seed42.pt",
+      "weights": "C:\\My Things\\HTML\\Demonin's Item Shop\\other\\deathBot\\deathbot_sim\\_diag_out\\fullsplit_seed42.pt",
+      "summary": {
+        "mean_pieces": 1347.25,
+        "median_pieces": 1500.0,
+        "stdev_pieces": 223.82055950502593,
+        "min_pieces": 940,
+        "max_pieces": 1500,
+        "mean_lines": 527.625,
+        "capped_games": 5,
+        "n_games": 8
+      },
+      "games": [
+        {
+          "seed": 26000,
+          "pieces": 1500,
+          "lines": 595,
+          "capped": true,
+          "seconds": 12.49917080020532
+        },
+        {
+          "seed": 26001,
+          "pieces": 1500,
+          "lines": 592,
+          "capped": true,
+          "seconds": 12.446699800435454
+        },
+        {
+          "seed": 26002,
+          "pieces": 1500,
+          "lines": 591,
+          "capped": true,
+          "seconds": 12.567772299982607
+        },
+        {
+          "seed": 26003,
+          "pieces": 1500,
+          "lines": 592,
+          "capped": true,
+          "seconds": 11.934909299947321
+        },
+        {
+          "seed": 26004,
+          "pieces": 1121,
+          "lines": 431,
+          "capped": false,
+          "seconds": 8.3099340996705
+        },
+        {
+          "seed": 26005,
+          "pieces": 1217,
+          "lines": 469,
+          "capped": false,
+          "seconds": 9.229124799836427
+        },
+        {
+          "seed": 26006,
+          "pieces": 1500,
+          "lines": 592,
+          "capped": true,
+          "seconds": 10.839742900338024
+        },
+        {
+          "seed": 26007,
+          "pieces": 940,
+          "lines": 359,
+          "capped": false,
+          "seconds": 6.732183699961752
+        }
+      ]
+    },
+    {
+      "name": "model_weights_snapshot9.pt",
+      "weights": "C:\\My Things\\HTML\\Demonin's Item Shop\\other\\deathBot\\model_weights_snapshot9.pt",
+      "summary": {
+        "mean_pieces": 670.625,
+        "median_pieces": 569.0,
+        "stdev_pieces": 371.7571932246715,
+        "min_pieces": 279,
+        "max_pieces": 1173,
+        "mean_lines": 252.0,
+        "capped_games": 0,
+        "n_games": 8
+      },
+      "games": [
+        {
+          "seed": 26000,
+          "pieces": 1079,
+          "lines": 416,
+          "capped": false,
+          "seconds": 9.068492399994284
+        },
+        {
+          "seed": 26001,
+          "pieces": 316,
+          "lines": 110,
+          "capped": false,
+          "seconds": 2.6992207001894712
+        },
+        {
+          "seed": 26002,
+          "pieces": 1173,
+          "lines": 453,
+          "capped": false,
+          "seconds": 10.137975300196558
+        },
+        {
+          "seed": 26003,
+          "pieces": 340,
+          "lines": 119,
+          "capped": false,
+          "seconds": 2.9394570998847485
+        },
+        {
+          "seed": 26004,
+          "pieces": 279,
+          "lines": 96,
+          "capped": false,
+          "seconds": 2.420650400221348
+        },
+        {
+          "seed": 26005,
+          "pieces": 1040,
+          "lines": 400,
+          "capped": false,
+          "seconds": 8.758967800065875
+        },
+        {
+          "seed": 26006,
+          "pieces": 532,
+          "lines": 196,
+          "capped": false,
+          "seconds": 4.684601599816233
+        },
+        {
+          "seed": 26007,
+          "pieces": 606,
+          "lines": 226,
+          "capped": false,
+          "seconds": 5.09067860012874
+        }
+      ]
+    }
+  ]
+}

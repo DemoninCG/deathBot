@@ -1,0 +1,962 @@
+{
+  "weights": "C:\\My Things\\HTML\\Demonin's Item Shop\\other\\deathBot\\model_weights_snapshot9.pt",
+  "weights_sha256": "229bbe2a91bab6b1d6a58f25440e7504711aabe8dfc26d24dad9ee0461be46ed",
+  "games": 30,
+  "seed0": 20520,
+  "cap": 1500,
+  "arms": {
+    "ply1": {
+      "mean_pieces": 763.9,
+      "capped": 4,
+      "total_changes": 0,
+      "total_all_dead": 0,
+      "per_seed": {
+        "20520": {
+          "pieces": 629,
+          "lines": 237,
+          "reason": "no_candidates",
+          "n_changes": 0,
+          "all_dead": 0,
+          "s": 11.2
+        },
+        "20521": {
+          "pieces": 192,
+          "lines": 60,
+          "reason": "no_candidates",
+          "n_changes": 0,
+          "all_dead": 0,
+          "s": 3.8
+        },
+        "20522": {
+          "pieces": 863,
+          "lines": 331,
+          "reason": "no_candidates",
+          "n_changes": 0,
+          "all_dead": 0,
+          "s": 14.5
+        },
+        "20523": {
+          "pieces": 664,
+          "lines": 249,
+          "reason": "no_candidates",
+          "n_changes": 0,
+          "all_dead": 0,
+          "s": 11.2
+        },
+        "20524": {
+          "pieces": 1149,
+          "lines": 443,
+          "reason": "no_candidates",
+          "n_changes": 0,
+          "all_dead": 0,
+          "s": 17.3
+        },
+        "20525": {
+          "pieces": 461,
+          "lines": 168,
+          "reason": "no_candidates",
+          "n_changes": 0,
+          "all_dead": 0,
+          "s": 7.5
+        },
+        "20526": {
+          "pieces": 328,
+          "lines": 114,
+          "reason": "no_candidates",
+          "n_changes": 0,
+          "all_dead": 0,
+          "s": 5.3
+        },
+        "20527": {
+          "pieces": 708,
+          "lines": 266,
+          "reason": "no_candidates",
+          "n_changes": 0,
+          "all_dead": 0,
+          "s": 12.0
+        },
+        "20528": {
+          "pieces": 325,
+          "lines": 114,
+          "reason": "no_candidates",
+          "n_changes": 0,
+          "all_dead": 0,
+          "s": 4.9
+        },
+        "20529": {
+          "pieces": 444,
+          "lines": 162,
+          "reason": "no_candidates",
+          "n_changes": 0,
+          "all_dead": 0,
+          "s": 6.7
+        },
+        "20530": {
+          "pieces": 765,
+          "lines": 289,
+          "reason": "lockout",
+          "n_changes": 0,
+          "all_dead": 0,
+          "s": 12.0
+        },
+        "20531": {
+          "pieces": 597,
+          "lines": 223,
+          "reason": "no_candidates",
+          "n_changes": 0,
+          "all_dead": 0,
+          "s": 9.5
+        },
+        "20532": {
+          "pieces": 1500,
+          "lines": 586,
+          "reason": "max_pieces",
+          "n_changes": 0,
+          "all_dead": 0,
+          "s": 23.8
+        },
+        "20533": {
+          "pieces": 1500,
+          "lines": 591,
+          "reason": "max_pieces",
+          "n_changes": 0,
+          "all_dead": 0,
+          "s": 23.4
+        },
+        "20534": {
+          "pieces": 668,
+          "lines": 250,
+          "reason": "no_candidates",
+          "n_changes": 0,
+          "all_dead": 0,
+          "s": 10.9
+        },
+        "20535": {
+          "pieces": 201,
+          "lines": 63,
+          "reason": "no_candidates",
+          "n_changes": 0,
+          "all_dead": 0,
+          "s": 3.0
+        },
+        "20536": {
+          "pieces": 773,
+          "lines": 292,
+          "reason": "no_candidates",
+          "n_changes": 0,
+          "all_dead": 0,
+          "s": 11.6
+        },
+        "20537": {
+          "pieces": 1273,
+          "lines": 493,
+          "reason": "no_candidates",
+          "n_changes": 0,
+          "all_dead": 0,
+          "s": 19.2
+        },
+        "20538": {
+          "pieces": 606,
+          "lines": 225,
+          "reason": "no_candidates",
+          "n_changes": 0,
+          "all_dead": 0,
+          "s": 9.3
+        },
+        "20539": {
+          "pieces": 1113,
+          "lines": 429,
+          "reason": "no_candidates",
+          "n_changes": 0,
+          "all_dead": 0,
+          "s": 17.1
+        },
+        "20540": {
+          "pieces": 1500,
+          "lines": 591,
+          "reason": "max_pieces",
+          "n_changes": 0,
+          "all_dead": 0,
+          "s": 23.0
+        },
+        "20541": {
+          "pieces": 361,
+          "lines": 127,
+          "reason": "no_candidates",
+          "n_changes": 0,
+          "all_dead": 0,
+          "s": 5.7
+        },
+        "20542": {
+          "pieces": 645,
+          "lines": 243,
+          "reason": "no_candidates",
+          "n_changes": 0,
+          "all_dead": 0,
+          "s": 9.7
+        },
+        "20543": {
+          "pieces": 195,
+          "lines": 61,
+          "reason": "no_candidates",
+          "n_changes": 0,
+          "all_dead": 0,
+          "s": 3.0
+        },
+        "20544": {
+          "pieces": 731,
+          "lines": 276,
+          "reason": "no_candidates",
+          "n_changes": 0,
+          "all_dead": 0,
+          "s": 11.7
+        },
+        "20545": {
+          "pieces": 1097,
+          "lines": 422,
+          "reason": "no_candidates",
+          "n_changes": 0,
+          "all_dead": 0,
+          "s": 17.9
+        },
+        "20546": {
+          "pieces": 550,
+          "lines": 203,
+          "reason": "no_candidates",
+          "n_changes": 0,
+          "all_dead": 0,
+          "s": 8.7
+        },
+        "20547": {
+          "pieces": 982,
+          "lines": 376,
+          "reason": "no_candidates",
+          "n_changes": 0,
+          "all_dead": 0,
+          "s": 16.2
+        },
+        "20548": {
+          "pieces": 597,
+          "lines": 223,
+          "reason": "no_candidates",
+          "n_changes": 0,
+          "all_dead": 0,
+          "s": 9.7
+        },
+        "20549": {
+          "pieces": 1500,
+          "lines": 588,
+          "reason": "max_pieces",
+          "n_changes": 0,
+          "all_dead": 0,
+          "s": 23.4
+        }
+      },
+      "change_log_sample": []
+    },
+    "ply1_dr": {
+      "mean_pieces": 791.2333333333333,
+      "capped": 4,
+      "total_changes": 34,
+      "total_all_dead": 26,
+      "per_seed": {
+        "20520": {
+          "pieces": 638,
+          "lines": 239,
+          "reason": "no_candidates",
+          "n_changes": 2,
+          "all_dead": 1,
+          "s": 11.0
+        },
+        "20521": {
+          "pieces": 196,
+          "lines": 61,
+          "reason": "no_candidates",
+          "n_changes": 3,
+          "all_dead": 1,
+          "s": 3.4
+        },
+        "20522": {
+          "pieces": 870,
+          "lines": 331,
+          "reason": "no_candidates",
+          "n_changes": 2,
+          "all_dead": 1,
+          "s": 14.6
+        },
+        "20523": {
+          "pieces": 666,
+          "lines": 249,
+          "reason": "no_candidates",
+          "n_changes": 1,
+          "all_dead": 1,
+          "s": 10.6
+        },
+        "20524": {
+          "pieces": 1153,
+          "lines": 444,
+          "reason": "no_candidates",
+          "n_changes": 1,
+          "all_dead": 1,
+          "s": 18.6
+        },
+        "20525": {
+          "pieces": 464,
+          "lines": 168,
+          "reason": "no_candidates",
+          "n_changes": 2,
+          "all_dead": 1,
+          "s": 7.5
+        },
+        "20526": {
+          "pieces": 329,
+          "lines": 114,
+          "reason": "no_candidates",
+          "n_changes": 1,
+          "all_dead": 1,
+          "s": 5.5
+        },
+        "20527": {
+          "pieces": 708,
+          "lines": 266,
+          "reason": "no_candidates",
+          "n_changes": 0,
+          "all_dead": 1,
+          "s": 12.1
+        },
+        "20528": {
+          "pieces": 326,
+          "lines": 114,
+          "reason": "no_candidates",
+          "n_changes": 1,
+          "all_dead": 1,
+          "s": 5.6
+        },
+        "20529": {
+          "pieces": 546,
+          "lines": 201,
+          "reason": "no_candidates",
+          "n_changes": 1,
+          "all_dead": 1,
+          "s": 8.9
+        },
+        "20530": {
+          "pieces": 767,
+          "lines": 289,
+          "reason": "no_candidates",
+          "n_changes": 1,
+          "all_dead": 1,
+          "s": 12.8
+        },
+        "20531": {
+          "pieces": 1259,
+          "lines": 486,
+          "reason": "no_candidates",
+          "n_changes": 3,
+          "all_dead": 1,
+          "s": 21.7
+        },
+        "20532": {
+          "pieces": 1500,
+          "lines": 586,
+          "reason": "max_pieces",
+          "n_changes": 0,
+          "all_dead": 0,
+          "s": 25.5
+        },
+        "20533": {
+          "pieces": 1500,
+          "lines": 591,
+          "reason": "max_pieces",
+          "n_changes": 0,
+          "all_dead": 0,
+          "s": 24.8
+        },
+        "20534": {
+          "pieces": 670,
+          "lines": 250,
+          "reason": "no_candidates",
+          "n_changes": 1,
+          "all_dead": 1,
+          "s": 11.8
+        },
+        "20535": {
+          "pieces": 202,
+          "lines": 63,
+          "reason": "lockout",
+          "n_changes": 1,
+          "all_dead": 1,
+          "s": 3.3
+        },
+        "20536": {
+          "pieces": 773,
+          "lines": 292,
+          "reason": "no_candidates",
+          "n_changes": 0,
+          "all_dead": 1,
+          "s": 13.0
+        },
+        "20537": {
+          "pieces": 1274,
+          "lines": 493,
+          "reason": "no_candidates",
+          "n_changes": 1,
+          "all_dead": 1,
+          "s": 20.8
+        },
+        "20538": {
+          "pieces": 609,
+          "lines": 226,
+          "reason": "no_candidates",
+          "n_changes": 1,
+          "all_dead": 1,
+          "s": 10.1
+        },
+        "20539": {
+          "pieces": 1115,
+          "lines": 429,
+          "reason": "no_candidates",
+          "n_changes": 2,
+          "all_dead": 1,
+          "s": 18.5
+        },
+        "20540": {
+          "pieces": 1500,
+          "lines": 591,
+          "reason": "max_pieces",
+          "n_changes": 0,
+          "all_dead": 0,
+          "s": 24.2
+        },
+        "20541": {
+          "pieces": 362,
+          "lines": 127,
+          "reason": "lockout",
+          "n_changes": 1,
+          "all_dead": 1,
+          "s": 6.1
+        },
+        "20542": {
+          "pieces": 645,
+          "lines": 243,
+          "reason": "no_candidates",
+          "n_changes": 0,
+          "all_dead": 1,
+          "s": 10.3
+        },
+        "20543": {
+          "pieces": 195,
+          "lines": 61,
+          "reason": "no_candidates",
+          "n_changes": 0,
+          "all_dead": 1,
+          "s": 3.3
+        },
+        "20544": {
+          "pieces": 734,
+          "lines": 276,
+          "reason": "no_candidates",
+          "n_changes": 2,
+          "all_dead": 1,
+          "s": 11.6
+        },
+        "20545": {
+          "pieces": 1099,
+          "lines": 422,
+          "reason": "no_candidates",
+          "n_changes": 2,
+          "all_dead": 1,
+          "s": 18.8
+        },
+        "20546": {
+          "pieces": 552,
+          "lines": 204,
+          "reason": "no_candidates",
+          "n_changes": 1,
+          "all_dead": 1,
+          "s": 8.6
+        },
+        "20547": {
+          "pieces": 985,
+          "lines": 376,
+          "reason": "no_candidates",
+          "n_changes": 1,
+          "all_dead": 1,
+          "s": 16.5
+        },
+        "20548": {
+          "pieces": 600,
+          "lines": 223,
+          "reason": "no_candidates",
+          "n_changes": 3,
+          "all_dead": 1,
+          "s": 10.2
+        },
+        "20549": {
+          "pieces": 1500,
+          "lines": 588,
+          "reason": "max_pieces",
+          "n_changes": 0,
+          "all_dead": 0,
+          "s": 26.1
+        }
+      },
+      "change_log_sample": [
+        {
+          "piece": 628,
+          "v1_pick_gap": -2.54144287109375,
+          "top": 0,
+          "occ": 142
+        },
+        {
+          "piece": 636,
+          "v1_pick_gap": -2.10540771484375,
+          "top": 0,
+          "occ": 154
+        },
+        {
+          "piece": 191,
+          "v1_pick_gap": -5.070556640625,
+          "top": 0,
+          "occ": 164
+        },
+        {
+          "piece": 193,
+          "v1_pick_gap": -6.31878662109375,
+          "top": 0,
+          "occ": 162
+        },
+        {
+          "piece": 194,
+          "v1_pick_gap": -11.0693359375,
+          "top": 0,
+          "occ": 166
+        },
+        {
+          "piece": 862,
+          "v1_pick_gap": -4.22967529296875,
+          "top": 0,
+          "occ": 138
+        },
+        {
+          "piece": 868,
+          "v1_pick_gap": -1.5670166015625,
+          "top": 0,
+          "occ": 162
+        },
+        {
+          "piece": 663,
+          "v1_pick_gap": -8.14019775390625,
+          "top": 0,
+          "occ": 162
+        },
+        {
+          "piece": 1148,
+          "v1_pick_gap": -1.34967041015625,
+          "top": 0,
+          "occ": 162
+        },
+        {
+          "piece": 460,
+          "v1_pick_gap": -1.06298828125,
+          "top": 0,
+          "occ": 160
+        },
+        {
+          "piece": 462,
+          "v1_pick_gap": -0.20196533203125,
+          "top": 0,
+          "occ": 168
+        },
+        {
+          "piece": 327,
+          "v1_pick_gap": -12.6103515625,
+          "top": 0,
+          "occ": 168
+        },
+        {
+          "piece": 324,
+          "v1_pick_gap": -2.11083984375,
+          "top": 0,
+          "occ": 156
+        },
+        {
+          "piece": 443,
+          "v1_pick_gap": -2.183563232421875,
+          "top": 0,
+          "occ": 152
+        },
+        {
+          "piece": 764,
+          "v1_pick_gap": -1.5169677734375,
+          "top": 0,
+          "occ": 166
+        },
+        {
+          "piece": 596,
+          "v1_pick_gap": -12.68377685546875,
+          "top": 0,
+          "occ": 154
+        },
+        {
+          "piece": 1236,
+          "v1_pick_gap": -6.992767333984375,
+          "top": 0,
+          "occ": 154
+        },
+        {
+          "piece": 1257,
+          "v1_pick_gap": -4.1373291015625,
+          "top": 0,
+          "occ": 168
+        },
+        {
+          "piece": 667,
+          "v1_pick_gap": -0.301025390625,
+          "top": 0,
+          "occ": 168
+        },
+        {
+          "piece": 200,
+          "v1_pick_gap": -4.93505859375,
+          "top": 0,
+          "occ": 170
+        },
+        {
+          "piece": 1272,
+          "v1_pick_gap": -5.95904541015625,
+          "top": 0,
+          "occ": 158
+        },
+        {
+          "piece": 605,
+          "v1_pick_gap": -0.8035888671875,
+          "top": 0,
+          "occ": 170
+        },
+        {
+          "piece": 1112,
+          "v1_pick_gap": -0.677001953125,
+          "top": 0,
+          "occ": 158
+        },
+        {
+          "piece": 1113,
+          "v1_pick_gap": -1.105224609375,
+          "top": 0,
+          "occ": 162
+        },
+        {
+          "piece": 360,
+          "v1_pick_gap": -11.2119140625,
+          "top": 0,
+          "occ": 170
+        },
+        {
+          "piece": 730,
+          "v1_pick_gap": -2.064453125,
+          "top": 0,
+          "occ": 160
+        },
+        {
+          "piece": 732,
+          "v1_pick_gap": -6.13055419921875,
+          "top": 0,
+          "occ": 168
+        },
+        {
+          "piece": 1096,
+          "v1_pick_gap": -2.37457275390625,
+          "top": 0,
+          "occ": 164
+        },
+        {
+          "piece": 1097,
+          "v1_pick_gap": -6.48895263671875,
+          "top": 0,
+          "occ": 168
+        },
+        {
+          "piece": 549,
+          "v1_pick_gap": -25.7310791015625,
+          "top": 0,
+          "occ": 166
+        },
+        {
+          "piece": 981,
+          "v1_pick_gap": -0.755615234375,
+          "top": 0,
+          "occ": 164
+        },
+        {
+          "piece": 596,
+          "v1_pick_gap": -0.3719482421875,
+          "top": 0,
+          "occ": 154
+        },
+        {
+          "piece": 597,
+          "v1_pick_gap": -2.47283935546875,
+          "top": 0,
+          "occ": 158
+        },
+        {
+          "piece": 598,
+          "v1_pick_gap": -1.968994140625,
+          "top": 0,
+          "occ": 162
+        }
+      ]
+    },
+    "ply2": {
+      "mean_pieces": 1500.0,
+      "capped": 30,
+      "total_changes": 0,
+      "total_all_dead": 0,
+      "per_seed": {
+        "20520": {
+          "pieces": 1500,
+          "lines": 599,
+          "reason": "max_pieces",
+          "n_changes": 0,
+          "all_dead": 0,
+          "s": 383.2
+        },
+        "20521": {
+          "pieces": 1500,
+          "lines": 599,
+          "reason": "max_pieces",
+          "n_changes": 0,
+          "all_dead": 0,
+          "s": 379.7
+        },
+        "20522": {
+          "pieces": 1500,
+          "lines": 597,
+          "reason": "max_pieces",
+          "n_changes": 0,
+          "all_dead": 0,
+          "s": 385.2
+        },
+        "20523": {
+          "pieces": 1500,
+          "lines": 598,
+          "reason": "max_pieces",
+          "n_changes": 0,
+          "all_dead": 0,
+          "s": 389.3
+        },
+        "20524": {
+          "pieces": 1500,
+          "lines": 598,
+          "reason": "max_pieces",
+          "n_changes": 0,
+          "all_dead": 0,
+          "s": 419.2
+        },
+        "20525": {
+          "pieces": 1500,
+          "lines": 599,
+          "reason": "max_pieces",
+          "n_changes": 0,
+          "all_dead": 0,
+          "s": 420.1
+        },
+        "20526": {
+          "pieces": 1500,
+          "lines": 598,
+          "reason": "max_pieces",
+          "n_changes": 0,
+          "all_dead": 0,
+          "s": 423.4
+        },
+        "20527": {
+          "pieces": 1500,
+          "lines": 599,
+          "reason": "max_pieces",
+          "n_changes": 0,
+          "all_dead": 0,
+          "s": 432.4
+        },
+        "20528": {
+          "pieces": 1500,
+          "lines": 599,
+          "reason": "max_pieces",
+          "n_changes": 0,
+          "all_dead": 0,
+          "s": 418.8
+        },
+        "20529": {
+          "pieces": 1500,
+          "lines": 599,
+          "reason": "max_pieces",
+          "n_changes": 0,
+          "all_dead": 0,
+          "s": 427.4
+        },
+        "20530": {
+          "pieces": 1500,
+          "lines": 599,
+          "reason": "max_pieces",
+          "n_changes": 0,
+          "all_dead": 0,
+          "s": 438.4
+        },
+        "20531": {
+          "pieces": 1500,
+          "lines": 597,
+          "reason": "max_pieces",
+          "n_changes": 0,
+          "all_dead": 0,
+          "s": 440.0
+        },
+        "20532": {
+          "pieces": 1500,
+          "lines": 599,
+          "reason": "max_pieces",
+          "n_changes": 0,
+          "all_dead": 0,
+          "s": 460.1
+        },
+        "20533": {
+          "pieces": 1500,
+          "lines": 599,
+          "reason": "max_pieces",
+          "n_changes": 0,
+          "all_dead": 0,
+          "s": 442.9
+        },
+        "20534": {
+          "pieces": 1500,
+          "lines": 599,
+          "reason": "max_pieces",
+          "n_changes": 0,
+          "all_dead": 0,
+          "s": 444.5
+        },
+        "20535": {
+          "pieces": 1500,
+          "lines": 597,
+          "reason": "max_pieces",
+          "n_changes": 0,
+          "all_dead": 0,
+          "s": 442.7
+        },
+        "20536": {
+          "pieces": 1500,
+          "lines": 592,
+          "reason": "max_pieces",
+          "n_changes": 0,
+          "all_dead": 0,
+          "s": 342.5
+        },
+        "20537": {
+          "pieces": 1500,
+          "lines": 596,
+          "reason": "max_pieces",
+          "n_changes": 0,
+          "all_dead": 0,
+          "s": 338.2
+        },
+        "20538": {
+          "pieces": 1500,
+          "lines": 598,
+          "reason": "max_pieces",
+          "n_changes": 0,
+          "all_dead": 0,
+          "s": 342.2
+        },
+        "20539": {
+          "pieces": 1500,
+          "lines": 599,
+          "reason": "max_pieces",
+          "n_changes": 0,
+          "all_dead": 0,
+          "s": 327.9
+        },
+        "20540": {
+          "pieces": 1500,
+          "lines": 597,
+          "reason": "max_pieces",
+          "n_changes": 0,
+          "all_dead": 0,
+          "s": 297.3
+        },
+        "20541": {
+          "pieces": 1500,
+          "lines": 600,
+          "reason": "max_pieces",
+          "n_changes": 0,
+          "all_dead": 0,
+          "s": 292.9
+        },
+        "20542": {
+          "pieces": 1500,
+          "lines": 593,
+          "reason": "max_pieces",
+          "n_changes": 0,
+          "all_dead": 0,
+          "s": 301.4
+        },
+        "20543": {
+          "pieces": 1500,
+          "lines": 599,
+          "reason": "max_pieces",
+          "n_changes": 0,
+          "all_dead": 0,
+          "s": 297.3
+        },
+        "20544": {
+          "pieces": 1500,
+          "lines": 598,
+          "reason": "max_pieces",
+          "n_changes": 0,
+          "all_dead": 0,
+          "s": 294.0
+        },
+        "20545": {
+          "pieces": 1500,
+          "lines": 598,
+          "reason": "max_pieces",
+          "n_changes": 0,
+          "all_dead": 0,
+          "s": 298.6
+        },
+        "20546": {
+          "pieces": 1500,
+          "lines": 595,
+          "reason": "max_pieces",
+          "n_changes": 0,
+          "all_dead": 0,
+          "s": 295.2
+        },
+        "20547": {
+          "pieces": 1500,
+          "lines": 598,
+          "reason": "max_pieces",
+          "n_changes": 0,
+          "all_dead": 0,
+          "s": 301.6
+        },
+        "20548": {
+          "pieces": 1500,
+          "lines": 598,
+          "reason": "max_pieces",
+          "n_changes": 0,
+          "all_dead": 0,
+          "s": 278.9
+        },
+        "20549": {
+          "pieces": 1500,
+          "lines": 599,
+          "reason": "max_pieces",
+          "n_changes": 0,
+          "all_dead": 0,
+          "s": 282.8
+        }
+      },
+      "change_log_sample": []
+    }
+  },
+  "wall_s": 3087.4
+}

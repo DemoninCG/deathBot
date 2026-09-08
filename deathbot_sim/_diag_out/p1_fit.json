@@ -1,0 +1,46 @@
+{
+  "weights": "C:\\My Things\\HTML\\Demonin's Item Shop\\other\\deathBot\\model_weights_snapshot9.pt",
+  "weights_sha256": "229bbe2a91bab6b1d6a58f25440e7504711aabe8dfc26d24dad9ee0461be46ed",
+  "bank": "C:\\My Things\\HTML\\Demonin's Item Shop\\other\\deathBot\\deathbot_sim\\_diag_out\\state_bank_snapshot9_32games.npz",
+  "steps": 400,
+  "batch_size": 64,
+  "lr": 1e-05,
+  "seed": 42,
+  "train_games": 24,
+  "gamma_ply": 0.999,
+  "n_train": 17430,
+  "n_val": 5586,
+  "final_loss": 1.1241,
+  "pre_train": {
+    "agree": 13713,
+    "n": 17430,
+    "agree_rate": 0.7867469879518072,
+    "mean_regret": -1436.707975166068,
+    "mean_dis_regret": -1436.7904072031997,
+    "n_dis": 17429
+  },
+  "pre_val": {
+    "agree": 4421,
+    "n": 5586,
+    "agree_rate": 0.7914428929466524,
+    "mean_regret": -1971.0104273273994,
+    "mean_dis_regret": -1971.0104273273994,
+    "n_dis": 5586
+  },
+  "post_train": {
+    "agree": 13748,
+    "n": 17430,
+    "agree_rate": 0.7887550200803213,
+    "mean_regret": -1436.58138866095,
+    "mean_dis_regret": -1436.6638134351,
+    "n_dis": 17429
+  },
+  "post_val": {
+    "agree": 4400,
+    "n": 5586,
+    "agree_rate": 0.7876834944504117,
+    "mean_regret": -1971.171592985132,
+    "mean_dis_regret": -1971.171592985132,
+    "n_dis": 5586
+  }
+}

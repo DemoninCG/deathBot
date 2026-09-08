@@ -198,8 +198,12 @@
   status: CONSUMED
   history: λ=20 teacher bank 2026-09-06 (16 games → 4683 states, clears
     {0:3370, 1:996, 2:239, 3:64, 4:14}; 15/16 capped, one 183-pc death —
-    stylish but not death-proof). Used for DAgger round-0 head training
-    (file: teacher_bank_lam20.npz).
+    stylish but not death-proof). 2026-09-07 re-collected with piece ids +
+    lockouts as teacher_bank_lam20_r1.npz (same 16 seeds, identical
+    trajectories/state counts — training-data fix, not a selection panel).
+    Used for DAgger round-0 (lowest-Phi flat side, unweighted) and round-1
+    (exact 1-ply argmax + survival weighting) head training
+    (files: teacher_bank_lam20.npz, teacher_bank_lam20_r1.npz).
 
 - seeds: 20450-20479
   protocol: corrected-lockout, cap 300 (teacher-head screen)
@@ -211,7 +215,93 @@
     with piece ids + tighter veto (file: teacher_head.json,
     teacher_head_seed42.pt).
 
-- seeds: 5000-5999
+- seeds: 20480-20509
+  protocol: corrected-lockout, cap 300 (DAgger round-1 head screen)
+  status: CONSUMED
+  history: round-1 head 2026-09-07 (r1 bank, 1331 exact pairs, 400 steps,
+    margins mean −10.55, 0/1331 ≥ 0, mean weight 0.513; veto×alpha grid):
+    a0 289.1/107.4 (26/30, 6 tet) / a0.5 296.6/109.3 (28/30, 10 tet,
+    paired dLines +1.9 t+0.81) / a1.0 285.5/103.7 (25/30, 6 tet,
+    dLines −3.7 t−0.74); veto 10 ≡ veto 25 everywhere (no candidate
+    within 25 z-units was vetoed differently than within 10 — veto
+    never binds on this panel). DECISION: gate holds at a≤0.5 but the
+    Tetris signal is noise-scale (+4 Tetrises, |t|<1.1); no promotion.
+    Next per §17.5.3: long-game gate for the λ=20 2-ply stylish config,
+    or a well-direction feature fix (holedepth/wellcost signs) before
+    another head round (file: teacher_head_r1.json,
+    teacher_head_seed42.pt overwritten by round-1 bundle).
+
+- seeds: 20510-20519
+  protocol: corrected-lockout, cap 1500 (§18.1 long-sustain diagnosis)
+  status: CONSUMED
+  history: baseline/λ10/λ20 windowed runs 2026-09-07 (10 matched tapes,
+    200-piece windows: occupancy/height/holes/well/Tetris traces):
+    λ0 10/10 cap, 5 tet / λ10 10/10 cap, 26 tet, occ flat 29.7→39.4 /
+    λ20 4/10 cap, 6 no_candidates deaths, occ 61.4→114.2 — DECISION:
+    λ20 REJECTED as teacher (accumulating backlog), λ10 viable stylish
+    candidate (file: long_sustain.json).
+
+- seeds: 20520-20549
+  protocol: corrected-lockout, cap 1500 (§20 item 2 death-rejection ablation)
+  status: CONSUMED
+  history: 1-ply vs 1-ply+death-rejection vs full-2-ply, 30 matched tapes,
+    2026-09-07: ply1 763.9 (4/30 cap) / ply1_dr 791.2 (4/30 cap, +27.3
+    t+1.23, W/T/L 22/8/0, 34 filter changes, 26 all-dead placements) /
+    ply2 1500.0 (30/30 cap, +736.1 t+9.96) — DECISION: continuation-
+    valuation win (§20.6: the rule never hurts but explains ~4% of the
+    +736 gain; the case for distillation, not the rule)
+    (file: death_ablation.json).
+
+- seeds: 20550-20559
+  protocol: corrected-lockout, cap 1500 (§20 item 3 λ10 factorial)
+  status: CONSUMED
+  history: Phi×bonus factorial, 10 matched tapes, 2026-09-07: phi0_b0
+    1500.0/596.1 (10/10, 3 tet) / phi0_b8 1500.0/597.0 (10/10, 4 tet,
+    dLines +0.9 t+1.17) / phi10_b0 1500.0/595.0 (10/10, 24 tet,
+    dLines −1.1 t−0.66) / phi10_b8 1500.0/596.3 (10/10, 22 tet,
+    dLines +0.2 t+0.14) — DECISION: Phi is the Tetris ingredient (3–4
+    vs 22–24 tetrises); the completion bonus is dead weight on top of
+    Phi (phi10_b8 ≈ phi10_b0 on lines AND Tetrises); bonus-only does
+    nothing (phi0_b8 ≈ phi0_b0). Per-game occ slopes: phi10_b0 mean
+    +4.0 (3/10 games end occ 85–121 with slopes +20/+23 — backlog
+    accumulates on SOME tapes even at λ10); phi10_b8 mean −5.9 with
+    mid-game occ spikes 86–101 that release (bonus helps release
+    inventory WITHOUT adding Tetrises — keep it in the teacher config
+    for sustain, not style). Next free: 20560+ (cap-1500); 5000s
+    reserves for promotion (file: lambda_factorial.json).
+
+- seeds: 26000-26007
+  protocol: corrected-lockout, cap 1500 (TRAINING DATA — not a selection panel)
+  status: CONSUMED
+  history: §26 student-state aggregation 2026-09-08 (fullsplit_seed42.pt
+    1-ply rollouts: 4x1500 cap, deaths 196/503/731 no_candidates + 598
+    lockout, mean 1003.5 diagnostic-only; 8028 states teacher-relabeled,
+    1801 disagreements, held-out games 2098 / train-agg pool 5930).
+    Same status as 20400s teacher bank — never a selection panel
+    (file: student_aggregate.json).
+
+- seeds: 20560-20571
+  protocol: corrected-lockout, cap 1500 (fullsplit-student fresh screen)
+  status: CONSUMED
+  history: fullsplit_seed42.pt vs snapshot9 1-ply, 12 fresh tapes,
+    2026-09-08: student 1031.3 (7/12 cap) / incumbent 794.6 (1/12 cap),
+    paired +236.8, t+1.08, W/L 7/5 — encouraging, n.s. Next free: 20572+;
+    5000s reserves for promotion (files: fullsplit_paired_20560.json,
+    fullsplit_paired_26000.json [training-seed report only]).
+  notes: 26000-26007 sweep (student 1347.2 vs incumbent 670.6, +676.6,
+    t+4.71, 8/0) is REPORTING ONLY — training-data seeds, never selection.
+    Open: driver (1003.5) vs sweep (1347.2) closed-loop gap on the same
+    26000-26007 seeds — bulk-vs-search order audit required before promotion.
+
+- seeds: 5000-5299
+  protocol: corrected-lockout, cap 1500 (fullsplit-student PROMOTION)
+  status: CONSUMED
+  history: fullsplit_seed42.pt vs snapshot9 1-ply, 300 paired games,
+    2026-09-08: student 1187.1 (153/300 cap, med 1500) vs incumbent 718.7
+    (25/300 cap); paired +468.4, 95% CI [+403, +534], t +14.1, W/T/L
+    231/12/57 — PROMOTED (file: fullsplit_promotion_5000.json).
+
+- seeds: 5300-5999
   protocol: corrected-lockout, cap 1500
   status: reserved → future promotion panels (allocate 300 at a time)
 

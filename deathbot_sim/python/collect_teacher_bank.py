@@ -38,7 +38,7 @@ def main() -> None:
     args = ap.parse_args()
 
     import torch
-    from model import TAPNet
+    from model import TAPNet, piece_to_index
     from two_ply import TwoPlyScorer
     from well_potential import style_fn_factory
     from piece_history import PieceQueue
@@ -51,6 +51,7 @@ def main() -> None:
     scorer = TwoPlyScorer(net, beam=10 ** 9, line_bonus=dict(COMPLETION_BONUS),
                           style_fn=style_fn, style_alpha=1.0)
     pre_list, pick_list, lines_list, seed_list = [], [], [], []
+    placed_list, next_list, lockout_list = [], [], []
     clears_total = {0: 0, 1: 0, 2: 0, 3: 0, 4: 0}
     t0 = time.perf_counter()
     for g in range(args.games):
@@ -67,6 +68,11 @@ def main() -> None:
             pick = scorer.choose(board, pq.current, pq.next_piece)
             pre_list.append(np.asarray(board.row_bits(), dtype=np.uint32))
             pick_list.append(int(pick))
+            # (§17.5 round-1) piece ids so the head can restore
+            # survival-margin weighting; lockouts so 1-ply argmax is exact.
+            placed_list.append(int(piece_to_index(pq.current)))
+            next_list.append(int(piece_to_index(pq.next_piece)))
+            lockout_list.append(np.asarray(bulk[3], dtype=np.uint8))
             # candidates of this state (packed) for later feature extraction
             rows = np.asarray(bulk[4], dtype=np.uint32).reshape(n, 21)
             lines_list.append(np.asarray(
@@ -84,14 +90,21 @@ def main() -> None:
           f"clears {clears_total} in {time.perf_counter()-t0:.0f}s")
     op = Path(args.out)
     op.parent.mkdir(parents=True, exist_ok=True)
+    max_n = max(int(a.shape[0]) for a in lockout_list) if lockout_list else 0
+    lock_pad = np.stack([np.pad(a.astype(np.uint8), (0, max_n - a.shape[0]),
+                                constant_values=1) for a in lockout_list])
     np.savez_compressed(
         op, pre_rows=np.stack(pre_list),
         cand_blob=np.concatenate(lines_list),
         picks=np.asarray(pick_list, dtype=np.int64),
         seeds=np.asarray(seed_list, dtype=np.int64),
+        placed=np.asarray(placed_list, dtype=np.int64),
+        next=np.asarray(next_list, dtype=np.int64),
+        lockouts=lock_pad,
         meta_json=json.dumps({"lam": args.lam, "seed0": args.seed0,
                               "games": args.games,
-                              "clears": clears_total}))
+                              "clears": clears_total,
+                              "has_piece_ids": True}))
     print(f"Wrote {op}")
 
 

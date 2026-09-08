@@ -1,0 +1,218 @@
+{
+  "args": {
+    "games": 12,
+    "seed": 20560,
+    "max_pieces": 1500,
+    "legacy_lockout": false,
+    "workers": 4,
+    "threads_per_worker": 1,
+    "verbose": false,
+    "json": "../_diag_out/fullsplit_paired_20560.json",
+    "compare": null
+  },
+  "games_per_ckpt": 12,
+  "seed0": 20560,
+  "max_pieces": 1500,
+  "results": [
+    {
+      "name": "fullsplit_seed42.pt",
+      "weights": "C:\\My Things\\HTML\\Demonin's Item Shop\\other\\deathBot\\deathbot_sim\\_diag_out\\fullsplit_seed42.pt",
+      "summary": {
+        "mean_pieces": 1031.3333333333333,
+        "median_pieces": 1500.0,
+        "stdev_pieces": 586.3983029451651,
+        "min_pieces": 240,
+        "max_pieces": 1500,
+        "mean_lines": 402.0,
+        "capped_games": 7,
+        "n_games": 12
+      },
+      "games": [
+        {
+          "seed": 20560,
+          "pieces": 1500,
+          "lines": 595,
+          "capped": true,
+          "seconds": 12.246777399908751
+        },
+        {
+          "seed": 20561,
+          "pieces": 1500,
+          "lines": 593,
+          "capped": true,
+          "seconds": 12.276060599833727
+        },
+        {
+          "seed": 20562,
+          "pieces": 254,
+          "lines": 85,
+          "capped": false,
+          "seconds": 2.079877999611199
+        },
+        {
+          "seed": 20563,
+          "pieces": 240,
+          "lines": 79,
+          "capped": false,
+          "seconds": 1.8727338998578489
+        },
+        {
+          "seed": 20564,
+          "pieces": 339,
+          "lines": 119,
+          "capped": false,
+          "seconds": 2.815885300282389
+        },
+        {
+          "seed": 20565,
+          "pieces": 434,
+          "lines": 157,
+          "capped": false,
+          "seconds": 3.4557866002433
+        },
+        {
+          "seed": 20566,
+          "pieces": 1500,
+          "lines": 594,
+          "capped": true,
+          "seconds": 14.717395099811256
+        },
+        {
+          "seed": 20567,
+          "pieces": 609,
+          "lines": 226,
+          "capped": false,
+          "seconds": 5.33530730009079
+        },
+        {
+          "seed": 20568,
+          "pieces": 1500,
+          "lines": 591,
+          "capped": true,
+          "seconds": 12.060842500068247
+        },
+        {
+          "seed": 20569,
+          "pieces": 1500,
+          "lines": 596,
+          "capped": true,
+          "seconds": 12.527277200017124
+        },
+        {
+          "seed": 20570,
+          "pieces": 1500,
+          "lines": 597,
+          "capped": true,
+          "seconds": 11.084581800270826
+        },
+        {
+          "seed": 20571,
+          "pieces": 1500,
+          "lines": 592,
+          "capped": true,
+          "seconds": 10.69303849991411
+        }
+      ]
+    },
+    {
+      "name": "model_weights_snapshot9.pt",
+      "weights": "C:\\My Things\\HTML\\Demonin's Item Shop\\other\\deathBot\\model_weights_snapshot9.pt",
+      "summary": {
+        "mean_pieces": 794.5833333333334,
+        "median_pieces": 747.5,
+        "stdev_pieces": 323.609601591832,
+        "min_pieces": 454,
+        "max_pieces": 1500,
+        "mean_lines": 302.0833333333333,
+        "capped_games": 1,
+        "n_games": 12
+      },
+      "games": [
+        {
+          "seed": 20560,
+          "pieces": 493,
+          "lines": 180,
+          "capped": false,
+          "seconds": 4.2161492998711765
+        },
+        {
+          "seed": 20561,
+          "pieces": 767,
+          "lines": 291,
+          "capped": false,
+          "seconds": 6.578603900037706
+        },
+        {
+          "seed": 20562,
+          "pieces": 814,
+          "lines": 309,
+          "capped": false,
+          "seconds": 6.617431700229645
+        },
+        {
+          "seed": 20563,
+          "pieces": 1500,
+          "lines": 593,
+          "capped": true,
+          "seconds": 12.708085399586707
+        },
+        {
+          "seed": 20564,
+          "pieces": 838,
+          "lines": 318,
+          "capped": false,
+          "seconds": 7.2064392999745905
+        },
+        {
+          "seed": 20565,
+          "pieces": 633,
+          "lines": 237,
+          "capped": false,
+          "seconds": 6.446175599936396
+        },
+        {
+          "seed": 20566,
+          "pieces": 501,
+          "lines": 184,
+          "capped": false,
+          "seconds": 4.495972299948335
+        },
+        {
+          "seed": 20567,
+          "pieces": 728,
+          "lines": 274,
+          "capped": false,
+          "seconds": 6.611385900061578
+        },
+        {
+          "seed": 20568,
+          "pieces": 454,
+          "lines": 164,
+          "capped": false,
+          "seconds": 3.6833724002353847
+        },
+        {
+          "seed": 20569,
+          "pieces": 1303,
+          "lines": 505,
+          "capped": false,
+          "seconds": 10.834750999696553
+        },
+        {
+          "seed": 20570,
+          "pieces": 571,
+          "lines": 213,
+          "capped": false,
+          "seconds": 4.8594009000808
+        },
+        {
+          "seed": 20571,
+          "pieces": 933,
+          "lines": 357,
+          "capped": false,
+          "seconds": 7.562032700050622
+        }
+      ]
+    }
+  ]
+}

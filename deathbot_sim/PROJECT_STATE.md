@@ -1,17 +1,33 @@
 # deathBot — Project State & Training Plan Handoff
 
 *Prepared 2026-09-05 after a full diagnostic + patching campaign; updated
-2026-09-06 (evening) for the survival-solved → style era. Intended as a
+2026-09-06 (evening) for the survival-solved → style era; updated
+2026-09-07 with the §17.5 round-1 result; updated 2026-09-07 night with
+the §18 long-sustain verdict, the §19 steps-1+4 probe, and the §20
+third-review corrections; updated 2026-09-08 with the §26 full-split +
+aggregation result (item 5 CLOSED as a negative). Intended as a
 complete briefing for a fresh reviewer (human or AI) so no context is lost.*
 
-**Where things stand (2026-09-06 evening):** survival is solved by
+**Where things stand (2026-09-08):** survival is solved by
 *inference*, not weights — **snapshot9 + full-expansion 2-ply caps every
 game** (30/30 at cap 1500, 4/4 at cap 5000). The active program is *style*:
 the bot survives but plays flat (near-zero Tetrises), and the goal is
 Tetris-seeking play that is impressive to watch and useful for human
-training. Eval protocol has shifted to **cap 300** (every game caps; style
-metrics carry the signal). See §12 (search reversal) and the new §13
-(style era).
+training. §17.5 round-1 is DONE: **exact-pair 1-ply student holds the gate
+at α≤0.5 (28/30 cap) but the Tetris signal is noise-scale** (+4 Tetrises,
+|t|<1.1). The stylish teacher (λ=20 2-ply) still has no fast student.
+Second review adjudicated 2026-09-07: sign-constraint head work DEFERRED;
+adopted teacher-first order in §18. Long-sustain baseline/λ10/λ20 runs
+(§18.1) DONE on 20510–20519: λ20 REJECTED (4/10 cap, 6 late deaths,
+occupancy 61→114); λ10 VIABLE (10/10 cap, 26 Tetrises, occupancy
+flat ~30–39). §19 steps 1+4 probe DONE — see §20 for the corrected
+reading (third review: PRE-regret means were dead-sentinel artifacts;
+400-step no-movement is "no learning at this budget", NOT "no headroom";
+fast-path piece-slot semantics need an audit; death-rejection stays HIGH
+priority). Steps 2/5/6 gated on §20 item 4 (tiny-set overfit), not on a
+hand-coded rule. §20 item 5 (full-split fit + aggregation) DONE 2026-09-08
+as §26 — CLOSED as a negative, do NOT run the 20560+ selection eval.
+See §12 (search reversal), §13 (style era), §17.5/§17.7 (round-1).
 
 ---
 
@@ -1477,6 +1493,7 @@ is the fix.
    (placed, preview) ids in the teacher bank → restore survival-margin
    weighting → retrain → screen with veto {10, 25} × α {0.5, 1.0} on fresh
    20480+. Goal: keep α=1-style Tetrises (9–13) at ≥28/30 cap.
+   — DONE 2026-09-07, see §17.7 (gate holds at α≤0.5, signal noise-scale).
 3. **Then: long-game survival gate** for the stylish config (cap 1500+,
    drought tapes): §15.0.3 requires promotion beyond cap-300.
 4. **Rollouts gated** on a surviving continuation (§17.3); **controller**
@@ -1484,8 +1501,10 @@ is the fix.
    (no fitting failure; §15.1.6 gate holds).
 5. Panels: 20254–20283 (sweep), 20350–20359 (rollout probe + baseline),
    20400–20415 (teacher bank — training data, not a selection panel),
-   20450–20479 (head screen) all CONSUMED. Next free: **20480+**
-   (cap-300 style); 5000s reserves for promotion.
+   20450–20479 (head screen) all CONSUMED; 20480–20509 (round-1 screen)
+   CONSUMED; 20510–20519 (§18.1 long-sustain diagnosis) CONSUMED.
+   Next free: **20520+** (cap-300 style); 5000s reserves for
+   promotion.
 
 ### 17.6 Stylish config in the live visualizer (2026-09-07)
 
@@ -1506,3 +1525,643 @@ adapter: ply-2 expansion inside `TwoPlyVizScorer.score_batch` still uses
 the fast `search_placements` order while style rows are read per-candidate
 only when bulk/search orders disagree (fallback lock+clear); the parity
 test above guards the combined result.
+
+### 17.7 DAgger round-1: piece ids + tighter veto (2026-09-07) — DONE
+
+Implements the §17.5.2 prescription exactly: `collect_teacher_bank.py`
+now stores per-state `(placed, preview)` ids + lockout masks
+(`placed`/`next`/`lockouts` arrays, `meta.has_piece_ids`);
+`train_teacher_head.py` uses exact frozen-snapshot9 1-ply argmax as the
+flat side with the Phase-B survival weighting
+(`exp(margin/10)`, cap 1), keeps the legacy lowest-Phi fallback for the
+old bank, and screens a veto {10, 25} × α {0, 0.5, 1.0} grid on FRESH
+20480–20509 (CONSUMED). Re-collected the same 16 seeds (20400–20415) as
+`teacher_bank_lam20_r1.npz` — identical trajectories/state counts
+(4683, clears {0:3370, 1:996, 2:239, 3:64, 4:14}) since collection is
+deterministic; the delta is purely the stored ids/masks.
+
+Training with exact pairs: 1331/4683 pairs (vs 4520 round-0 — exact
+1-ply agreement is far stricter than lowest-Phi), margins mean −10.55,
+**0/1331 ≥ 0**, mean weight 0.513. Feat direction: wheight +2.88 /
+holedepth +2.54 / wellcost +3.62 / deepwell +1.37 (well-seeking, but note
+the holedepth/wellcost POSITIVE signs — the teacher's afterstates are
+deeper and ropier than the flat rival's, not cleaner). 400 steps,
+loss 0.53. Screen (`teacher_head_r1.json`, bundle overwrites
+`teacher_head_seed42.pt`):
+
+| cell | pieces | lines | cap | Tetrises | paired Δlines vs α=0 |
+|---|---|---|---|---|---|
+| α=0 (ref) | 289.1 | 107.4 | 26/30 | 6 | — |
+| α=0.5 | 296.6 | 109.3 | 28/30 | 10 | +1.9, t +0.81 |
+| α=1.0 | 285.5 | 103.7 | 25/30 | 6 | −3.7, t −0.74 |
+
+Veto 10 ≡ veto 25 in every cell (the veto never binds on this panel).
+Ref α=0 is 26/30 (harsher tapes than the sweep panel — same caveat as
+§17.4, panel difficulty not a contract break).
+
+Verdict: **the survival weighting + tighter veto deliver exactly what
+was asked (gate holds at α≤0.5: 28/30) but the Tetris signal is
+noise-scale** (+4 Tetrises, |t|<1.1) — the head learns the teacher's
+well direction without its lookahead justification, same signature as
+§13.3/§14. The positive-sign holedepth/wellcost direction is suspect:
+rewarding deeper/rougher afterstates at 1-ply without 2-ply's death
+refusal buys setups at survival cost (α=1.0 already slips to 25/30).
+**No promotion.** Standing configs unchanged (survival: snapshot9 +
+full 2-ply; stylish: same + λ=20 Phi + completion bonus).
+
+Next — SUPERSEDED by §18 (second review 2026-09-07): (a) long-game gate
+becomes §18.1 instrumented runs (DONE — λ20 rejected, λ10 viable);
+(b) sign-constraint /
+same-band pairing DEFERRED (margin tautology + non-causal deltas —
+held-out error analysis first); (c) representation still deferred.
+Panels: next free **20520+** (cap-300 style; 20510–20519 consumed by
+§18.1); 5000s reserves for
+promotion. Artifacts: `teacher_bank_lam20_r1.npz`, `teacher_head_r1.json`,
+`teacher_head_seed42.pt` (now the round-1 bundle).
+
+---
+
+## 18. Second review verdict + adopted order (2026-09-07)
+
+Second entry in `AI_plan_response.txt`, assessed as broadly correct with
+one amendment (TAP-execution audit deferred past promotion — diagnose
+in-sim first, verify execution when a promotable teacher exists):
+
+**Accepted findings.**
+- λ=20's line deficit (110.8 vs 118.1 at cap 300) implies ~92 vs ~19
+  retained blocks (`B_end = 4P − 10L`): a real backlog signal, not just a
+  held-open well. Cap-300 cannot tell stable cycle from accumulating risk.
+- λ sweep confounds Phi + completion bonus (λ=0 has neither); factorial
+  separation still missing.
+- Round-0/1 are offline cloning on teacher states, not DAgger (no student
+  rollouts, no teacher labels on student states).
+- `0/1331 margins ≥ 0` is tautological (rival = exact 1-ply argmax); mean
+  feature deltas are not causal — sign constraints DEFERRED, replaced by
+  held-out error analysis.
+- Student input bottleneck likely binding (8 aggregated afterstate feats
+  vs preview-/reachability-aware teacher); direct 1-ply + Phi baseline
+  required before another trained head.
+- `v1 + γ·max v2` conflates death-rejection / continuation value /
+  averaging; 1-ply + death-rejection ablation may yield a cheap student.
+- Seeded fixtures with pre-existing full rows are invalid for Tetris-rate
+  claims (already noted §16.2).
+
+**Adopted order (§18 as amended by §20).**
+1. Long instrumented baseline/λ10/λ20 runs (§18.1, DONE — λ20
+rejected, λ10 viable).
+2. Legal seeded fixtures (+ execution audit only at promotion).
+3. Search/potential ablations: factorial Phi×bonus (§18.3a) AND
+death-rejection WITH intervention logging (§18.3b, HIGH priority —
+§20.2: 0.33% bank frequency cannot dismiss it; per-placement hazard
+math makes even 0.001 consequential over 1500 pieces, and only the
+closed-loop ablation separates late-symptom from recoverable-trap).
+4. Piece-slot semantics audit (§20.1, FIRST — version the champion
+config, document per-stage board/slot/piece identities, compare
+incumbent vs semantically-corrected variant on action changes, not
+just score noise) + tiny-set overfit diagnostic (§20.4, no panels,
+no gameplay eval).
+5. Full-split fit with informative-state metrics + adequate budget
+(§20.5 — only if item 4 fits), then student-state aggregation and
+guarded closed-loop survival (user steps 2/5/6).
+6. Genuine style-side DAgger or learned search proposals.
+7. Architecture/RL only on a demonstrated bottleneck.
+
+### 18.1 Long-sustain runs — baseline / λ10 / λ20 at cap 1500 (DONE 2026-09-07)
+
+Driver: `python/diag_long_sustain.py` (matched tapes, full 2-ply;
+λ=0 bonus-free champion, λ=10/20 dense Phi + `{1:1,2:3,3:5,4:8}`).
+Panel 20510–20519 (10 seeds, CONSUMED — diagnosis), cap 1500,
+200-piece windows: occupancy, top, holes, well depth/open/ready, Phi,
+lines/clears/Tetrises per window; Tetris piece indices
+(time-between-Tetrises); death reason + final board stats. File:
+`long_sustain.json` (wall 2001 s, workers=4).
+
+| λ | cap | mean pcs | deaths | Tetrises | T/100 | lines-in-Tetris | occ w0→wL | top w0→wL |
+|---|---:|---:|---|---|---:|---:|---:|---:|
+| 0 | 10/10 | 1500.0 | 0 | 5 | 0.03 | 0.003 | 19.7→25.2 | 3.6→4.3 |
+| 10 | 10/10 | 1500.0 | 0 | 26 | 0.17 | 0.018 | 29.7→39.4 | 4.8→5.8 |
+| 20 | 4/10 | 1241.0 | 6 | 23 | 0.19 | 0.019 | 61.4→114.2 | 8.5→14.4 |
+
+Window Tetrises: λ10 = 1/3/2/3/5/7/3/2 per 200-pc window (continues all
+game, not an opening transient); λ20 = 8/3/2/1/6/1/2/0 with shrinking
+contributors (n = 10→5) — early burst, then deaths. Deaths (all
+`no_candidates`, final top 21, occ 152–182, holes 13–21): seeds 20510@1281,
+20513@388, 20514@1293, 20515@1094, 20516@939, 20517@1415. λ20 survivors
+that capped (20511/20512/20518/20519) still end occ 80–140, top 10–16 —
+surviving but unhealthy. Baseline windows oscillate (occ 20–35) with
+5 incidental Tetrises; λ10 holds a higher but FLAT inventory band
+(29–46 across windows, per-seed finals occ 10–70).
+
+Verdict: **λ20 REJECTED as a teacher** — steady backlog growth + late
+deaths; cap-300's 30/30 hid exactly the failure the review predicted
+(`B_end = 4P − 10L` already showed 92 vs 19 retained blocks).
+**λ10 is the viable stylish candidate**: 10/10 survival with 5× baseline
+Tetrises sustained across all windows at flat occupancy. Standing configs:
+survival champion unchanged (snapshot9 + full 2-ply); stylish candidate
+now **λ10 + completion bonus** (λ20 demoted — do not distill, do not viz).
+Next: §18 order item 3 on fresh 20520+ (factorial Phi×bonus to isolate
+the confound — λ=0 here has neither — plus 1-ply + death-rejection
+ablation); λ10 promotion still requires the 5000s reserves.
+
+---
+
+## 19. 1-ply survival distillation — offline fit probe (steps 1+4, DONE 2026-09-07)
+
+User proposal (accepted with reorder): fine-tune a snapshot9 copy to
+imitate the SURVIVAL 2-ply teacher (no style) via (1) input check →
+(2) diverse states → (3) full-set preference loss → (4) held-out
+agreement + teacher-score regret → (5) aggregation → (6) long-horizon
+guarded eval. Prior negatives (P2T §13.3, SIL, Phase-B) used frozen-bank
+hard-argmax CE with no regret metric and no aggregation, so they do not
+close this. Agreed: run steps 1+4 now (cheap, frozen bank, no panels);
+defer 2/5/6 (expensive teacher labeling + play) until after §18 item 3 —
+if the survival gain is mostly preview-death rejection, a rule-based
+student captures it without 430K-param distillation.
+
+Driver: `python/diag_p1_fit.py` (read-only probe, no checkpoint saved
+by default). Teacher = bonus-free full 2-ply from the same snapshot9
+weights (CHAMPION fast-path scoring `score_batch_fast`, i.e. cur used
+for both piece slots — verified: slow/fast differ by ~0.1–0.6 z-units
+per candidate, so the probe MUST use the fast path or it labels a
+different teacher). Game-disjoint split of the snapshot9 bank (23,016
+states / 400,733 candidates): games 0–23 train (17,430) / games 24–31
+val (5,586). Metrics: top-1 agreement + teacher-score regret of the
+student pick vs the frozen teacher vector (regret ≤ 0; dead-pick =
+−1e6), reported on train AND val — the three-way split (cannot-fit /
+fits-train-only / predicts-offline).
+
+Result (`p1_fit.json`, 400 steps batch-64 lr 1e-5, wall ~30 min
+mostly teacher labeling):
+
+| split | PRE agree | POST agree | PRE regret | POST regret |
+|---|---|---|---|---|
+| train (17,430) | 13,713 (0.787) | 13,748 (0.789) | −1436.71 | −1436.58 |
+| val (5,586) | 4,421 (0.791) | 4,400 (0.788) | −1971.01 | −1971.17 |
+
+400 CE steps move agreement by **+35 train / −21 val** and regret by
+**+0.13 / −0.16** — no learning at this budget. MEASUREMENT CAVEAT
+(stratified 1500-state sample, seed 7, true-preview scoring): the
+−1400/−1900 means are dead-branch −1e6 averaging artifacts (≈25 dead
+picks train / ≈11 val explain the magnitudes), NOT live ranking loss —
+excl-dead regret is mean **−2.59**, median **0.00**, p90 0.00. Only
+**43/1500** states have any dead root; the teacher itself picks dead
+once; true-1-ply picks dead 5× — death-rejection states are **5/1500
+(0.33%)**, all at top ≥ 14 / holes ≥ 4. Agreement stratifies cleanly by
+teacher margin: <1.0 → 0.424, 1–5 → 0.659, 5–20 → 0.792, 20+ → 0.918.
+Costly disagreements are fine margin calls (e.g. state 5932: teacher
+−612.4 vs −616.3, student self −303.6 vs −304.0; state 10733: teacher
+−359.1 vs −376.2, student −184.1 vs −189.6) — the 1-ply rank gaps are
+~0.3–5.5 z-units on large |v|, i.e. near-ties, not blunders.
+Verdict (revised): **not bin 1 as first written** — the student already
+agrees at 0.79 with ~zero live regret, and the residual is near-tie
+margin calls CE cannot separate at lr 1e-5/400 steps. This reframes
+rather than refutes the user's question: input-sufficiency (step 1)
+HOLDS for survival (TAPNet sees board + current + preview; fast-path
+noise 0.1–0.6 vs ~13-unit median margins is non-binding), but argmax
+imitation has ~no headroom — the +505 2-ply gain lives in
+continuation valuation over ties, which single-forward CE does not
+transfer. Death-rejection ablation (§18 item 3) expectation is now LOW
+(0.33% of states) — still run it as a cheap check, but expect a
+negative; the factorial Phi×bonus comparison carries item 3.
+
+Bugs fixed en route (all index-space): teacher `viable` returned live
+positions but compared/stored as bank indices (first run: 0.000
+agreement, −1e6 regret); CE target subtracted `lo` twice (IndexError
+−64206); metrics argmax compared local pos to bank index. Pinned:
+bank order == live bulk order (counts, state/x/y, lockouts verified on
+sampled states); custom teacher == `TwoPlyScorer.choose` 435/435.
+Also noted: `p1_fit.json` `n_dis` counts teacher-vs-bank-chosen
+mismatch (≈100%), not student-vs-teacher disagreement — ignore it;
+use agree/regret columns only.
+
+Next: keep §18 order (item 3 factorial + death-rejection check first —
+death-rejection at HIGH priority per §20.2, with intervention logging:
+filter-change rate, post-intervention survival, risk restoration vs
+delay, all-roots-dead cases).
+Reformulated fit (pairwise/margin loss, LR sweep) and steps 2/5/6 only
+if item 3 shows a distillable rule. No panels consumed
+(frozen bank); no checkpoint saved.
+
+---
+
+## 20. Third-review corrections (2026-09-07 night) — accepted, plan amended
+
+Third entry in `AI_plan_response.txt`. Accepted with one scope note:
+per-game long-sustain trajectories (§20.0 below) are folded into the
+§18.3 factorial design rather than run as a separate pass. The core
+corrections stand and §19's over-strong conclusions are struck:
+
+1. **§19 "no headroom" / "CE cannot transfer" — WITHDRAWN.** The probe
+   establishes only "no learning at lr 1e-5 / 400 steps / ~1.5 passes"
+   (§20.3: 17,430 train states vs 25,600 presentations). That budget
+   cannot separate under-optimization, loss scaling, wrong-state
+   gradients, implementation bugs, input limits, or capacity. 21%
+   disagreement is behavioral headroom; whether it matters is still
+   open. There is no general obstacle to CE learning an argmax whose
+   reason is continuation valuation.
+2. **Death-rejection stays HIGH priority (§20.2).** The "LOW / expected
+   negative" call in §19 is reversed: 0.33% bank frequency cannot
+   dismiss it (independent 0.0033/placement ≈ 300-placement expected
+   wait; bank states are correlated incumbent-trajectory states, and
+   events concentrate near death). Only the closed-loop ablation —
+   filter-change rate, post-intervention survival, restoration-vs-delay,
+   all-dead cases — separates late-symptom from recoverable-trap.
+3. **Regret reporting was wrong (§20.3).** `p1_fit.json` means average
+   −1e6 dead sentinels with live gaps — uninterpretable. Going forward:
+   positive regret `max Q_T − Q_T(student)`, reported as agreement-all,
+   agreement-on-disagreements, regret|disagreement, regret|live-pick,
+   avoidable-dead count, all-dead count. Never average sentinels with
+   ranking gaps. The 1500-state true-preview sample is a different
+   scoring protocol from the full fast-path fit — not an exact
+   decomposition of the bank metric.
+4. **Fast-path piece-slot discrepancy is now item 4-first (§20.4).**
+   `score_batch_fast` (cur in both slots) vs true-preview slow path
+   differs 0.1–0.6/state against 0.3–5.5 decision gaps — not dismissable
+   as noise by comparison to ~13-unit median margins; what matters is
+   action/gap changes on disagreement states. Two tasks: (a) keep the
+   fast path for champion reproduction (version the config — do NOT
+   silently "fix" the champion); (b) audit per-stage semantics (board,
+   slot meanings, piece identities, legitimately-known futures) and
+   compare incumbent vs corrected variant. TAPNet's architectural access
+   to preview does NOT establish input sufficiency while the scoring
+   call duplicates an ID — the teacher can still use preview via
+   expansion even when the leaf evaluator duplicates.
+5. **Tiny-set overfit before any more labels (§20.4–20.5).** 128–512
+   states (disagreements + live preferences + avoidable deaths +
+   agreements); LR/temperature sweep, CE vs pairwise loss; track loss,
+   agreement, preferred-action margin, gradient/update magnitudes. Add
+   a synthetic misranked-teacher test (training must promote a known
+   action — label parity alone doesn't test the update) and verify
+   −1e6 sentinels never enter the training objective as numeric
+   targets. No panels, no gameplay eval — diagnostic only.
+6. **No hand-coded-rule gate (§20.6).** "Steps 2/5/6 only if item 3
+   shows a distillable rule" is backwards: death-rejection-win → use
+   the rule; continuation-valuation-win → that IS the case for
+   distillation; small-set-fit-failure → reconsider student/setup.
+   A teacher need not reduce to an obvious rule to be learnable.
+7. **Per-game trajectories (§20.1 qualification).** Pooled λ10 windows
+   look flat but can hide individual upward trends (n=10). Fold
+   per-game trace inspection into the §18.3 factorial; check before
+   any λ10 promotion.
+
+**Amended immediate order (§20, replaces the §18 list above):**
+1. Piece-slot audit + versioned champion config. — DONE (§21).
+2. Death-rejection ablation with intervention logging. — DONE (§22).
+3. λ10 factorial (Phi × bonus; does completion release inventory?). — DONE (§23).
+4. Tiny-set overfit diagnostic (no panels, no gameplay). — RUNNING (§24).
+5. Full-split fit with informative metrics + adequate budget (only if
+   4 fits) → student-state aggregation → guarded closed-loop survival.
+6. Legal fixtures continue alongside; emulator audit at promotion only.
+
+---
+
+## 21. §20 item 1 — piece-slot audit (DONE 2026-09-07)
+
+Driver: `python/diag_piece_slots.py` (frozen snapshot9 bank, no panels,
+no gameplay). Semantics documented per stage: board = post-lock post-clear
+afterstate; ply-1 cur slot = current, nxt slot SHOULD be the known preview
+(`PieceQueue` holds current+next — one-preview horizon); ply-2 board =
+preview placed on the successor, nxt slot SHOULD be the piece-after-preview
+(NOT known) — so ply-2 duplication is information-forced while ply-1
+duplication is correctable. Champion versioned (do NOT silently "fix"):
+**snapshot9 sha `229bbe2a` + full 2-ply beam≥n + fast-path both plies +
+bonus-free + γ_ply 0.999.**
+
+Result (`piece_slots.json`, 500 states seed 7, 497 eval): per-candidate
+`|fast−true|` mean 0.253 / median 0.233 / p90 0.501 / max 0.696;
+action-change rate **3/497 (0.6%)**, all on near-tie true gaps (mean 0.026,
+median 0.020 vs overall true-gap median 5.145; maxdiff-on-changed mean
+0.48); `cur==nxt` control maxdiff 0.0 (no implementation bug).
+Verdict: ply-1 duplication is ACTION-NEGLIGIBLE — keep the fast path as the
+versioned champion; input-sufficiency for survival stands (TAPNet sees
+board + current + preview architecturally, and the scoring call's
+duplication flips 0.6% of near-tie actions).
+
+---
+
+## 22. §20 item 2 — death-rejection ablation (DONE 2026-09-07)
+
+Driver: `python/diag_death_ablation.py`. Arms on FRESH matched tapes
+20520–20549 (CONSUMED — selection), cap 1500: (A) true-preview 1-ply
+baseline, (B) 1-ply + death-rejection filter (argmax over surviving roots
+only; all-dead falls back to plain 1-ply and is logged), (C) full-2-ply
+champion reference. File: `death_ablation.json` (wall 3087 s).
+
+| arm | pieces | cap | filter changes | all-dead | paired vs ply1 |
+|---|---:|---:|---:|---:|---|
+| ply1 | 763.9 | 4/30 | — | — | — |
+| ply1_dr | 791.2 | 4/30 | 34 | 26 | +27.3, t +1.23, W/T/L 22/8/0 |
+| ply2 | 1500.0 | 30/30 | — | — | +736.1, t +9.96, W/L 26/0 |
+
+Filter-change rate ≈34/(30×~777) ≈ **0.15%** of placements; change events
+at occ 142–166 with v1 gaps −2 to −11 (rejections cost single-digit
+z-units and fire near death — recoverable-trap situations, not late
+symptoms, but rare). All-dead placements 26 (filter correctly abstains).
+W/L/T 22/8/0 — the rule NEVER hurts, but explains ~27/736 ≈ **4% of the
+survival gain**. Per §20.6 this is a continuation-valuation win: the
+cheap rule stays a diagnostic, and the +709 remainder IS the case for
+distillation (→ §20 item 5 once the tiny-set gate passes). Deaths in all
+arms are `no_candidates`/`lockout` (no reason-code surprises).
+
+---
+
+## 23. §20 item 3 — λ10 factorial (DONE 2026-09-07)
+
+Driver: `python/diag_lambda_factorial.py` (folds in the §20.1 per-game
+trajectory qualification — no separate pass). Four matched-tape arms on
+FRESH 20550–20559 (CONSUMED — selection), cap 1500, 200-piece windows:
+phi0_b0 (pure champion) / phi0_b8 (bonus only) / phi10_b0 (Phi only) /
+phi10_b8 (viable stylish candidate). File: `lambda_factorial.json`
+(wall 3012 s).
+
+| arm | pieces | lines | tet | T/100 | occ_end | occ slope | paired dLines |
+|---|---:|---:|---:|---:|---:|---:|---:|
+| phi0_b0 | 1500.0 | 596.1 | 3 | 0.02 | 29.4 | +0.72 | — |
+| phi0_b8 | 1500.0 | 597.0 | 4 | 0.03 | 22.5 | −0.40 | +0.9, t +1.17 |
+| phi10_b0 | 1500.0 | 595.0 | 24 | 0.16 | 48.8 | +4.00 | −1.1, t −0.66 |
+| phi10_b8 | 1500.0 | 596.3 | 22 | 0.15 | 36.6 | −5.89 | +0.2, t +0.14 |
+
+Findings:
+1. **Phi is the Tetris ingredient** (3–4 vs 22–24 Tetrises; T/100 0.02–0.03
+   vs 0.15–0.16). Bonus-only (phi0_b8 ≈ phi0_b0 on lines AND Tetrises)
+   does nothing by itself.
+2. **The completion bonus is dead weight for STYLE on top of Phi**
+   (phi10_b8 ≈ phi10_b0: lines 596.3 vs 595.0, Tetrises 22 vs 24) — but it
+   is NOT dead weight for SUSTAIN: phi10_b0 mean occ slope **+4.0** with
+   3/10 games ending occ 85–121 (slopes +20/+23 — backlog accumulates on
+   SOME tapes even at λ10, pooled means hid this exactly as §20.1 warned),
+   while phi10_b8 mean slope **−5.9** with mid-game occ spikes 86–101 that
+   RELEASE (trajectories 20552/20554/20557: 71–98 → 17–33). The bonus helps
+   release inventory WITHOUT adding Tetrises — keep `{1:1,2:3,3:5,4:8}` in
+   the teacher config for sustain, not style.
+3. All arms 10/10 cap; paired dLines all |t|<1.2 (lines conserved at cap
+   1500 — the cap-300 −7 deficit was a truncation-horizon artifact of
+   holding wells, not a real efficiency loss).
+4. Tetris spread is even (phi10_b0 per-game 0–6, phi10_b8 1–4 — not an
+   opening transient).
+
+Standing stylish teacher unchanged (**λ10 Phi + completion bonus**), now
+with a mechanism: Phi builds, the bonus releases. λ10 promotion still
+requires the 5000s reserves + per-game slope check (no game with
+sustained positive slope).
+
+---
+
+## 24. §20 item 4 — tiny-set overfit (STOPPED-EARLY 2026-09-07 — sufficient)
+
+Driver: `python/diag_tinyset_overfit.py` (frozen bank; NO panels, NO
+gameplay). Tiny set 256 states seed 11 (103 disagreements / 2
+avoidable-deaths / 153 agreements); C1 synthetic-misrank + C2 sentinel
+hygiene controls; positive-regret metrics (§20.3). Labeling done (912 s);
+PRE agree 0.598/0.000 (disagreement-enriched by construction); C1 24/32
+(0.75 — the update promotes known actions, harness trusted).
+Partial record (`tinyset_overfit_partial.json` — the full-grid run was
+stopped after the lr=1e-5 cells; the driver writes JSON only at completion,
+so the four printed lines are the preserved record):
+
+| lr | steps | loss | loss first→last | agree all/dis | dW |
+|---|---|---|---|---|---|
+| 1e-5 | 200 | CE | 2.456→1.797 | 0.652/0.155 | 0.86 |
+| 1e-5 | 200 | margin | 2.717→1.978 | 0.680/0.204 | 0.81 |
+| 1e-5 | 800 | CE | 2.456→0.767 | 0.820/0.573 | 2.94 |
+| 1e-5 | 800 | margin | 2.717→0.789 | 0.836/0.592 | 2.64 |
+
+Verdict: **fits-in-progress, gate not yet passed — but sufficient to
+answer §20.4.** Loss still falling and agreement still rising at 800 steps
+(no plateau); CE and margin move together; dW scales with steps. The update
+learns these decisions; §19's 400-step probe was under-optimization, not a
+capacity/input failure. The ≥0.95 agree_dis gate is NOT met (best 0.592),
+so record "fits-in-progress", not "tiny FIT". `reg|dis` ≈19413 flat is a
+sentinel artifact (~2 dead picks ×1e6/103 dis ≈19417 — cannot move until
+those 2 flip; use avoidable-dead count, not the mean). The unrun 1e-4/3e-4
+cells would only confirm speed (~200k unbatched forwards/backwards per
+800-step cell — hours of wall for no decision value). Next: ONE decisive
+probe (single 1e-4/800 CE cell, or a batched/stacked loop) before §20
+item 5, not the full grid.
+
+(§26 closes item 5 — see below.)
+
+---
+
+## 25. Decisive probe — TINY FIT (DONE 2026-09-07)
+
+Driver: `python/diag_tinyset_fast.py` — same tiny set as §24 (seed 11,
+256 states, identical pool/label/selection: 103 dis / 2 avoidable-dead /
+153 agree) but ONE full-batch CE cell (all 4453 candidates per step, lr
+1e-4, 800 steps). Labeling 67 s (vs 912 s — the §24 cost was per-state
+teacher re-labeling, unchanged here); fit ~minutes. File:
+`tinyset_fast.json`.
+
+| step | loss | agree all/dis | avoidable-dead | dW |
+|---:|---:|---|---|---:|
+| 1 | 2.456 | 0.602/0.010 | 2 | 0.05 |
+| 100 | 0.609 | 0.852/0.641 | 2 | 3.41 |
+| 200 | 0.204 | 0.984/0.961 | 0 | 5.27 |
+| 300 | 0.085 | 0.992/0.981 | 0 | 6.39 |
+| 400+ | ≤0.042 | 1.000/1.000 | 0 | 7.1–8.7 |
+
+Verdict: **TINY FIT — §20 item 5 unlocked.** The student fits all 103
+disagreements (incl. both avoidable deaths by step 200) with dW 8.7 —
+a genuinely different policy, not a rescale. §19's "no learning" was
+purely budget (lr 1e-5 × 400 steps × unbatched). C1 (0.75) + C2
+(sentinnels never in loss) stand. Next per §20: full-split fit on the
+game-disjoint train split with informative metrics (agreement-all,
+agreement-on-disagreements, regret|disagreement, regret|live-pick,
+avoidable-dead, all-dead) at adequate budget (lr 1e-4, ≥800 steps,
+batched/stacked), then student-state aggregation → guarded closed-loop
+survival. No panels consumed (frozen bank); no checkpoint saved.
+
+---
+
+## 26. Full-split fit + student-state aggregation (DONE 2026-09-08 — item 5 CLOSED as a negative)
+
+Drivers: `python/diag_fullsplit_fit.py` (game-disjoint CE fit, frozen bank,
+NO panels, NO gameplay) + `python/diag_student_aggregate.py` (student
+rollouts on training seeds 26000–26007 + frozen-teacher relabel, diagnostic
+closed-loop only). Teacher throughout = versioned CHAMPION (snapshot9
+sha `229bbe2a` + bonus-free full 2-ply, fast-path both plies, γ_ply 0.999).
+Metrics are positive-regret per §20.3 (sentinels never in loss or means;
+`agree_dis` is agreement on the frozen incumbent-vs-teacher disagreement set,
+so PRE agree_dis = 0 by construction). Files: `fullsplit_fit.json`,
+`fullsplit_seed42.pt` (sha `9989ce86…`), `student_aggregate.json`.
+
+### 26.1 Full-split fit — cannot fit train at this budget
+
+Split: games 0–23 train (17,430 states) / games 24–31 val (5,586 states).
+Disagreement (incumbent 1-ply vs teacher): 3717 train (21.3%) / 1165 val
+(20.9%) — same 21% headroom as §19. Fit pool 17,265 (singles + all-dead
+skipped for fitting, counted in metrics). Budget: lr 1e-4, batch 256,
+1200 steps (~18 passes; labeling 1323 s, fit 4151 s).
+
+| split | PRE agree all/dis | POST agree all/dis | PRE reg|dis-live | POST reg|dis-live | PRE reg|live | POST reg|live | avoid-dead PRE→POST |
+|---|---|---|---|---|---|---|---|
+| train (17,430) | 0.787 / 0.000 | 0.801 / 0.272 | 12.74 (max 73.5, n 3689) | 8.84 | 2.70 | 2.27 | 22→13 |
+| val (5,586) | 0.791 / 0.000 | 0.776 / 0.216 | 12.37 (max 96.5, n 1153) | 9.15 | 2.56 | 2.44 | 11→6 |
+
+Trajectory (train agree_dis / val agree_dis / loss / dW): 200 →
+0.181/0.164/0.766/2.11; 400 → 0.213/0.197/0.672/2.89; 600 →
+0.234/0.202/0.644/3.36; 800 → 0.249/0.219/0.614/3.80; 1000 →
+0.263/0.217/0.613/4.23; 1200 → 0.272/0.216/0.591/4.69. Train still creeps
+(+0.01/200 steps at the end); val flat since ~800. Margin buckets preserve
+ordering PRE→POST (train reg: <1: 3.78→3.49; 1–5: 7.66→5.55; 5–20:
+15.45→11.61; 20+: 29.29→16.22) — the fit shaves regret everywhere but flips
+few large-margin states. C2 stands (CE on argmax indices + live masks only).
+
+Verdict: **CANNOT FIT TRAIN — item-5 gate not passed.** Contrast §25 TINY FIT
+(same lr, 800 full-batch steps → agree_dis 1.000, loss 0.009, dW 8.7 on 103
+disagreements): the update learns 100 memorized decisions but stalls at 27%
+of 3717 diverse disagreements with dW only 4.7. That is a scale/interference
+finding, not a budget footnote — ~18 passes move train agree_dis 0→0.27 while
+val sits at ~0.22, so more steps of the same CE-on-hard-argmax is not the fix.
+Per the §20.6 gate this means: do NOT collect more labels, do NOT run the
+aggregate retrain, do NOT touch the 20560+ selection panel.
+
+### 26.2 Student-state aggregation (diagnostic only — no retrain, no selection)
+
+`fullsplit_seed42.pt` played 1-ply greedy on training seeds 26000–26007
+(training data, NOT a selection panel — same status as the 20400 teacher bank):
+4× cap 1500 (26000/26002/26004/26006), deaths at 196/503/731 (`no_candidates`)
+and 598 (`lockout`); mean 1003.5 (diagnostic — different seeds from every
+selection panel, so no comparison to the 763.9 death-ablation 1-ply baseline).
+Teacher relabeled all 8028 visited states: 1801 disagreements (22.4% — the same
+rate as the bank, so the student visits no easier distribution); held-out games
+(last 25%) 2098 states / train-agg pool 5930 states recorded with per-state
+margin/all-dead flags in `student_aggregate.json`. No aggregate retrain was run
+(gate above) and no gameplay eval on selection panels happened inside this driver.
+
+### 26.3 Proposed next steps — search-only direction (1-ply closed, 2026-09-08)
+
+Decision: 1-ply distillation work is CLOSED (§§13.3, 14, 17.4, 17.7, 25–26:
+head transfer noise-scale, full-split agree_dis 0.27/0.22 with val flat).
+No further 1-ply fits, soft/top-k variants, or aggregate retrains. All
+future work is search-based, same snapshot9 weights throughout.
+
+1. **λ10 teacher promotion.** Per-game slope check + 5000s reserves (§23
+   requirement). Gate for stylish-config promotion.
+2. **Phi × preview-aware completion.** Test cash-out timing under
+   drought/delayed-I cases from the seeded suite; Tetris-ready detection
+   already exists.
+3. **Cheap search variants.** Top-k full expansion with diverse shortlist,
+   γ_ply sweep; keep 2-ply survival while cutting ~16× cost.
+4. **Selective deepening.** Extra search on well start/abandon, competing
+   plans, drought, risk threshold — not every placement (§15.1.4; λ10 2-ply
+   now qualifies as the surviving continuation, controller no longer needed).
+5. **Well-column flexibility (new).** Fixed col 9 assumed throughout; test
+   designated-well selection (edge vs middle) and switching cost under the
+   TAP randomizer.
+6. **Viz legibility pass (new).** Plan display + input-sequence executability
+   for human-training use.
+
+No aggregate retrain; guarded 20560+ (cap 1500) selection eval runs for
+search candidates only. Champions unchanged (survival: snapshot9 + full
+2-ply; stylish: λ10 Phi + `{1:1,2:3,3:5,4:8}` bonus). Next free: **20560+**;
+5000s reserves for promotion; 26000–26007 are training-data seeds.
+
+## 27. §26.3 search probes (2026-09-08 — frozen bank + training seeds only)
+
+No selection panels consumed. Bank = `state_bank_snapshot9_32games.npz`
+(seeds 42–73); closed-loop diagnostics on training seeds 26000–26002 and
+ad-hoc seeds 30001–30003 (reporting only, no decisions). No checkpoints saved.
+
+1. **λ10 promotion gate — NOT PASSED.** Per-game occ slopes
+   (`lambda_factorial.json`): phi10_b8 tail slopes +20.3 (20550, end occ
+   84.6), +13.4 (20558, end 87.6); 20552/20554 mid-game spikes 86–101 do
+   release (16.7/29.0 finals). phi10_b0 worse (3/10 end 56–121, slopes
+   +11/+16/+20/+23). Caution: phi0 arms also show +10/+16 single-game
+   slopes (20551/20559) that release — tail-slope alone is noisy. Gate
+   "no sustained positive slope" fails on 2/10 phi10_b8 games. No 5000s
+   run launched.
+2. **Phi × completion cash-out — bonus adds no timing.** Seeded suite
+   (depth before→after): champ delayed_I 4→0 (burns setup), lam10 4→4
+   (preserves), lam10+b8 ≡ lam10 on all 6 cases; ready 4→0 everywhere;
+   highstack lam10 builds 2→4 (risky). Bonus sustain role (§23) stands;
+   style-timing role negative on this suite.
+3. **Cheap search — naive top-k UNSAFE.** Frozen 150-state agreement:
+   top-3/5/8 = 0.947/0.973/0.980, regret|dis 5.3/2.1/2.5. Closed-loop
+   cap-300 (seeds 26000–26002): beam100 3×cap; beam8/beam5 die at 30–39
+   pcs (`no_candidates`) on all 3. v1-top-k drops survival-critical roots.
+   γ_ply action-change vs 0.999: 0.9→2.7%, 0.99→0.7%, 1.0→0%. γ irrelevant.
+   Next: diverse shortlist, not v1 top-k.
+4. **Selective deepening — Phi-spread covers disagreements, fires often.**
+   300-state: dis rate 0.247; fire rates risk(top≥12) 0.347 / compete
+   (PhiSpread>0.3) 0.760 / wellstarted 0.367; recall|dis 0.284 / 0.797 /
+   0.351. Compete alone saves ~24% of computes at 80% recall — weak.
+   Next: conjunctive trigger (compete ∧ risk/well) with closed-loop cost.
+5. **Well-column — fixed col 9 not availability-bound.** 400-state
+   maxPhi>0.5: col9 0.255 / col0 0.273 / col4 0.253 / col1 0.297;
+   spread>0.3: 0.76–0.98. No column dominates. Switching cost untested.
+6. **Viz legibility — BLOCKED: stylish viz diverges.** 3×cap-300:
+   sweep `TwoPlyScorer` 118/118/116 lines vs `TwoPlyVizScorer`
+   110/107/86 + 1 `no_candidates` death (257 pcs) on identical seeds.
+   `test_viz_stylish.py` 60-state parity passes, so divergence is
+   closed-loop (order-mapping/fallback path in `viz_live.py`), not
+   single-state scoring. Do not demo λ10-viz as the teacher until fixed.
+   Executability primitive exists (`inputs_str()` per candidate, already
+   shown in testing panel).
+
+## 28. Demo plan — training/improvement phase CLOSED (2026-09-08)
+
+Net training and search improvement work ends here. Weights frozen at
+snapshot9 (`229bbe2a…`); no further fits, retrains, or selection evals.
+20560+ / 5000s panels are not to be touched for selection. Demos below
+are reporting-only (registry rule 1); use demo-only seeds (e.g. 31000+)
+or training seeds (26000s); never consume reserves.
+
+1. **Real-time 1-ply demo.** Config: snapshot9 + beam 0 (7–8 ms/piece).
+   Command: `viz_live.py --nn --weights ../../model_weights_snapshot9.pt`.
+   Goal: live Death play at full speed. Check: no frame backlog, ghost
+   pick tracks argmax, survives on demo seeds.
+2. **Non-real-time survival 2-ply demo.** Config: snapshot9 + full 2-ply
+   beam≥n, bonus-free (~120 ms/piece, validated 30/30 at cap 1500).
+   Method: precompute games offline via `diag_two_ply.py` (cap 1500),
+   then replay slowly in viz (`game_step_interval` raised) or as a
+   gallery/video. Goal: show capped survival behaviour. Check: cap rate
+   on demo seeds, lines/100 health only (no style claims).
+3. **Out of scope.** λ10 stylish viz (diverges per §27.6), top-k speedups,
+   triggers, column switching. Revisit only after viz parity fix.
+
+## 29. Fullsplit student paired eval (2026-09-08 — feedback reopen)
+
+Feedback: §26 never evaluated `fullsplit_seed42.pt` (sha `9989ce86…`) in
+its own right — agree_dis 0.27 does not preclude a 1-ply gain, and the
+1003.5 aggregation mean had no paired baseline. Ran paired 1-ply
+`sweep_eval.py` (same harness both arms, corrected lockout, cap 1500):
+
+- Training seeds 26000–26007 (REPORTING ONLY, never selection): student
+  1347.2 (5/8 cap) vs snapshot9 670.6 (0/8); paired +676.6, t +4.71,
+  W/L 8/0 (`fullsplit_paired_26000.json`).
+- Fresh seeds 20560–20571 (selection screen, 12 games, CONSUMED — next
+  free 20572+): student 1031.3 (7/12 cap, med 1500) vs snapshot9 794.6
+  (1/12 cap); paired +236.8, t +1.08, W/L 7/5
+  (`fullsplit_paired_20560.json`). Encouraging but n.s. (paired SD 763;
+  losses on 20562/20563/20564/20565/20567: 240–609 pcs).
+
+Caveat: `diag_student_aggregate.py` driver rollouts on the same 26000–26007
+seeds gave 1003.5 (4/8 cap) vs the sweep harness 1347.2 (5/8 cap) for the
+same student net — same weights, different closed-loop path (driver: bulk
+rows + manual true-preview forward; sweep: `search_locks` + `NeuralScorer`
++ `play_game_detailed`). Step-level traces agree for 6+ steps; full-game
+divergence unaudited. This does NOT invalidate the paired result (both arms
+share one harness), but the harness gap must be audited before any
+promotion run on the 5000s reserves. 1-ply distillation is REOPENED
+(§26.3/§28 closure reversed for this student); no promotion yet.
+
+## 30. Fullsplit promotion — PROMOTED (2026-09-08, 300 games)
+
+300 paired 1-ply games, seeds 5000–5299 (CONSUMED — next reserves 5300+),
+cap 1500, `sweep_eval.py` both arms (`fullsplit_promotion_5000.json`):
+
+| model | mean | median | capped | lines |
+|---|---:|---:|---:|---:|
+| fullsplit_seed42 (`9989ce86…`) | 1187.1 | 1500 | 153/300 | 462.9 |
+| snapshot9 (`229bbe2a…`) | 718.7 | 623 | 25/300 | 271.9 |
+
+Paired: **+468.4, 95% CI [+403, +534], t +14.1, W/T/L 231/12/57.**
+Decisive at any threshold: the student wins 77% of tapes outright and
+caps 6× as often. The 21%-disagreement fit (agree_dis 0.27, val flat) was
+a ranking-fidelity failure, not a play-strength failure — the flipped
+quarter of decisions carries large survival value. **Promote
+`_diag_out/fullsplit_seed42.pt` to 1-ply champion.** Survival 2-ply
+champion config unchanged (snapshot9 weights + full 2-ply); whether the
+student also improves 2-ply leaves is untested. §28 demo plan: swap the
+1-ply demo weights to the promoted student.

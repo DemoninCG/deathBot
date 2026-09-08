@@ -1,0 +1,4250 @@
+{
+  "args": {
+    "games": 300,
+    "seed": 5000,
+    "max_pieces": 1500,
+    "legacy_lockout": false,
+    "workers": 4,
+    "threads_per_worker": 1,
+    "verbose": false,
+    "json": "../_diag_out/fullsplit_promotion_5000.json",
+    "compare": null
+  },
+  "games_per_ckpt": 300,
+  "seed0": 5000,
+  "max_pieces": 1500,
+  "results": [
+    {
+      "name": "fullsplit_seed42.pt",
+      "weights": "C:\\My Things\\HTML\\Demonin's Item Shop\\other\\deathBot\\deathbot_sim\\_diag_out\\fullsplit_seed42.pt",
+      "summary": {
+        "mean_pieces": 1187.1166666666666,
+        "median_pieces": 1500.0,
+        "stdev_pieces": 398.68177818456945,
+        "min_pieces": 193,
+        "max_pieces": 1500,
+        "mean_lines": 462.9033333333333,
+        "capped_games": 153,
+        "n_games": 300
+      },
+      "games": [
+        {
+          "seed": 5000,
+          "pieces": 981,
+          "lines": 376,
+          "capped": false,
+          "seconds": 8.397037699818611
+        },
+        {
+          "seed": 5001,
+          "pieces": 1500,
+          "lines": 597,
+          "capped": true,
+          "seconds": 12.213670999743044
+        },
+        {
+          "seed": 5002,
+          "pieces": 969,
+          "lines": 371,
+          "capped": false,
+          "seconds": 8.03401009971276
+        },
+        {
+          "seed": 5003,
+          "pieces": 1500,
+          "lines": 592,
+          "capped": true,
+          "seconds": 12.374797199852765
+        },
+        {
+          "seed": 5004,
+          "pieces": 608,
+          "lines": 226,
+          "capped": false,
+          "seconds": 4.918610700406134
+        },
+        {
+          "seed": 5005,
+          "pieces": 582,
+          "lines": 216,
+          "capped": false,
+          "seconds": 4.829217900056392
+        },
+        {
+          "seed": 5006,
+          "pieces": 1500,
+          "lines": 598,
+          "capped": true,
+          "seconds": 12.399681000038981
+        },
+        {
+          "seed": 5007,
+          "pieces": 1500,
+          "lines": 588,
+          "capped": true,
+          "seconds": 13.39565599989146
+        },
+        {
+          "seed": 5008,
+          "pieces": 1500,
+          "lines": 596,
+          "capped": true,
+          "seconds": 13.208784500136971
+        },
+        {
+          "seed": 5009,
+          "pieces": 1500,
+          "lines": 596,
+          "capped": true,
+          "seconds": 12.38870000001043
+        },
+        {
+          "seed": 5010,
+          "pieces": 698,
+          "lines": 262,
+          "capped": false,
+          "seconds": 5.752437100280076
+        },
+        {
+          "seed": 5011,
+          "pieces": 665,
+          "lines": 249,
+          "capped": false,
+          "seconds": 5.37120860023424
+        },
+        {
+          "seed": 5012,
+          "pieces": 1500,
+          "lines": 594,
+          "capped": true,
+          "seconds": 13.055381199810654
+        },
+        {
+          "seed": 5013,
+          "pieces": 1500,
+          "lines": 594,
+          "capped": true,
+          "seconds": 12.962733400054276
+        },
+        {
+          "seed": 5014,
+          "pieces": 1500,
+          "lines": 594,
+          "capped": true,
+          "seconds": 12.279444099869579
+        },
+        {
+          "seed": 5015,
+          "pieces": 1063,
+          "lines": 409,
+          "capped": false,
+          "seconds": 9.199831100180745
+        },
+        {
+          "seed": 5016,
+          "pieces": 459,
+          "lines": 167,
+          "capped": false,
+          "seconds": 3.793032200075686
+        },
+        {
+          "seed": 5017,
+          "pieces": 1500,
+          "lines": 588,
+          "capped": true,
+          "seconds": 12.301009700167924
+        },
+        {
+          "seed": 5018,
+          "pieces": 1500,
+          "lines": 586,
+          "capped": true,
+          "seconds": 12.16322339978069
+        },
+        {
+          "seed": 5019,
+          "pieces": 860,
+          "lines": 326,
+          "capped": false,
+          "seconds": 7.206310799811035
+        },
+        {
+          "seed": 5020,
+          "pieces": 1301,
+          "lines": 503,
+          "capped": false,
+          "seconds": 10.643504499923438
+        },
+        {
+          "seed": 5021,
+          "pieces": 1500,
+          "lines": 593,
+          "capped": true,
+          "seconds": 12.48665909981355
+        },
+        {
+          "seed": 5022,
+          "pieces": 1051,
+          "lines": 403,
+          "capped": false,
+          "seconds": 8.71234910003841
+        },
+        {
+          "seed": 5023,
+          "pieces": 1394,
+          "lines": 540,
+          "capped": false,
+          "seconds": 11.668185899965465
+        },
+        {
+          "seed": 5024,
+          "pieces": 632,
+          "lines": 237,
+          "capped": false,
+          "seconds": 5.169172099791467
+        },
+        {
+          "seed": 5025,
+          "pieces": 1500,
+          "lines": 593,
+          "capped": true,
+          "seconds": 12.527917800005525
+        },
+        {
+          "seed": 5026,
+          "pieces": 1500,
+          "lines": 592,
+          "capped": true,
+          "seconds": 12.483586400281638
+        },
+        {
+          "seed": 5027,
+          "pieces": 806,
+          "lines": 305,
+          "capped": false,
+          "seconds": 6.607689300086349
+        },
+        {
+          "seed": 5028,
+          "pieces": 1500,
+          "lines": 591,
+          "capped": true,
+          "seconds": 11.914563700091094
+        },
+        {
+          "seed": 5029,
+          "pieces": 1500,
+          "lines": 594,
+          "capped": true,
+          "seconds": 13.03031100006774
+        },
+        {
+          "seed": 5030,
+          "pieces": 1500,
+          "lines": 593,
+          "capped": true,
+          "seconds": 13.761041900143027
+        },
+        {
+          "seed": 5031,
+          "pieces": 1500,
+          "lines": 597,
+          "capped": true,
+          "seconds": 12.747377200052142
+        },
+        {
+          "seed": 5032,
+          "pieces": 1500,
+          "lines": 597,
+          "capped": true,
+          "seconds": 12.872158200014383
+        },
+        {
+          "seed": 5033,
+          "pieces": 1419,
+          "lines": 551,
+          "capped": false,
+          "seconds": 12.588539899792522
+        },
+        {
+          "seed": 5034,
+          "pieces": 1500,
+          "lines": 587,
+          "capped": true,
+          "seconds": 11.703634900040925
+        },
+        {
+          "seed": 5035,
+          "pieces": 1182,
+          "lines": 456,
+          "capped": false,
+          "seconds": 9.238787999842316
+        },
+        {
+          "seed": 5036,
+          "pieces": 1500,
+          "lines": 591,
+          "capped": true,
+          "seconds": 11.91978310002014
+        },
+        {
+          "seed": 5037,
+          "pieces": 1500,
+          "lines": 597,
+          "capped": true,
+          "seconds": 11.458313799928874
+        },
+        {
+          "seed": 5038,
+          "pieces": 621,
+          "lines": 231,
+          "capped": false,
+          "seconds": 4.691625700332224
+        },
+        {
+          "seed": 5039,
+          "pieces": 1500,
+          "lines": 593,
+          "capped": true,
+          "seconds": 11.836152700241655
+        },
+        {
+          "seed": 5040,
+          "pieces": 1064,
+          "lines": 407,
+          "capped": false,
+          "seconds": 8.226692500058562
+        },
+        {
+          "seed": 5041,
+          "pieces": 1492,
+          "lines": 579,
+          "capped": false,
+          "seconds": 11.441678100265563
+        },
+        {
+          "seed": 5042,
+          "pieces": 469,
+          "lines": 170,
+          "capped": false,
+          "seconds": 3.780987100210041
+        },
+        {
+          "seed": 5043,
+          "pieces": 1500,
+          "lines": 593,
+          "capped": true,
+          "seconds": 11.65467769978568
+        },
+        {
+          "seed": 5044,
+          "pieces": 718,
+          "lines": 269,
+          "capped": false,
+          "seconds": 5.453444300219417
+        },
+        {
+          "seed": 5045,
+          "pieces": 745,
+          "lines": 280,
+          "capped": false,
+          "seconds": 5.679654099978507
+        },
+        {
+          "seed": 5046,
+          "pieces": 1500,
+          "lines": 591,
+          "capped": true,
+          "seconds": 11.664675999898463
+        },
+        {
+          "seed": 5047,
+          "pieces": 1224,
+          "lines": 472,
+          "capped": false,
+          "seconds": 9.620163700077683
+        },
+        {
+          "seed": 5048,
+          "pieces": 1500,
+          "lines": 591,
+          "capped": true,
+          "seconds": 12.15810739994049
+        },
+        {
+          "seed": 5049,
+          "pieces": 685,
+          "lines": 257,
+          "capped": false,
+          "seconds": 5.364081199746579
+        },
+        {
+          "seed": 5050,
+          "pieces": 711,
+          "lines": 268,
+          "capped": false,
+          "seconds": 5.241587699856609
+        },
+        {
+          "seed": 5051,
+          "pieces": 668,
+          "lines": 250,
+          "capped": false,
+          "seconds": 4.994588399771601
+        },
+        {
+          "seed": 5052,
+          "pieces": 1500,
+          "lines": 583,
+          "capped": true,
+          "seconds": 11.65680310036987
+        },
+        {
+          "seed": 5053,
+          "pieces": 1500,
+          "lines": 596,
+          "capped": true,
+          "seconds": 12.149095499888062
+        },
+        {
+          "seed": 5054,
+          "pieces": 1500,
+          "lines": 589,
+          "capped": true,
+          "seconds": 11.811868200078607
+        },
+        {
+          "seed": 5055,
+          "pieces": 1500,
+          "lines": 595,
+          "capped": true,
+          "seconds": 12.008726899977773
+        },
+        {
+          "seed": 5056,
+          "pieces": 1500,
+          "lines": 592,
+          "capped": true,
+          "seconds": 11.60218369960785
+        },
+        {
+          "seed": 5057,
+          "pieces": 1019,
+          "lines": 390,
+          "capped": false,
+          "seconds": 7.936474099755287
+        },
+        {
+          "seed": 5058,
+          "pieces": 1500,
+          "lines": 586,
+          "capped": true,
+          "seconds": 11.772944400086999
+        },
+        {
+          "seed": 5059,
+          "pieces": 716,
+          "lines": 270,
+          "capped": false,
+          "seconds": 5.535875800065696
+        },
+        {
+          "seed": 5060,
+          "pieces": 939,
+          "lines": 359,
+          "capped": false,
+          "seconds": 7.399929199833423
+        },
+        {
+          "seed": 5061,
+          "pieces": 979,
+          "lines": 375,
+          "capped": false,
+          "seconds": 7.7983523001894355
+        },
+        {
+          "seed": 5062,
+          "pieces": 1466,
+          "lines": 570,
+          "capped": false,
+          "seconds": 11.32560500036925
+        },
+        {
+          "seed": 5063,
+          "pieces": 571,
+          "lines": 211,
+          "capped": false,
+          "seconds": 4.338020499795675
+        },
+        {
+          "seed": 5064,
+          "pieces": 394,
+          "lines": 141,
+          "capped": false,
+          "seconds": 3.117888899985701
+        },
+        {
+          "seed": 5065,
+          "pieces": 480,
+          "lines": 175,
+          "capped": false,
+          "seconds": 3.6894211997278035
+        },
+        {
+          "seed": 5066,
+          "pieces": 878,
+          "lines": 335,
+          "capped": false,
+          "seconds": 6.682228100020438
+        },
+        {
+          "seed": 5067,
+          "pieces": 1441,
+          "lines": 560,
+          "capped": false,
+          "seconds": 11.04277059994638
+        },
+        {
+          "seed": 5068,
+          "pieces": 979,
+          "lines": 375,
+          "capped": false,
+          "seconds": 7.639258499722928
+        },
+        {
+          "seed": 5069,
+          "pieces": 1400,
+          "lines": 543,
+          "capped": false,
+          "seconds": 10.709598700050265
+        },
+        {
+          "seed": 5070,
+          "pieces": 1500,
+          "lines": 595,
+          "capped": true,
+          "seconds": 11.99701019981876
+        },
+        {
+          "seed": 5071,
+          "pieces": 1500,
+          "lines": 592,
+          "capped": true,
+          "seconds": 11.523903999943286
+        },
+        {
+          "seed": 5072,
+          "pieces": 1500,
+          "lines": 592,
+          "capped": true,
+          "seconds": 11.36392269982025
+        },
+        {
+          "seed": 5073,
+          "pieces": 1500,
+          "lines": 591,
+          "capped": true,
+          "seconds": 12.16044699959457
+        },
+        {
+          "seed": 5074,
+          "pieces": 909,
+          "lines": 346,
+          "capped": false,
+          "seconds": 7.238427400123328
+        },
+        {
+          "seed": 5075,
+          "pieces": 288,
+          "lines": 98,
+          "capped": false,
+          "seconds": 2.322208599653095
+        },
+        {
+          "seed": 5076,
+          "pieces": 1122,
+          "lines": 431,
+          "capped": false,
+          "seconds": 8.738620299845934
+        },
+        {
+          "seed": 5077,
+          "pieces": 1084,
+          "lines": 416,
+          "capped": false,
+          "seconds": 8.48007920011878
+        },
+        {
+          "seed": 5078,
+          "pieces": 1500,
+          "lines": 595,
+          "capped": true,
+          "seconds": 11.798204199876636
+        },
+        {
+          "seed": 5079,
+          "pieces": 576,
+          "lines": 213,
+          "capped": false,
+          "seconds": 4.498068899847567
+        },
+        {
+          "seed": 5080,
+          "pieces": 747,
+          "lines": 282,
+          "capped": false,
+          "seconds": 6.0429266998544335
+        },
+        {
+          "seed": 5081,
+          "pieces": 1500,
+          "lines": 595,
+          "capped": true,
+          "seconds": 11.739433799870312
+        },
+        {
+          "seed": 5082,
+          "pieces": 1500,
+          "lines": 592,
+          "capped": true,
+          "seconds": 11.309631800279021
+        },
+        {
+          "seed": 5083,
+          "pieces": 892,
+          "lines": 339,
+          "capped": false,
+          "seconds": 6.978842900134623
+        },
+        {
+          "seed": 5084,
+          "pieces": 1500,
+          "lines": 595,
+          "capped": true,
+          "seconds": 11.909347800072283
+        },
+        {
+          "seed": 5085,
+          "pieces": 1500,
+          "lines": 590,
+          "capped": true,
+          "seconds": 11.866766400169581
+        },
+        {
+          "seed": 5086,
+          "pieces": 1500,
+          "lines": 588,
+          "capped": true,
+          "seconds": 11.636075700167567
+        },
+        {
+          "seed": 5087,
+          "pieces": 1284,
+          "lines": 497,
+          "capped": false,
+          "seconds": 10.07728959992528
+        },
+        {
+          "seed": 5088,
+          "pieces": 1500,
+          "lines": 586,
+          "capped": true,
+          "seconds": 11.76870910031721
+        },
+        {
+          "seed": 5089,
+          "pieces": 387,
+          "lines": 138,
+          "capped": false,
+          "seconds": 3.1526297996751964
+        },
+        {
+          "seed": 5090,
+          "pieces": 1500,
+          "lines": 595,
+          "capped": true,
+          "seconds": 11.594946899916977
+        },
+        {
+          "seed": 5091,
+          "pieces": 1500,
+          "lines": 592,
+          "capped": true,
+          "seconds": 11.94849959993735
+        },
+        {
+          "seed": 5092,
+          "pieces": 311,
+          "lines": 108,
+          "capped": false,
+          "seconds": 2.525256299879402
+        },
+        {
+          "seed": 5093,
+          "pieces": 1280,
+          "lines": 495,
+          "capped": false,
+          "seconds": 10.391531800385565
+        },
+        {
+          "seed": 5094,
+          "pieces": 1500,
+          "lines": 597,
+          "capped": true,
+          "seconds": 13.272599299903959
+        },
+        {
+          "seed": 5095,
+          "pieces": 388,
+          "lines": 138,
+          "capped": false,
+          "seconds": 3.7017640001140535
+        },
+        {
+          "seed": 5096,
+          "pieces": 763,
+          "lines": 288,
+          "capped": false,
+          "seconds": 6.821855599991977
+        },
+        {
+          "seed": 5097,
+          "pieces": 729,
+          "lines": 276,
+          "capped": false,
+          "seconds": 7.2907948000356555
+        },
+        {
+          "seed": 5098,
+          "pieces": 193,
+          "lines": 60,
+          "capped": false,
+          "seconds": 1.8438687003217638
+        },
+        {
+          "seed": 5099,
+          "pieces": 482,
+          "lines": 176,
+          "capped": false,
+          "seconds": 4.466099600307643
+        },
+        {
+          "seed": 5100,
+          "pieces": 415,
+          "lines": 150,
+          "capped": false,
+          "seconds": 3.71599439997226
+        },
+        {
+          "seed": 5101,
+          "pieces": 461,
+          "lines": 167,
+          "capped": false,
+          "seconds": 4.390677799936384
+        },
+        {
+          "seed": 5102,
+          "pieces": 1500,
+          "lines": 593,
+          "capped": true,
+          "seconds": 14.201191400177777
+        },
+        {
+          "seed": 5103,
+          "pieces": 796,
+          "lines": 301,
+          "capped": false,
+          "seconds": 6.649449999909848
+        },
+        {
+          "seed": 5104,
+          "pieces": 1500,
+          "lines": 591,
+          "capped": true,
+          "seconds": 12.501379999797791
+        },
+        {
+          "seed": 5105,
+          "pieces": 1500,
+          "lines": 586,
+          "capped": true,
+          "seconds": 12.208311300259084
+        },
+        {
+          "seed": 5106,
+          "pieces": 1500,
+          "lines": 586,
+          "capped": true,
+          "seconds": 11.336256000213325
+        },
+        {
+          "seed": 5107,
+          "pieces": 960,
+          "lines": 366,
+          "capped": false,
+          "seconds": 7.071184000000358
+        },
+        {
+          "seed": 5108,
+          "pieces": 724,
+          "lines": 274,
+          "capped": false,
+          "seconds": 5.649839600082487
+        },
+        {
+          "seed": 5109,
+          "pieces": 1500,
+          "lines": 593,
+          "capped": true,
+          "seconds": 11.40109709976241
+        },
+        {
+          "seed": 5110,
+          "pieces": 407,
+          "lines": 146,
+          "capped": false,
+          "seconds": 3.1332664997316897
+        },
+        {
+          "seed": 5111,
+          "pieces": 1500,
+          "lines": 589,
+          "capped": true,
+          "seconds": 11.259789600037038
+        },
+        {
+          "seed": 5112,
+          "pieces": 1058,
+          "lines": 407,
+          "capped": false,
+          "seconds": 7.9530297997407615
+        },
+        {
+          "seed": 5113,
+          "pieces": 369,
+          "lines": 131,
+          "capped": false,
+          "seconds": 2.934350300114602
+        },
+        {
+          "seed": 5114,
+          "pieces": 996,
+          "lines": 381,
+          "capped": false,
+          "seconds": 7.426469600293785
+        },
+        {
+          "seed": 5115,
+          "pieces": 1079,
+          "lines": 414,
+          "capped": false,
+          "seconds": 8.282064399681985
+        },
+        {
+          "seed": 5116,
+          "pieces": 1500,
+          "lines": 596,
+          "capped": true,
+          "seconds": 11.719096799846739
+        },
+        {
+          "seed": 5117,
+          "pieces": 1417,
+          "lines": 549,
+          "capped": false,
+          "seconds": 11.403075700160116
+        },
+        {
+          "seed": 5118,
+          "pieces": 1422,
+          "lines": 552,
+          "capped": false,
+          "seconds": 13.780687300022691
+        },
+        {
+          "seed": 5119,
+          "pieces": 1009,
+          "lines": 387,
+          "capped": false,
+          "seconds": 8.00195789989084
+        },
+        {
+          "seed": 5120,
+          "pieces": 704,
+          "lines": 264,
+          "capped": false,
+          "seconds": 5.746590099763125
+        },
+        {
+          "seed": 5121,
+          "pieces": 1126,
+          "lines": 433,
+          "capped": false,
+          "seconds": 9.736225700005889
+        },
+        {
+          "seed": 5122,
+          "pieces": 1500,
+          "lines": 597,
+          "capped": true,
+          "seconds": 12.797177399974316
+        },
+        {
+          "seed": 5123,
+          "pieces": 1500,
+          "lines": 597,
+          "capped": true,
+          "seconds": 12.423688299953938
+        },
+        {
+          "seed": 5124,
+          "pieces": 1500,
+          "lines": 592,
+          "capped": true,
+          "seconds": 12.35863979998976
+        },
+        {
+          "seed": 5125,
+          "pieces": 1310,
+          "lines": 507,
+          "capped": false,
+          "seconds": 10.604943699669093
+        },
+        {
+          "seed": 5126,
+          "pieces": 1500,
+          "lines": 595,
+          "capped": true,
+          "seconds": 12.193977999966592
+        },
+        {
+          "seed": 5127,
+          "pieces": 1500,
+          "lines": 586,
+          "capped": true,
+          "seconds": 12.07023400021717
+        },
+        {
+          "seed": 5128,
+          "pieces": 1500,
+          "lines": 595,
+          "capped": true,
+          "seconds": 13.064832400064915
+        },
+        {
+          "seed": 5129,
+          "pieces": 432,
+          "lines": 156,
+          "capped": false,
+          "seconds": 3.765494500286877
+        },
+        {
+          "seed": 5130,
+          "pieces": 1500,
+          "lines": 593,
+          "capped": true,
+          "seconds": 12.218305900227278
+        },
+        {
+          "seed": 5131,
+          "pieces": 1346,
+          "lines": 521,
+          "capped": false,
+          "seconds": 11.110547500196844
+        },
+        {
+          "seed": 5132,
+          "pieces": 982,
+          "lines": 377,
+          "capped": false,
+          "seconds": 8.027914400212467
+        },
+        {
+          "seed": 5133,
+          "pieces": 1500,
+          "lines": 595,
+          "capped": true,
+          "seconds": 12.443576599936932
+        },
+        {
+          "seed": 5134,
+          "pieces": 1500,
+          "lines": 593,
+          "capped": true,
+          "seconds": 11.890208600088954
+        },
+        {
+          "seed": 5135,
+          "pieces": 1500,
+          "lines": 591,
+          "capped": true,
+          "seconds": 11.999934199731797
+        },
+        {
+          "seed": 5136,
+          "pieces": 1454,
+          "lines": 565,
+          "capped": false,
+          "seconds": 11.62438579974696
+        },
+        {
+          "seed": 5137,
+          "pieces": 821,
+          "lines": 312,
+          "capped": false,
+          "seconds": 6.722918099723756
+        },
+        {
+          "seed": 5138,
+          "pieces": 1486,
+          "lines": 577,
+          "capped": false,
+          "seconds": 11.915310999844223
+        },
+        {
+          "seed": 5139,
+          "pieces": 592,
+          "lines": 221,
+          "capped": false,
+          "seconds": 4.818895400036126
+        },
+        {
+          "seed": 5140,
+          "pieces": 1500,
+          "lines": 596,
+          "capped": true,
+          "seconds": 12.276352799963206
+        },
+        {
+          "seed": 5141,
+          "pieces": 1500,
+          "lines": 598,
+          "capped": true,
+          "seconds": 12.175468700006604
+        },
+        {
+          "seed": 5142,
+          "pieces": 1191,
+          "lines": 460,
+          "capped": false,
+          "seconds": 9.519233800005168
+        },
+        {
+          "seed": 5143,
+          "pieces": 979,
+          "lines": 375,
+          "capped": false,
+          "seconds": 8.11433030012995
+        },
+        {
+          "seed": 5144,
+          "pieces": 661,
+          "lines": 247,
+          "capped": false,
+          "seconds": 5.363622200209647
+        },
+        {
+          "seed": 5145,
+          "pieces": 1500,
+          "lines": 593,
+          "capped": true,
+          "seconds": 12.170040799770504
+        },
+        {
+          "seed": 5146,
+          "pieces": 1375,
+          "lines": 533,
+          "capped": false,
+          "seconds": 10.999667800031602
+        },
+        {
+          "seed": 5147,
+          "pieces": 1500,
+          "lines": 587,
+          "capped": true,
+          "seconds": 11.890440700110048
+        },
+        {
+          "seed": 5148,
+          "pieces": 1079,
+          "lines": 415,
+          "capped": false,
+          "seconds": 8.76972009986639
+        },
+        {
+          "seed": 5149,
+          "pieces": 1047,
+          "lines": 401,
+          "capped": false,
+          "seconds": 8.421407200396061
+        },
+        {
+          "seed": 5150,
+          "pieces": 782,
+          "lines": 296,
+          "capped": false,
+          "seconds": 6.444869500119239
+        },
+        {
+          "seed": 5151,
+          "pieces": 1303,
+          "lines": 504,
+          "capped": false,
+          "seconds": 10.36341689992696
+        },
+        {
+          "seed": 5152,
+          "pieces": 1500,
+          "lines": 592,
+          "capped": true,
+          "seconds": 11.945115400012583
+        },
+        {
+          "seed": 5153,
+          "pieces": 1500,
+          "lines": 594,
+          "capped": true,
+          "seconds": 12.129187699873
+        },
+        {
+          "seed": 5154,
+          "pieces": 1500,
+          "lines": 589,
+          "capped": true,
+          "seconds": 12.167034700047225
+        },
+        {
+          "seed": 5155,
+          "pieces": 1500,
+          "lines": 593,
+          "capped": true,
+          "seconds": 12.02180999983102
+        },
+        {
+          "seed": 5156,
+          "pieces": 1500,
+          "lines": 589,
+          "capped": true,
+          "seconds": 11.999057199805975
+        },
+        {
+          "seed": 5157,
+          "pieces": 940,
+          "lines": 359,
+          "capped": false,
+          "seconds": 8.081376699730754
+        },
+        {
+          "seed": 5158,
+          "pieces": 908,
+          "lines": 346,
+          "capped": false,
+          "seconds": 7.354013899806887
+        },
+        {
+          "seed": 5159,
+          "pieces": 1500,
+          "lines": 592,
+          "capped": true,
+          "seconds": 11.865472000092268
+        },
+        {
+          "seed": 5160,
+          "pieces": 819,
+          "lines": 311,
+          "capped": false,
+          "seconds": 6.5259489002637565
+        },
+        {
+          "seed": 5161,
+          "pieces": 851,
+          "lines": 323,
+          "capped": false,
+          "seconds": 6.817414800170809
+        },
+        {
+          "seed": 5162,
+          "pieces": 653,
+          "lines": 245,
+          "capped": false,
+          "seconds": 5.362908900249749
+        },
+        {
+          "seed": 5163,
+          "pieces": 1500,
+          "lines": 597,
+          "capped": true,
+          "seconds": 12.10352970007807
+        },
+        {
+          "seed": 5164,
+          "pieces": 1500,
+          "lines": 592,
+          "capped": true,
+          "seconds": 12.001688499934971
+        },
+        {
+          "seed": 5165,
+          "pieces": 1277,
+          "lines": 493,
+          "capped": false,
+          "seconds": 10.437608999665827
+        },
+        {
+          "seed": 5166,
+          "pieces": 1500,
+          "lines": 597,
+          "capped": true,
+          "seconds": 11.819290400017053
+        },
+        {
+          "seed": 5167,
+          "pieces": 522,
+          "lines": 192,
+          "capped": false,
+          "seconds": 4.346637699753046
+        },
+        {
+          "seed": 5168,
+          "pieces": 496,
+          "lines": 182,
+          "capped": false,
+          "seconds": 4.1396416001953185
+        },
+        {
+          "seed": 5169,
+          "pieces": 543,
+          "lines": 200,
+          "capped": false,
+          "seconds": 4.679431200027466
+        },
+        {
+          "seed": 5170,
+          "pieces": 585,
+          "lines": 216,
+          "capped": false,
+          "seconds": 4.7053709998726845
+        },
+        {
+          "seed": 5171,
+          "pieces": 1500,
+          "lines": 598,
+          "capped": true,
+          "seconds": 12.065868699923158
+        },
+        {
+          "seed": 5172,
+          "pieces": 1500,
+          "lines": 586,
+          "capped": true,
+          "seconds": 11.990484099835157
+        },
+        {
+          "seed": 5173,
+          "pieces": 766,
+          "lines": 290,
+          "capped": false,
+          "seconds": 5.961449000053108
+        },
+        {
+          "seed": 5174,
+          "pieces": 1467,
+          "lines": 569,
+          "capped": false,
+          "seconds": 11.593865999951959
+        },
+        {
+          "seed": 5175,
+          "pieces": 1500,
+          "lines": 597,
+          "capped": true,
+          "seconds": 12.060043099801987
+        },
+        {
+          "seed": 5176,
+          "pieces": 1500,
+          "lines": 592,
+          "capped": true,
+          "seconds": 11.995238299947232
+        },
+        {
+          "seed": 5177,
+          "pieces": 896,
+          "lines": 341,
+          "capped": false,
+          "seconds": 7.444731900002807
+        },
+        {
+          "seed": 5178,
+          "pieces": 1500,
+          "lines": 587,
+          "capped": true,
+          "seconds": 12.159796200226992
+        },
+        {
+          "seed": 5179,
+          "pieces": 1500,
+          "lines": 594,
+          "capped": true,
+          "seconds": 11.90781920030713
+        },
+        {
+          "seed": 5180,
+          "pieces": 1500,
+          "lines": 588,
+          "capped": true,
+          "seconds": 12.222286799922585
+        },
+        {
+          "seed": 5181,
+          "pieces": 337,
+          "lines": 117,
+          "capped": false,
+          "seconds": 2.6765089998953044
+        },
+        {
+          "seed": 5182,
+          "pieces": 1395,
+          "lines": 541,
+          "capped": false,
+          "seconds": 11.33901929995045
+        },
+        {
+          "seed": 5183,
+          "pieces": 1500,
+          "lines": 598,
+          "capped": true,
+          "seconds": 12.257147700060159
+        },
+        {
+          "seed": 5184,
+          "pieces": 1500,
+          "lines": 590,
+          "capped": true,
+          "seconds": 12.196125300135463
+        },
+        {
+          "seed": 5185,
+          "pieces": 1106,
+          "lines": 426,
+          "capped": false,
+          "seconds": 9.108729800209403
+        },
+        {
+          "seed": 5186,
+          "pieces": 1500,
+          "lines": 597,
+          "capped": true,
+          "seconds": 11.403585200197995
+        },
+        {
+          "seed": 5187,
+          "pieces": 1500,
+          "lines": 597,
+          "capped": true,
+          "seconds": 10.569377299863845
+        },
+        {
+          "seed": 5188,
+          "pieces": 1225,
+          "lines": 473,
+          "capped": false,
+          "seconds": 8.651943299919367
+        },
+        {
+          "seed": 5189,
+          "pieces": 640,
+          "lines": 239,
+          "capped": false,
+          "seconds": 4.57820580014959
+        },
+        {
+          "seed": 5190,
+          "pieces": 1500,
+          "lines": 590,
+          "capped": true,
+          "seconds": 10.850333800073713
+        },
+        {
+          "seed": 5191,
+          "pieces": 1189,
+          "lines": 458,
+          "capped": false,
+          "seconds": 8.611929600127041
+        },
+        {
+          "seed": 5192,
+          "pieces": 1500,
+          "lines": 593,
+          "capped": true,
+          "seconds": 10.318250600248575
+        },
+        {
+          "seed": 5193,
+          "pieces": 1500,
+          "lines": 593,
+          "capped": true,
+          "seconds": 10.417998099699616
+        },
+        {
+          "seed": 5194,
+          "pieces": 1500,
+          "lines": 593,
+          "capped": true,
+          "seconds": 10.475808500312269
+        },
+        {
+          "seed": 5195,
+          "pieces": 1500,
+          "lines": 594,
+          "capped": true,
+          "seconds": 10.581762900110334
+        },
+        {
+          "seed": 5196,
+          "pieces": 1500,
+          "lines": 592,
+          "capped": true,
+          "seconds": 10.537717099767178
+        },
+        {
+          "seed": 5197,
+          "pieces": 1500,
+          "lines": 595,
+          "capped": true,
+          "seconds": 10.489640699699521
+        },
+        {
+          "seed": 5198,
+          "pieces": 1500,
+          "lines": 594,
+          "capped": true,
+          "seconds": 10.559884100221097
+        },
+        {
+          "seed": 5199,
+          "pieces": 1500,
+          "lines": 596,
+          "capped": true,
+          "seconds": 10.60452640010044
+        },
+        {
+          "seed": 5200,
+          "pieces": 1500,
+          "lines": 597,
+          "capped": true,
+          "seconds": 10.7330144001171
+        },
+        {
+          "seed": 5201,
+          "pieces": 869,
+          "lines": 331,
+          "capped": false,
+          "seconds": 6.1759619996882975
+        },
+        {
+          "seed": 5202,
+          "pieces": 1500,
+          "lines": 598,
+          "capped": true,
+          "seconds": 10.56506839999929
+        },
+        {
+          "seed": 5203,
+          "pieces": 1500,
+          "lines": 593,
+          "capped": true,
+          "seconds": 10.677865399979055
+        },
+        {
+          "seed": 5204,
+          "pieces": 1500,
+          "lines": 594,
+          "capped": true,
+          "seconds": 10.570007199887186
+        },
+        {
+          "seed": 5205,
+          "pieces": 1266,
+          "lines": 489,
+          "capped": false,
+          "seconds": 8.856663300190121
+        },
+        {
+          "seed": 5206,
+          "pieces": 1500,
+          "lines": 588,
+          "capped": true,
+          "seconds": 10.586960500106215
+        },
+        {
+          "seed": 5207,
+          "pieces": 1500,
+          "lines": 590,
+          "capped": true,
+          "seconds": 11.093040899839252
+        },
+        {
+          "seed": 5208,
+          "pieces": 1500,
+          "lines": 595,
+          "capped": true,
+          "seconds": 10.579646999947727
+        },
+        {
+          "seed": 5209,
+          "pieces": 1232,
+          "lines": 476,
+          "capped": false,
+          "seconds": 8.931882500182837
+        },
+        {
+          "seed": 5210,
+          "pieces": 1500,
+          "lines": 598,
+          "capped": true,
+          "seconds": 10.614312699995935
+        },
+        {
+          "seed": 5211,
+          "pieces": 1500,
+          "lines": 597,
+          "capped": true,
+          "seconds": 10.600435699801892
+        },
+        {
+          "seed": 5212,
+          "pieces": 1500,
+          "lines": 593,
+          "capped": true,
+          "seconds": 10.384035800118
+        },
+        {
+          "seed": 5213,
+          "pieces": 689,
+          "lines": 258,
+          "capped": false,
+          "seconds": 4.750111100263894
+        },
+        {
+          "seed": 5214,
+          "pieces": 1500,
+          "lines": 592,
+          "capped": true,
+          "seconds": 10.655398599803448
+        },
+        {
+          "seed": 5215,
+          "pieces": 1500,
+          "lines": 598,
+          "capped": true,
+          "seconds": 10.710490100085735
+        },
+        {
+          "seed": 5216,
+          "pieces": 682,
+          "lines": 256,
+          "capped": false,
+          "seconds": 4.716385600157082
+        },
+        {
+          "seed": 5217,
+          "pieces": 416,
+          "lines": 149,
+          "capped": false,
+          "seconds": 3.0685133999213576
+        },
+        {
+          "seed": 5218,
+          "pieces": 1500,
+          "lines": 594,
+          "capped": true,
+          "seconds": 10.59764809999615
+        },
+        {
+          "seed": 5219,
+          "pieces": 1500,
+          "lines": 596,
+          "capped": true,
+          "seconds": 10.606298600323498
+        },
+        {
+          "seed": 5220,
+          "pieces": 1500,
+          "lines": 592,
+          "capped": true,
+          "seconds": 10.402890500146896
+        },
+        {
+          "seed": 5221,
+          "pieces": 1500,
+          "lines": 594,
+          "capped": true,
+          "seconds": 10.516901100054383
+        },
+        {
+          "seed": 5222,
+          "pieces": 564,
+          "lines": 208,
+          "capped": false,
+          "seconds": 3.9857982001267374
+        },
+        {
+          "seed": 5223,
+          "pieces": 1500,
+          "lines": 592,
+          "capped": true,
+          "seconds": 10.63665849994868
+        },
+        {
+          "seed": 5224,
+          "pieces": 1500,
+          "lines": 588,
+          "capped": true,
+          "seconds": 10.612158600240946
+        },
+        {
+          "seed": 5225,
+          "pieces": 1500,
+          "lines": 596,
+          "capped": true,
+          "seconds": 10.525993499904871
+        },
+        {
+          "seed": 5226,
+          "pieces": 727,
+          "lines": 274,
+          "capped": false,
+          "seconds": 5.139252499677241
+        },
+        {
+          "seed": 5227,
+          "pieces": 1500,
+          "lines": 591,
+          "capped": true,
+          "seconds": 10.594787000212818
+        },
+        {
+          "seed": 5228,
+          "pieces": 1500,
+          "lines": 595,
+          "capped": true,
+          "seconds": 10.699296100065112
+        },
+        {
+          "seed": 5229,
+          "pieces": 469,
+          "lines": 171,
+          "capped": false,
+          "seconds": 3.3094832999631763
+        },
+        {
+          "seed": 5230,
+          "pieces": 600,
+          "lines": 224,
+          "capped": false,
+          "seconds": 4.192908900324255
+        },
+        {
+          "seed": 5231,
+          "pieces": 1409,
+          "lines": 547,
+          "capped": false,
+          "seconds": 10.030553699936718
+        },
+        {
+          "seed": 5232,
+          "pieces": 1500,
+          "lines": 594,
+          "capped": true,
+          "seconds": 10.451974499970675
+        },
+        {
+          "seed": 5233,
+          "pieces": 1500,
+          "lines": 596,
+          "capped": true,
+          "seconds": 10.399143900256604
+        },
+        {
+          "seed": 5234,
+          "pieces": 1500,
+          "lines": 591,
+          "capped": true,
+          "seconds": 10.607636800035834
+        },
+        {
+          "seed": 5235,
+          "pieces": 1500,
+          "lines": 589,
+          "capped": true,
+          "seconds": 10.556462499778718
+        },
+        {
+          "seed": 5236,
+          "pieces": 1500,
+          "lines": 596,
+          "capped": true,
+          "seconds": 10.43807219993323
+        },
+        {
+          "seed": 5237,
+          "pieces": 1500,
+          "lines": 595,
+          "capped": true,
+          "seconds": 10.384595700073987
+        },
+        {
+          "seed": 5238,
+          "pieces": 1500,
+          "lines": 596,
+          "capped": true,
+          "seconds": 10.86651309998706
+        },
+        {
+          "seed": 5239,
+          "pieces": 1500,
+          "lines": 589,
+          "capped": true,
+          "seconds": 10.574115199968219
+        },
+        {
+          "seed": 5240,
+          "pieces": 1232,
+          "lines": 475,
+          "capped": false,
+          "seconds": 8.703414699994028
+        },
+        {
+          "seed": 5241,
+          "pieces": 1500,
+          "lines": 585,
+          "capped": true,
+          "seconds": 10.640225999988616
+        },
+        {
+          "seed": 5242,
+          "pieces": 704,
+          "lines": 265,
+          "capped": false,
+          "seconds": 5.11881610006094
+        },
+        {
+          "seed": 5243,
+          "pieces": 1500,
+          "lines": 590,
+          "capped": true,
+          "seconds": 10.852073499932885
+        },
+        {
+          "seed": 5244,
+          "pieces": 468,
+          "lines": 171,
+          "capped": false,
+          "seconds": 3.357422700151801
+        },
+        {
+          "seed": 5245,
+          "pieces": 1500,
+          "lines": 595,
+          "capped": true,
+          "seconds": 10.794410400092602
+        },
+        {
+          "seed": 5246,
+          "pieces": 830,
+          "lines": 314,
+          "capped": false,
+          "seconds": 5.871953200083226
+        },
+        {
+          "seed": 5247,
+          "pieces": 1500,
+          "lines": 589,
+          "capped": true,
+          "seconds": 10.205292100086808
+        },
+        {
+          "seed": 5248,
+          "pieces": 1367,
+          "lines": 529,
+          "capped": false,
+          "seconds": 9.95483519975096
+        },
+        {
+          "seed": 5249,
+          "pieces": 1500,
+          "lines": 591,
+          "capped": true,
+          "seconds": 10.665934399701655
+        },
+        {
+          "seed": 5250,
+          "pieces": 355,
+          "lines": 124,
+          "capped": false,
+          "seconds": 2.6699004000984132
+        },
+        {
+          "seed": 5251,
+          "pieces": 859,
+          "lines": 327,
+          "capped": false,
+          "seconds": 6.11898439982906
+        },
+        {
+          "seed": 5252,
+          "pieces": 1500,
+          "lines": 597,
+          "capped": true,
+          "seconds": 10.362332799937576
+        },
+        {
+          "seed": 5253,
+          "pieces": 974,
+          "lines": 372,
+          "capped": false,
+          "seconds": 7.314243000000715
+        },
+        {
+          "seed": 5254,
+          "pieces": 1500,
+          "lines": 592,
+          "capped": true,
+          "seconds": 10.590473500080407
+        },
+        {
+          "seed": 5255,
+          "pieces": 564,
+          "lines": 209,
+          "capped": false,
+          "seconds": 3.9938509999774396
+        },
+        {
+          "seed": 5256,
+          "pieces": 1500,
+          "lines": 591,
+          "capped": true,
+          "seconds": 10.94590269960463
+        },
+        {
+          "seed": 5257,
+          "pieces": 1500,
+          "lines": 593,
+          "capped": true,
+          "seconds": 10.781998900230974
+        },
+        {
+          "seed": 5258,
+          "pieces": 789,
+          "lines": 298,
+          "capped": false,
+          "seconds": 5.53809230029583
+        },
+        {
+          "seed": 5259,
+          "pieces": 331,
+          "lines": 115,
+          "capped": false,
+          "seconds": 2.4631330999545753
+        },
+        {
+          "seed": 5260,
+          "pieces": 545,
+          "lines": 201,
+          "capped": false,
+          "seconds": 3.7940098997205496
+        },
+        {
+          "seed": 5261,
+          "pieces": 576,
+          "lines": 214,
+          "capped": false,
+          "seconds": 4.149686499964446
+        },
+        {
+          "seed": 5262,
+          "pieces": 1500,
+          "lines": 594,
+          "capped": true,
+          "seconds": 10.356506099924445
+        },
+        {
+          "seed": 5263,
+          "pieces": 829,
+          "lines": 315,
+          "capped": false,
+          "seconds": 5.897662499919534
+        },
+        {
+          "seed": 5264,
+          "pieces": 1500,
+          "lines": 592,
+          "capped": true,
+          "seconds": 10.588825599756092
+        },
+        {
+          "seed": 5265,
+          "pieces": 1500,
+          "lines": 597,
+          "capped": true,
+          "seconds": 10.679061799775809
+        },
+        {
+          "seed": 5266,
+          "pieces": 1500,
+          "lines": 590,
+          "capped": true,
+          "seconds": 10.634586399886757
+        },
+        {
+          "seed": 5267,
+          "pieces": 873,
+          "lines": 332,
+          "capped": false,
+          "seconds": 6.1967282998375595
+        },
+        {
+          "seed": 5268,
+          "pieces": 869,
+          "lines": 330,
+          "capped": false,
+          "seconds": 6.226592299994081
+        },
+        {
+          "seed": 5269,
+          "pieces": 1500,
+          "lines": 589,
+          "capped": true,
+          "seconds": 10.688216600101441
+        },
+        {
+          "seed": 5270,
+          "pieces": 1500,
+          "lines": 599,
+          "capped": true,
+          "seconds": 10.683326500002295
+        },
+        {
+          "seed": 5271,
+          "pieces": 459,
+          "lines": 166,
+          "capped": false,
+          "seconds": 3.2216512002050877
+        },
+        {
+          "seed": 5272,
+          "pieces": 354,
+          "lines": 124,
+          "capped": false,
+          "seconds": 2.5363666000775993
+        },
+        {
+          "seed": 5273,
+          "pieces": 1500,
+          "lines": 595,
+          "capped": true,
+          "seconds": 10.49235020019114
+        },
+        {
+          "seed": 5274,
+          "pieces": 1500,
+          "lines": 599,
+          "capped": true,
+          "seconds": 10.951807099860162
+        },
+        {
+          "seed": 5275,
+          "pieces": 1100,
+          "lines": 422,
+          "capped": false,
+          "seconds": 7.830539999995381
+        },
+        {
+          "seed": 5276,
+          "pieces": 1500,
+          "lines": 595,
+          "capped": true,
+          "seconds": 12.364782799966633
+        },
+        {
+          "seed": 5277,
+          "pieces": 279,
+          "lines": 94,
+          "capped": false,
+          "seconds": 1.978473600000143
+        },
+        {
+          "seed": 5278,
+          "pieces": 254,
+          "lines": 85,
+          "capped": false,
+          "seconds": 1.930397600401193
+        },
+        {
+          "seed": 5279,
+          "pieces": 1004,
+          "lines": 384,
+          "capped": false,
+          "seconds": 7.169036999810487
+        },
+        {
+          "seed": 5280,
+          "pieces": 1500,
+          "lines": 597,
+          "capped": true,
+          "seconds": 10.32348129991442
+        },
+        {
+          "seed": 5281,
+          "pieces": 682,
+          "lines": 256,
+          "capped": false,
+          "seconds": 4.784479700028896
+        },
+        {
+          "seed": 5282,
+          "pieces": 1500,
+          "lines": 595,
+          "capped": true,
+          "seconds": 10.53223940031603
+        },
+        {
+          "seed": 5283,
+          "pieces": 1500,
+          "lines": 594,
+          "capped": true,
+          "seconds": 10.242412299849093
+        },
+        {
+          "seed": 5284,
+          "pieces": 1500,
+          "lines": 592,
+          "capped": true,
+          "seconds": 10.21628320030868
+        },
+        {
+          "seed": 5285,
+          "pieces": 1500,
+          "lines": 590,
+          "capped": true,
+          "seconds": 10.268317999783903
+        },
+        {
+          "seed": 5286,
+          "pieces": 1063,
+          "lines": 408,
+          "capped": false,
+          "seconds": 7.423602399881929
+        },
+        {
+          "seed": 5287,
+          "pieces": 1500,
+          "lines": 595,
+          "capped": true,
+          "seconds": 10.431934999767691
+        },
+        {
+          "seed": 5288,
+          "pieces": 1500,
+          "lines": 598,
+          "capped": true,
+          "seconds": 10.202908399980515
+        },
+        {
+          "seed": 5289,
+          "pieces": 1137,
+          "lines": 437,
+          "capped": false,
+          "seconds": 7.810500000137836
+        },
+        {
+          "seed": 5290,
+          "pieces": 1121,
+          "lines": 431,
+          "capped": false,
+          "seconds": 8.062184799928218
+        },
+        {
+          "seed": 5291,
+          "pieces": 972,
+          "lines": 371,
+          "capped": false,
+          "seconds": 6.967469800263643
+        },
+        {
+          "seed": 5292,
+          "pieces": 461,
+          "lines": 168,
+          "capped": false,
+          "seconds": 3.2886553001590073
+        },
+        {
+          "seed": 5293,
+          "pieces": 1500,
+          "lines": 598,
+          "capped": true,
+          "seconds": 10.188412900082767
+        },
+        {
+          "seed": 5294,
+          "pieces": 949,
+          "lines": 363,
+          "capped": false,
+          "seconds": 6.672517700120807
+        },
+        {
+          "seed": 5295,
+          "pieces": 1481,
+          "lines": 575,
+          "capped": false,
+          "seconds": 10.36384390015155
+        },
+        {
+          "seed": 5296,
+          "pieces": 1496,
+          "lines": 581,
+          "capped": false,
+          "seconds": 10.402927199844271
+        },
+        {
+          "seed": 5297,
+          "pieces": 1500,
+          "lines": 590,
+          "capped": true,
+          "seconds": 10.442309400066733
+        },
+        {
+          "seed": 5298,
+          "pieces": 1500,
+          "lines": 593,
+          "capped": true,
+          "seconds": 10.290454800240695
+        },
+        {
+          "seed": 5299,
+          "pieces": 573,
+          "lines": 212,
+          "capped": false,
+          "seconds": 3.927978199906647
+        }
+      ]
+    },
+    {
+      "name": "model_weights_snapshot9.pt",
+      "weights": "C:\\My Things\\HTML\\Demonin's Item Shop\\other\\deathBot\\model_weights_snapshot9.pt",
+      "summary": {
+        "mean_pieces": 718.6866666666666,
+        "median_pieces": 623.0,
+        "stdev_pieces": 398.1134380055819,
+        "min_pieces": 126,
+        "max_pieces": 1500,
+        "mean_lines": 271.91,
+        "capped_games": 25,
+        "n_games": 300
+      },
+      "games": [
+        {
+          "seed": 5000,
+          "pieces": 1070,
+          "lines": 411,
+          "capped": false,
+          "seconds": 8.992527500260621
+        },
+        {
+          "seed": 5001,
+          "pieces": 777,
+          "lines": 294,
+          "capped": false,
+          "seconds": 6.681412999983877
+        },
+        {
+          "seed": 5002,
+          "pieces": 1500,
+          "lines": 594,
+          "capped": true,
+          "seconds": 12.190971000120044
+        },
+        {
+          "seed": 5003,
+          "pieces": 1410,
+          "lines": 547,
+          "capped": false,
+          "seconds": 11.79691099980846
+        },
+        {
+          "seed": 5004,
+          "pieces": 792,
+          "lines": 300,
+          "capped": false,
+          "seconds": 6.895715800113976
+        },
+        {
+          "seed": 5005,
+          "pieces": 625,
+          "lines": 233,
+          "capped": false,
+          "seconds": 5.1144090997986495
+        },
+        {
+          "seed": 5006,
+          "pieces": 1076,
+          "lines": 413,
+          "capped": false,
+          "seconds": 8.998263800051063
+        },
+        {
+          "seed": 5007,
+          "pieces": 1488,
+          "lines": 578,
+          "capped": false,
+          "seconds": 12.78076669992879
+        },
+        {
+          "seed": 5008,
+          "pieces": 1429,
+          "lines": 556,
+          "capped": false,
+          "seconds": 13.028965699952096
+        },
+        {
+          "seed": 5009,
+          "pieces": 251,
+          "lines": 83,
+          "capped": false,
+          "seconds": 2.089449599850923
+        },
+        {
+          "seed": 5010,
+          "pieces": 511,
+          "lines": 188,
+          "capped": false,
+          "seconds": 4.356128700077534
+        },
+        {
+          "seed": 5011,
+          "pieces": 471,
+          "lines": 173,
+          "capped": false,
+          "seconds": 3.8053393000736833
+        },
+        {
+          "seed": 5012,
+          "pieces": 456,
+          "lines": 166,
+          "capped": false,
+          "seconds": 3.5759542998857796
+        },
+        {
+          "seed": 5013,
+          "pieces": 674,
+          "lines": 254,
+          "capped": false,
+          "seconds": 5.4160366002470255
+        },
+        {
+          "seed": 5014,
+          "pieces": 396,
+          "lines": 142,
+          "capped": false,
+          "seconds": 3.275413100142032
+        },
+        {
+          "seed": 5015,
+          "pieces": 316,
+          "lines": 111,
+          "capped": false,
+          "seconds": 2.632075499743223
+        },
+        {
+          "seed": 5016,
+          "pieces": 751,
+          "lines": 284,
+          "capped": false,
+          "seconds": 6.114187899976969
+        },
+        {
+          "seed": 5017,
+          "pieces": 637,
+          "lines": 238,
+          "capped": false,
+          "seconds": 5.375898299738765
+        },
+        {
+          "seed": 5018,
+          "pieces": 190,
+          "lines": 61,
+          "capped": false,
+          "seconds": 1.7773086000233889
+        },
+        {
+          "seed": 5019,
+          "pieces": 920,
+          "lines": 351,
+          "capped": false,
+          "seconds": 8.332332599908113
+        },
+        {
+          "seed": 5020,
+          "pieces": 251,
+          "lines": 85,
+          "capped": false,
+          "seconds": 2.0625029001384974
+        },
+        {
+          "seed": 5021,
+          "pieces": 1223,
+          "lines": 474,
+          "capped": false,
+          "seconds": 10.420351900160313
+        },
+        {
+          "seed": 5022,
+          "pieces": 380,
+          "lines": 135,
+          "capped": false,
+          "seconds": 3.279788600280881
+        },
+        {
+          "seed": 5023,
+          "pieces": 354,
+          "lines": 127,
+          "capped": false,
+          "seconds": 2.8803750998340547
+        },
+        {
+          "seed": 5024,
+          "pieces": 613,
+          "lines": 228,
+          "capped": false,
+          "seconds": 5.1339293997734785
+        },
+        {
+          "seed": 5025,
+          "pieces": 305,
+          "lines": 106,
+          "capped": false,
+          "seconds": 2.6653927001170814
+        },
+        {
+          "seed": 5026,
+          "pieces": 425,
+          "lines": 154,
+          "capped": false,
+          "seconds": 3.5162398000247777
+        },
+        {
+          "seed": 5027,
+          "pieces": 1500,
+          "lines": 594,
+          "capped": true,
+          "seconds": 12.345672199968249
+        },
+        {
+          "seed": 5028,
+          "pieces": 184,
+          "lines": 57,
+          "capped": false,
+          "seconds": 1.5721074002794921
+        },
+        {
+          "seed": 5029,
+          "pieces": 639,
+          "lines": 239,
+          "capped": false,
+          "seconds": 5.264628100208938
+        },
+        {
+          "seed": 5030,
+          "pieces": 951,
+          "lines": 365,
+          "capped": false,
+          "seconds": 7.67702930001542
+        },
+        {
+          "seed": 5031,
+          "pieces": 199,
+          "lines": 64,
+          "capped": false,
+          "seconds": 1.7149244002066553
+        },
+        {
+          "seed": 5032,
+          "pieces": 547,
+          "lines": 201,
+          "capped": false,
+          "seconds": 4.491893900092691
+        },
+        {
+          "seed": 5033,
+          "pieces": 179,
+          "lines": 54,
+          "capped": false,
+          "seconds": 1.3901841999031603
+        },
+        {
+          "seed": 5034,
+          "pieces": 468,
+          "lines": 172,
+          "capped": false,
+          "seconds": 4.057030499912798
+        },
+        {
+          "seed": 5035,
+          "pieces": 914,
+          "lines": 348,
+          "capped": false,
+          "seconds": 8.037278600037098
+        },
+        {
+          "seed": 5036,
+          "pieces": 1178,
+          "lines": 455,
+          "capped": false,
+          "seconds": 9.576070200186223
+        },
+        {
+          "seed": 5037,
+          "pieces": 1500,
+          "lines": 593,
+          "capped": true,
+          "seconds": 12.32527229981497
+        },
+        {
+          "seed": 5038,
+          "pieces": 872,
+          "lines": 332,
+          "capped": false,
+          "seconds": 7.241005500312895
+        },
+        {
+          "seed": 5039,
+          "pieces": 1500,
+          "lines": 597,
+          "capped": true,
+          "seconds": 12.39690179983154
+        },
+        {
+          "seed": 5040,
+          "pieces": 654,
+          "lines": 245,
+          "capped": false,
+          "seconds": 5.43063349975273
+        },
+        {
+          "seed": 5041,
+          "pieces": 536,
+          "lines": 197,
+          "capped": false,
+          "seconds": 4.450738000217825
+        },
+        {
+          "seed": 5042,
+          "pieces": 1206,
+          "lines": 466,
+          "capped": false,
+          "seconds": 10.1192072997801
+        },
+        {
+          "seed": 5043,
+          "pieces": 330,
+          "lines": 116,
+          "capped": false,
+          "seconds": 2.865779200103134
+        },
+        {
+          "seed": 5044,
+          "pieces": 619,
+          "lines": 231,
+          "capped": false,
+          "seconds": 5.037416600156575
+        },
+        {
+          "seed": 5045,
+          "pieces": 1304,
+          "lines": 505,
+          "capped": false,
+          "seconds": 10.66124129993841
+        },
+        {
+          "seed": 5046,
+          "pieces": 1259,
+          "lines": 486,
+          "capped": false,
+          "seconds": 11.100154399871826
+        },
+        {
+          "seed": 5047,
+          "pieces": 529,
+          "lines": 195,
+          "capped": false,
+          "seconds": 4.792861000169069
+        },
+        {
+          "seed": 5048,
+          "pieces": 661,
+          "lines": 250,
+          "capped": false,
+          "seconds": 6.071372100152075
+        },
+        {
+          "seed": 5049,
+          "pieces": 435,
+          "lines": 157,
+          "capped": false,
+          "seconds": 3.886500199791044
+        },
+        {
+          "seed": 5050,
+          "pieces": 1177,
+          "lines": 455,
+          "capped": false,
+          "seconds": 10.166176099795848
+        },
+        {
+          "seed": 5051,
+          "pieces": 1036,
+          "lines": 399,
+          "capped": false,
+          "seconds": 9.088440699968487
+        },
+        {
+          "seed": 5052,
+          "pieces": 900,
+          "lines": 343,
+          "capped": false,
+          "seconds": 7.588194699957967
+        },
+        {
+          "seed": 5053,
+          "pieces": 506,
+          "lines": 185,
+          "capped": false,
+          "seconds": 5.136371099855751
+        },
+        {
+          "seed": 5054,
+          "pieces": 1500,
+          "lines": 594,
+          "capped": true,
+          "seconds": 12.3077132999897
+        },
+        {
+          "seed": 5055,
+          "pieces": 828,
+          "lines": 314,
+          "capped": false,
+          "seconds": 6.451303600333631
+        },
+        {
+          "seed": 5056,
+          "pieces": 283,
+          "lines": 97,
+          "capped": false,
+          "seconds": 2.244336999952793
+        },
+        {
+          "seed": 5057,
+          "pieces": 301,
+          "lines": 103,
+          "capped": false,
+          "seconds": 2.2580120996572077
+        },
+        {
+          "seed": 5058,
+          "pieces": 858,
+          "lines": 326,
+          "capped": false,
+          "seconds": 6.491199100390077
+        },
+        {
+          "seed": 5059,
+          "pieces": 828,
+          "lines": 315,
+          "capped": false,
+          "seconds": 6.626084099989384
+        },
+        {
+          "seed": 5060,
+          "pieces": 166,
+          "lines": 52,
+          "capped": false,
+          "seconds": 1.2503924001939595
+        },
+        {
+          "seed": 5061,
+          "pieces": 1132,
+          "lines": 439,
+          "capped": false,
+          "seconds": 8.63073719991371
+        },
+        {
+          "seed": 5062,
+          "pieces": 320,
+          "lines": 112,
+          "capped": false,
+          "seconds": 2.5769111001864076
+        },
+        {
+          "seed": 5063,
+          "pieces": 483,
+          "lines": 176,
+          "capped": false,
+          "seconds": 3.7388924001716077
+        },
+        {
+          "seed": 5064,
+          "pieces": 1212,
+          "lines": 468,
+          "capped": false,
+          "seconds": 9.279264899902046
+        },
+        {
+          "seed": 5065,
+          "pieces": 1122,
+          "lines": 432,
+          "capped": false,
+          "seconds": 8.877723699901253
+        },
+        {
+          "seed": 5066,
+          "pieces": 312,
+          "lines": 109,
+          "capped": false,
+          "seconds": 2.4159002997912467
+        },
+        {
+          "seed": 5067,
+          "pieces": 1034,
+          "lines": 399,
+          "capped": false,
+          "seconds": 8.299622499849647
+        },
+        {
+          "seed": 5068,
+          "pieces": 126,
+          "lines": 35,
+          "capped": false,
+          "seconds": 1.036986299790442
+        },
+        {
+          "seed": 5069,
+          "pieces": 652,
+          "lines": 244,
+          "capped": false,
+          "seconds": 4.993926499970257
+        },
+        {
+          "seed": 5070,
+          "pieces": 397,
+          "lines": 142,
+          "capped": false,
+          "seconds": 3.074282099958509
+        },
+        {
+          "seed": 5071,
+          "pieces": 495,
+          "lines": 181,
+          "capped": false,
+          "seconds": 4.035955999977887
+        },
+        {
+          "seed": 5072,
+          "pieces": 507,
+          "lines": 188,
+          "capped": false,
+          "seconds": 4.015411700122058
+        },
+        {
+          "seed": 5073,
+          "pieces": 543,
+          "lines": 202,
+          "capped": false,
+          "seconds": 4.368704400025308
+        },
+        {
+          "seed": 5074,
+          "pieces": 479,
+          "lines": 175,
+          "capped": false,
+          "seconds": 3.746561300009489
+        },
+        {
+          "seed": 5075,
+          "pieces": 820,
+          "lines": 311,
+          "capped": false,
+          "seconds": 6.591175499837846
+        },
+        {
+          "seed": 5076,
+          "pieces": 750,
+          "lines": 284,
+          "capped": false,
+          "seconds": 5.928968499880284
+        },
+        {
+          "seed": 5077,
+          "pieces": 1122,
+          "lines": 432,
+          "capped": false,
+          "seconds": 9.06593620032072
+        },
+        {
+          "seed": 5078,
+          "pieces": 232,
+          "lines": 76,
+          "capped": false,
+          "seconds": 1.7971355002373457
+        },
+        {
+          "seed": 5079,
+          "pieces": 242,
+          "lines": 81,
+          "capped": false,
+          "seconds": 1.8513561999425292
+        },
+        {
+          "seed": 5080,
+          "pieces": 168,
+          "lines": 50,
+          "capped": false,
+          "seconds": 1.2588697001338005
+        },
+        {
+          "seed": 5081,
+          "pieces": 383,
+          "lines": 136,
+          "capped": false,
+          "seconds": 3.0101495003327727
+        },
+        {
+          "seed": 5082,
+          "pieces": 1500,
+          "lines": 597,
+          "capped": true,
+          "seconds": 12.26413040002808
+        },
+        {
+          "seed": 5083,
+          "pieces": 416,
+          "lines": 149,
+          "capped": false,
+          "seconds": 3.4439666997641325
+        },
+        {
+          "seed": 5084,
+          "pieces": 399,
+          "lines": 145,
+          "capped": false,
+          "seconds": 3.238156700041145
+        },
+        {
+          "seed": 5085,
+          "pieces": 373,
+          "lines": 132,
+          "capped": false,
+          "seconds": 2.849705799948424
+        },
+        {
+          "seed": 5086,
+          "pieces": 319,
+          "lines": 111,
+          "capped": false,
+          "seconds": 2.5078631001524627
+        },
+        {
+          "seed": 5087,
+          "pieces": 383,
+          "lines": 138,
+          "capped": false,
+          "seconds": 3.017317600082606
+        },
+        {
+          "seed": 5088,
+          "pieces": 1500,
+          "lines": 593,
+          "capped": true,
+          "seconds": 11.738139800261706
+        },
+        {
+          "seed": 5089,
+          "pieces": 765,
+          "lines": 289,
+          "capped": false,
+          "seconds": 6.210220499895513
+        },
+        {
+          "seed": 5090,
+          "pieces": 376,
+          "lines": 134,
+          "capped": false,
+          "seconds": 2.946546600200236
+        },
+        {
+          "seed": 5091,
+          "pieces": 924,
+          "lines": 353,
+          "capped": false,
+          "seconds": 7.273590700235218
+        },
+        {
+          "seed": 5092,
+          "pieces": 294,
+          "lines": 102,
+          "capped": false,
+          "seconds": 2.369475900195539
+        },
+        {
+          "seed": 5093,
+          "pieces": 1080,
+          "lines": 415,
+          "capped": false,
+          "seconds": 8.386069499887526
+        },
+        {
+          "seed": 5094,
+          "pieces": 660,
+          "lines": 248,
+          "capped": false,
+          "seconds": 5.359688000287861
+        },
+        {
+          "seed": 5095,
+          "pieces": 199,
+          "lines": 63,
+          "capped": false,
+          "seconds": 1.5533491997048259
+        },
+        {
+          "seed": 5096,
+          "pieces": 1051,
+          "lines": 405,
+          "capped": false,
+          "seconds": 8.2443992998451
+        },
+        {
+          "seed": 5097,
+          "pieces": 533,
+          "lines": 197,
+          "capped": false,
+          "seconds": 4.098673600237817
+        },
+        {
+          "seed": 5098,
+          "pieces": 894,
+          "lines": 341,
+          "capped": false,
+          "seconds": 7.2513179001398385
+        },
+        {
+          "seed": 5099,
+          "pieces": 1421,
+          "lines": 551,
+          "capped": false,
+          "seconds": 11.214563999790698
+        },
+        {
+          "seed": 5100,
+          "pieces": 647,
+          "lines": 242,
+          "capped": false,
+          "seconds": 5.046228300314397
+        },
+        {
+          "seed": 5101,
+          "pieces": 1444,
+          "lines": 560,
+          "capped": false,
+          "seconds": 11.236145900096744
+        },
+        {
+          "seed": 5102,
+          "pieces": 398,
+          "lines": 143,
+          "capped": false,
+          "seconds": 3.209698300343007
+        },
+        {
+          "seed": 5103,
+          "pieces": 454,
+          "lines": 164,
+          "capped": false,
+          "seconds": 3.4632592000998557
+        },
+        {
+          "seed": 5104,
+          "pieces": 1500,
+          "lines": 595,
+          "capped": true,
+          "seconds": 11.494143600109965
+        },
+        {
+          "seed": 5105,
+          "pieces": 688,
+          "lines": 258,
+          "capped": false,
+          "seconds": 5.428503300063312
+        },
+        {
+          "seed": 5106,
+          "pieces": 306,
+          "lines": 105,
+          "capped": false,
+          "seconds": 2.3784475000575185
+        },
+        {
+          "seed": 5107,
+          "pieces": 636,
+          "lines": 238,
+          "capped": false,
+          "seconds": 4.769340599887073
+        },
+        {
+          "seed": 5108,
+          "pieces": 632,
+          "lines": 236,
+          "capped": false,
+          "seconds": 4.92648069979623
+        },
+        {
+          "seed": 5109,
+          "pieces": 1128,
+          "lines": 434,
+          "capped": false,
+          "seconds": 8.748372300062329
+        },
+        {
+          "seed": 5110,
+          "pieces": 293,
+          "lines": 100,
+          "capped": false,
+          "seconds": 2.1541006001643836
+        },
+        {
+          "seed": 5111,
+          "pieces": 611,
+          "lines": 229,
+          "capped": false,
+          "seconds": 4.68338660011068
+        },
+        {
+          "seed": 5112,
+          "pieces": 401,
+          "lines": 145,
+          "capped": false,
+          "seconds": 3.0874700997956097
+        },
+        {
+          "seed": 5113,
+          "pieces": 521,
+          "lines": 191,
+          "capped": false,
+          "seconds": 4.087407799903303
+        },
+        {
+          "seed": 5114,
+          "pieces": 654,
+          "lines": 245,
+          "capped": false,
+          "seconds": 4.9828038001433015
+        },
+        {
+          "seed": 5115,
+          "pieces": 229,
+          "lines": 75,
+          "capped": false,
+          "seconds": 1.8006417998112738
+        },
+        {
+          "seed": 5116,
+          "pieces": 559,
+          "lines": 206,
+          "capped": false,
+          "seconds": 4.631467199884355
+        },
+        {
+          "seed": 5117,
+          "pieces": 290,
+          "lines": 100,
+          "capped": false,
+          "seconds": 2.559251599945128
+        },
+        {
+          "seed": 5118,
+          "pieces": 577,
+          "lines": 214,
+          "capped": false,
+          "seconds": 4.7181790000759065
+        },
+        {
+          "seed": 5119,
+          "pieces": 601,
+          "lines": 224,
+          "capped": false,
+          "seconds": 4.524176500272006
+        },
+        {
+          "seed": 5120,
+          "pieces": 395,
+          "lines": 141,
+          "capped": false,
+          "seconds": 3.164946199860424
+        },
+        {
+          "seed": 5121,
+          "pieces": 496,
+          "lines": 182,
+          "capped": false,
+          "seconds": 3.894673699978739
+        },
+        {
+          "seed": 5122,
+          "pieces": 617,
+          "lines": 229,
+          "capped": false,
+          "seconds": 4.889750800095499
+        },
+        {
+          "seed": 5123,
+          "pieces": 324,
+          "lines": 113,
+          "capped": false,
+          "seconds": 2.6083112000487745
+        },
+        {
+          "seed": 5124,
+          "pieces": 528,
+          "lines": 196,
+          "capped": false,
+          "seconds": 4.237204300239682
+        },
+        {
+          "seed": 5125,
+          "pieces": 1496,
+          "lines": 583,
+          "capped": false,
+          "seconds": 12.412430699914694
+        },
+        {
+          "seed": 5126,
+          "pieces": 717,
+          "lines": 272,
+          "capped": false,
+          "seconds": 5.596041599754244
+        },
+        {
+          "seed": 5127,
+          "pieces": 659,
+          "lines": 247,
+          "capped": false,
+          "seconds": 5.113681099843234
+        },
+        {
+          "seed": 5128,
+          "pieces": 203,
+          "lines": 66,
+          "capped": false,
+          "seconds": 1.579634000081569
+        },
+        {
+          "seed": 5129,
+          "pieces": 232,
+          "lines": 76,
+          "capped": false,
+          "seconds": 1.9434948000125587
+        },
+        {
+          "seed": 5130,
+          "pieces": 632,
+          "lines": 236,
+          "capped": false,
+          "seconds": 5.271518799941987
+        },
+        {
+          "seed": 5131,
+          "pieces": 614,
+          "lines": 229,
+          "capped": false,
+          "seconds": 4.7852068999782205
+        },
+        {
+          "seed": 5132,
+          "pieces": 709,
+          "lines": 268,
+          "capped": false,
+          "seconds": 5.558892000000924
+        },
+        {
+          "seed": 5133,
+          "pieces": 714,
+          "lines": 269,
+          "capped": false,
+          "seconds": 5.47216930007562
+        },
+        {
+          "seed": 5134,
+          "pieces": 519,
+          "lines": 191,
+          "capped": false,
+          "seconds": 4.08707440039143
+        },
+        {
+          "seed": 5135,
+          "pieces": 1294,
+          "lines": 502,
+          "capped": false,
+          "seconds": 9.993086299858987
+        },
+        {
+          "seed": 5136,
+          "pieces": 1270,
+          "lines": 492,
+          "capped": false,
+          "seconds": 9.8036376000382
+        },
+        {
+          "seed": 5137,
+          "pieces": 457,
+          "lines": 168,
+          "capped": false,
+          "seconds": 3.6676481999456882
+        },
+        {
+          "seed": 5138,
+          "pieces": 562,
+          "lines": 208,
+          "capped": false,
+          "seconds": 4.285077100154012
+        },
+        {
+          "seed": 5139,
+          "pieces": 222,
+          "lines": 71,
+          "capped": false,
+          "seconds": 1.638679999858141
+        },
+        {
+          "seed": 5140,
+          "pieces": 258,
+          "lines": 89,
+          "capped": false,
+          "seconds": 1.971620799973607
+        },
+        {
+          "seed": 5141,
+          "pieces": 686,
+          "lines": 260,
+          "capped": false,
+          "seconds": 5.300761899910867
+        },
+        {
+          "seed": 5142,
+          "pieces": 1500,
+          "lines": 590,
+          "capped": true,
+          "seconds": 12.00936819985509
+        },
+        {
+          "seed": 5143,
+          "pieces": 753,
+          "lines": 284,
+          "capped": false,
+          "seconds": 6.560597899835557
+        },
+        {
+          "seed": 5144,
+          "pieces": 879,
+          "lines": 335,
+          "capped": false,
+          "seconds": 6.644969100132585
+        },
+        {
+          "seed": 5145,
+          "pieces": 1026,
+          "lines": 394,
+          "capped": false,
+          "seconds": 7.7994609996676445
+        },
+        {
+          "seed": 5146,
+          "pieces": 974,
+          "lines": 374,
+          "capped": false,
+          "seconds": 7.785508799832314
+        },
+        {
+          "seed": 5147,
+          "pieces": 789,
+          "lines": 299,
+          "capped": false,
+          "seconds": 6.400972899980843
+        },
+        {
+          "seed": 5148,
+          "pieces": 498,
+          "lines": 184,
+          "capped": false,
+          "seconds": 3.8438932998105884
+        },
+        {
+          "seed": 5149,
+          "pieces": 822,
+          "lines": 312,
+          "capped": false,
+          "seconds": 6.5994204999879
+        },
+        {
+          "seed": 5150,
+          "pieces": 1500,
+          "lines": 592,
+          "capped": true,
+          "seconds": 11.748897999990731
+        },
+        {
+          "seed": 5151,
+          "pieces": 1500,
+          "lines": 587,
+          "capped": true,
+          "seconds": 12.162919199559838
+        },
+        {
+          "seed": 5152,
+          "pieces": 547,
+          "lines": 202,
+          "capped": false,
+          "seconds": 4.331652999855578
+        },
+        {
+          "seed": 5153,
+          "pieces": 618,
+          "lines": 230,
+          "capped": false,
+          "seconds": 5.028946100268513
+        },
+        {
+          "seed": 5154,
+          "pieces": 1500,
+          "lines": 594,
+          "capped": true,
+          "seconds": 12.290703000035137
+        },
+        {
+          "seed": 5155,
+          "pieces": 1169,
+          "lines": 453,
+          "capped": false,
+          "seconds": 11.106147299986333
+        },
+        {
+          "seed": 5156,
+          "pieces": 312,
+          "lines": 108,
+          "capped": false,
+          "seconds": 3.1613305998034775
+        },
+        {
+          "seed": 5157,
+          "pieces": 714,
+          "lines": 269,
+          "capped": false,
+          "seconds": 6.407607099972665
+        },
+        {
+          "seed": 5158,
+          "pieces": 612,
+          "lines": 228,
+          "capped": false,
+          "seconds": 6.0852116998285055
+        },
+        {
+          "seed": 5159,
+          "pieces": 659,
+          "lines": 249,
+          "capped": false,
+          "seconds": 6.213378299959004
+        },
+        {
+          "seed": 5160,
+          "pieces": 556,
+          "lines": 206,
+          "capped": false,
+          "seconds": 4.971060399897397
+        },
+        {
+          "seed": 5161,
+          "pieces": 481,
+          "lines": 175,
+          "capped": false,
+          "seconds": 4.663337299600244
+        },
+        {
+          "seed": 5162,
+          "pieces": 227,
+          "lines": 73,
+          "capped": false,
+          "seconds": 2.145564599893987
+        },
+        {
+          "seed": 5163,
+          "pieces": 366,
+          "lines": 130,
+          "capped": false,
+          "seconds": 3.516166599933058
+        },
+        {
+          "seed": 5164,
+          "pieces": 285,
+          "lines": 98,
+          "capped": false,
+          "seconds": 2.7059527998790145
+        },
+        {
+          "seed": 5165,
+          "pieces": 415,
+          "lines": 150,
+          "capped": false,
+          "seconds": 3.957628699950874
+        },
+        {
+          "seed": 5166,
+          "pieces": 467,
+          "lines": 170,
+          "capped": false,
+          "seconds": 3.8162382999435067
+        },
+        {
+          "seed": 5167,
+          "pieces": 1500,
+          "lines": 596,
+          "capped": true,
+          "seconds": 12.567562800366431
+        },
+        {
+          "seed": 5168,
+          "pieces": 939,
+          "lines": 359,
+          "capped": false,
+          "seconds": 7.98900100030005
+        },
+        {
+          "seed": 5169,
+          "pieces": 526,
+          "lines": 194,
+          "capped": false,
+          "seconds": 4.236790800001472
+        },
+        {
+          "seed": 5170,
+          "pieces": 180,
+          "lines": 56,
+          "capped": false,
+          "seconds": 1.335225900169462
+        },
+        {
+          "seed": 5171,
+          "pieces": 406,
+          "lines": 147,
+          "capped": false,
+          "seconds": 3.218667999841273
+        },
+        {
+          "seed": 5172,
+          "pieces": 1239,
+          "lines": 479,
+          "capped": false,
+          "seconds": 9.714062000159174
+        },
+        {
+          "seed": 5173,
+          "pieces": 1222,
+          "lines": 473,
+          "capped": false,
+          "seconds": 9.15039600012824
+        },
+        {
+          "seed": 5174,
+          "pieces": 1310,
+          "lines": 507,
+          "capped": false,
+          "seconds": 10.207315299659967
+        },
+        {
+          "seed": 5175,
+          "pieces": 473,
+          "lines": 172,
+          "capped": false,
+          "seconds": 3.6585444998927414
+        },
+        {
+          "seed": 5176,
+          "pieces": 286,
+          "lines": 101,
+          "capped": false,
+          "seconds": 2.2301926999352872
+        },
+        {
+          "seed": 5177,
+          "pieces": 658,
+          "lines": 246,
+          "capped": false,
+          "seconds": 5.123645999934524
+        },
+        {
+          "seed": 5178,
+          "pieces": 337,
+          "lines": 119,
+          "capped": false,
+          "seconds": 2.530061099678278
+        },
+        {
+          "seed": 5179,
+          "pieces": 468,
+          "lines": 170,
+          "capped": false,
+          "seconds": 3.651133000385016
+        },
+        {
+          "seed": 5180,
+          "pieces": 1232,
+          "lines": 477,
+          "capped": false,
+          "seconds": 9.303274400066584
+        },
+        {
+          "seed": 5181,
+          "pieces": 401,
+          "lines": 144,
+          "capped": false,
+          "seconds": 3.086525300052017
+        },
+        {
+          "seed": 5182,
+          "pieces": 330,
+          "lines": 115,
+          "capped": false,
+          "seconds": 2.646469899918884
+        },
+        {
+          "seed": 5183,
+          "pieces": 560,
+          "lines": 207,
+          "capped": false,
+          "seconds": 4.205667499918491
+        },
+        {
+          "seed": 5184,
+          "pieces": 288,
+          "lines": 99,
+          "capped": false,
+          "seconds": 2.314023300074041
+        },
+        {
+          "seed": 5185,
+          "pieces": 1500,
+          "lines": 589,
+          "capped": true,
+          "seconds": 12.102530600037426
+        },
+        {
+          "seed": 5186,
+          "pieces": 405,
+          "lines": 146,
+          "capped": false,
+          "seconds": 3.182032899931073
+        },
+        {
+          "seed": 5187,
+          "pieces": 760,
+          "lines": 287,
+          "capped": false,
+          "seconds": 5.903151899576187
+        },
+        {
+          "seed": 5188,
+          "pieces": 1291,
+          "lines": 501,
+          "capped": false,
+          "seconds": 12.170509200077504
+        },
+        {
+          "seed": 5189,
+          "pieces": 956,
+          "lines": 366,
+          "capped": false,
+          "seconds": 8.921172899659723
+        },
+        {
+          "seed": 5190,
+          "pieces": 249,
+          "lines": 83,
+          "capped": false,
+          "seconds": 1.9804298998788
+        },
+        {
+          "seed": 5191,
+          "pieces": 1500,
+          "lines": 592,
+          "capped": true,
+          "seconds": 11.984953099861741
+        },
+        {
+          "seed": 5192,
+          "pieces": 533,
+          "lines": 197,
+          "capped": false,
+          "seconds": 4.532028200104833
+        },
+        {
+          "seed": 5193,
+          "pieces": 214,
+          "lines": 69,
+          "capped": false,
+          "seconds": 1.920856799930334
+        },
+        {
+          "seed": 5194,
+          "pieces": 172,
+          "lines": 52,
+          "capped": false,
+          "seconds": 1.6199167999438941
+        },
+        {
+          "seed": 5195,
+          "pieces": 253,
+          "lines": 87,
+          "capped": false,
+          "seconds": 2.1443194998428226
+        },
+        {
+          "seed": 5196,
+          "pieces": 1500,
+          "lines": 589,
+          "capped": true,
+          "seconds": 13.217372699640691
+        },
+        {
+          "seed": 5197,
+          "pieces": 623,
+          "lines": 233,
+          "capped": false,
+          "seconds": 4.992398499976844
+        },
+        {
+          "seed": 5198,
+          "pieces": 978,
+          "lines": 376,
+          "capped": false,
+          "seconds": 7.991174899972975
+        },
+        {
+          "seed": 5199,
+          "pieces": 686,
+          "lines": 258,
+          "capped": false,
+          "seconds": 5.7557425000704825
+        },
+        {
+          "seed": 5200,
+          "pieces": 552,
+          "lines": 205,
+          "capped": false,
+          "seconds": 4.581053199712187
+        },
+        {
+          "seed": 5201,
+          "pieces": 798,
+          "lines": 303,
+          "capped": false,
+          "seconds": 6.39397000009194
+        },
+        {
+          "seed": 5202,
+          "pieces": 1056,
+          "lines": 406,
+          "capped": false,
+          "seconds": 8.409375799819827
+        },
+        {
+          "seed": 5203,
+          "pieces": 477,
+          "lines": 175,
+          "capped": false,
+          "seconds": 4.024859699886292
+        },
+        {
+          "seed": 5204,
+          "pieces": 566,
+          "lines": 212,
+          "capped": false,
+          "seconds": 4.723757499828935
+        },
+        {
+          "seed": 5205,
+          "pieces": 260,
+          "lines": 88,
+          "capped": false,
+          "seconds": 2.1775126000866294
+        },
+        {
+          "seed": 5206,
+          "pieces": 683,
+          "lines": 257,
+          "capped": false,
+          "seconds": 5.458848999813199
+        },
+        {
+          "seed": 5207,
+          "pieces": 1066,
+          "lines": 410,
+          "capped": false,
+          "seconds": 8.365578099619597
+        },
+        {
+          "seed": 5208,
+          "pieces": 806,
+          "lines": 306,
+          "capped": false,
+          "seconds": 7.166414900217205
+        },
+        {
+          "seed": 5209,
+          "pieces": 787,
+          "lines": 298,
+          "capped": false,
+          "seconds": 6.976588100194931
+        },
+        {
+          "seed": 5210,
+          "pieces": 1407,
+          "lines": 548,
+          "capped": false,
+          "seconds": 11.3601461998187
+        },
+        {
+          "seed": 5211,
+          "pieces": 492,
+          "lines": 181,
+          "capped": false,
+          "seconds": 3.923374000005424
+        },
+        {
+          "seed": 5212,
+          "pieces": 1157,
+          "lines": 447,
+          "capped": false,
+          "seconds": 9.69976759981364
+        },
+        {
+          "seed": 5213,
+          "pieces": 269,
+          "lines": 92,
+          "capped": false,
+          "seconds": 2.186526000034064
+        },
+        {
+          "seed": 5214,
+          "pieces": 990,
+          "lines": 379,
+          "capped": false,
+          "seconds": 8.19236209988594
+        },
+        {
+          "seed": 5215,
+          "pieces": 857,
+          "lines": 327,
+          "capped": false,
+          "seconds": 7.169952400028706
+        },
+        {
+          "seed": 5216,
+          "pieces": 264,
+          "lines": 91,
+          "capped": false,
+          "seconds": 2.1811329000629485
+        },
+        {
+          "seed": 5217,
+          "pieces": 1229,
+          "lines": 475,
+          "capped": false,
+          "seconds": 10.164785000029951
+        },
+        {
+          "seed": 5218,
+          "pieces": 557,
+          "lines": 206,
+          "capped": false,
+          "seconds": 4.367988099809736
+        },
+        {
+          "seed": 5219,
+          "pieces": 1500,
+          "lines": 586,
+          "capped": true,
+          "seconds": 12.301596899982542
+        },
+        {
+          "seed": 5220,
+          "pieces": 498,
+          "lines": 182,
+          "capped": false,
+          "seconds": 4.153266299981624
+        },
+        {
+          "seed": 5221,
+          "pieces": 753,
+          "lines": 285,
+          "capped": false,
+          "seconds": 6.249514800030738
+        },
+        {
+          "seed": 5222,
+          "pieces": 1290,
+          "lines": 500,
+          "capped": false,
+          "seconds": 10.495714699849486
+        },
+        {
+          "seed": 5223,
+          "pieces": 466,
+          "lines": 172,
+          "capped": false,
+          "seconds": 3.7669979999773204
+        },
+        {
+          "seed": 5224,
+          "pieces": 1488,
+          "lines": 580,
+          "capped": false,
+          "seconds": 12.158594999928027
+        },
+        {
+          "seed": 5225,
+          "pieces": 621,
+          "lines": 232,
+          "capped": false,
+          "seconds": 4.87133330013603
+        },
+        {
+          "seed": 5226,
+          "pieces": 297,
+          "lines": 103,
+          "capped": false,
+          "seconds": 2.3314029998145998
+        },
+        {
+          "seed": 5227,
+          "pieces": 522,
+          "lines": 192,
+          "capped": false,
+          "seconds": 4.264957600273192
+        },
+        {
+          "seed": 5228,
+          "pieces": 656,
+          "lines": 246,
+          "capped": false,
+          "seconds": 5.503783899825066
+        },
+        {
+          "seed": 5229,
+          "pieces": 198,
+          "lines": 62,
+          "capped": false,
+          "seconds": 1.686763399746269
+        },
+        {
+          "seed": 5230,
+          "pieces": 860,
+          "lines": 328,
+          "capped": false,
+          "seconds": 7.00387499993667
+        },
+        {
+          "seed": 5231,
+          "pieces": 176,
+          "lines": 53,
+          "capped": false,
+          "seconds": 1.4491368001326919
+        },
+        {
+          "seed": 5232,
+          "pieces": 581,
+          "lines": 216,
+          "capped": false,
+          "seconds": 4.541495699901134
+        },
+        {
+          "seed": 5233,
+          "pieces": 500,
+          "lines": 184,
+          "capped": false,
+          "seconds": 4.0465307999402285
+        },
+        {
+          "seed": 5234,
+          "pieces": 308,
+          "lines": 109,
+          "capped": false,
+          "seconds": 2.4724269998259842
+        },
+        {
+          "seed": 5235,
+          "pieces": 273,
+          "lines": 92,
+          "capped": false,
+          "seconds": 2.227313300129026
+        },
+        {
+          "seed": 5236,
+          "pieces": 384,
+          "lines": 137,
+          "capped": false,
+          "seconds": 3.1010944000445306
+        },
+        {
+          "seed": 5237,
+          "pieces": 1012,
+          "lines": 388,
+          "capped": false,
+          "seconds": 8.32508339965716
+        },
+        {
+          "seed": 5238,
+          "pieces": 391,
+          "lines": 139,
+          "capped": false,
+          "seconds": 3.1057945997454226
+        },
+        {
+          "seed": 5239,
+          "pieces": 198,
+          "lines": 63,
+          "capped": false,
+          "seconds": 1.5820523998700082
+        },
+        {
+          "seed": 5240,
+          "pieces": 922,
+          "lines": 353,
+          "capped": false,
+          "seconds": 7.6755794999189675
+        },
+        {
+          "seed": 5241,
+          "pieces": 952,
+          "lines": 364,
+          "capped": false,
+          "seconds": 7.94581659976393
+        },
+        {
+          "seed": 5242,
+          "pieces": 1035,
+          "lines": 397,
+          "capped": false,
+          "seconds": 8.621795199811459
+        },
+        {
+          "seed": 5243,
+          "pieces": 672,
+          "lines": 252,
+          "capped": false,
+          "seconds": 5.569137299899012
+        },
+        {
+          "seed": 5244,
+          "pieces": 794,
+          "lines": 302,
+          "capped": false,
+          "seconds": 6.537334100343287
+        },
+        {
+          "seed": 5245,
+          "pieces": 723,
+          "lines": 273,
+          "capped": false,
+          "seconds": 5.91695800004527
+        },
+        {
+          "seed": 5246,
+          "pieces": 475,
+          "lines": 173,
+          "capped": false,
+          "seconds": 3.8488897001370788
+        },
+        {
+          "seed": 5247,
+          "pieces": 176,
+          "lines": 54,
+          "capped": false,
+          "seconds": 1.41610369971022
+        },
+        {
+          "seed": 5248,
+          "pieces": 725,
+          "lines": 274,
+          "capped": false,
+          "seconds": 5.870344599708915
+        },
+        {
+          "seed": 5249,
+          "pieces": 281,
+          "lines": 95,
+          "capped": false,
+          "seconds": 2.3544942997395992
+        },
+        {
+          "seed": 5250,
+          "pieces": 1062,
+          "lines": 408,
+          "capped": false,
+          "seconds": 8.69458770006895
+        },
+        {
+          "seed": 5251,
+          "pieces": 1235,
+          "lines": 477,
+          "capped": false,
+          "seconds": 10.045069099869579
+        },
+        {
+          "seed": 5252,
+          "pieces": 578,
+          "lines": 215,
+          "capped": false,
+          "seconds": 4.6280274000018835
+        },
+        {
+          "seed": 5253,
+          "pieces": 1500,
+          "lines": 591,
+          "capped": true,
+          "seconds": 12.022198199760169
+        },
+        {
+          "seed": 5254,
+          "pieces": 570,
+          "lines": 213,
+          "capped": false,
+          "seconds": 4.77969910018146
+        },
+        {
+          "seed": 5255,
+          "pieces": 814,
+          "lines": 309,
+          "capped": false,
+          "seconds": 6.624272000044584
+        },
+        {
+          "seed": 5256,
+          "pieces": 1232,
+          "lines": 476,
+          "capped": false,
+          "seconds": 10.110122999642044
+        },
+        {
+          "seed": 5257,
+          "pieces": 616,
+          "lines": 230,
+          "capped": false,
+          "seconds": 5.326686999760568
+        },
+        {
+          "seed": 5258,
+          "pieces": 334,
+          "lines": 118,
+          "capped": false,
+          "seconds": 2.8796451999805868
+        },
+        {
+          "seed": 5259,
+          "pieces": 432,
+          "lines": 157,
+          "capped": false,
+          "seconds": 3.4974306002259254
+        },
+        {
+          "seed": 5260,
+          "pieces": 934,
+          "lines": 356,
+          "capped": false,
+          "seconds": 7.609634999651462
+        },
+        {
+          "seed": 5261,
+          "pieces": 1500,
+          "lines": 595,
+          "capped": true,
+          "seconds": 12.056610399857163
+        },
+        {
+          "seed": 5262,
+          "pieces": 1329,
+          "lines": 516,
+          "capped": false,
+          "seconds": 10.858055599965155
+        },
+        {
+          "seed": 5263,
+          "pieces": 655,
+          "lines": 245,
+          "capped": false,
+          "seconds": 5.321877900045365
+        },
+        {
+          "seed": 5264,
+          "pieces": 225,
+          "lines": 73,
+          "capped": false,
+          "seconds": 1.797137999907136
+        },
+        {
+          "seed": 5265,
+          "pieces": 746,
+          "lines": 282,
+          "capped": false,
+          "seconds": 6.033790600020438
+        },
+        {
+          "seed": 5266,
+          "pieces": 896,
+          "lines": 342,
+          "capped": false,
+          "seconds": 7.260290400125086
+        },
+        {
+          "seed": 5267,
+          "pieces": 683,
+          "lines": 258,
+          "capped": false,
+          "seconds": 5.415970999747515
+        },
+        {
+          "seed": 5268,
+          "pieces": 542,
+          "lines": 200,
+          "capped": false,
+          "seconds": 4.389770399779081
+        },
+        {
+          "seed": 5269,
+          "pieces": 1500,
+          "lines": 591,
+          "capped": true,
+          "seconds": 12.060655600391328
+        },
+        {
+          "seed": 5270,
+          "pieces": 1500,
+          "lines": 597,
+          "capped": true,
+          "seconds": 12.032812400255352
+        },
+        {
+          "seed": 5271,
+          "pieces": 387,
+          "lines": 137,
+          "capped": false,
+          "seconds": 3.1688767997547984
+        },
+        {
+          "seed": 5272,
+          "pieces": 802,
+          "lines": 304,
+          "capped": false,
+          "seconds": 6.534781400114298
+        },
+        {
+          "seed": 5273,
+          "pieces": 939,
+          "lines": 360,
+          "capped": false,
+          "seconds": 7.972717100288719
+        },
+        {
+          "seed": 5274,
+          "pieces": 464,
+          "lines": 169,
+          "capped": false,
+          "seconds": 3.8037140001542866
+        },
+        {
+          "seed": 5275,
+          "pieces": 463,
+          "lines": 168,
+          "capped": false,
+          "seconds": 3.680075400043279
+        },
+        {
+          "seed": 5276,
+          "pieces": 281,
+          "lines": 96,
+          "capped": false,
+          "seconds": 2.1831803997047246
+        },
+        {
+          "seed": 5277,
+          "pieces": 1144,
+          "lines": 441,
+          "capped": false,
+          "seconds": 9.39629799965769
+        },
+        {
+          "seed": 5278,
+          "pieces": 1500,
+          "lines": 598,
+          "capped": true,
+          "seconds": 12.024505999870598
+        },
+        {
+          "seed": 5279,
+          "pieces": 1500,
+          "lines": 595,
+          "capped": true,
+          "seconds": 11.958588799927384
+        },
+        {
+          "seed": 5280,
+          "pieces": 945,
+          "lines": 362,
+          "capped": false,
+          "seconds": 7.444556300062686
+        },
+        {
+          "seed": 5281,
+          "pieces": 502,
+          "lines": 185,
+          "capped": false,
+          "seconds": 3.942723600193858
+        },
+        {
+          "seed": 5282,
+          "pieces": 410,
+          "lines": 147,
+          "capped": false,
+          "seconds": 3.3850161000154912
+        },
+        {
+          "seed": 5283,
+          "pieces": 623,
+          "lines": 232,
+          "capped": false,
+          "seconds": 4.987246700096875
+        },
+        {
+          "seed": 5284,
+          "pieces": 939,
+          "lines": 358,
+          "capped": false,
+          "seconds": 7.6015733000822365
+        },
+        {
+          "seed": 5285,
+          "pieces": 1068,
+          "lines": 412,
+          "capped": false,
+          "seconds": 8.661015700083226
+        },
+        {
+          "seed": 5286,
+          "pieces": 205,
+          "lines": 66,
+          "capped": false,
+          "seconds": 1.5590583002194762
+        },
+        {
+          "seed": 5287,
+          "pieces": 377,
+          "lines": 134,
+          "capped": false,
+          "seconds": 3.1898838002234697
+        },
+        {
+          "seed": 5288,
+          "pieces": 613,
+          "lines": 228,
+          "capped": false,
+          "seconds": 4.829232800286263
+        },
+        {
+          "seed": 5289,
+          "pieces": 1091,
+          "lines": 419,
+          "capped": false,
+          "seconds": 8.582576899789274
+        },
+        {
+          "seed": 5290,
+          "pieces": 159,
+          "lines": 47,
+          "capped": false,
+          "seconds": 1.300532900262624
+        },
+        {
+          "seed": 5291,
+          "pieces": 1096,
+          "lines": 422,
+          "capped": false,
+          "seconds": 8.84932650020346
+        },
+        {
+          "seed": 5292,
+          "pieces": 726,
+          "lines": 274,
+          "capped": false,
+          "seconds": 6.047362099867314
+        },
+        {
+          "seed": 5293,
+          "pieces": 1009,
+          "lines": 386,
+          "capped": false,
+          "seconds": 8.155786000192165
+        },
+        {
+          "seed": 5294,
+          "pieces": 454,
+          "lines": 165,
+          "capped": false,
+          "seconds": 3.5806518997997046
+        },
+        {
+          "seed": 5295,
+          "pieces": 397,
+          "lines": 143,
+          "capped": false,
+          "seconds": 3.036630599759519
+        },
+        {
+          "seed": 5296,
+          "pieces": 1500,
+          "lines": 596,
+          "capped": true,
+          "seconds": 12.139805099926889
+        },
+        {
+          "seed": 5297,
+          "pieces": 1500,
+          "lines": 591,
+          "capped": true,
+          "seconds": 11.927266099955887
+        },
+        {
+          "seed": 5298,
+          "pieces": 424,
+          "lines": 153,
+          "capped": false,
+          "seconds": 3.518496199976653
+        },
+        {
+          "seed": 5299,
+          "pieces": 432,
+          "lines": 157,
+          "capped": false,
+          "seconds": 3.46668120007962
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,102 @@
+{
+  "weights": "C:\\My Things\\HTML\\Demonin's Item Shop\\other\\deathBot\\model_weights_snapshot9.pt",
+  "weights_sha256": "229bbe2a91bab6b1d6a58f25440e7504711aabe8dfc26d24dad9ee0461be46ed",
+  "tiny_states": 256,
+  "n_candidates": 4453,
+  "seed": 11,
+  "lr": 0.0001,
+  "steps": 800,
+  "loss": "ce-full-batch",
+  "history": [
+    {
+      "step": 1,
+      "loss": 2.4562,
+      "agree_all": 0.6016,
+      "agree_dis": 0.0097,
+      "avoidable_dead": 2,
+      "n_dis": 103,
+      "dW": 0.0481
+    },
+    {
+      "step": 100,
+      "loss": 0.6085,
+      "agree_all": 0.8516,
+      "agree_dis": 0.6408,
+      "avoidable_dead": 2,
+      "n_dis": 103,
+      "dW": 3.4137
+    },
+    {
+      "step": 200,
+      "loss": 0.2036,
+      "agree_all": 0.9844,
+      "agree_dis": 0.9612,
+      "avoidable_dead": 0,
+      "n_dis": 103,
+      "dW": 5.2686
+    },
+    {
+      "step": 300,
+      "loss": 0.0847,
+      "agree_all": 0.9922,
+      "agree_dis": 0.9806,
+      "avoidable_dead": 0,
+      "n_dis": 103,
+      "dW": 6.3904
+    },
+    {
+      "step": 400,
+      "loss": 0.042,
+      "agree_all": 1.0,
+      "agree_dis": 1.0,
+      "avoidable_dead": 0,
+      "n_dis": 103,
+      "dW": 7.141
+    },
+    {
+      "step": 500,
+      "loss": 0.0252,
+      "agree_all": 1.0,
+      "agree_dis": 1.0,
+      "avoidable_dead": 0,
+      "n_dis": 103,
+      "dW": 7.6678
+    },
+    {
+      "step": 600,
+      "loss": 0.0166,
+      "agree_all": 1.0,
+      "agree_dis": 1.0,
+      "avoidable_dead": 0,
+      "n_dis": 103,
+      "dW": 8.0838
+    },
+    {
+      "step": 700,
+      "loss": 0.0117,
+      "agree_all": 1.0,
+      "agree_dis": 1.0,
+      "avoidable_dead": 0,
+      "n_dis": 103,
+      "dW": 8.4277
+    },
+    {
+      "step": 800,
+      "loss": 0.0087,
+      "agree_all": 1.0,
+      "agree_dis": 1.0,
+      "avoidable_dead": 0,
+      "n_dis": 103,
+      "dW": 8.7223
+    }
+  ],
+  "final": {
+    "agree_all": 1.0,
+    "agree_dis": 1.0,
+    "avoidable_dead": 0,
+    "n_dis": 103
+  },
+  "dW": 8.7223,
+  "verdict": "TINY FIT \u2014 proceed to \u00a720 item 5 full-split fit",
+  "wall_fit_s": 1509.8
+}

@@ -1,0 +1,582 @@
+{
+  "weights": "C:\\My Things\\HTML\\Demonin's Item Shop\\other\\deathBot\\model_weights_snapshot9.pt",
+  "weights_sha256": "229bbe2a91bab6b1d6a58f25440e7504711aabe8dfc26d24dad9ee0461be46ed",
+  "bank": "C:\\My Things\\HTML\\Demonin's Item Shop\\other\\deathBot\\deathbot_sim\\_diag_out\\state_bank_snapshot9_32games.npz",
+  "steps": 1200,
+  "batch_size": 256,
+  "lr": 0.0001,
+  "seed": 42,
+  "train_games": 24,
+  "gamma_ply": 0.999,
+  "n_train": 17430,
+  "n_val": 5586,
+  "n_dis_train": 3717,
+  "n_dis_val": 1165,
+  "fit_pool": 17265,
+  "final_loss": 0.5818,
+  "dW": 4.6891,
+  "C2_sentinel": "CE uses teacher-argmax indices + live masks only; -1e6 appears in EVAL regret vectors, never in loss",
+  "pre_train": {
+    "tag": "pre_train",
+    "n": 17430,
+    "agree_all": 0.7867469879518072,
+    "n_dis": 3717,
+    "agree_dis": 0.0,
+    "reg_dis_live_mean": 12.744907119524319,
+    "reg_dis_live_max": 73.45201161193847,
+    "reg_dis_live_n": 3689,
+    "reg_live_mean": 2.702222102645279,
+    "avoidable_dead": 22,
+    "all_dead_states": 9,
+    "lockout_picks": 20,
+    "dead_picks": 11,
+    "margin_buckets": {
+      "<1": {
+        "n": 615,
+        "reg_mean": 3.784147843578192
+      },
+      "1-5": {
+        "n": 1247,
+        "reg_mean": 7.6628138121197225
+      },
+      "5-20": {
+        "n": 1328,
+        "reg_mean": 15.448085405901253
+      },
+      "20+": {
+        "n": 499,
+        "reg_mean": 29.294840074898723
+      }
+    }
+  },
+  "pre_val": {
+    "tag": "pre_val",
+    "n": 5586,
+    "agree_all": 0.7914428929466524,
+    "n_dis": 1165,
+    "agree_dis": 0.0,
+    "reg_dis_live_mean": 12.36640822751185,
+    "reg_dis_live_max": 96.45467645263682,
+    "reg_dis_live_n": 1153,
+    "reg_live_mean": 2.558490702731233,
+    "avoidable_dead": 11,
+    "all_dead_states": 2,
+    "lockout_picks": 7,
+    "dead_picks": 6,
+    "margin_buckets": {
+      "<1": {
+        "n": 182,
+        "reg_mean": 4.156114040100356
+      },
+      "1-5": {
+        "n": 394,
+        "reg_mean": 6.18688066656547
+      },
+      "5-20": {
+        "n": 442,
+        "reg_mean": 16.34061580357308
+      },
+      "20+": {
+        "n": 135,
+        "reg_mean": 28.4583167645689
+      }
+    }
+  },
+  "history": [
+    {
+      "step": 200,
+      "loss": 0.7662,
+      "dW": 2.1111,
+      "train": {
+        "tag": "step200_train",
+        "n": 17430,
+        "agree_all": 0.7777395295467585,
+        "n_dis": 3717,
+        "agree_dis": 0.1807909604519774,
+        "reg_dis_live_mean": 10.340787423894424,
+        "reg_dis_live_max": 73.45201161193847,
+        "reg_dis_live_n": 3693,
+        "reg_live_mean": 2.6106197676296334,
+        "avoidable_dead": 18,
+        "all_dead_states": 9,
+        "lockout_picks": 16,
+        "dead_picks": 11,
+        "margin_buckets": {
+          "<1": {
+            "n": 615,
+            "reg_mean": 3.768527076989945
+          },
+          "1-5": {
+            "n": 1246,
+            "reg_mean": 6.399306725887237
+          },
+          "5-20": {
+            "n": 1329,
+            "reg_mean": 12.901836771415713
+          },
+          "20+": {
+            "n": 503,
+            "reg_mean": 21.373372871622887
+          }
+        }
+      },
+      "val": {
+        "tag": "step200_val",
+        "n": 5586,
+        "agree_all": 0.7712137486573577,
+        "n_dis": 1165,
+        "agree_dis": 0.16394849785407725,
+        "reg_dis_live_mean": 9.968612316659428,
+        "reg_dis_live_max": 96.45467645263682,
+        "reg_dis_live_n": 1155,
+        "reg_live_mean": 2.5448319201102665,
+        "avoidable_dead": 10,
+        "all_dead_states": 2,
+        "lockout_picks": 8,
+        "dead_picks": 4,
+        "margin_buckets": {
+          "<1": {
+            "n": 183,
+            "reg_mean": 3.3802467357265495
+          },
+          "1-5": {
+            "n": 394,
+            "reg_mean": 4.996849589026819
+          },
+          "5-20": {
+            "n": 443,
+            "reg_mean": 13.927027170722846
+          },
+          "20+": {
+            "n": 135,
+            "reg_mean": 20.420224432569576
+          }
+        }
+      }
+    },
+    {
+      "step": 400,
+      "loss": 0.6722,
+      "dW": 2.8938,
+      "train": {
+        "tag": "step400_train",
+        "n": 17430,
+        "agree_all": 0.783017785427424,
+        "n_dis": 3717,
+        "agree_dis": 0.21253699219800914,
+        "reg_dis_live_mean": 9.703597579831861,
+        "reg_dis_live_max": 73.45201161193847,
+        "reg_dis_live_n": 3696,
+        "reg_live_mean": 2.516729638263493,
+        "avoidable_dead": 15,
+        "all_dead_states": 9,
+        "lockout_picks": 13,
+        "dead_picks": 11,
+        "margin_buckets": {
+          "<1": {
+            "n": 615,
+            "reg_mean": 3.5794884290123368
+          },
+          "1-5": {
+            "n": 1248,
+            "reg_mean": 6.1172333127013285
+          },
+          "5-20": {
+            "n": 1329,
+            "reg_mean": 12.315360470719943
+          },
+          "20+": {
+            "n": 504,
+            "reg_mean": 19.170019903527603
+          }
+        }
+      },
+      "val": {
+        "tag": "step400_val",
+        "n": 5586,
+        "agree_all": 0.7751521661296097,
+        "n_dis": 1165,
+        "agree_dis": 0.1965665236051502,
+        "reg_dis_live_mean": 9.354436417720734,
+        "reg_dis_live_max": 65.48809410858155,
+        "reg_dis_live_n": 1156,
+        "reg_live_mean": 2.4677446031641006,
+        "avoidable_dead": 9,
+        "all_dead_states": 2,
+        "lockout_picks": 7,
+        "dead_picks": 4,
+        "margin_buckets": {
+          "<1": {
+            "n": 183,
+            "reg_mean": 3.199313219104308
+          },
+          "1-5": {
+            "n": 394,
+            "reg_mean": 4.80947850034049
+          },
+          "5-20": {
+            "n": 444,
+            "reg_mean": 12.93622342516725
+          },
+          "20+": {
+            "n": 135,
+            "reg_mean": 19.182492221338276
+          }
+        }
+      }
+    },
+    {
+      "step": 600,
+      "loss": 0.6438,
+      "dW": 3.3618,
+      "train": {
+        "tag": "step600_train",
+        "n": 17430,
+        "agree_all": 0.791451520367183,
+        "n_dis": 3717,
+        "agree_dis": 0.2335216572504708,
+        "reg_dis_live_mean": 9.45803391630396,
+        "reg_dis_live_max": 73.45201161193847,
+        "reg_dis_live_n": 3696,
+        "reg_live_mean": 2.4114677899959553,
+        "avoidable_dead": 15,
+        "all_dead_states": 9,
+        "lockout_picks": 13,
+        "dead_picks": 11,
+        "margin_buckets": {
+          "<1": {
+            "n": 615,
+            "reg_mean": 3.3104602517637773
+          },
+          "1-5": {
+            "n": 1248,
+            "reg_mean": 5.8467848232335955
+          },
+          "5-20": {
+            "n": 1329,
+            "reg_mean": 12.237858639221786
+          },
+          "20+": {
+            "n": 504,
+            "reg_mean": 18.57154505734808
+          }
+        }
+      },
+      "val": {
+        "tag": "step600_val",
+        "n": 5586,
+        "agree_all": 0.7762262799856785,
+        "n_dis": 1165,
+        "agree_dis": 0.2017167381974249,
+        "reg_dis_live_mean": 9.261945918203441,
+        "reg_dis_live_max": 65.48809410858155,
+        "reg_dis_live_n": 1158,
+        "reg_live_mean": 2.45181405660686,
+        "avoidable_dead": 7,
+        "all_dead_states": 2,
+        "lockout_picks": 5,
+        "dead_picks": 4,
+        "margin_buckets": {
+          "<1": {
+            "n": 183,
+            "reg_mean": 3.396222655543863
+          },
+          "1-5": {
+            "n": 396,
+            "reg_mean": 4.820236953873524
+          },
+          "5-20": {
+            "n": 444,
+            "reg_mean": 12.667718257491805
+          },
+          "20+": {
+            "n": 135,
+            "reg_mean": 19.041065831516907
+          }
+        }
+      }
+    },
+    {
+      "step": 800,
+      "loss": 0.6135,
+      "dW": 3.7987,
+      "train": {
+        "tag": "step800_train",
+        "n": 17430,
+        "agree_all": 0.7947217441193345,
+        "n_dis": 3717,
+        "agree_dis": 0.24858757062146894,
+        "reg_dis_live_mean": 9.181508094826775,
+        "reg_dis_live_max": 73.45201161193847,
+        "reg_dis_live_n": 3697,
+        "reg_live_mean": 2.346092193976665,
+        "avoidable_dead": 14,
+        "all_dead_states": 9,
+        "lockout_picks": 12,
+        "dead_picks": 11,
+        "margin_buckets": {
+          "<1": {
+            "n": 615,
+            "reg_mean": 3.388746463376138
+          },
+          "1-5": {
+            "n": 1248,
+            "reg_mean": 5.6557758645404785
+          },
+          "5-20": {
+            "n": 1330,
+            "reg_mean": 11.96345264464339
+          },
+          "20+": {
+            "n": 504,
+            "reg_mean": 17.63919852237309
+          }
+        }
+      },
+      "val": {
+        "tag": "step800_val",
+        "n": 5586,
+        "agree_all": 0.7792696025778733,
+        "n_dis": 1165,
+        "agree_dis": 0.21888412017167383,
+        "reg_dis_live_mean": 9.020938408753524,
+        "reg_dis_live_max": 65.48809410858155,
+        "reg_dis_live_n": 1158,
+        "reg_live_mean": 2.3876900027364685,
+        "avoidable_dead": 7,
+        "all_dead_states": 2,
+        "lockout_picks": 5,
+        "dead_picks": 4,
+        "margin_buckets": {
+          "<1": {
+            "n": 183,
+            "reg_mean": 3.3460858049470876
+          },
+          "1-5": {
+            "n": 396,
+            "reg_mean": 4.862904268113951
+          },
+          "5-20": {
+            "n": 444,
+            "reg_mean": 12.646929052710686
+          },
+          "20+": {
+            "n": 135,
+            "reg_mean": 16.98493618855256
+          }
+        }
+      }
+    },
+    {
+      "step": 1000,
+      "loss": 0.6132,
+      "dW": 4.2277,
+      "train": {
+        "tag": "step1000_train",
+        "n": 17430,
+        "agree_all": 0.7981640849110728,
+        "n_dis": 3717,
+        "agree_dis": 0.26257734732311006,
+        "reg_dis_live_mean": 8.95388941283381,
+        "reg_dis_live_max": 72.36724853515625,
+        "reg_dis_live_n": 3699,
+        "reg_live_mean": 2.3166249880884284,
+        "avoidable_dead": 12,
+        "all_dead_states": 9,
+        "lockout_picks": 10,
+        "dead_picks": 11,
+        "margin_buckets": {
+          "<1": {
+            "n": 616,
+            "reg_mean": 3.273334383204095
+          },
+          "1-5": {
+            "n": 1249,
+            "reg_mean": 5.710381908690766
+          },
+          "5-20": {
+            "n": 1330,
+            "reg_mean": 11.710443433040604
+          },
+          "20+": {
+            "n": 504,
+            "reg_mean": 16.660528151031286
+          }
+        }
+      },
+      "val": {
+        "tag": "step1000_val",
+        "n": 5586,
+        "agree_all": 0.7773003938417472,
+        "n_dis": 1165,
+        "agree_dis": 0.21716738197424892,
+        "reg_dis_live_mean": 9.0817320385563,
+        "reg_dis_live_max": 65.48809410858155,
+        "reg_dis_live_n": 1158,
+        "reg_live_mean": 2.411331753556609,
+        "avoidable_dead": 7,
+        "all_dead_states": 2,
+        "lockout_picks": 5,
+        "dead_picks": 4,
+        "margin_buckets": {
+          "<1": {
+            "n": 183,
+            "reg_mean": 3.52126487919281
+          },
+          "1-5": {
+            "n": 396,
+            "reg_mean": 4.613849764918736
+          },
+          "5-20": {
+            "n": 444,
+            "reg_mean": 12.615253232942122
+          },
+          "20+": {
+            "n": 135,
+            "reg_mean": 18.103683595716955
+          }
+        }
+      }
+    },
+    {
+      "step": 1200,
+      "loss": 0.5909,
+      "dW": 4.6891,
+      "train": {
+        "tag": "step1200_train",
+        "n": 17430,
+        "agree_all": 0.8006310958118187,
+        "n_dis": 3717,
+        "agree_dis": 0.27199354317998387,
+        "reg_dis_live_mean": 8.83815338275968,
+        "reg_dis_live_max": 72.36724853515625,
+        "reg_dis_live_n": 3698,
+        "reg_live_mean": 2.2699462593073774,
+        "avoidable_dead": 13,
+        "all_dead_states": 9,
+        "lockout_picks": 11,
+        "dead_picks": 11,
+        "margin_buckets": {
+          "<1": {
+            "n": 616,
+            "reg_mean": 3.488729508898958
+          },
+          "1-5": {
+            "n": 1249,
+            "reg_mean": 5.552409460565296
+          },
+          "5-20": {
+            "n": 1329,
+            "reg_mean": 11.605683386989604
+          },
+          "20+": {
+            "n": 504,
+            "reg_mean": 16.221272211127573
+          }
+        }
+      },
+      "val": {
+        "tag": "step1200_val",
+        "n": 5586,
+        "agree_all": 0.776047261009667,
+        "n_dis": 1165,
+        "agree_dis": 0.21630901287553647,
+        "reg_dis_live_mean": 9.15149887456259,
+        "reg_dis_live_max": 65.48809410858155,
+        "reg_dis_live_n": 1159,
+        "reg_live_mean": 2.4374749824143342,
+        "avoidable_dead": 6,
+        "all_dead_states": 2,
+        "lockout_picks": 4,
+        "dead_picks": 4,
+        "margin_buckets": {
+          "<1": {
+            "n": 183,
+            "reg_mean": 3.3887874209685402
+          },
+          "1-5": {
+            "n": 396,
+            "reg_mean": 4.753283028365083
+          },
+          "5-20": {
+            "n": 445,
+            "reg_mean": 12.892898976386146
+          },
+          "20+": {
+            "n": 135,
+            "reg_mean": 17.531844250788076
+          }
+        }
+      }
+    }
+  ],
+  "post_train": {
+    "tag": "post_train",
+    "n": 17430,
+    "agree_all": 0.8006310958118187,
+    "n_dis": 3717,
+    "agree_dis": 0.27199354317998387,
+    "reg_dis_live_mean": 8.83815338275968,
+    "reg_dis_live_max": 72.36724853515625,
+    "reg_dis_live_n": 3698,
+    "reg_live_mean": 2.2699462593073774,
+    "avoidable_dead": 13,
+    "all_dead_states": 9,
+    "lockout_picks": 11,
+    "dead_picks": 11,
+    "margin_buckets": {
+      "<1": {
+        "n": 616,
+        "reg_mean": 3.488729508898958
+      },
+      "1-5": {
+        "n": 1249,
+        "reg_mean": 5.552409460565296
+      },
+      "5-20": {
+        "n": 1329,
+        "reg_mean": 11.605683386989604
+      },
+      "20+": {
+        "n": 504,
+        "reg_mean": 16.221272211127573
+      }
+    }
+  },
+  "post_val": {
+    "tag": "post_val",
+    "n": 5586,
+    "agree_all": 0.776047261009667,
+    "n_dis": 1165,
+    "agree_dis": 0.21630901287553647,
+    "reg_dis_live_mean": 9.15149887456259,
+    "reg_dis_live_max": 65.48809410858155,
+    "reg_dis_live_n": 1159,
+    "reg_live_mean": 2.4374749824143342,
+    "avoidable_dead": 6,
+    "all_dead_states": 2,
+    "lockout_picks": 4,
+    "dead_picks": 4,
+    "margin_buckets": {
+      "<1": {
+        "n": 183,
+        "reg_mean": 3.3887874209685402
+      },
+      "1-5": {
+        "n": 396,
+        "reg_mean": 4.753283028365083
+      },
+      "5-20": {
+        "n": 445,
+        "reg_mean": 12.892898976386146
+      },
+      "20+": {
+        "n": 135,
+        "reg_mean": 17.531844250788076
+      }
+    }
+  },
+  "verdict": "CANNOT FIT TRAIN at this budget \u2014 reconsider student/setup; do NOT collect more labels",
+  "wall_fit_s": 4150.6,
+  "student_checkpoint": "C:\\My Things\\HTML\\Demonin's Item Shop\\other\\deathBot\\deathbot_sim\\_diag_out\\fullsplit_seed42.pt"
+}

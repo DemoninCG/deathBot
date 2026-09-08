@@ -1,262 +1,180 @@
-I would change the priority order. Keeping snapshot9 + full 2-ply as the reference is sensible, but the evidence does not yet justify making input representation the next major project.
+I agree with the long-sustain conclusions and most of the immediate experiment order. I do not agree with several of §19’s interpretations, or with making further distillation conditional on finding a simple rule in the search ablation.
 
-The most promising next step is to produce a genuinely Tetris-seeking policy through dense setup incentives or explicit multi-move scaffolding, then use that policy to generate training data. I would move §14.4’s “fallback” scaffolding branch ahead of representation changes.
+The new measurements are valuable. But §19 moves too quickly from “this optimization run barely changed the student” to “argmax imitation has almost no headroom” and “single-forward CE cannot transfer continuation valuation.” Those are not established.
+1. The long-sustain experiment gave a clear, useful answer
 
-Your experiments establish that the particular bonuses and training recipes tested did not work. They do not establish that the network cannot represent well-building.
-1. What the results actually suggest
-The well bonus was still a sparse reward
+The λ20 rejection is justified. You now have mutually supporting evidence:
 
-Your setup score requires:
+    Increasing inventory and stack height.
+    Late deaths on six of ten tapes.
+    Unhealthy final states even among survivors.
+    Little improvement in Tetris rate over λ10.
 
-    A clean well at least six cells deep;
-    No holes;
-    No second substantial well.
+λ10 is the better candidate on this panel, with continuing Tetrises and apparently bounded inventory. Calling it viable but unpromoted is appropriate.
 
-That rewards an almost-completed setup, not the process of constructing one. The availability result—only 1.8% of visited states have any qualifying candidate—is exactly what I would expect when a flat-stacking policy is offered that reward.
+One qualification: the pooled occupancy windows are encouraging, but inspect per-game trajectories too. With ten games, a stable average can obscure individual upward trends. This does not undermine the result; it is simply worth checking before promotion.
 
-It does not close the search-bonus branch. It closes something narrower:
+The factorial potential × completion-bonus experiment remains reasonable. It can identify whether both ingredients are necessary and whether completion reward helps release inventory rather than merely increasing clears.
+2. Rare death-rejection decisions could explain a large survival gain
 
-    A shallow search with a thresholded reward for an already-developed well cannot reliably bootstrap well-building from flat-stack states.
+I disagree strongly with:
 
-The untested alternative is to reward useful intermediate configurations at depths one, two, three, and four, rather than waiting until six. A six-deep well is not even necessary for a first Tetris: four suitably filled rows and a reachable vertical I placement suffice.
-Added channels supply structure, not motivation
+    Death-rejection ablation expectation is now LOW (0.33% of states).
 
-Height, holes, and wells are derivable from occupancy. Explicit channels may improve sample efficiency or make a small model easier to train, but they add an inductive bias, not a new objective.
+For survival, 0.33% of decisions is not necessarily rare enough to be unimportant.
 
-If you:
+As a deliberately simplified illustration, an independent lethal error probability of 0.0033 per placement corresponds to an expected waiting time of roughly 300 placements. Even 0.001 per placement is consequential over a 1500-piece game.
 
-    Add height/well channels;
-    Train the new model to reproduce snapshot9;
-    Apply the same sparse well bonus;
+Your observed fraction is not such a hazard estimate: the states are correlated, come from incumbent trajectories, and the events concentrate near death. But that is precisely why the fraction alone cannot dismiss death rejection.
 
-there is no strong reason to expect different behavior. Successful distillation should initially reproduce the same flat-stacking preferences.
+There are two competing explanations:
 
-Representation becomes a higher-priority suspect if you have good style targets that the model cannot fit or generalize. You do not yet have those targets.
-Failed distillation does not establish that lookahead cannot be distilled
+    Late symptom: the policy was already doomed; rejecting the root only postpones death.
+    Recoverable trap: the policy could recover, but chooses a placement that makes the preview impossible.
 
-The §13.3 explanation—“memorizes picks, not reasons”—is a hypothesis, not a demonstrated mechanism.
+The proposed ablation directly distinguishes their practical importance. I would keep it at high priority, not treat it as an expected negative.
 
-If the student receives the same decision information as the teacher, the teacher’s two-ply action is a function of that information. In principle, a policy can approximate that function without performing explicit search.
+Also record:
 
-Your experiment tested a particular combination of:
+    How often the filter changes an action.
+    Survival after each intervention.
+    Whether interventions restore a lower-risk board or merely delay death.
+    Cases where every root is dead.
 
-    4,000 frozen states;
-    400 updates;
-    A particular architecture and loss;
-    A different deployment distribution once the student starts acting.
+The full-game effect matters far more than the bank frequency.
+3. “No learning at this budget” is supported; “no headroom” is not
 
-That can fail because of underfitting, distribution shift, feature limitations, or training details. It does not close search distillation as a method. More importantly, distilling a flat-playing teacher was never a direct test of learning Tetris style.
-2. First fix two misleading “safety” assumptions
-“Survivors-only” is not a survival guarantee
+The fit probe establishes:
 
-Excluding moves that immediately lose—or lose within two plies—does not protect against moves that create an unrecoverable position ten pieces later.
+    At lr 1e-5, after 400 batch-64 updates, this training setup produced essentially no improvement in measured teacher agreement or regret.
 
-Likewise:
+That is useful—but quite narrow.
 
-    Freezing the survival network protects its weights, not the combined policy.
-    A value-margin veto is a useful heuristic, not a certified safety constraint.
-    Subtracting the style-score mean does not bound its influence. Within a candidate set, it leaves every pairwise score difference unchanged.
+There are 17,430 training states and 25,600 sampled state presentations. If sampling is approximately uniform, this is only about 1.5 passes through the training states. With a conservative learning rate, no material movement does not distinguish:
 
-The Phase-A collapse demonstrates this distinction directly.
+    Too little optimization.
+    Poor loss scaling.
+    Gradients dominated by the wrong states.
+    An implementation issue.
+    An input limitation.
+    A genuine capacity limitation.
 
-Also, §14’s α=0 baseline caps only 26/30 games, whereas the champion full-two-ply configuration caps 30/30. That appears to be a different playing configuration. Before further experiments, make the style harness reproduce snapshot9 + full 2-ply at zero style weight, including action agreement on a fixed bank.
+Furthermore, roughly 21% disagreement leaves substantial behavioral headroom. Whether those disagreements matter is a separate question.
 
-A useful engineering contract is:
+The teacher already produces a large closed-loop survival gain. If imitation accurately reproduced its choices on the states encountered during play, it would reproduce that policy’s benefit. There is no general obstacle whereby CE can learn an argmax but cannot learn it when the underlying reason is continuation valuation.
 
-    Style weight zero must reproduce the champion’s chosen actions, terminal handling, and game results exactly.
+The open questions are whether the current student can represent those choices, whether the loss trains it effectively, and whether the data cover the necessary states.
+Small value gaps do not establish low practical importance
 
-Survival is strongly demonstrated, not proven endless
+These scores are not calibrated survival probabilities. A four-unit teacher preference can separate:
 
-The long games are excellent evidence of robustness. They are not an indefinite-survival guarantee, especially after changing the policy.
+    Two equivalent placements.
+    A recoverable and an unrecoverable setup.
+    Two plans whose consequences emerge many placements later.
 
-For perspective, observing zero failures in 30 independent games still permits a roughly 9.5% per-game failure probability at a one-sided 95% confidence bound—and that statement only concerns the tested horizon.
+Likewise, median live regret of zero is expected when agreement is already around 79%. It does not characterize the disagreed-on decisions.
 
-Keep cap-300 tests for cheap style screening, but validate promising style policies on long games and difficult piece sequences.
-3. What I would try next, in order
-A. Build a simple, explicit Tetris-stacking controller
+I would report separately:
 
-This is my highest-priority experiment because it answers the most important missing question:
+    Agreement across all states.
+    Agreement on baseline–teacher disagreements.
+    Regret conditional on disagreement.
+    Regret conditional on choosing a live root.
+    Avoidable dead-root choices.
+    All-roots-dead states.
 
-    Can this simulator, reachability model, and shallow search produce sustained Tetrises with a straightforward constructive policy?
+For conventional readability, use positive regret:
 
-For example:
+[ \operatorname{regret}(s)=\max_a Q_T(s,a)-Q_T(s,a_{\text{student}}). ]
 
-    Reserve a chosen side column as the intended well.
-    Prefer filling the other nine columns without holes.
-    Reward rows becoming complete except for the well cell.
-    Reward a reachable vertical-I channel.
-    Discourage covering or obstructing that channel.
-    Switch to recovery play when height or accessibility becomes dangerous.
-    Clear the well when an I is available and a Tetris is reachable.
+Do not average arbitrary −1e6 penalties together with ordinary ranking differences.
 
-Use actual ARS/20G reachability rather than column heights alone. A geometrically attractive board can still be awkward or unusable under ARS. Do not assume the two sides are interchangeable.
+Also, the true-preview 1500-state diagnostic is not exactly the same scoring protocol as the full fast-path fit. Its live-regret result should not be treated as an exact decomposition of the original full-bank metric.
+4. The fast-path piece-slot discrepancy needs resolution now
 
-This can be a small finite-state controller:
+This is the most concerning new detail:
 
-BUILD → CASH OUT → BUILD, with RECOVER available throughout.
+    Champion fast-path scoring uses cur for both piece slots; slow/fast differ by 0.1–0.6 units per candidate.
 
-It need not be elegant or outperform the final learned policy. It is a diagnostic and a teacher. If it produces a substantial Tetris rate, you have shown that new representation is not a prerequisite for obtaining the behavior.
-B. Replace the thresholded bonus with dense, designated-well features
+I would not classify this as harmless noise yet.
 
-The key is to reward partial progress from the states you actually visit.
+First, it conflicts with the earlier expectation that fast and slow scoring were numerically equivalent. Second, the document itself says important decisions involve 1-ply gaps of 0.3–5.5 units. A candidate-dependent perturbation of 0.1–0.6 can matter precisely there.
 
-Candidate features include:
-Feature	Purpose
-Number of rows filled except for the designated well	Direct progress toward a Tetris
-Partial occupancy of those rows outside the well	Signal before rows are almost complete
-Clean well depth, with credit starting below four	Avoid the current availability problem
-Obstructions in the well	Preserve the I channel
-Holes and covered holes outside the well	Avoid counterfeit “progress”
-Surface roughness outside the well	Keep the working stack usable
-Actual reachable I-clear opportunities	Respect 20G geometry
-Stack height and legal-placement diversity	Penalize brittle setups
+The comparison against a roughly 13-unit median margin is not sufficient. You need action changes and pairwise-gap changes, particularly on the disagreement states.
 
-Initially use a fixed designated well, not “whichever column currently looks deepest.” Otherwise the policy can collect apparent progress by switching its notion of the target well.
+Separate two tasks:
+Reproduce the incumbent
 
-Also avoid indefinitely rewarding deeper wells. Reward progress toward a usable four-line setup, then saturate or add risk penalties. An unbounded depth bonus can teach the bot to hoard a dangerous stack instead of clearing it.
+Keeping the fast-path behavior is correct when labeling the actual champion. Do not silently “fix” it and assume the champion is unchanged.
+Establish the intended semantics
 
-A practical initial score is:
+Document, for each scoring stage:
 
-[ S(a)=Q_{\text{base,2ply}}(s,a) +\lambda,\Phi(s_a) +\beta,R_{\text{clear}}(s,a), ]
+    What board the network receives.
+    What each piece slot means.
+    Which piece identity each path supplies.
+    Which future pieces are legitimately known.
 
-where (\Phi) is a dense setup potential, not the current all-or-nothing detector.
+Then compare the incumbent with a separately named, semantically corrected variant.
 
-This is an experimental heuristic, not a safety guarantee. Start with a small feature set and inspect the resulting trajectories.
+Architectural access to board + current + preview does not establish input sufficiency if the actual scoring call duplicates a piece ID. Conversely, the teacher can still use preview through its expansion even when the leaf evaluator has that duplication.
 
-Important: retain an explicit reward for completing the Tetris. Clearing a good well destroys the setup features; a setup-only objective can perversely discourage cashing out.
-C. Test on seeded setup states, not only empty boards
+This needs an explicit information-flow audit before declaring the student’s input check passed.
+5. I would add a tiny-set overfit test before collecting more labels
 
-Create a small diagnostic suite containing:
+The next fitting experiment need not be expensive or consume gameplay panels.
 
-    A clean one-deep precursor;
-    Two- and three-row partial setups;
-    A Tetris-ready well;
-    A ready well with a delayed I;
-    A nearly blocked well;
-    A high stack requiring abandonment of the plan.
+Take perhaps 128–512 states containing a balanced selection of:
 
-Then measure:
+    Teacher–baseline disagreements.
+    Important live-root preferences.
+    Avoidable preview deaths.
+    Ordinary agreement states.
 
-    Does it build from a precursor?
-    Does it preserve a useful setup?
-    Does it take a reachable Tetris?
-    Does it recover when continuing to build is unsafe?
+Then deliberately attempt to overfit them.
 
-These separate acquisition, maintenance, cash-out, and recovery failures.
+Use a small learning-rate/temperature sweep and compare CE with a pairwise preference loss. Track actual:
 
-If the current scorer takes Tetrises from seeded wells but never builds them from empty, that points toward a horizon/incentive problem. If it rejects an immediately reachable Tetris, inspect the scoring and transition logic before training anything.
+    Training loss.
+    Teacher agreement.
+    Teacher-preferred action margin.
+    Gradient and parameter-update magnitudes.
 
-Seeded states also provide a natural training curriculum later.
-D. Use multi-step rollouts with a style-capable continuation policy
+This is a diagnostic, not a candidate for promotion. It is acceptable if the resulting weights play terribly.
 
-Two-ply search cannot explicitly see most empty-board-to-Tetris plans. Longer planning is therefore a natural option.
+The question is:
 
-On CPU, I would try sampled rollouts before a large general-purpose MCTS implementation:
+    Can this implementation make the network learn these specific decisions?
 
-    Generate candidate root moves.
-    Simulate several future piece sequences.
-    Continue with the simple well-building controller or dense-style policy.
-    Measure Tetrises, recovery behavior, and failure.
-    Compare candidates on the same sampled sequences to reduce variance.
+If it cannot, debug optimization, inputs, loss construction, and representation. If it can, expand to game-disjoint validation. If that succeeds but gameplay fails, proceed to student-state aggregation.
 
-Crucially, the continuation policy must know how to build wells. Rolling out the flat-stacking champion may simply dismantle every promising setup and conclude that setup moves have no value.
+Also verify that −1e6 death sentinels are used for evaluation/masking, not accidentally treated as ordinary numeric regression targets or used inconsistently in the training objective.
 
-Respect the information available to the bot: beyond the actual preview, sample future pieces from the appropriate randomizer distribution. Do not let search inspect the evaluator’s hidden future tape.
+Given the index-space bugs already found, I would add a synthetic test where a deliberately misranked, known teacher action becomes more likely after training. Teacher-label parity alone does not test the training update.
+6. A simple search rule is not a prerequisite for distillation
 
-You can trigger this more expensive planning only when:
+I disagree with:
 
-    Starting or abandoning a well;
-    Choosing between competing setup plans;
-    Handling a drought;
-    Approaching a risk threshold.
+    Reformulated fit and aggregation only if item 3 shows a distillable rule.
 
-That is likely cheaper than deeper search on every placement.
-4. Training becomes useful after you have a style signal
+That condition is backwards.
 
-The decoupled-head direction is reasonable once its targets describe style. Training it on survival-teacher disagreements does not do that.
+    If death rejection explains most of the gain: use the cheap rule first; neural distillation may be unnecessary.
+    If continuation valuation explains the gain: that is a direct reason to investigate search distillation, not a reason to stop.
+    If the student cannot fit even a small controlled dataset: then reconsider the student or training setup.
 
-Good target sources include:
+A teacher does not need to reduce to an obvious hand-coded rule to be learnable.
+Recommended immediate order
 
-    Actions from the explicit well-building controller;
-    Better actions identified by style-aware rollouts;
-    Human demonstrations in the same ruleset;
-    Returns containing actual Tetris rewards and failure penalties;
-    Pairwise comparisons of trajectories for human-facing style.
+I would use this sequence:
 
-For distillation, I would use dataset aggregation: let the student play, label the states it actually reaches with the teacher, and repeat. A frozen bank from another policy is a weak test of imitation learning.
+    Audit the piece-slot semantics and preserve the current champion as a versioned configuration.
+    Run the death-rejection ablation, with intervention logging.
+    Run the λ10 potential × completion-reward factorial.
+    Run the tiny-set overfit diagnostic, without expensive gameplay evaluation.
+    If fitting works, train on the existing game-disjoint split with informative-state metrics and an adequate optimization budget.
+    Only then collect student-state teacher labels and test closed-loop survival.
 
-For reinforcement learning, use a genuine task reward. The historical update
+Legal seeded fixtures remain worthwhile, and deferring emulator validation until an in-simulator candidate is ready is a reasonable scope decision—as long as claims remain about simulator performance.
 
-[ z(s)\leftarrow\gamma z(s')+(1-\gamma)z(s) ]
-
-does not become a task-grounded Bellman target merely by describing its second term as a placement reward. It contains no independent evidence that a Tetris is desirable.
-
-A style critic could instead learn:
-
-[ V_{\text{style}}(s) \leftarrow r_{\text{style}}(s,a,s') +\gamma V_{\text{style,target}}(s'). ]
-
-Potential-based shaping,
-
-[ r'=r+\eta[\gamma\Phi(s')-\Phi(s)], ]
-
-is another option for giving intermediate setup feedback while retaining an explicit task reward. Its usual policy-invariance guarantee requires the standard discounting and terminal-handling conditions.
-
-The earlier failures justify caution with your old absolute-survival recipe. They do not establish that ordinary reward-based RL is unsuitable for this task.
-5. Other worthwhile options
-Optimize a small heuristic directly
-
-For perhaps 5–15 style weights, random search, the cross-entropy method, or CMA-ES may be more productive than training 430K parameters.
-
-Optimize for Tetrises under a survival constraint, using paired piece tapes and staged evaluation. This could discover a useful teacher with comparatively little training machinery.
-Add representation features later, with an exact neutral initialization
-
-If you do try extra input channels, copy the original weights and initialize the new-channel convolution weights to zero. Subject to unchanged surrounding computation, this preserves the original function at initialization.
-
-That is a cleaner starting point than using C3-style affine fitting as a “neutral warm-up”: C3 explicitly changed rankings and behavior.
-
-A residual style branch with zero initial output offers the same useful baseline contract.
-Speed up search with valid pruning
-
-The proposed
-
-[ v_1+\gamma(\max v_2-\operatorname{mean}v_2) ]
-
-does not generally make expanded and unexpanded candidates comparable. It measures the best successor’s advantage over its siblings, not the absolute quality of the continuation. A uniformly excellent successor set and a uniformly terrible one can receive similar centered bonuses.
-
-Safer choices include:
-
-    Fully expand shortlisted roots and choose only among those expanded roots;
-    Use a cheap style-aware proposal policy;
-    Cache duplicate leaf evaluations;
-    Distill a smaller scorer once you have a worthwhile teacher.
-
-Make shortlist selection diverse enough to retain setup moves, rather than filtering exclusively by the flat-stacking value.
-6. Change the style metrics too
-
-Lines per 100 pieces is almost conserved during stable survival. Four cells enter per piece and ten leave per cleared line:
-
-[ L=\frac{4P+B_{\text{start}}-B_{\text{end}}}{10}. ]
-
-With bounded board occupancy, the long-run rate approaches 40 lines per 100 pieces regardless of whether those lines are singles or Tetrises.
-
-Use:
-
-    Tetrises per 100 pieces;
-    Fraction of cleared lines belonging to Tetrises;
-    Existing Tetris share of clear events;
-    Setup-to-Tetris conversion rate;
-    Time between Tetrises;
-    Height and recovery statistics;
-    Long-horizon failure rate.
-
-For human training, also inspect whether the bot preserves understandable plans and uses realistically executable input sequences. Tetris rate alone is not the whole playstyle objective.
-Recommended revised order
-
-    Make zero-style evaluation exactly reproduce the full-two-ply champion.
-    Add seeded well-building/cash-out/recovery diagnostics.
-    Try a designated-well controller and dense precursor features.
-    Add sampled multi-step planning with style-capable continuations.
-    Train or distill from the first demonstrably stylish teacher.
-    Change representation if fitting/generalization diagnostics justify it.
-
-The central missing ingredient is a signal that values the path to a Tetris. Your experiments have mostly rewarded completed or nearly completed setups while collecting data from a policy that avoids constructing them. I would address that mismatch before redesigning what the network can see.
+Bottom line: §18 is a strong example of evidence improving the project’s direction. §19 is a useful probe, but its negative result is being overinterpreted. It has not shown that imitation lacks headroom, that preview-death rejection is unimportant, or that the current inputs are sufficient. Those are still testable questions—and the cheapest decisive tests are now quite clear.

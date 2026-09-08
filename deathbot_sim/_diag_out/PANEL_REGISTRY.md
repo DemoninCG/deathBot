@@ -305,6 +305,42 @@
   protocol: corrected-lockout, cap 1500
   status: reserved → future promotion panels (allocate 300 at a time)
 
+- seeds: 20572-20591
+  protocol: corrected-lockout, cap 1500 (top-k shortlist gate, §31)
+  status: CONSUMED
+  history: champion full-2-ply vs FIXED top-k variants (beam5/8 × v1/diverse;
+    the 2026-09-08 two_ply.py decision-restriction fix), 20 matched tapes:
+    all arms 20/20 cap, min pieces 1500, dLines all |t|<=1.33 (b5_v1 +0.8
+    t+1.33 W/L 8/5; b8_diverse +0.5 t+0.83) — top-k SURVIVAL-NEUTRAL after
+    the fix. Tetrises: champ 15 / b8_div 17 / b8_v1 13 / b5_v1 9 /
+    b5_div 6 (noise at these n). Frozen-bank stage1 (150 states):
+    b8_* and b5_diverse agree 1.000, ~1.9-2.4x decision speedup.
+    DECISION: beam8_diverse = champion-equivalent at ~2.3x speed, horizon
+    caveat per §32.1.2 (file: topk_gate_1500.json; sanity runs on
+    26000-26002 + 31000s are reporting-only).
+
+- seeds: 20592-20611
+  protocol: corrected-lockout, cap 3000 (λ10 selection-grade estimate, §31.2)
+  status: CONSUMED
+  history: champ vs λ10 (Phi + completion bonus), 20 matched tapes × 1 cap,
+    2026-09-08: champ 20/20 cap / lam10 20/20 cap, ZERO deaths either arm,
+    paired pieces +0.0; dT/100 +0.173 t+8.19 (132 vs 28 tetrises, 31 of
+    132 in final 3 windows); window occ flat (champ 23-29, lam10 29-43);
+    FAIL-flag games champ 8/20 vs lam10 1/20. Combined with the 31200s
+    stress pass: lam10 long-horizon failure 1/40 ≈ 2.5%/game (95% upper
+    ~11%), champ 0/40 (file: lam10_gate_20592.json). Next free: 20612+
+    (§32.3 E1 dev panel); 5300+ reserves for promotion.
+
+- seeds: 31200-31219
+  protocol: corrected-lockout, cap 1500 + cap-3000 stress (λ10 gate, §31)
+  status: CONSUMED
+  history: champ vs λ10 (Phi + completion bonus), 20 matched tapes × 2 caps,
+    2026-09-08. cap1500: 20/20 vs 20/20, dT/100 +0.140 t+4.47 (50 vs 8 tet),
+    end-occ 23.2 vs 40.6. cap3000 stress + per-game backlog flags: see
+    lam10_gate_31200.json (REPORTING range 31200+, per §28 rule 1 — a λ10
+    promotion decision still needs a fresh selection panel or user sign-off
+    that reporting-range + cap-3000 evidence suffices).
+
 ## Rules
 1. A model may be evaluated on any panel for REPORTING; a decision (keep/drop/
    tune) may only be made on a panel whose range is fresh for that decision.

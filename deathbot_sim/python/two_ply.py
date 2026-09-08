@@ -134,6 +134,28 @@ class TwoPlyScorer:
     masks candidates more than that far (z-units) below the best pre-style
     final value to -inf BEFORE style is added (survival-first gate;
     a heuristic, not a certified constraint).
+
+    SHORTLIST MODES (§27.3 follow-up — the §27.3 closed-loop probe compared
+    against the WRONG baseline and drew the wrong conclusion):
+      * ``shortlist_mode="v1"`` — naive: top-k strictly by 1-ply value.
+        BUG FIXED 2026-09-08: the historical code expanded exactly the top-k
+        candidates but ran the final argmax over ALL candidates, so every
+        expanded candidate was handicapped by ``gamma * max(v2)`` (max(v2) is
+        almost always NEGATIVE on this value scale, ~ -213 z-units) while
+        non-expanded candidates kept raw ``v1``. Any ``0 < beam < n_viable``
+        therefore systematically PLAYED the rank-(k+1) move every turn
+        ("k must be n or 1") — the closed-loop beam5/beam8 deaths at 30-39
+        pieces were this comparison bug, NOT evidence that v1-top-k drops
+        survival-critical roots. The fix: with a finite beam the decision is
+        taken over the EXPANDED shortlist only.
+      * ``shortlist_mode="diverse"`` — v1 top-k PLUS the best (by v1) state
+        in each of 5 geometry classes: lowest-top, min-holes, min-roughness,
+        min-total-popcount, min-stack-head-popcount. Guards against k
+        containing only variants of the same shape while keeping k small.
+      * ``shortlist_mode="v1_safe"`` — v1 top-k PLUS the single lowest-top
+        viable candidate (cheap survival hedge, adds at most 1 branch).
+      * ``shortlist_mode="all"`` (beam >= n) — full expansion, byte-identical
+        to the historical champion path. beam <= 0 still means 1-ply.
     """
 
     def __init__(self, net, *, beam: int = 5, gamma_ply: float = 0.999,
@@ -143,7 +165,8 @@ class TwoPlyScorer:
                  well_weight: float = 0.0,
                  style_fn=None,
                  style_alpha: float = 0.0,
-                 veto_margin: float | None = None) -> None:
+                 veto_margin: float | None = None,
+                 shortlist_mode: str = "v1") -> None:
         self.net = net
         self.beam = beam
         self.gamma_ply = gamma_ply
@@ -154,6 +177,9 @@ class TwoPlyScorer:
         self.style_fn = style_fn
         self.style_alpha = float(style_alpha)
         self.veto_margin = None if veto_margin is None else float(veto_margin)
+        if shortlist_mode not in ("v1", "diverse", "v1_safe", "all"):
+            raise ValueError(f"unknown shortlist_mode: {shortlist_mode!r}")
+        self.shortlist_mode = shortlist_mode
 
     def _placements_from_bulk(self, bulk, kind):
         """Ply-1 scoring from an already-fetched `lock_candidates_full` tuple."""
@@ -242,8 +268,82 @@ class TwoPlyScorer:
             best_local = max(range(len(vals1)),
                              key=lambda j: (finals_1p[j], -j))
             return viable[best_local]
-        order = sorted(range(len(vals1)), key=lambda j: -vals1[j])
-        beam = order[: self.beam]
+        order = sorted(range(len(vals1)), key=lambda j: (-vals1[j], j))
+        if self.shortlist_mode == "all" or self.beam >= len(vals1):
+            beam = list(range(len(vals1)))  # full expansion (champion)
+        else:
+            beam = order[: self.beam]
+            picked = set(beam)
+            if self.shortlist_mode in ("diverse", "v1_safe"):
+                # + best-by-v1 lowest-top viable state (survival hedge).
+                def _top_of(j):
+                    rows_j = packed1[j]
+                    top = 0
+                    for r in range(20, -1, -1):
+                        if int(rows_j[r]) & 0b1111111111:
+                            top = r + 1
+                            break
+                    return top
+
+                lo_top = min(range(len(vals1)),
+                             key=lambda j: (_top_of(j), -vals1[j], j))
+                if lo_top not in picked:
+                    beam.append(lo_top)
+                    picked.add(lo_top)
+            if self.shortlist_mode == "diverse":
+                # + best-by-v1 representative of 4 more geometry classes.
+                def _holes_of(j):
+                    rows_j = packed1[j]
+                    holes = 0
+                    col_filled = False
+                    for r in range(20, -1, -1):
+                        bits = int(rows_j[r]) & 0b1111111111
+                        holes += (0b1111111111 & ~bits).bit_count() \
+                            if col_filled else 0
+                        col_filled = col_filled or bool(bits)
+                    return holes
+
+                def _rough_of(j):
+                    rows_j = packed1[j]
+                    hs = []
+                    for c in range(10):
+                        hh = 0
+                        for r in range(20, -1, -1):
+                            if (int(rows_j[r]) >> c) & 1:
+                                hh = r + 1
+                                break
+                        hs.append(hh)
+                    return sum(abs(hs[c] - hs[c + 1]) for c in range(9))
+
+                def _pop9_of(j):
+                    rows_j = packed1[j]
+                    return sum(bin(int(rows_j[r])).count("1")
+                               for r in range(20, -1, -1))  # all rows
+
+                def _poprow9_of(j):
+                    # filled cells in the highest occupied row (stack head)
+                    rows_j = packed1[j]
+                    for r in range(20, -1, -1):
+                        if int(rows_j[r]) & 0b1111111111:
+                            return bin(int(rows_j[r])).count("1")
+                    return 0
+
+                classes = [
+                    ("holes", min(range(len(vals1)),
+                                  key=lambda j: (_holes_of(j), -vals1[j], j))),
+                    ("rough", min(range(len(vals1)),
+                                  key=lambda j: (_rough_of(j), -vals1[j], j))),
+                    ("pop9", min(range(len(vals1)),
+                                 key=lambda j: (_pop9_of(j), -vals1[j], j))),
+                    ("row9", min(range(len(vals1)),
+                                 key=lambda j: (_poprow9_of(j), -vals1[j], j))),
+                ]
+                for _name, cj in classes:
+                    if cj not in picked:
+                        beam.append(cj)
+                        picked.add(cj)
+            # NOTE: diverse/v1_safe may exceed k by up to 5 branches —
+            # bounded extra ply-2 cost, keeps the hedge/class moves expanded.
         # Item 1: batch ALL ply-2 forwards into one net call. Per branch we
         # need its own successor boards; gather packed rows + decode once.
         nxt_idx = piece_to_index(next_piece)
@@ -316,7 +416,7 @@ class TwoPlyScorer:
             style_vals = list(self.style_fn(packed1, [int(x) for x in lines1]))
             assert len(style_vals) == len(vals1), (len(style_vals), len(vals1))
             if self.veto_margin is not None:
-                best_pre = max(float(final[j]) for j in range(len(vals1))
+                best_pre = max(float(final[j]) for j in beam
                                if float(final[j]) > DEAD_PENALTY / 2)
                 for j in range(len(vals1)):
                     if float(final[j]) <= DEAD_PENALTY / 2:
@@ -328,19 +428,26 @@ class TwoPlyScorer:
                 if f <= DEAD_PENALTY / 2 or f == float("-inf"):
                     continue
                 final[j] = f + self.style_alpha * float(style_vals[j])
-        best_local = max(range(len(final)), key=lambda j: (final[j], -j))
+        # DECISION RESTRICTION (the 2026-09-08 fix): with a finite beam the
+        # move is chosen over the EXPANDED shortlist only. The historical
+        # code took argmax over ALL candidates while only top-k carried the
+        # (almost always negative) gamma*max(v2) term, so any 0<beam<n
+        # systematically played the rank-(k+1) move ("k must be n or 1").
+        best_local = max(beam, key=lambda j: (final[j], -j))
         return viable[best_local]
 
 
 def play_game_2ply(net, rng: random.Random, *, beam: int = 5,
                    gamma_ply: float = 0.999, epsilon: float = 0.0,
-                   max_pieces: int = 1500, explore_rng: random.Random | None = None):
+                   max_pieces: int = 1500, explore_rng: random.Random | None = None,
+                   shortlist_mode: str = "v1"):
     """Greedy (or epsilon) game with 2-ply lookahead. Returns
     (pieces_placed, lines_cleared, reason). Evaluation mode: no trajectory."""
     explore_rng = explore_rng or rng
     board = ds.Board()
     pq = PieceQueue(rng)
-    scorer = TwoPlyScorer(net, beam=beam, gamma_ply=gamma_ply)
+    scorer = TwoPlyScorer(net, beam=beam, gamma_ply=gamma_ply,
+                          shortlist_mode=shortlist_mode)
     pieces = 0
     lines_total = 0
     while pieces < max_pieces:
@@ -381,7 +488,8 @@ def play_game_2ply_style(net, rng: random.Random, *, beam: int = 100,
                          style_fn=None,
                          style_alpha: float = 0.0,
                          veto_margin: float | None = None,
-                         explore_rng: random.Random | None = None):
+                         explore_rng: random.Random | None = None,
+                         shortlist_mode: str = "v1"):
     """Style-metric game: same rules as play_game_2ply, but also returns a
     per-clear breakdown {0,1,2,3,4: counts} for Tetris-rate analysis.
 
@@ -399,7 +507,8 @@ def play_game_2ply_style(net, rng: random.Random, *, beam: int = 100,
     scorer = TwoPlyScorer(net, beam=beam, gamma_ply=gamma_ply,
                           line_bonus=line_bonus, well_weight=well_weight,
                           style_fn=style_fn, style_alpha=style_alpha,
-                          veto_margin=veto_margin)
+                          veto_margin=veto_margin,
+                          shortlist_mode=shortlist_mode)
     pieces = 0
     lines_total = 0
     clears: dict[int, int] = {0: 0, 1: 0, 2: 0, 3: 0, 4: 0}

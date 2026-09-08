@@ -1,0 +1,238 @@
+{
+  "weights": "C:\\My Things\\HTML\\Demonin's Item Shop\\other\\deathBot\\model_weights_snapshot9.pt",
+  "weights_sha256": "229bbe2a91bab6b1d6a58f25440e7504711aabe8dfc26d24dad9ee0461be46ed",
+  "gamma_ply": 0.999,
+  "stage2": {
+    "seed0": 26000,
+    "games": 3,
+    "cap": 300,
+    "selection_panel": true,
+    "configs": {
+      "champ": {
+        "capped": 3,
+        "mean_pieces": 300.0,
+        "mean_lines": 118.33333333333333,
+        "tetrises": 0,
+        "sec_per_game": 56.4,
+        "per_seed": {
+          "26000": {
+            "pieces": 300,
+            "lines": 118,
+            "clears": {
+              "0": 197,
+              "1": 89,
+              "2": 13,
+              "3": 1,
+              "4": 0
+            },
+            "reason": "max_pieces"
+          },
+          "26001": {
+            "pieces": 300,
+            "lines": 118,
+            "clears": {
+              "0": 191,
+              "1": 100,
+              "2": 9,
+              "3": 0,
+              "4": 0
+            },
+            "reason": "max_pieces"
+          },
+          "26002": {
+            "pieces": 300,
+            "lines": 119,
+            "clears": {
+              "0": 197,
+              "1": 89,
+              "2": 12,
+              "3": 2,
+              "4": 0
+            },
+            "reason": "max_pieces"
+          }
+        }
+      },
+      "b5_v1": {
+        "capped": 3,
+        "mean_pieces": 300.0,
+        "mean_lines": 117.0,
+        "tetrises": 0,
+        "sec_per_game": 19.2,
+        "per_seed": {
+          "26000": {
+            "pieces": 300,
+            "lines": 119,
+            "clears": {
+              "0": 197,
+              "1": 89,
+              "2": 12,
+              "3": 2,
+              "4": 0
+            },
+            "reason": "max_pieces"
+          },
+          "26001": {
+            "pieces": 300,
+            "lines": 113,
+            "clears": {
+              "0": 198,
+              "1": 92,
+              "2": 9,
+              "3": 1,
+              "4": 0
+            },
+            "reason": "max_pieces"
+          },
+          "26002": {
+            "pieces": 300,
+            "lines": 119,
+            "clears": {
+              "0": 199,
+              "1": 84,
+              "2": 16,
+              "3": 1,
+              "4": 0
+            },
+            "reason": "max_pieces"
+          }
+        }
+      },
+      "b5_diverse": {
+        "capped": 3,
+        "mean_pieces": 300.0,
+        "mean_lines": 116.66666666666667,
+        "tetrises": 1,
+        "sec_per_game": 22.1,
+        "per_seed": {
+          "26000": {
+            "pieces": 300,
+            "lines": 119,
+            "clears": {
+              "0": 197,
+              "1": 91,
+              "2": 9,
+              "3": 2,
+              "4": 1
+            },
+            "reason": "max_pieces"
+          },
+          "26001": {
+            "pieces": 300,
+            "lines": 114,
+            "clears": {
+              "0": 194,
+              "1": 98,
+              "2": 8,
+              "3": 0,
+              "4": 0
+            },
+            "reason": "max_pieces"
+          },
+          "26002": {
+            "pieces": 300,
+            "lines": 117,
+            "clears": {
+              "0": 193,
+              "1": 98,
+              "2": 8,
+              "3": 1,
+              "4": 0
+            },
+            "reason": "max_pieces"
+          }
+        }
+      },
+      "b8_v1": {
+        "capped": 3,
+        "mean_pieces": 300.0,
+        "mean_lines": 117.0,
+        "tetrises": 0,
+        "sec_per_game": 28.5,
+        "per_seed": {
+          "26000": {
+            "pieces": 300,
+            "lines": 118,
+            "clears": {
+              "0": 190,
+              "1": 102,
+              "2": 8,
+              "3": 0,
+              "4": 0
+            },
+            "reason": "max_pieces"
+          },
+          "26001": {
+            "pieces": 300,
+            "lines": 114,
+            "clears": {
+              "0": 196,
+              "1": 95,
+              "2": 8,
+              "3": 1,
+              "4": 0
+            },
+            "reason": "max_pieces"
+          },
+          "26002": {
+            "pieces": 300,
+            "lines": 119,
+            "clears": {
+              "0": 197,
+              "1": 89,
+              "2": 12,
+              "3": 2,
+              "4": 0
+            },
+            "reason": "max_pieces"
+          }
+        }
+      },
+      "b8_diverse": {
+        "capped": 3,
+        "mean_pieces": 300.0,
+        "mean_lines": 118.33333333333333,
+        "tetrises": 0,
+        "sec_per_game": 25.7,
+        "per_seed": {
+          "26000": {
+            "pieces": 300,
+            "lines": 118,
+            "clears": {
+              "0": 190,
+              "1": 102,
+              "2": 8,
+              "3": 0,
+              "4": 0
+            },
+            "reason": "max_pieces"
+          },
+          "26001": {
+            "pieces": 300,
+            "lines": 118,
+            "clears": {
+              "0": 191,
+              "1": 101,
+              "2": 7,
+              "3": 1,
+              "4": 0
+            },
+            "reason": "max_pieces"
+          },
+          "26002": {
+            "pieces": 300,
+            "lines": 119,
+            "clears": {
+              "0": 197,
+              "1": 89,
+              "2": 12,
+              "3": 2,
+              "4": 0
+            },
+            "reason": "max_pieces"
+          }
+        }
+      }
+    }
+  }
+}

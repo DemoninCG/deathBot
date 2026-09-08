@@ -5,7 +5,8 @@
 2026-09-07 with the §17.5 round-1 result; updated 2026-09-07 night with
 the §18 long-sustain verdict, the §19 steps-1+4 probe, and the §20
 third-review corrections; updated 2026-09-08 with the §26 full-split +
-aggregation result (item 5 CLOSED as a negative). Intended as a
+aggregation result (item 5 CLOSED as a negative), the §29/§30 fullsplit
+promotion, and the §31 top-k fix + λ10 gate findings. Intended as a
 complete briefing for a fresh reviewer (human or AI) so no context is lost.*
 
 **Where things stand (2026-09-08):** survival is solved by
@@ -28,6 +29,21 @@ priority). Steps 2/5/6 gated on §20 item 4 (tiny-set overfit), not on a
 hand-coded rule. §20 item 5 (full-split fit + aggregation) DONE 2026-09-08
 as §26 — CLOSED as a negative, do NOT run the 20560+ selection eval.
 See §12 (search reversal), §13 (style era), §17.5/§17.7 (round-1).
+§30 (2026-09-08): fullsplit_seed42 PROMOTED to 1-ply champion (+468.4,
+t +14.1, 300 games). §31 (2026-09-08): §27.3's top-k "unsafe" verdict was
+a comparison BUG in `TwoPlyScorer.choose` (finite beams argmaxed over
+unexpanded candidates) — FIXED, regression-tested, and reversed:
+beam8_diverse is champion-equivalent at ~2.3× speed (20/20 cap, all
+|t|≤1.33). §27.1's λ10 slope block also reversed: the FAIL criterion flags
+the champion equally often, λ10's inventory band is flat, and it sustains
+~6× the Tetris rate at cap 3000 (98 vs 15, t+7.52) with 1/20 stress deaths;
+selection-grade pass on 20592+ is the last promotion gate item.
+§32 (2026-09-08, fourth review): bounded improvement campaign v2 adopted —
+policy-identity audit first, then weights×search crossover, student-as-proposer,
+one controlled training round, λ10 hysteretic risk control. §31 amendments
+inline. λ10 selection pass (20592–20611) landed same day: 20/20 vs 20/20
+cap-3000, zero deaths, dT/100 +0.173 (t+8.19); λ10 failure estimate 1/40
+≈ 2.5%/game. E0–E4 deferred to next session.
 
 ---
 
@@ -2165,3 +2181,277 @@ quarter of decisions carries large survival value. **Promote
 champion config unchanged (snapshot9 weights + full 2-ply); whether the
 student also improves 2-ply leaves is untested. §28 demo plan: swap the
 1-ply demo weights to the promoted student.
+
+## 31. §27 follow-ups — top-k bug fixed + λ10 gate (2026-09-08)
+
+Two §27 findings re-examined at the user's request; both §27 verdicts are
+REVISED. Drivers: `python/diag_topk_eval.py` (stage 1 frozen-bank
+agreement/regret/cost + stage 2 closed-loop), `python/diag_lam10_gate.py`
+(paired champ-vs-λ10 tapes with pre-registered backlog flags + optional
+stress cap). New regression tests `tests/test_shortlist.py`; full suite
+**181 passed, 2 skipped** (Rust 26+3 untouched). Weights untouched
+throughout (snapshot9 `229bbe2a…` everywhere).
+
+### 31.1 Top-k: §27.3's "naive top-k UNSAFE" was a BUG, now fixed
+
+Root cause (in `TwoPlyScorer.choose` since the §12 beam rewrite): a finite
+beam expanded only the top-k candidates to `v1 + γ·max(v2)` but ran the
+final argmax over ALL candidates — unexpanded ones keep raw `v1`. Since
+`max(v2)` is almost always NEGATIVE on this value scale (~−213 z-units,
+§12 bank probe), every expanded candidate carried a ~−200 penalty vs every
+non-expanded one, so **any `0 < beam < n` systematically PLAYED the
+rank-(k+1) move**. The §27.3 closed-loop deaths (beam5/8 at 30–39 pcs,
+`no_candidates`) were this comparison bug — not evidence that "v1-top-k
+drops survival-critical roots" (the frozen-state coverage numbers in §27.3
+were fine, and were measuring a different thing).
+
+Fix (`two_ply.py`, 2026-09-08):
+1. With a finite beam the decision is taken over the EXPANDED shortlist
+   only (`best_local = max(beam, …)`).
+2. New `shortlist_mode` parameter: `"v1"` (naive top-k), `"diverse"`
+   (top-k + best-by-v1 in 5 geometry classes: lowest-top, min-holes,
+   min-roughness, min-popcount, min-stack-head — guards against k variants
+   of one shape), `"v1_safe"` (top-k + lowest-top), `"all"` (full
+   expansion — the historical champion path).
+3. Champion byte-identity verified on a 120-bank-state fingerprint
+   (`_diag_out/champ_picks_bank120.json`); pinned by
+   `test_full_expansion_byte_identity`.
+
+Evidence the fix reverses the §27.3 result:
+- Frozen bank (150 states, stage 1): `b8` all modes and `b5_diverse` agree
+  with the full champion **1.000** (zero disagreements, zero regret);
+  `b5_v1`/`b5_v1_safe` 0.987 (2 disagreements, reg|dis mean 11.1) —
+  at 1.9–2.8× lower per-decision cost.
+- Sanity (seeds 26000–26002, where buggy beam5/8 died at 30–39 pcs): fixed
+  variants cap **3/3 at cap 300**, champion-identical lines (reporting
+  only — training seeds).
+
+Selection gate (fresh panel **20572–20591 CONSUMED**, 20 matched tapes,
+cap 1500, `topk_gate_1500.json`):
+
+| config | cap | dLines (paired) | Tetrises | s/game | speedup |
+|---|---|---|---|---|---|
+| champ (full) | 20/20 | — | 15 | 375 | 1× |
+| **b8_diverse** | 20/20 | +0.5, t +0.83 | 17 | 165 | **2.3×** |
+| b8_v1 | 20/20 | +0.1, t +0.14 | 13 | 152 | 2.5× |
+| b5_v1 | 20/20 | +0.8, t +1.33 | 9 | 106 | 3.6× |
+| b5_diverse | 20/20 | +0.4, t +0.60 | 6 | 114 | 3.3× |
+
+Every variant caps all 20 tapes (min pieces 1500, zero non-cap reasons);
+paired line deltas all \|t\| ≤ 1.33 (max per-seed \|d\| = 8 lines).
+**Verdict: top-k is champion-equivalent after the fix — `beam8_diverse`
+is the recommended fast policy (~2.3× speed, identical survival, lines and
+Tetris rate within noise). beam5 variants are even faster with a small
+unresolved Tetris-rate question (9/6 vs 15 Tetrises at n=20). §27.3 items
+"diverse shortlist, not v1 top-k" and "γ_ply irrelevant" both stand; the
+unsafe label is withdrawn.** (Amended by §32: "champion-equivalent" is
+horizon-specific — 20 tapes at cap 1500 bound failure rates only loosely;
+and "diverse over v1" is RETRACTED as undemonstrated — both shortlist
+modes passed identically on survival, so diversity is a precaution to be
+justified by a stylish-config test, not by bonus-free incidental
+Tetrises. γ_ply irrelevance stands.) Speed numbers scale the §28 2-ply demo cost
+down accordingly (b8_diverse ≈ 165 s/game at cap 1500 vs 375).
+
+### 31.2 λ10 gate: the §27.1 slope block was measuring a shared property
+
+§27.1 blocked λ10 promotion on two per-game tail occ slopes (+20.3, +13.4).
+New driver `diag_lam10_gate.py` replaces the slope eyeball with
+pre-registered per-game flags: max sustained run (longest run of
+consecutive windows with dOcc ≥ 2) + release count (windows with dOcc ≤
+−20); FAIL = run ≥ 2 AND releases = 0. Matched-tape arms: champ vs λ10
+(dense Phi scale 10 col 9 + completion bonus {1:1,2:3,3:5,4:8}), 20 tapes,
+cap 1500 + cap-3000 stress on the SAME seeds (reporting range 31200–31219,
+`lam10_gate_31200.json`).
+
+cap 1500: **both 20/20 cap**, paired pieces delta exactly 0 (all games cap
+both arms), **dT/100 +0.140, t +4.47** (50 vs 8 Tetrises / 30k placements),
+end-occ 40.6 vs 23.2. FAIL flags: λ10 2/20 vs champ **4/20** — the flag
+does NOT discriminate (both arms show multi-window rises; the champion
+simply sits lower).
+
+cap 3000 (stress, same tapes): champ 20/20 vs **λ10 19/20** — one real
+λ10 death (seed 31207, `no_candidates@2685`: occupancy spike 75→102→180,
+final top 21/18 holes; the champ on the SAME tape spiked to ~59 and
+recovered). Paired pieces −15.8, t −1.00 (the entire deficit is that one
+game). Style decisive: **98 vs 15 Tetrises, dT/100 +0.140, t +7.52**, with
+21 of 98 in the final 3 windows (continues late). Crucially the λ10
+inventory band is FLAT across 15 windows (window-mean occ 33–42) —
+qualitatively different from the rejected λ20 (monotone 61→114).
+
+Verdict (preliminary): **λ10 is no longer slope-blocked** — the §27.1
+blocking criterion flags the champion equally often, and λ10 sustains
+5–6× the champion's Tetris rate with a flat inventory band at 2× horizon.
+The remaining risk is the backlog-spike death mode (1/20 at cap 3000);
+a formal selection-grade cap-3000 pass on FRESH seeds 20592–20611
+(`lam10_gate_20592.json`, 20 tapes × 2 arms, both arms) was LAUNCHED and
+is the last gate item — promotion requires zero-or-matched deaths there
+(champ deaths on the same tapes are the matched baseline).
+(Amended by §32: the pass is a failure-rate ESTIMATE, not a promotion
+gate — λ10 improvement work proceeds regardless of its outcome, and even
+a clean 0/20 pass leaves the one-sided 95% per-game failure bound at ~14%
+at this horizon.)
+
+**20592 pass result (landed same day, selection-grade, cap 3000):**
+champ 20/20 cap / λ10 **20/20 cap**, zero deaths on either arm, paired
+pieces delta exactly 0. Style: **132 vs 28 Tetrises, dT/100 +0.173,
+t +8.19** (the strongest style signal yet measured), 31 of λ10's 132 in
+the final 3 windows (continues late). Inventory bands FLAT for both
+(window-mean occ: champ 23–29, λ10 29–43 — no monotone drift). FAIL-flag
+games (run ≥ 2, no release): champ 8/20 vs λ10 **1/20** — the criterion
+anti-discriminates, confirming §31.2's reading that it measures a shared
+property of matched-tape play, not λ10 risk. Combined with the 31200s
+stress pass (1 death / 40 λ10 games at cap 3000), the λ10 long-horizon
+failure estimate is 1/40 ≈ 2.5% per game (95% one-sided upper bound ~11%);
+champ: 0/40. **Standing stylish teacher config λ10 Phi + completion bonus
+is now failure-rate-estimated and unblocked for E4 risk work (§32.3).**
+
+### 31.3 Panel/registry status after this round
+
+- 20572–20591 CONSUMED (top-k gate). 31200–31219 CONSUMED (λ10 gate,
+  reporting range per §28 rule 1). 20592–20611 CONSUMED (λ10 selection-
+  grade estimate, landed 2026-09-08: 20/20 vs 20/20, zero deaths,
+  dT/100 +0.173 t+8.19 — see §31.2). Next free: **20612+** (cap-1500 dev
+  per §32.3 E1); 5300+ reserves for promotion; 26000s remain
+  training-data seeds.
+- Standing configs unchanged until the 20592 pass lands: survival champion
+  = snapshot9 + full 2-ply (bonus-free); stylish teacher = λ10 Phi +
+  completion bonus; 1-ply champion = fullsplit_seed42. NEW: **b8_diverse
+  endorsed as the fast survival policy** (champion-equivalent, 2.3×).
+- New files: `python/diag_topk_eval.py`, `python/diag_lam10_gate.py`,
+  `tests/test_shortlist.py`, `topk_bank150.json`, `topk_gate_1500.json`,
+  `topk_sanity_cap300_26000.json`, `lam10_gate_31200.json`,
+  `champ_picks_bank120.json`, `lam10_gate_20592.json` (in flight).
+- Lesson (recorded): when a gated search variant underperforms its own
+  coverage metric, first audit whether the scorer's comparison is fair
+  (expanded vs unexpanded candidates mixed in one argmax; penalty
+  asymmetries silently decide argmaxes) before concluding coverage loss.
+
+## 32. Fourth review — assessment + adopted bounded campaign v2 (2026-09-08)
+
+Fourth entry in `AI_plan_response.txt`, read after §31 landed. Verdict:
+**broadly correct and adopted with amendments**; its two corrections of my
+§31 wording are accepted inline (above). The framing is right: the project
+has now demonstrated *successful search-to-network learning* (+468, t+14.1),
+so the next program is a narrow repeat-and-exploit campaign around what
+worked, not another algorithm sweep.
+
+### 32.1 Point-by-point assessment
+
+1. **"Interpretation amendment: not the flipped quarter specifically."**
+   ACCEPTED. agree_dis 0.27 vs the +468 outcome proves the fit diagnostics
+   were inadequate as a gameplay gate, not that the flipped decisions carry
+   the value. Corollary adopted: **agree_dis is no longer an objective** —
+   checkpoint gates are gameplay dev panels, offline metrics are diagnostics.
+2. **"Top-k champion-equivalent is horizon-specific; diversity undemonstrated."**
+   ACCEPTED, §31.1 amended inline. 20/20 at cap 1500 bounds the per-game
+   failure gap loosely (a 0/20-vs-0/20 panel cannot distinguish 0% from
+   ~14% one-sided at 95%); long-horizon confirmation belongs to the same
+   cap-3000 confirmation pass that λ10 needs (item 6 below). The
+   "diverse > v1" claim is retracted — test diversity only where it has a
+   mechanism (stylish configs, where setup moves are rare-but-critical).
+3. **"λ10 as measured trade-off, not safe/unsafe."** ACCEPTED — this
+   corrects my §31.2 framing. The 20592 pass is a failure-rate ESTIMATE
+   (n=20 → wide CI either way), not a promotion gate; λ10 improvement work
+   (item 5) does not wait on it. Amended inline.
+4. **"Policy identity problem is highest priority."** ACCEPTED as priority 1
+   but SCOPED DOWN from the review's full audit: the first-divergence probe
+   on the divergent 26000s tape (sweep vs collector, canonical candidate
+   alignment by (x, y, lockout, post-rows), stop at first difference) is
+   cheap (~minutes, one tape) and is the only blocking item for §32.3's
+   training round. The full unified-policy refactor + viz adapter merge is
+   NOT blocking anything and is deferred until a second implementation-
+   sensitive experiment actually needs it (the §27.6 viz divergence remains
+   documented and unfixed). The probe also subsumes the review's
+   preview-slot question: §21 measured 0.6% action flips for the INCUMBENT
+   under cur-duplication; the probe directly compares the STUDENT's two
+   harness paths, whichever slot semantics each uses.
+5. **"Weights × search crossover at cap 3000."** ACCEPTED as the highest-
+   value new performance experiment (§32.3 E1). One amendment: run it at
+   cap 3000 but score the PRIMARY decision on paired cap-1500 legibility
+   (directly comparable to all prior panels), with cap-3000 columns as the
+   horizon check — a 5×5 grid at cap 3000 is ~6–10 h of wall we don't need
+   for triage. Matrix: {snapshot9, fullsplit} × {1-ply, beam8_diverse,
+   full 2-ply} + beam5_diverse columns for the cheap-search question
+   (does the student permit narrower search?).
+6. **"Student proposals, incumbent evaluation."** ACCEPTED — genuinely new
+   and cheap to probe offline first (§32.3 E2): union shortlist {top-3
+   snapshot9, top-3 student, +lowest-top} → coverage of the full teacher's
+   winner + regret|miss on the frozen bank, then closed-loop only if
+   coverage ≥ ~0.99. The student was literally trained to predict the
+   teacher's argmax, so proposal quality is its most direct use. Note:
+   v1-top-k with k=8 already achieves 1.000 coverage on bank states, so
+   the student must beat THAT bar (or win on smaller shortlist size) to
+   matter — the probe is designed to answer exactly that.
+7. **"One controlled training round: continued CE vs aggregation."**
+   ACCEPTED with a scope note (§32.3 E3): equal-budget arms from the
+   promoted checkpoint, teacher frozen (same snapshot9 full-2-ply labels),
+   arm A = more CE on the original bank; arm B = CE on bank + student-state
+   aggregation data (already collected in §26.2: 8028 states, 1801
+   disagreements, held-out split recorded). Agreement with the review:
+   unweighted validation metrics, gameplay dev panel for selection, teacher
+   NOT changed, no new loss/architecture. This directly tests "does the
+   successful step compound" with the §26 aggregation data already on disk.
+8. **"λ10 hysteretic risk controller + failure/recovery bank."** ACCEPTED
+   (§32.3 E4), with the review's key question kept: "does the survival
+   policy RECOVER from the same λ10-generated state, or only avoid reaching
+   it?" — that determines whether a rescue controller is even possible.
+   Build the bank from the 31207 death tape + recovering spikes first
+   (cheap, uses existing drivers); hysteresis parameters stay ≤ 4
+   (entry/exit thresholds on occ/top, λ scale, bonus toggle).
+9. **Defers.** ACCEPTED: no new architecture, no PPO/TD campaign, no
+   per-move deep search, no column switching, no style distillation before
+   the survival student is exploited, no large evals of intermediates.
+   Keeping a demo available as a sanity check: agreed (§28's 1-ply demo
+   weights become fullsplit_seed42 per §30).
+
+### 32.2 What I would do differently from the review
+
+- **Crossover panel budget**: the review says "modest paired panel at cap
+  3000"; I split the difference (cap-1500 paired decision + cap-3000
+  horizon columns) because every historical baseline lives at cap 1500 and
+  losing comparability would cost more than it buys.
+- **The policy-identity audit** should not grow into the durable unified
+  implementation yet — the project's versioning discipline (never silently
+  "fix" a promoted config) plus a pinned first-divergence probe gives the
+  same protection for this campaign at a fraction of the refactor risk.
+- **Student-as-proposer** may already be answered by the beam8 result: if
+  v1-top-8 covers the teacher winner on 100% of bank states, the student's
+  proposal value must come from SMALLER shortlists or off-bank states —
+  the probe should include student-visited/high-stack states as the review
+  says, and measure shortlist size vs coverage, not just coverage.
+
+### 32.3 Adopted execution order (replaces §26.3 list; §28 demo plan updated)
+
+1. **E0 — policy-identity first-divergence probe** (blocking E3 only):
+   sweep vs collector on one divergent 26000s tape, canonical candidate
+   alignment, stop at first difference; log slot semantics used by each
+   path. Fix or version-pin whichever path E3 will train on. (~minutes)
+2. **E1 — weights × search crossover**: 2×5 matrix at cap 1500 (20-tape
+   dev panel 20612–20631, paired), cap-3000 columns on the same tapes for
+   horizon check. Decides the accuracy–compute configuration and whether
+   the student improves full-2-ply leaves. (~4–6 h)
+3. **E2 — student-proposal shortlist probe** (offline, frozen bank +
+   student-visited states): coverage/regret/size vs v1-top-k baselines;
+   closed-loop only if it beats k=8's 1.000 coverage at smaller k.
+   (~1–2 h, no panels consumed unless promoted to closed-loop)
+4. **E3 — training round**: E0 clean → arm A (continued CE on bank) vs
+   arm B (equal budget, bank + §26.2 aggregation states), teacher frozen;
+   dev-panel checkpoint selection; fresh-panel final only if a winner
+   emerges. (~6–8 h mostly unattended)
+5. **E4 — λ10 risk work** (parallel with E3, no panels): failure/recovery
+   bank from 31207 + recovering spikes; survival-policy-from-λ10-state
+   recovery test; ≤4-parameter hysteretic schedule; Pareto report
+   (T/100 vs failures vs style-off fraction). 20592 estimate LANDED:
+   1/40 ≈ 2.5%/game (95% upper ~11%), champ 0/40 — see §31.2.
+6. **Confirmation**: cap-3000 fresh-panel pass for whichever configs E1–E4
+   promote (5000s reserves stay untouched until a promotion claim).
+   Includes the top-k horizon confirmation from §32.1.2. (The λ10 leg is
+   DONE: 20592–20611 landed 20/20 vs 20/20 with zero deaths — see
+   §31.2 — leaving 1/40 ≈ 2.5%/game as the working failure estimate.)
+
+Panels: 20592–20611 CONSUMED (λ10 estimate, landed); next free **20612+**
+(dev); 5300+ reserves for promotion; 26000s remain training-data seeds.
+Artifacts so far: `AI_plan_response.txt` (entry 4), §31/§32 of this file;
+E0–E4 drivers to be added under `python/` as they land. Work on E0–E4 is
+deferred to the next session (user decision 2026-09-08); nothing new is
+launched today.

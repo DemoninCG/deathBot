@@ -1,0 +1,6169 @@
+{
+  "weights": "C:\\My Things\\HTML\\Demonin's Item Shop\\other\\deathBot\\model_weights_snapshot9.pt",
+  "weights_sha256": "229bbe2a91bab6b1d6a58f25440e7504711aabe8dfc26d24dad9ee0461be46ed",
+  "games": 20,
+  "seed0": 20592,
+  "selection": true,
+  "lam": 10.0,
+  "completion_bonus": {
+    "1": 1.0,
+    "2": 3.0,
+    "3": 5.0,
+    "4": 8.0
+  },
+  "results": {
+    "3000": {
+      "champ": {
+        "capped": 20,
+        "mean_pieces": 3000.0,
+        "tetrises": 28,
+        "t100": 0.04666666666666667,
+        "end_occ": 27.119999999999997,
+        "deaths": {},
+        "runs": [
+          [
+            3,
+            47.2
+          ],
+          [
+            1,
+            18.8
+          ],
+          [
+            3,
+            60.2
+          ],
+          [
+            2,
+            31.6
+          ],
+          [
+            2,
+            4.8
+          ],
+          [
+            2,
+            27.1
+          ],
+          [
+            1,
+            26.9
+          ],
+          [
+            2,
+            10.8
+          ],
+          [
+            2,
+            25.3
+          ],
+          [
+            2,
+            15.2
+          ],
+          [
+            2,
+            7.5
+          ],
+          [
+            3,
+            20.9
+          ],
+          [
+            2,
+            5.1
+          ],
+          [
+            1,
+            15.8
+          ],
+          [
+            3,
+            88.7
+          ],
+          [
+            3,
+            31.6
+          ],
+          [
+            2,
+            21.9
+          ],
+          [
+            3,
+            15.0
+          ],
+          [
+            2,
+            9.9
+          ],
+          [
+            2,
+            33.5
+          ]
+        ],
+        "releases": [
+          2,
+          0,
+          3,
+          1,
+          0,
+          1,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          0,
+          0,
+          2,
+          1,
+          0,
+          1,
+          0,
+          2
+        ],
+        "per_seed": {
+          "20592": {
+            "arm": "champ",
+            "seed": 20592,
+            "pieces": 3000,
+            "lines": 1198,
+            "clears": {
+              "0": 1948,
+              "1": 920,
+              "2": 118,
+              "3": 14,
+              "4": 0
+            },
+            "reason": "max_pieces",
+            "windows": [
+              {
+                "pieces": 200,
+                "lines": 78,
+                "tetrises": 0,
+                "mean_occ": 24.7,
+                "mean_top": 4.175,
+                "mean_holes": 0.845
+              },
+              {
+                "pieces": 200,
+                "lines": 81,
+                "tetrises": 0,
+                "mean_occ": 23.75,
+                "mean_top": 4.115,
+                "mean_holes": 0.845
+              },
+              {
+                "pieces": 200,
+                "lines": 79,
+                "tetrises": 0,
+                "mean_occ": 18.85,
+                "mean_top": 3.405,
+                "mean_holes": 0.345
+              },
+              {
+                "pieces": 200,
+                "lines": 78,
+                "tetrises": 0,
+                "mean_occ": 20.6,
+                "mean_top": 3.83,
+                "mean_holes": 0.835
+              },
+              {
+                "pieces": 200,
+                "lines": 82,
+                "tetrises": 0,
+                "mean_occ": 35.85,
+                "mean_top": 5.535,
+                "mean_holes": 2.1
+              },
+              {
+                "pieces": 200,
+                "lines": 78,
+                "tetrises": 0,
+                "mean_occ": 19.4,
+                "mean_top": 3.56,
+                "mean_holes": 0.66
+              },
+              {
+                "pieces": 200,
+                "lines": 83,
+                "tetrises": 0,
+                "mean_occ": 23.15,
+                "mean_top": 4.11,
+                "mean_holes": 0.81
+              },
+              {
+                "pieces": 200,
+                "lines": 78,
+                "tetrises": 0,
+                "mean_occ": 19.8,
+                "mean_top": 3.53,
+                "mean_holes": 0.665
+              },
+              {
+                "pieces": 200,
+                "lines": 80,
+                "tetrises": 0,
+                "mean_occ": 23.85,
+                "mean_top": 4.11,
+                "mean_holes": 1.075
+              },
+              {
+                "pieces": 200,
+                "lines": 81,
+                "tetrises": 0,
+                "mean_occ": 26.3,
+                "mean_top": 4.325,
+                "mean_holes": 1.885
+              },
+              {
+                "pieces": 200,
+                "lines": 78,
+                "tetrises": 0,
+                "mean_occ": 66.95,
+                "mean_top": 9.015,
+                "mean_holes": 5.745
+              },
+              {
+                "pieces": 200,
+                "lines": 82,
+                "tetrises": 0,
+                "mean_occ": 44.7,
+                "mean_top": 6.405,
+                "mean_holes": 2.335
+              },
+              {
+                "pieces": 200,
+                "lines": 80,
+                "tetrises": 0,
+                "mean_occ": 18.05,
+                "mean_top": 3.33,
+                "mean_holes": 0.355
+              },
+              {
+                "pieces": 200,
+                "lines": 80,
+                "tetrises": 0,
+                "mean_occ": 23.2,
+                "mean_top": 4.02,
+                "mean_holes": 1.305
+              },
+              {
+                "pieces": 200,
+                "lines": 80,
+                "tetrises": 0,
+                "mean_occ": 19.65,
+                "mean_top": 3.62,
+                "mean_holes": 0.435
+              }
+            ],
+            "tetris_at": [],
+            "final": {
+              "occ": 20,
+              "top": 4.0,
+              "holes": 1.0
+            },
+            "s": 672.0
+          },
+          "20593": {
+            "arm": "champ",
+            "seed": 20593,
+            "pieces": 3000,
+            "lines": 1195,
+            "clears": {
+              "0": 1923,
+              "1": 965,
+              "2": 106,
+              "3": 6,
+              "4": 0
+            },
+            "reason": "max_pieces",
+            "windows": [
+              {
+                "pieces": 200,
+                "lines": 78,
+                "tetrises": 0,
+                "mean_occ": 21.45,
+                "mean_top": 3.89,
+                "mean_holes": 0.735
+              },
+              {
+                "pieces": 200,
+                "lines": 80,
+                "tetrises": 0,
+                "mean_occ": 16.1,
+                "mean_top": 3.175,
+                "mean_holes": 0.32
+              },
+              {
+                "pieces": 200,
+                "lines": 81,
+                "tetrises": 0,
+                "mean_occ": 34.9,
+                "mean_top": 5.4,
+                "mean_holes": 2.74
+              },
+              {
+                "pieces": 200,
+                "lines": 78,
+                "tetrises": 0,
+                "mean_occ": 24.6,
+                "mean_top": 4.22,
+                "mean_holes": 1.215
+              },
+              {
+                "pieces": 200,
+                "lines": 81,
+                "tetrises": 0,
+                "mean_occ": 19.0,
+                "mean_top": 3.605,
+                "mean_holes": 0.495
+              },
+              {
+                "pieces": 200,
+                "lines": 77,
+                "tetrises": 0,
+                "mean_occ": 28.6,
+                "mean_top": 4.635,
+                "mean_holes": 1.595
+              },
+              {
+                "pieces": 200,
+                "lines": 82,
+                "tetrises": 0,
+                "mean_occ": 24.0,
+                "mean_top": 4.065,
+                "mean_holes": 0.865
+              },
+              {
+                "pieces": 200,
+                "lines": 80,
+                "tetrises": 0,
+                "mean_occ": 20.7,
+                "mean_top": 3.73,
+                "mean_holes": 0.785
+              },
+              {
+                "pieces": 200,
+                "lines": 82,
+                "tetrises": 0,
+                "mean_occ": 21.5,
+                "mean_top": 3.815,
+                "mean_holes": 0.46
+              },
+              {
+                "pieces": 200,
+                "lines": 79,
+                "tetrises": 0,
+                "mean_occ": 18.3,
+                "mean_top": 3.37,
+                "mean_holes": 0.355
+              },
+              {
+                "pieces": 200,
+                "lines": 81,
+                "tetrises": 0,
+                "mean_occ": 26.1,
+                "mean_top": 4.23,
+                "mean_holes": 0.33
+              },
+              {
+                "pieces": 200,
+                "lines": 77,
+                "tetrises": 0,
+                "mean_occ": 19.2,
+                "mean_top": 3.56,
+                "mean_holes": 0.725
+              },
+              {
+                "pieces": 200,
+                "lines": 81,
+                "tetrises": 0,
+                "mean_occ": 29.05,
+                "mean_top": 4.645,
+                "mean_holes": 1.845
+              },
+              {
+                "pieces": 200,
+                "lines": 80,
+                "tetrises": 0,
+                "mean_occ": 22.05,
+                "mean_top": 3.81,
+                "mean_holes": 0.855
+              },
+              {
+                "pieces": 200,
+                "lines": 78,
+                "tetrises": 0,
+                "mean_occ": 35.1,
+                "mean_top": 5.42,
+                "mean_holes": 2.015
+              }
+            ],
+            "tetris_at": [],
+            "final": {
+              "occ": 50,
+              "top": 7.0,
+              "holes": 4.0
+            },
+            "s": 681.6
+          },
+          "20594": {
+            "arm": "champ",
+            "seed": 20594,
+            "pieces": 3000,
+            "lines": 1197,
+            "clears": {
+              "0": 1955,
+              "1": 912,
+              "2": 116,
+              "3": 15,
+              "4": 2
+            },
+            "reason": "max_pieces",
+            "windows": [
+              {
+                "pieces": 200,
+                "lines": 75,
+                "tetrises": 0,
+                "mean_occ": 22.8,
+                "mean_top": 3.98,
+                "mean_holes": 0.565
+              },
+              {
+                "pieces": 200,
+                "lines": 80,
+                "tetrises": 0,
+                "mean_occ": 25.85,
+                "mean_top": 4.22,
+                "mean_holes": 1.295
+              },
+              {
+                "pieces": 200,
+                "lines": 80,
+                "tetrises": 0,
+                "mean_occ": 35.25,
+                "mean_top": 5.37,
+                "mean_holes": 2.22
+              },
+              {
+                "pieces": 200,
+                "lines": 78,
+                "tetrises": 0,
+                "mean_occ": 64.15,
+                "mean_top": 8.89,
+                "mean_holes": 6.785
+              },
+              {
+                "pieces": 200,
+                "lines": 86,
+                "tetrises": 0,
+                "mean_occ": 55.1,
+                "mean_top": 7.49,
+                "mean_holes": 4.475
+              },
+              {
+                "pieces": 200,
+                "lines": 79,
+                "tetrises": 0,
+                "mean_occ": 17.85,
+                "mean_top": 3.31,
+                "mean_holes": 0.365
+              },
+              {
+                "pieces": 200,
+                "lines": 79,
+                "tetrises": 0,
+                "mean_occ": 37.2,
+                "mean_top": 5.47,
+                "mean_holes": 1.93
+              },
+              {
+                "pieces": 200,
+                "lines": 81,
+                "tetrises": 0,
+                "mean_occ": 19.75,
+                "mean_top": 3.63,
+                "mean_holes": 0.48
+              },
+              {
+                "pieces": 200,
+                "lines": 81,
+                "tetrises": 0,
+                "mean_occ": 17.4,
+                "mean_top": 3.295,
+                "mean_holes": 0.225
+              },
+              {
+                "pieces": 200,
+                "lines": 80,
+                "tetrises": 1,
+                "mean_occ": 17.8,
+                "mean_top": 3.27,
+                "mean_holes": 0.235
+              },
+              {
+                "pieces": 200,
+                "lines": 75,
+                "tetrises": 1,
+                "mean_occ": 26.05,
+                "mean_top": 4.34,
+                "mean_holes": 1.12
+              },
+              {
+                "pieces": 200,
+                "lines": 80,
+                "tetrises": 0,
+                "mean_occ": 62.25,
+                "mean_top": 8.555,
+                "mean_holes": 4.795
+              },
+              {
+                "pieces": 200,
+                "lines": 82,
+                "tetrises": 0,
+                "mean_occ": 77.95,
+                "mean_top": 10.295,
+                "mean_holes": 5.79
+              },
+              {
+                "pieces": 200,
+                "lines": 82,
+                "tetrises": 0,
+                "mean_occ": 43.1,
+                "mean_top": 6.27,
+                "mean_holes": 2.435
+              },
+              {
+                "pieces": 200,
+                "lines": 79,
+                "tetrises": 0,
+                "mean_occ": 19.05,
+                "mean_top": 3.49,
+                "mean_holes": 0.405
+              }
+            ],
+            "tetris_at": [
+              1829,
+              2017
+            ],
+            "final": {
+              "occ": 30,
+              "top": 5.0,
+              "holes": 1.0
+            },
+            "s": 670.2
+          },
+          "20595": {
+            "arm": "champ",
+            "seed": 20595,
+            "pieces": 3000,
+            "lines": 1198,
+            "clears": {
+              "0": 1922,
+              "1": 963,
+              "2": 110,
+              "3": 5,
+              "4": 0
+            },
+            "reason": "max_pieces",
+            "windows": [
+              {
+                "pieces": 200,
+                "lines": 75,
+                "tetrises": 0,
+                "mean_occ": 26.35,
+                "mean_top": 4.345,
+                "mean_holes": 1.74
+              },
+              {
+                "pieces": 200,
+                "lines": 76,
+                "tetrises": 0,
+                "mean_occ": 92.35,
+                "mean_top": 12.005,
+                "mean_holes": 8.985
+              },
+              {
+                "pieces": 200,
+                "lines": 87,
+                "tetrises": 0,
+                "mean_occ": 44.5,
+                "mean_top": 6.505,
+                "mean_holes": 3.48
+              },
+              {
+                "pieces": 200,
+                "lines": 81,
+                "tetrises": 0,
+                "mean_occ": 25.65,
+                "mean_top": 4.32,
+                "mean_holes": 1.31
+              },
+              {
+                "pieces": 200,
+                "lines": 79,
+                "tetrises": 0,
+                "mean_occ": 29.0,
+                "mean_top": 4.71,
+                "mean_holes": 1.045
+              },
+              {
+                "pieces": 200,
+                "lines": 80,
+                "tetrises": 0,
+                "mean_occ": 19.95,
+                "mean_top": 3.59,
+                "mean_holes": 0.75
+              },
+              {
+                "pieces": 200,
+                "lines": 82,
+                "tetrises": 0,
+                "mean_occ": 15.65,
+                "mean_top": 3.045,
+                "mean_holes": 0.44
+              },
+              {
+                "pieces": 200,
+                "lines": 78,
+                "tetrises": 0,
+                "mean_occ": 21.3,
+                "mean_top": 3.85,
+                "mean_holes": 0.915
+              },
+              {
+                "pieces": 200,
+                "lines": 79,
+                "tetrises": 0,
+                "mean_occ": 21.4,
+                "mean_top": 3.72,
+                "mean_holes": 0.58
+              },
+              {
+                "pieces": 200,
+                "lines": 81,
+                "tetrises": 0,
+                "mean_occ": 16.55,
+                "mean_top": 3.095,
+                "mean_holes": 0.255
+              },
+              {
+                "pieces": 200,
+                "lines": 81,
+                "tetrises": 0,
+                "mean_occ": 22.65,
+                "mean_top": 3.905,
+                "mean_holes": 0.895
+              },
+              {
+                "pieces": 200,
+                "lines": 79,
+                "tetrises": 0,
+                "mean_occ": 22.85,
+                "mean_top": 3.855,
+                "mean_holes": 0.87
+              },
+              {
+                "pieces": 200,
+                "lines": 80,
+                "tetrises": 0,
+                "mean_occ": 17.9,
+                "mean_top": 3.31,
+                "mean_holes": 0.44
+              },
+              {
+                "pieces": 200,
+                "lines": 77,
+                "tetrises": 0,
+                "mean_occ": 39.7,
+                "mean_top": 5.93,
+                "mean_holes": 3.45
+              },
+              {
+                "pieces": 200,
+                "lines": 83,
+                "tetrises": 0,
+                "mean_occ": 49.5,
+                "mean_top": 6.94,
+                "mean_holes": 4.8
+              }
+            ],
+            "tetris_at": [],
+            "final": {
+              "occ": 20,
+              "top": 3.0,
+              "holes": 1.0
+            },
+            "s": 678.5
+          },
+          "20596": {
+            "arm": "champ",
+            "seed": 20596,
+            "pieces": 3000,
+            "lines": 1196,
+            "clears": {
+              "0": 1953,
+              "1": 913,
+              "2": 120,
+              "3": 13,
+              "4": 1
+            },
+            "reason": "max_pieces",
+            "windows": [
+              {
+                "pieces": 200,
+                "lines": 79,
+                "tetrises": 0,
+                "mean_occ": 25.2,
+                "mean_top": 4.215,
+                "mean_holes": 1.24
+              },
+              {
+                "pieces": 200,
+                "lines": 80,
+                "tetrises": 0,
+                "mean_occ": 20.9,
+                "mean_top": 3.665,
+                "mean_holes": 0.445
+              },
+              {
+                "pieces": 200,
+                "lines": 79,
+                "tetrises": 0,
+                "mean_occ": 20.3,
+                "mean_top": 3.675,
+                "mean_holes": 0.4
+              },
+              {
+                "pieces": 200,
+                "lines": 79,
+                "tetrises": 0,
+                "mean_occ": 19.5,
+                "mean_top": 3.515,
+                "mean_holes": 0.925
+              },
+              {
+                "pieces": 200,
+                "lines": 79,
+                "tetrises": 0,
+                "mean_occ": 21.6,
+                "mean_top": 3.7,
+                "mean_holes": 0.725
+              },
+              {
+                "pieces": 200,
+                "lines": 81,
+                "tetrises": 0,
+                "mean_occ": 24.3,
+                "mean_top": 4.1,
+                "mean_holes": 0.93
+              },
+              {
+                "pieces": 200,
+                "lines": 81,
+                "tetrises": 1,
+                "mean_occ": 20.5,
+                "mean_top": 3.745,
+                "mean_holes": 0.44
+              },
+              {
+                "pieces": 200,
+                "lines": 78,
+                "tetrises": 0,
+                "mean_occ": 23.3,
+                "mean_top": 4.03,
+                "mean_holes": 0.845
+              },
+              {
+                "pieces": 200,
+                "lines": 83,
+                "tetrises": 0,
+                "mean_occ": 20.1,
+                "mean_top": 3.61,
+                "mean_holes": 0.56
+              },
+              {
+                "pieces": 200,
+                "lines": 80,
+                "tetrises": 0,
+                "mean_occ": 19.65,
+                "mean_top": 3.525,
+                "mean_holes": 0.5
+              },
+              {
+                "pieces": 200,
+                "lines": 79,
+                "tetrises": 0,
+                "mean_occ": 18.6,
+                "mean_top": 3.345,
+                "mean_holes": 0.4
+              },
+              {
+                "pieces": 200,
+                "lines": 79,
+                "tetrises": 0,
+                "mean_occ": 18.6,
+                "mean_top": 3.47,
+                "mean_holes": 0.565
+              },
+              {
+                "pieces": 200,
+                "lines": 80,
+                "tetrises": 0,
+                "mean_occ": 20.65,
+                "mean_top": 3.645,
+                "mean_holes": 0.775
+              },
+              {
+                "pieces": 200,
+                "lines": 81,
+                "tetrises": 0,
+                "mean_occ": 19.3,
+                "mean_top": 3.5,
+                "mean_holes": 0.445
+              },
+              {
+                "pieces": 200,
+                "lines": 78,
+                "tetrises": 0,
+                "mean_occ": 23.9,
+                "mean_top": 4.035,
+                "mean_holes": 0.9
+              }
+            ],
+            "tetris_at": [
+              1254
+            ],
+            "final": {
+              "occ": 40,
+              "top": 6.0,
+              "holes": 1.0
+            },
+            "s": 687.4
+          },
+          "20597": {
+            "arm": "champ",
+            "seed": 20597,
+            "pieces": 3000,
+            "lines": 1196,
+            "clears": {
+              "0": 1932,
+              "1": 960,
+              "2": 92,
+              "3": 12,
+              "4": 4
+            },
+            "reason": "max_pieces",
+            "windows": [
+              {
+                "pieces": 200,
+                "lines": 77,
+                "tetrises": 0,
+                "mean_occ": 20.0,
+                "mean_top": 3.69,
+                "mean_holes": 0.335
+              },
+              {
+                "pieces": 200,
+                "lines": 79,
+                "tetrises": 0,
+                "mean_occ": 39.3,
+                "mean_top": 5.915,
+                "mean_holes": 3.805
+              },
+              {
+                "pieces": 200,
+                "lines": 83,
+                "tetrises": 1,
+                "mean_occ": 22.25,
+                "mean_top": 3.86,
+                "mean_holes": 0.72
+              },
+              {
+                "pieces": 200,
+                "lines": 78,
+                "tetrises": 0,
+                "mean_occ": 16.75,
+                "mean_top": 3.105,
+                "mean_holes": 0.46
+              },
+              {
+                "pieces": 200,
+                "lines": 79,
+                "tetrises": 0,
+                "mean_occ": 24.35,
+                "mean_top": 4.135,
+                "mean_holes": 1.0
+              },
+              {
+                "pieces": 200,
+                "lines": 81,
+                "tetrises": 1,
+                "mean_occ": 43.9,
+                "mean_top": 6.495,
+                "mean_holes": 3.61
+              },
+              {
+                "pieces": 200,
+                "lines": 81,
+                "tetrises": 0,
+                "mean_occ": 19.8,
+                "mean_top": 3.63,
+                "mean_holes": 0.73
+              },
+              {
+                "pieces": 200,
+                "lines": 79,
+                "tetrises": 0,
+                "mean_occ": 17.3,
+                "mean_top": 3.215,
+                "mean_holes": 0.39
+              },
+              {
+                "pieces": 200,
+                "lines": 81,
+                "tetrises": 1,
+                "mean_occ": 20.75,
+                "mean_top": 3.74,
+                "mean_holes": 0.45
+              },
+              {
+                "pieces": 200,
+                "lines": 80,
+                "tetrises": 0,
+                "mean_occ": 26.4,
+                "mean_top": 4.395,
+                "mean_holes": 0.96
+              },
+              {
+                "pieces": 200,
+                "lines": 81,
+                "tetrises": 1,
+                "mean_occ": 20.65,
+                "mean_top": 3.705,
+                "mean_holes": 0.505
+              },
+              {
+                "pieces": 200,
+                "lines": 78,
+                "tetrises": 0,
+                "mean_occ": 17.5,
+                "mean_top": 3.285,
+                "mean_holes": 0.395
+              },
+              {
+                "pieces": 200,
+                "lines": 80,
+                "tetrises": 0,
+                "mean_occ": 19.05,
+                "mean_top": 3.595,
+                "mean_holes": 0.435
+              },
+              {
+                "pieces": 200,
+                "lines": 81,
+                "tetrises": 0,
+                "mean_occ": 25.4,
+                "mean_top": 4.175,
+                "mean_holes": 0.66
+              },
+              {
+                "pieces": 200,
+                "lines": 78,
+                "tetrises": 0,
+                "mean_occ": 23.6,
+                "mean_top": 3.915,
+                "mean_holes": 0.695
+              }
+            ],
+            "tetris_at": [
+              448,
+              1074,
+              1712,
+              2166
+            ],
+            "final": {
+              "occ": 40,
+              "top": 5.0,
+              "holes": 2.0
+            },
+            "s": 676.7
+          },
+          "20598": {
+            "arm": "champ",
+            "seed": 20598,
+            "pieces": 3000,
+            "lines": 1198,
+            "clears": {
+              "0": 1924,
+              "1": 964,
+              "2": 103,
+              "3": 8,
+              "4": 1
+            },
+            "reason": "max_pieces",
+            "windows": [
+              {
+                "pieces": 200,
+                "lines": 78,
+                "tetrises": 0,
+                "mean_occ": 19.9,
+                "mean_top": 3.65,
+                "mean_holes": 0.475
+              },
+              {
+                "pieces": 200,
+                "lines": 78,
+                "tetrises": 0,
+                "mean_occ": 20.95,
+                "mean_top": 3.735,
+                "mean_holes": 0.665
+              },
+              {
+                "pieces": 200,
+                "lines": 83,
+                "tetrises": 0,
+                "mean_occ": 21.05,
+                "mean_top": 3.73,
+                "mean_holes": 0.525
+              },
+              {
+                "pieces": 200,
+                "lines": 80,
+                "tetrises": 0,
+                "mean_occ": 18.7,
+                "mean_top": 3.61,
+                "mean_holes": 0.215
+              },
+              {
+                "pieces": 200,
+                "lines": 79,
+                "tetrises": 1,
+                "mean_occ": 24.75,
+                "mean_top": 4.23,
+                "mean_holes": 0.885
+              },
+              {
+                "pieces": 200,
+                "lines": 81,
+                "tetrises": 0,
+                "mean_occ": 19.65,
+                "mean_top": 3.65,
+                "mean_holes": 0.325
+              },
+              {
+                "pieces": 200,
+                "lines": 78,
+                "tetrises": 0,
+                "mean_occ": 17.35,
+                "mean_top": 3.255,
+                "mean_holes": 0.52
+              },
+              {
+                "pieces": 200,
+                "lines": 78,
+                "tetrises": 0,
+                "mean_occ": 44.3,
+                "mean_top": 6.41,
+                "mean_holes": 2.26
+              },
+              {
+                "pieces": 200,
+                "lines": 81,
+                "tetrises": 0,
+                "mean_occ": 38.5,
+                "mean_top": 5.87,
+                "mean_holes": 3.435
+              },
+              {
+                "pieces": 200,
+                "lines": 82,
+                "tetrises": 0,
+                "mean_occ": 20.85,
+                "mean_top": 3.765,
+                "mean_holes": 0.4
+              },
+              {
+                "pieces": 200,
+                "lines": 80,
+                "tetrises": 0,
+                "mean_occ": 18.25,
+                "mean_top": 3.34,
+                "mean_holes": 0.51
+              },
+              {
+                "pieces": 200,
+                "lines": 81,
+                "tetrises": 0,
+                "mean_occ": 15.45,
+                "mean_top": 3.18,
+                "mean_holes": 0.295
+              },
+              {
+                "pieces": 200,
+                "lines": 79,
+                "tetrises": 0,
+                "mean_occ": 27.75,
+                "mean_top": 4.535,
+                "mean_holes": 2.175
+              },
+              {
+                "pieces": 200,
+                "lines": 80,
+                "tetrises": 0,
+                "mean_occ": 20.8,
+                "mean_top": 3.71,
+                "mean_holes": 0.505
+              },
+              {
+                "pieces": 200,
+                "lines": 80,
+                "tetrises": 0,
+                "mean_occ": 39.55,
+                "mean_top": 6.035,
+                "mean_holes": 4.495
+              }
+            ],
+            "tetris_at": [
+              886
+            ],
+            "final": {
+              "occ": 20,
+              "top": 4.0,
+              "holes": 0.0
+            },
+            "s": 660.9
+          },
+          "20599": {
+            "arm": "champ",
+            "seed": 20599,
+            "pieces": 3000,
+            "lines": 1198,
+            "clears": {
+              "0": 1935,
+              "1": 946,
+              "2": 107,
+              "3": 10,
+              "4": 2
+            },
+            "reason": "max_pieces",
+            "windows": [
+              {
+                "pieces": 200,
+                "lines": 78,
+                "tetrises": 0,
+                "mean_occ": 21.45,
+                "mean_top": 3.94,
+                "mean_holes": 0.64
+              },
+              {
+                "pieces": 200,
+                "lines": 81,
+                "tetrises": 1,
+                "mean_occ": 18.45,
+                "mean_top": 3.325,
+                "mean_holes": 0.65
+              },
+              {
+                "pieces": 200,
+                "lines": 79,
+                "tetrises": 1,
+                "mean_occ": 20.65,
+                "mean_top": 3.625,
+                "mean_holes": 0.715
+              },
+              {
+                "pieces": 200,
+                "lines": 81,
+                "tetrises": 0,
+                "mean_occ": 18.75,
+                "mean_top": 3.385,
+                "mean_holes": 0.245
+              },
+              {
+                "pieces": 200,
+                "lines": 79,
+                "tetrises": 0,
+                "mean_occ": 23.8,
+                "mean_top": 4.155,
+                "mean_holes": 1.13
+              },
+              {
+                "pieces": 200,
+                "lines": 80,
+                "tetrises": 0,
+                "mean_occ": 17.45,
+                "mean_top": 3.35,
+                "mean_holes": 0.32
+              },
+              {
+                "pieces": 200,
+                "lines": 78,
+                "tetrises": 0,
+                "mean_occ": 19.55,
+                "mean_top": 3.61,
+                "mean_holes": 0.69
+              },
+              {
+                "pieces": 200,
+                "lines": 81,
+                "tetrises": 0,
+                "mean_occ": 22.8,
+                "mean_top": 4.07,
+                "mean_holes": 0.94
+              },
+              {
+                "pieces": 200,
+                "lines": 81,
+                "tetrises": 0,
+                "mean_occ": 19.3,
+                "mean_top": 3.57,
+                "mean_holes": 0.345
+              },
+              {
+                "pieces": 200,
+                "lines": 81,
+                "tetrises": 0,
+                "mean_occ": 26.0,
+                "mean_top": 4.315,
+                "mean_holes": 1.425
+              },
+              {
+                "pieces": 200,
+                "lines": 78,
+                "tetrises": 0,
+                "mean_occ": 30.1,
+                "mean_top": 4.79,
+                "mean_holes": 1.86
+              },
+              {
+                "pieces": 200,
+                "lines": 81,
+                "tetrises": 0,
+                "mean_occ": 25.4,
+                "mean_top": 4.185,
+                "mean_holes": 0.93
+              },
+              {
+                "pieces": 200,
+                "lines": 80,
+                "tetrises": 0,
+                "mean_occ": 16.35,
+                "mean_top": 3.225,
+                "mean_holes": 0.22
+              },
+              {
+                "pieces": 200,
+                "lines": 80,
+                "tetrises": 0,
+                "mean_occ": 15.95,
+                "mean_top": 3.005,
+                "mean_holes": 0.35
+              },
+              {
+                "pieces": 200,
+                "lines": 80,
+                "tetrises": 0,
+                "mean_occ": 17.65,
+                "mean_top": 3.38,
+                "mean_holes": 0.435
+              }
+            ],
+            "tetris_at": [
+              363,
+              574
+            ],
+            "final": {
+              "occ": 20,
+              "top": 4.0,
+              "holes": 1.0
+            },
+            "s": 665.1
+          },
+          "20600": {
+            "arm": "champ",
+            "seed": 20600,
+            "pieces": 3000,
+            "lines": 1198,
+            "clears": {
+              "0": 1933,
+              "1": 947,
+              "2": 111,
+              "3": 7,
+              "4": 2
+            },
+            "reason": "max_pieces",
+            "windows": [
+              {
+                "pieces": 200,
+                "lines": 79,
+                "tetrises": 0,
+                "mean_occ": 17.0,
+                "mean_top": 3.21,
+                "mean_holes": 0.455
+              },
+              {
+                "pieces": 200,
+                "lines": 76,
+                "tetrises": 0,
+                "mean_occ": 24.75,
+                "mean_top": 4.16,
+                "mean_holes": 1.0
+              },
+              {
+                "pieces": 200,
+                "lines": 83,
+                "tetrises": 1,
+                "mean_occ": 29.0,
+                "mean_top": 4.67,
+                "mean_holes": 1.275
+              },
+              {
+                "pieces": 200,
+                "lines": 80,
+                "tetrises": 0,
+                "mean_occ": 18.6,
+                "mean_top": 3.37,
+                "mean_holes": 0.575
+              },
+              {
+                "pieces": 200,
+                "lines": 80,
+                "tetrises": 0,
+                "mean_occ": 20.05,
+                "mean_top": 3.76,
+                "mean_holes": 0.555
+              },
+              {
+                "pieces": 200,
+                "lines": 80,
+                "tetrises": 0,
+                "mean_occ": 18.75,
+                "mean_top": 3.445,
+                "mean_holes": 0.415
+              },
+              {
+                "pieces": 200,
+                "lines": 78,
+                "tetrises": 0,
+                "mean_occ": 22.1,
+                "mean_top": 3.825,
+                "mean_holes": 0.745
+              },
+              {
+                "pieces": 200,
+                "lines": 82,
+                "tetrises": 0,
+                "mean_occ": 23.95,
+                "mean_top": 3.945,
+                "mean_holes": 0.91
+              },
+              {
+                "pieces": 200,
+                "lines": 78,
+                "tetrises": 0,
+                "mean_occ": 22.25,
+                "mean_top": 3.885,
+                "mean_holes": 0.76
+              },
+              {
+                "pieces": 200,
+                "lines": 82,
+                "tetrises": 0,
+                "mean_occ": 27.8,
+                "mean_top": 4.55,
+                "mean_holes": 1.295
+              },
+              {
+                "pieces": 200,
+                "lines": 76,
+                "tetrises": 1,
+                "mean_occ": 47.55,
+                "mean_top": 6.825,
+                "mean_holes": 2.725
+              },
+              {
+                "pieces": 200,
+                "lines": 83,
+                "tetrises": 0,
+                "mean_occ": 24.15,
+                "mean_top": 4.035,
+                "mean_holes": 0.93
+              },
+              {
+                "pieces": 200,
+                "lines": 80,
+                "tetrises": 0,
+                "mean_occ": 24.1,
+                "mean_top": 4.1,
+                "mean_holes": 0.2
+              },
+              {
+                "pieces": 200,
+                "lines": 82,
+                "tetrises": 0,
+                "mean_occ": 15.65,
+                "mean_top": 3.13,
+                "mean_holes": 0.34
+              },
+              {
+                "pieces": 200,
+                "lines": 79,
+                "tetrises": 0,
+                "mean_occ": 21.3,
+                "mean_top": 3.99,
+                "mean_holes": 0.815
+              }
+            ],
+            "tetris_at": [
+              516,
+              2184
+            ],
+            "final": {
+              "occ": 20,
+              "top": 5.0,
+              "holes": 1.0
+            },
+            "s": 666.9
+          },
+          "20601": {
+            "arm": "champ",
+            "seed": 20601,
+            "pieces": 3000,
+            "lines": 1198,
+            "clears": {
+              "0": 1918,
+              "1": 974,
+              "2": 100,
+              "3": 8,
+              "4": 0
+            },
+            "reason": "max_pieces",
+            "windows": [
+              {
+                "pieces": 200,
+                "lines": 75,
+                "tetrises": 0,
+                "mean_occ": 23.95,
+                "mean_top": 4.02,
+                "mean_holes": 0.795
+              },
+              {
+                "pieces": 200,
+                "lines": 81,
+                "tetrises": 0,
+                "mean_occ": 30.95,
+                "mean_top": 5.02,
+                "mean_holes": 1.05
+              },
+              {
+                "pieces": 200,
+                "lines": 78,
+                "tetrises": 0,
+                "mean_occ": 39.1,
+                "mean_top": 5.795,
+                "mean_holes": 2.185
+              },
+              {
+                "pieces": 200,
+                "lines": 83,
+                "tetrises": 0,
+                "mean_occ": 20.25,
+                "mean_top": 3.67,
+                "mean_holes": 0.925
+              },
+              {
+                "pieces": 200,
+                "lines": 80,
+                "tetrises": 0,
+                "mean_occ": 35.95,
+                "mean_top": 5.58,
+                "mean_holes": 2.61
+              },
+              {
+                "pieces": 200,
+                "lines": 82,
+                "tetrises": 0,
+                "mean_occ": 22.5,
+                "mean_top": 3.915,
+                "mean_holes": 0.9
+              },
+              {
+                "pieces": 200,
+                "lines": 79,
+                "tetrises": 0,
+                "mean_occ": 19.6,
+                "mean_top": 3.505,
+                "mean_holes": 0.34
+              },
+              {
+                "pieces": 200,
+                "lines": 80,
+                "tetrises": 0,
+                "mean_occ": 15.65,
+                "mean_top": 3.09,
+                "mean_holes": 0.24
+              },
+              {
+                "pieces": 200,
+                "lines": 81,
+                "tetrises": 0,
+                "mean_occ": 20.2,
+                "mean_top": 3.58,
+                "mean_holes": 0.605
+              },
+              {
+                "pieces": 200,
+                "lines": 79,
+                "tetrises": 0,
+                "mean_occ": 18.4,
+                "mean_top": 3.43,
+                "mean_holes": 0.81
+              },
+              {
+                "pieces": 200,
+                "lines": 79,
+                "tetrises": 0,
+                "mean_occ": 21.95,
+                "mean_top": 3.935,
+                "mean_holes": 0.96
+              },
+              {
+                "pieces": 200,
+                "lines": 77,
+                "tetrises": 0,
+                "mean_occ": 22.4,
+                "mean_top": 3.89,
+                "mean_holes": 1.01
+              },
+              {
+                "pieces": 200,
+                "lines": 81,
+                "tetrises": 0,
+                "mean_occ": 41.6,
+                "mean_top": 6.07,
+                "mean_holes": 3.52
+              },
+              {
+                "pieces": 200,
+                "lines": 83,
+                "tetrises": 0,
+                "mean_occ": 30.4,
+                "mean_top": 4.755,
+                "mean_holes": 2.78
+              },
+              {
+                "pieces": 200,
+                "lines": 80,
+                "tetrises": 0,
+                "mean_occ": 21.85,
+                "mean_top": 3.805,
+                "mean_holes": 0.625
+              }
+            ],
+            "tetris_at": [],
+            "final": {
+              "occ": 20,
+              "top": 3.0,
+              "holes": 0.0
+            },
+            "s": 667.2
+          },
+          "20602": {
+            "arm": "champ",
+            "seed": 20602,
+            "pieces": 3000,
+            "lines": 1197,
+            "clears": {
+              "0": 1930,
+              "1": 951,
+              "2": 112,
+              "3": 6,
+              "4": 1
+            },
+            "reason": "max_pieces",
+            "windows": [
+              {
+                "pieces": 200,
+                "lines": 76,
+                "tetrises": 0,
+                "mean_occ": 29.35,
+                "mean_top": 4.655,
+                "mean_holes": 1.185
+              },
+              {
+                "pieces": 200,
+                "lines": 83,
+                "tetrises": 1,
+                "mean_occ": 26.35,
+                "mean_top": 4.305,
+                "mean_holes": 1.135
+              },
+              {
+                "pieces": 200,
+                "lines": 77,
+                "tetrises": 0,
+                "mean_occ": 16.85,
+                "mean_top": 3.3,
+                "mean_holes": 0.285
+              },
+              {
+                "pieces": 200,
+                "lines": 83,
+                "tetrises": 0,
+                "mean_occ": 25.4,
+                "mean_top": 4.21,
+                "mean_holes": 1.33
+              },
+              {
+                "pieces": 200,
+                "lines": 77,
+                "tetrises": 0,
+                "mean_occ": 17.9,
+                "mean_top": 3.385,
+                "mean_holes": 0.455
+              },
+              {
+                "pieces": 200,
+                "lines": 81,
+                "tetrises": 0,
+                "mean_occ": 20.65,
+                "mean_top": 3.72,
+                "mean_holes": 0.475
+              },
+              {
+                "pieces": 200,
+                "lines": 81,
+                "tetrises": 0,
+                "mean_occ": 19.6,
+                "mean_top": 3.56,
+                "mean_holes": 0.62
+              },
+              {
+                "pieces": 200,
+                "lines": 80,
+                "tetrises": 0,
+                "mean_occ": 18.5,
+                "mean_top": 3.505,
+                "mean_holes": 0.44
+              },
+              {
+                "pieces": 200,
+                "lines": 80,
+                "tetrises": 0,
+                "mean_occ": 24.35,
+                "mean_top": 4.105,
+                "mean_holes": 1.01
+              },
+              {
+                "pieces": 200,
+                "lines": 79,
+                "tetrises": 0,
+                "mean_occ": 16.35,
+                "mean_top": 3.14,
+                "mean_holes": 0.34
+              },
+              {
+                "pieces": 200,
+                "lines": 80,
+                "tetrises": 0,
+                "mean_occ": 18.55,
+                "mean_top": 3.49,
+                "mean_holes": 0.43
+              },
+              {
+                "pieces": 200,
+                "lines": 81,
+                "tetrises": 0,
+                "mean_occ": 23.85,
+                "mean_top": 4.08,
+                "mean_holes": 0.92
+              },
+              {
+                "pieces": 200,
+                "lines": 80,
+                "tetrises": 0,
+                "mean_occ": 25.2,
+                "mean_top": 4.36,
+                "mean_holes": 0.91
+              },
+              {
+                "pieces": 200,
+                "lines": 81,
+                "tetrises": 0,
+                "mean_occ": 19.1,
+                "mean_top": 3.46,
+                "mean_holes": 0.4
+              },
+              {
+                "pieces": 200,
+                "lines": 78,
+                "tetrises": 0,
+                "mean_occ": 26.95,
+                "mean_top": 4.44,
+                "mean_holes": 1.455
+              }
+            ],
+            "tetris_at": [
+              396
+            ],
+            "final": {
+              "occ": 30,
+              "top": 5.0,
+              "holes": 1.0
+            },
+            "s": 672.8
+          },
+          "20603": {
+            "arm": "champ",
+            "seed": 20603,
+            "pieces": 3000,
+            "lines": 1197,
+            "clears": {
+              "0": 1939,
+              "1": 940,
+              "2": 109,
+              "3": 9,
+              "4": 3
+            },
+            "reason": "max_pieces",
+            "windows": [
+              {
+                "pieces": 200,
+                "lines": 79,
+                "tetrises": 0,
+                "mean_occ": 22.0,
+                "mean_top": 3.945,
+                "mean_holes": 0.8
+              },
+              {
+                "pieces": 200,
+                "lines": 80,
+                "tetrises": 0,
+                "mean_occ": 24.25,
+                "mean_top": 4.07,
+                "mean_holes": 0.97
+              },
+              {
+                "pieces": 200,
+                "lines": 80,
+                "tetrises": 0,
+                "mean_occ": 27.55,
+                "mean_top": 4.485,
+                "mean_holes": 0.78
+              },
+              {
+                "pieces": 200,
+                "lines": 79,
+                "tetrises": 0,
+                "mean_occ": 18.5,
+                "mean_top": 3.495,
+                "mean_holes": 0.58
+              },
+              {
+                "pieces": 200,
+                "lines": 81,
+                "tetrises": 0,
+                "mean_occ": 17.4,
+                "mean_top": 3.375,
+                "mean_holes": 0.335
+              },
+              {
+                "pieces": 200,
+                "lines": 78,
+                "tetrises": 0,
+                "mean_occ": 39.25,
+                "mean_top": 5.89,
+                "mean_holes": 2.985
+              },
+              {
+                "pieces": 200,
+                "lines": 81,
+                "tetrises": 0,
+                "mean_occ": 21.0,
+                "mean_top": 3.705,
+                "mean_holes": 0.9
+              },
+              {
+                "pieces": 200,
+                "lines": 77,
+                "tetrises": 0,
+                "mean_occ": 24.35,
+                "mean_top": 4.26,
+                "mean_holes": 1.36
+              },
+              {
+                "pieces": 200,
+                "lines": 80,
+                "tetrises": 1,
+                "mean_occ": 39.4,
+                "mean_top": 6.09,
+                "mean_holes": 3.27
+              },
+              {
+                "pieces": 200,
+                "lines": 82,
+                "tetrises": 0,
+                "mean_occ": 41.85,
+                "mean_top": 6.245,
+                "mean_holes": 4.94
+              },
+              {
+                "pieces": 200,
+                "lines": 82,
+                "tetrises": 0,
+                "mean_occ": 34.05,
+                "mean_top": 5.33,
+                "mean_holes": 2.885
+              },
+              {
+                "pieces": 200,
+                "lines": 78,
+                "tetrises": 0,
+                "mean_occ": 15.45,
+                "mean_top": 3.115,
+                "mean_holes": 0.245
+              },
+              {
+                "pieces": 200,
+                "lines": 82,
+                "tetrises": 1,
+                "mean_occ": 16.75,
+                "mean_top": 3.3,
+                "mean_holes": 0.325
+              },
+              {
+                "pieces": 200,
+                "lines": 79,
+                "tetrises": 1,
+                "mean_occ": 18.8,
+                "mean_top": 3.41,
+                "mean_holes": 0.47
+              },
+              {
+                "pieces": 200,
+                "lines": 79,
+                "tetrises": 0,
+                "mean_occ": 19.7,
+                "mean_top": 3.55,
+                "mean_holes": 0.42
+              }
+            ],
+            "tetris_at": [
+              1605,
+              2450,
+              2775
+            ],
+            "final": {
+              "occ": 30,
+              "top": 5.0,
+              "holes": 1.0
+            },
+            "s": 646.4
+          },
+          "20604": {
+            "arm": "champ",
+            "seed": 20604,
+            "pieces": 3000,
+            "lines": 1197,
+            "clears": {
+              "0": 1939,
+              "1": 933,
+              "2": 120,
+              "3": 8,
+              "4": 0
+            },
+            "reason": "max_pieces",
+            "windows": [
+              {
+                "pieces": 200,
+                "lines": 73,
+                "tetrises": 0,
+                "mean_occ": 19.85,
+                "mean_top": 3.675,
+                "mean_holes": 0.795
+              },
+              {
+                "pieces": 200,
+                "lines": 85,
+                "tetrises": 0,
+                "mean_occ": 26.2,
+                "mean_top": 4.305,
+                "mean_holes": 1.325
+              },
+              {
+                "pieces": 200,
+                "lines": 80,
+                "tetrises": 0,
+                "mean_occ": 20.2,
+                "mean_top": 3.56,
+                "mean_holes": 0.66
+              },
+              {
+                "pieces": 200,
+                "lines": 79,
+                "tetrises": 0,
+                "mean_occ": 18.6,
+                "mean_top": 3.58,
+                "mean_holes": 0.405
+              },
+              {
+                "pieces": 200,
+                "lines": 82,
+                "tetrises": 0,
+                "mean_occ": 31.1,
+                "mean_top": 4.825,
+                "mean_holes": 1.69
+              },
+              {
+                "pieces": 200,
+                "lines": 79,
+                "tetrises": 0,
+                "mean_occ": 18.85,
+                "mean_top": 3.49,
+                "mean_holes": 0.495
+              },
+              {
+                "pieces": 200,
+                "lines": 80,
+                "tetrises": 0,
+                "mean_occ": 18.8,
+                "mean_top": 3.525,
+                "mean_holes": 0.425
+              },
+              {
+                "pieces": 200,
+                "lines": 80,
+                "tetrises": 0,
+                "mean_occ": 17.45,
+                "mean_top": 3.27,
+                "mean_holes": 0.265
+              },
+              {
+                "pieces": 200,
+                "lines": 81,
+                "tetrises": 0,
+                "mean_occ": 20.45,
+                "mean_top": 3.59,
+                "mean_holes": 0.42
+              },
+              {
+                "pieces": 200,
+                "lines": 79,
+                "tetrises": 0,
+                "mean_occ": 22.5,
+                "mean_top": 3.885,
+                "mean_holes": 1.005
+              },
+              {
+                "pieces": 200,
+                "lines": 79,
+                "tetrises": 0,
+                "mean_occ": 18.35,
+                "mean_top": 3.405,
+                "mean_holes": 0.57
+              },
+              {
+                "pieces": 200,
+                "lines": 79,
+                "tetrises": 0,
+                "mean_occ": 22.25,
+                "mean_top": 3.8,
+                "mean_holes": 0.79
+              },
+              {
+                "pieces": 200,
+                "lines": 82,
+                "tetrises": 0,
+                "mean_occ": 22.55,
+                "mean_top": 3.91,
+                "mean_holes": 0.62
+              },
+              {
+                "pieces": 200,
+                "lines": 80,
+                "tetrises": 0,
+                "mean_occ": 19.55,
+                "mean_top": 3.575,
+                "mean_holes": 0.515
+              },
+              {
+                "pieces": 200,
+                "lines": 79,
+                "tetrises": 0,
+                "mean_occ": 19.2,
+                "mean_top": 3.495,
+                "mean_holes": 0.49
+              }
+            ],
+            "tetris_at": [],
+            "final": {
+              "occ": 30,
+              "top": 6.0,
+              "holes": 1.0
+            },
+            "s": 624.4
+          },
+          "20605": {
+            "arm": "champ",
+            "seed": 20605,
+            "pieces": 3000,
+            "lines": 1196,
+            "clears": {
+              "0": 1930,
+              "1": 958,
+              "2": 100,
+              "3": 10,
+              "4": 2
+            },
+            "reason": "max_pieces",
+            "windows": [
+              {
+                "pieces": 200,
+                "lines": 79,
+                "tetrises": 0,
+                "mean_occ": 17.5,
+                "mean_top": 3.35,
+                "mean_holes": 0.24
+              },
+              {
+                "pieces": 200,
+                "lines": 79,
+                "tetrises": 0,
+                "mean_occ": 33.3,
+                "mean_top": 5.315,
+                "mean_holes": 1.495
+              },
+              {
+                "pieces": 200,
+                "lines": 81,
+                "tetrises": 1,
+                "mean_occ": 19.85,
+                "mean_top": 3.55,
+                "mean_holes": 0.425
+              },
+              {
+                "pieces": 200,
+                "lines": 80,
+                "tetrises": 0,
+                "mean_occ": 16.65,
+                "mean_top": 3.255,
+                "mean_holes": 0.37
+              },
+              {
+                "pieces": 200,
+                "lines": 76,
+                "tetrises": 0,
+                "mean_occ": 24.25,
+                "mean_top": 4.07,
+                "mean_holes": 0.855
+              },
+              {
+                "pieces": 200,
+                "lines": 82,
+                "tetrises": 0,
+                "mean_occ": 21.45,
+                "mean_top": 3.81,
+                "mean_holes": 0.985
+              },
+              {
+                "pieces": 200,
+                "lines": 79,
+                "tetrises": 0,
+                "mean_occ": 18.55,
+                "mean_top": 3.33,
+                "mean_holes": 0.425
+              },
+              {
+                "pieces": 200,
+                "lines": 82,
+                "tetrises": 0,
+                "mean_occ": 19.25,
+                "mean_top": 3.565,
+                "mean_holes": 0.52
+              },
+              {
+                "pieces": 200,
+                "lines": 78,
+                "tetrises": 0,
+                "mean_occ": 34.2,
+                "mean_top": 5.335,
+                "mean_holes": 3.195
+              },
+              {
+                "pieces": 200,
+                "lines": 81,
+                "tetrises": 0,
+                "mean_occ": 21.95,
+                "mean_top": 3.905,
+                "mean_holes": 0.935
+              },
+              {
+                "pieces": 200,
+                "lines": 82,
+                "tetrises": 0,
+                "mean_occ": 37.3,
+                "mean_top": 5.605,
+                "mean_holes": 2.67
+              },
+              {
+                "pieces": 200,
+                "lines": 79,
+                "tetrises": 1,
+                "mean_occ": 19.9,
+                "mean_top": 3.705,
+                "mean_holes": 0.505
+              },
+              {
+                "pieces": 200,
+                "lines": 79,
+                "tetrises": 0,
+                "mean_occ": 25.35,
+                "mean_top": 4.25,
+                "mean_holes": 0.73
+              },
+              {
+                "pieces": 200,
+                "lines": 80,
+                "tetrises": 0,
+                "mean_occ": 24.05,
+                "mean_top": 4.195,
+                "mean_holes": 1.07
+              },
+              {
+                "pieces": 200,
+                "lines": 79,
+                "tetrises": 0,
+                "mean_occ": 21.25,
+                "mean_top": 3.75,
+                "mean_holes": 0.93
+              }
+            ],
+            "tetris_at": [
+              431,
+              2393
+            ],
+            "final": {
+              "occ": 40,
+              "top": 6.0,
+              "holes": 2.0
+            },
+            "s": 629.4
+          },
+          "20606": {
+            "arm": "champ",
+            "seed": 20606,
+            "pieces": 3000,
+            "lines": 1198,
+            "clears": {
+              "0": 1922,
+              "1": 973,
+              "2": 93,
+              "3": 9,
+              "4": 3
+            },
+            "reason": "max_pieces",
+            "windows": [
+              {
+                "pieces": 200,
+                "lines": 78,
+                "tetrises": 0,
+                "mean_occ": 16.7,
+                "mean_top": 3.285,
+                "mean_holes": 0.18
+              },
+              {
+                "pieces": 200,
+                "lines": 79,
+                "tetrises": 0,
+                "mean_occ": 19.95,
+                "mean_top": 3.685,
+                "mean_holes": 1.04
+              },
+              {
+                "pieces": 200,
+                "lines": 80,
+                "tetrises": 0,
+                "mean_occ": 24.4,
+                "mean_top": 4.175,
+                "mean_holes": 1.095
+              },
+              {
+                "pieces": 200,
+                "lines": 82,
+                "tetrises": 0,
+                "mean_occ": 20.55,
+                "mean_top": 3.74,
+                "mean_holes": 0.88
+              },
+              {
+                "pieces": 200,
+                "lines": 79,
+                "tetrises": 0,
+                "mean_occ": 22.75,
+                "mean_top": 3.9,
+                "mean_holes": 0.675
+              },
+              {
+                "pieces": 200,
+                "lines": 79,
+                "tetrises": 0,
+                "mean_occ": 19.85,
+                "mean_top": 3.555,
+                "mean_holes": 0.6
+              },
+              {
+                "pieces": 200,
+                "lines": 81,
+                "tetrises": 0,
+                "mean_occ": 22.5,
+                "mean_top": 3.88,
+                "mean_holes": 0.44
+              },
+              {
+                "pieces": 200,
+                "lines": 72,
+                "tetrises": 0,
+                "mean_occ": 72.2,
+                "mean_top": 9.675,
+                "mean_holes": 6.22
+              },
+              {
+                "pieces": 200,
+                "lines": 81,
+                "tetrises": 0,
+                "mean_occ": 108.5,
+                "mean_top": 13.78,
+                "mean_holes": 9.865
+              },
+              {
+                "pieces": 200,
+                "lines": 87,
+                "tetrises": 1,
+                "mean_occ": 67.1,
+                "mean_top": 8.915,
+                "mean_holes": 4.505
+              },
+              {
+                "pieces": 200,
+                "lines": 80,
+                "tetrises": 0,
+                "mean_occ": 16.85,
+                "mean_top": 3.355,
+                "mean_holes": 0.4
+              },
+              {
+                "pieces": 200,
+                "lines": 80,
+                "tetrises": 0,
+                "mean_occ": 20.0,
+                "mean_top": 3.535,
+                "mean_holes": 0.59
+              },
+              {
+                "pieces": 200,
+                "lines": 80,
+                "tetrises": 0,
+                "mean_occ": 29.55,
+                "mean_top": 4.765,
+                "mean_holes": 2.385
+              },
+              {
+                "pieces": 200,
+                "lines": 76,
+                "tetrises": 0,
+                "mean_occ": 51.6,
+                "mean_top": 7.415,
+                "mean_holes": 4.01
+              },
+              {
+                "pieces": 200,
+                "lines": 84,
+                "tetrises": 2,
+                "mean_occ": 33.1,
+                "mean_top": 5.08,
+                "mean_holes": 1.6
+              }
+            ],
+            "tetris_at": [
+              1980,
+              2845,
+              2970
+            ],
+            "final": {
+              "occ": 20,
+              "top": 5.0,
+              "holes": 0.0
+            },
+            "s": 615.4
+          },
+          "20607": {
+            "arm": "champ",
+            "seed": 20607,
+            "pieces": 3000,
+            "lines": 1198,
+            "clears": {
+              "0": 1940,
+              "1": 937,
+              "2": 110,
+              "3": 11,
+              "4": 2
+            },
+            "reason": "max_pieces",
+            "windows": [
+              {
+                "pieces": 200,
+                "lines": 78,
+                "tetrises": 0,
+                "mean_occ": 20.4,
+                "mean_top": 3.725,
+                "mean_holes": 0.49
+              },
+              {
+                "pieces": 200,
+                "lines": 81,
+                "tetrises": 0,
+                "mean_occ": 17.2,
+                "mean_top": 3.28,
+                "mean_holes": 0.135
+              },
+              {
+                "pieces": 200,
+                "lines": 80,
+                "tetrises": 1,
+                "mean_occ": 16.5,
+                "mean_top": 3.23,
+                "mean_holes": 0.22
+              },
+              {
+                "pieces": 200,
+                "lines": 77,
+                "tetrises": 0,
+                "mean_occ": 25.8,
+                "mean_top": 4.325,
+                "mean_holes": 1.125
+              },
+              {
+                "pieces": 200,
+                "lines": 82,
+                "tetrises": 0,
+                "mean_occ": 20.05,
+                "mean_top": 3.635,
+                "mean_holes": 0.945
+              },
+              {
+                "pieces": 200,
+                "lines": 80,
+                "tetrises": 0,
+                "mean_occ": 24.55,
+                "mean_top": 4.105,
+                "mean_holes": 1.255
+              },
+              {
+                "pieces": 200,
+                "lines": 75,
+                "tetrises": 1,
+                "mean_occ": 32.7,
+                "mean_top": 5.21,
+                "mean_holes": 1.345
+              },
+              {
+                "pieces": 200,
+                "lines": 84,
+                "tetrises": 0,
+                "mean_occ": 51.6,
+                "mean_top": 7.205,
+                "mean_holes": 3.095
+              },
+              {
+                "pieces": 200,
+                "lines": 82,
+                "tetrises": 0,
+                "mean_occ": 18.85,
+                "mean_top": 3.48,
+                "mean_holes": 0.355
+              },
+              {
+                "pieces": 200,
+                "lines": 80,
+                "tetrises": 0,
+                "mean_occ": 19.35,
+                "mean_top": 3.53,
+                "mean_holes": 0.92
+              },
+              {
+                "pieces": 200,
+                "lines": 78,
+                "tetrises": 0,
+                "mean_occ": 19.4,
+                "mean_top": 3.51,
+                "mean_holes": 0.63
+              },
+              {
+                "pieces": 200,
+                "lines": 81,
+                "tetrises": 0,
+                "mean_occ": 19.7,
+                "mean_top": 3.635,
+                "mean_holes": 0.4
+              },
+              {
+                "pieces": 200,
+                "lines": 76,
+                "tetrises": 0,
+                "mean_occ": 36.3,
+                "mean_top": 5.45,
+                "mean_holes": 2.23
+              },
+              {
+                "pieces": 200,
+                "lines": 84,
+                "tetrises": 0,
+                "mean_occ": 32.9,
+                "mean_top": 5.05,
+                "mean_holes": 2.075
+              },
+              {
+                "pieces": 200,
+                "lines": 80,
+                "tetrises": 0,
+                "mean_occ": 21.75,
+                "mean_top": 3.87,
+                "mean_holes": 0.83
+              }
+            ],
+            "tetris_at": [
+              438,
+              1218
+            ],
+            "final": {
+              "occ": 20,
+              "top": 4.0,
+              "holes": 0.0
+            },
+            "s": 617.2
+          },
+          "20608": {
+            "arm": "champ",
+            "seed": 20608,
+            "pieces": 3000,
+            "lines": 1198,
+            "clears": {
+              "0": 1940,
+              "1": 931,
+              "2": 121,
+              "3": 7,
+              "4": 1
+            },
+            "reason": "max_pieces",
+            "windows": [
+              {
+                "pieces": 200,
+                "lines": 78,
+                "tetrises": 0,
+                "mean_occ": 18.4,
+                "mean_top": 3.4,
+                "mean_holes": 0.735
+              },
+              {
+                "pieces": 200,
+                "lines": 79,
+                "tetrises": 1,
+                "mean_occ": 21.9,
+                "mean_top": 3.945,
+                "mean_holes": 0.595
+              },
+              {
+                "pieces": 200,
+                "lines": 81,
+                "tetrises": 0,
+                "mean_occ": 18.0,
+                "mean_top": 3.355,
+                "mean_holes": 0.45
+              },
+              {
+                "pieces": 200,
+                "lines": 80,
+                "tetrises": 0,
+                "mean_occ": 20.2,
+                "mean_top": 3.605,
+                "mean_holes": 0.44
+              },
+              {
+                "pieces": 200,
+                "lines": 76,
+                "tetrises": 0,
+                "mean_occ": 30.5,
+                "mean_top": 4.85,
+                "mean_holes": 1.355
+              },
+              {
+                "pieces": 200,
+                "lines": 82,
+                "tetrises": 0,
+                "mean_occ": 29.9,
+                "mean_top": 4.75,
+                "mean_holes": 1.16
+              },
+              {
+                "pieces": 200,
+                "lines": 79,
+                "tetrises": 0,
+                "mean_occ": 53.05,
+                "mean_top": 7.335,
+                "mean_holes": 4.0
+              },
+              {
+                "pieces": 200,
+                "lines": 83,
+                "tetrises": 0,
+                "mean_occ": 42.9,
+                "mean_top": 6.43,
+                "mean_holes": 3.06
+              },
+              {
+                "pieces": 200,
+                "lines": 77,
+                "tetrises": 0,
+                "mean_occ": 33.95,
+                "mean_top": 5.435,
+                "mean_holes": 2.775
+              },
+              {
+                "pieces": 200,
+                "lines": 84,
+                "tetrises": 0,
+                "mean_occ": 19.35,
+                "mean_top": 3.505,
+                "mean_holes": 0.525
+              },
+              {
+                "pieces": 200,
+                "lines": 80,
+                "tetrises": 0,
+                "mean_occ": 17.15,
+                "mean_top": 3.255,
+                "mean_holes": 0.21
+              },
+              {
+                "pieces": 200,
+                "lines": 79,
+                "tetrises": 0,
+                "mean_occ": 21.15,
+                "mean_top": 3.97,
+                "mean_holes": 0.42
+              },
+              {
+                "pieces": 200,
+                "lines": 81,
+                "tetrises": 0,
+                "mean_occ": 22.0,
+                "mean_top": 3.795,
+                "mean_holes": 0.86
+              },
+              {
+                "pieces": 200,
+                "lines": 78,
+                "tetrises": 0,
+                "mean_occ": 25.85,
+                "mean_top": 4.54,
+                "mean_holes": 1.07
+              },
+              {
+                "pieces": 200,
+                "lines": 81,
+                "tetrises": 0,
+                "mean_occ": 43.85,
+                "mean_top": 6.6,
+                "mean_holes": 2.515
+              }
+            ],
+            "tetris_at": [
+              286
+            ],
+            "final": {
+              "occ": 20,
+              "top": 4.0,
+              "holes": 0.0
+            },
+            "s": 627.1
+          },
+          "20609": {
+            "arm": "champ",
+            "seed": 20609,
+            "pieces": 3000,
+            "lines": 1199,
+            "clears": {
+              "0": 1964,
+              "1": 889,
+              "2": 133,
+              "3": 12,
+              "4": 2
+            },
+            "reason": "max_pieces",
+            "windows": [
+              {
+                "pieces": 200,
+                "lines": 78,
+                "tetrises": 0,
+                "mean_occ": 18.8,
+                "mean_top": 3.365,
+                "mean_holes": 0.6
+              },
+              {
+                "pieces": 200,
+                "lines": 79,
+                "tetrises": 0,
+                "mean_occ": 20.65,
+                "mean_top": 3.845,
+                "mean_holes": 0.615
+              },
+              {
+                "pieces": 200,
+                "lines": 82,
+                "tetrises": 1,
+                "mean_occ": 27.15,
+                "mean_top": 4.435,
+                "mean_holes": 1.33
+              },
+              {
+                "pieces": 200,
+                "lines": 78,
+                "tetrises": 1,
+                "mean_occ": 15.5,
+                "mean_top": 3.05,
+                "mean_holes": 0.25
+              },
+              {
+                "pieces": 200,
+                "lines": 77,
+                "tetrises": 0,
+                "mean_occ": 49.85,
+                "mean_top": 7.16,
+                "mean_holes": 5.83
+              },
+              {
+                "pieces": 200,
+                "lines": 82,
+                "tetrises": 0,
+                "mean_occ": 56.05,
+                "mean_top": 7.615,
+                "mean_holes": 4.655
+              },
+              {
+                "pieces": 200,
+                "lines": 82,
+                "tetrises": 0,
+                "mean_occ": 19.55,
+                "mean_top": 3.57,
+                "mean_holes": 0.605
+              },
+              {
+                "pieces": 200,
+                "lines": 79,
+                "tetrises": 0,
+                "mean_occ": 29.6,
+                "mean_top": 4.735,
+                "mean_holes": 1.455
+              },
+              {
+                "pieces": 200,
+                "lines": 81,
+                "tetrises": 0,
+                "mean_occ": 19.55,
+                "mean_top": 3.545,
+                "mean_holes": 0.53
+              },
+              {
+                "pieces": 200,
+                "lines": 79,
+                "tetrises": 0,
+                "mean_occ": 17.35,
+                "mean_top": 3.41,
+                "mean_holes": 0.46
+              },
+              {
+                "pieces": 200,
+                "lines": 82,
+                "tetrises": 0,
+                "mean_occ": 18.35,
+                "mean_top": 3.44,
+                "mean_holes": 0.235
+              },
+              {
+                "pieces": 200,
+                "lines": 78,
+                "tetrises": 0,
+                "mean_occ": 17.15,
+                "mean_top": 3.16,
+                "mean_holes": 0.255
+              },
+              {
+                "pieces": 200,
+                "lines": 82,
+                "tetrises": 0,
+                "mean_occ": 20.85,
+                "mean_top": 3.675,
+                "mean_holes": 0.45
+              },
+              {
+                "pieces": 200,
+                "lines": 78,
+                "tetrises": 0,
+                "mean_occ": 25.8,
+                "mean_top": 4.21,
+                "mean_holes": 1.17
+              },
+              {
+                "pieces": 200,
+                "lines": 82,
+                "tetrises": 0,
+                "mean_occ": 32.1,
+                "mean_top": 5.055,
+                "mean_holes": 1.63
+              }
+            ],
+            "tetris_at": [
+              506,
+              683
+            ],
+            "final": {
+              "occ": 10,
+              "top": 3.0,
+              "holes": 0.0
+            },
+            "s": 622.5
+          },
+          "20610": {
+            "arm": "champ",
+            "seed": 20610,
+            "pieces": 3000,
+            "lines": 1197,
+            "clears": {
+              "0": 1927,
+              "1": 959,
+              "2": 104,
+              "3": 10,
+              "4": 0
+            },
+            "reason": "max_pieces",
+            "windows": [
+              {
+                "pieces": 200,
+                "lines": 79,
+                "tetrises": 0,
+                "mean_occ": 19.05,
+                "mean_top": 3.485,
+                "mean_holes": 0.42
+              },
+              {
+                "pieces": 200,
+                "lines": 78,
+                "tetrises": 0,
+                "mean_occ": 15.65,
+                "mean_top": 3.07,
+                "mean_holes": 0.27
+              },
+              {
+                "pieces": 200,
+                "lines": 81,
+                "tetrises": 0,
+                "mean_occ": 26.7,
+                "mean_top": 4.405,
+                "mean_holes": 0.99
+              },
+              {
+                "pieces": 200,
+                "lines": 79,
+                "tetrises": 0,
+                "mean_occ": 18.6,
+                "mean_top": 3.43,
+                "mean_holes": 0.45
+              },
+              {
+                "pieces": 200,
+                "lines": 81,
+                "tetrises": 0,
+                "mean_occ": 20.35,
+                "mean_top": 3.635,
+                "mean_holes": 0.6
+              },
+              {
+                "pieces": 200,
+                "lines": 81,
+                "tetrises": 0,
+                "mean_occ": 21.5,
+                "mean_top": 3.82,
+                "mean_holes": 1.235
+              },
+              {
+                "pieces": 200,
+                "lines": 80,
+                "tetrises": 0,
+                "mean_occ": 18.85,
+                "mean_top": 3.465,
+                "mean_holes": 0.455
+              },
+              {
+                "pieces": 200,
+                "lines": 79,
+                "tetrises": 0,
+                "mean_occ": 17.85,
+                "mean_top": 3.4,
+                "mean_holes": 0.24
+              },
+              {
+                "pieces": 200,
+                "lines": 81,
+                "tetrises": 0,
+                "mean_occ": 22.4,
+                "mean_top": 3.945,
+                "mean_holes": 1.505
+              },
+              {
+                "pieces": 200,
+                "lines": 80,
+                "tetrises": 0,
+                "mean_occ": 27.8,
+                "mean_top": 4.475,
+                "mean_holes": 1.44
+              },
+              {
+                "pieces": 200,
+                "lines": 79,
+                "tetrises": 0,
+                "mean_occ": 15.25,
+                "mean_top": 3.07,
+                "mean_holes": 0.33
+              },
+              {
+                "pieces": 200,
+                "lines": 77,
+                "tetrises": 0,
+                "mean_occ": 32.45,
+                "mean_top": 5.075,
+                "mean_holes": 1.99
+              },
+              {
+                "pieces": 200,
+                "lines": 83,
+                "tetrises": 0,
+                "mean_occ": 23.8,
+                "mean_top": 4.005,
+                "mean_holes": 1.21
+              },
+              {
+                "pieces": 200,
+                "lines": 81,
+                "tetrises": 0,
+                "mean_occ": 24.1,
+                "mean_top": 4.1,
+                "mean_holes": 0.545
+              },
+              {
+                "pieces": 200,
+                "lines": 78,
+                "tetrises": 0,
+                "mean_occ": 21.95,
+                "mean_top": 3.87,
+                "mean_holes": 0.735
+              }
+            ],
+            "tetris_at": [],
+            "final": {
+              "occ": 30,
+              "top": 5.0,
+              "holes": 0.0
+            },
+            "s": 635.3
+          },
+          "20611": {
+            "arm": "champ",
+            "seed": 20611,
+            "pieces": 3000,
+            "lines": 1198,
+            "clears": {
+              "0": 1943,
+              "1": 927,
+              "2": 121,
+              "3": 7,
+              "4": 2
+            },
+            "reason": "max_pieces",
+            "windows": [
+              {
+                "pieces": 200,
+                "lines": 79,
+                "tetrises": 0,
+                "mean_occ": 15.6,
+                "mean_top": 3.025,
+                "mean_holes": 0.245
+              },
+              {
+                "pieces": 200,
+                "lines": 80,
+                "tetrises": 0,
+                "mean_occ": 26.55,
+                "mean_top": 4.41,
+                "mean_holes": 1.275
+              },
+              {
+                "pieces": 200,
+                "lines": 76,
+                "tetrises": 0,
+                "mean_occ": 20.05,
+                "mean_top": 3.715,
+                "mean_holes": 0.28
+              },
+              {
+                "pieces": 200,
+                "lines": 78,
+                "tetrises": 0,
+                "mean_occ": 73.0,
+                "mean_top": 9.895,
+                "mean_holes": 7.475
+              },
+              {
+                "pieces": 200,
+                "lines": 85,
+                "tetrises": 0,
+                "mean_occ": 29.65,
+                "mean_top": 4.725,
+                "mean_holes": 2.095
+              },
+              {
+                "pieces": 200,
+                "lines": 79,
+                "tetrises": 0,
+                "mean_occ": 17.1,
+                "mean_top": 3.275,
+                "mean_holes": 0.39
+              },
+              {
+                "pieces": 200,
+                "lines": 81,
+                "tetrises": 0,
+                "mean_occ": 23.2,
+                "mean_top": 4.03,
+                "mean_holes": 1.17
+              },
+              {
+                "pieces": 200,
+                "lines": 79,
+                "tetrises": 1,
+                "mean_occ": 17.65,
+                "mean_top": 3.295,
+                "mean_holes": 0.245
+              },
+              {
+                "pieces": 200,
+                "lines": 81,
+                "tetrises": 0,
+                "mean_occ": 26.1,
+                "mean_top": 4.23,
+                "mean_holes": 1.555
+              },
+              {
+                "pieces": 200,
+                "lines": 79,
+                "tetrises": 0,
+                "mean_occ": 30.95,
+                "mean_top": 4.92,
+                "mean_holes": 1.355
+              },
+              {
+                "pieces": 200,
+                "lines": 81,
+                "tetrises": 1,
+                "mean_occ": 23.05,
+                "mean_top": 3.97,
+                "mean_holes": 0.715
+              },
+              {
+                "pieces": 200,
+                "lines": 78,
+                "tetrises": 0,
+                "mean_occ": 17.9,
+                "mean_top": 3.365,
+                "mean_holes": 0.45
+              },
+              {
+                "pieces": 200,
+                "lines": 81,
+                "tetrises": 0,
+                "mean_occ": 20.65,
+                "mean_top": 3.91,
+                "mean_holes": 0.67
+              },
+              {
+                "pieces": 200,
+                "lines": 77,
+                "tetrises": 0,
+                "mean_occ": 51.4,
+                "mean_top": 7.35,
+                "mean_holes": 4.405
+              },
+              {
+                "pieces": 200,
+                "lines": 84,
+                "tetrises": 0,
+                "mean_occ": 31.4,
+                "mean_top": 4.935,
+                "mean_holes": 2.07
+              }
+            ],
+            "tetris_at": [
+              1431,
+              2006
+            ],
+            "final": {
+              "occ": 20,
+              "top": 3.0,
+              "holes": 2.0
+            },
+            "s": 652.2
+          }
+        }
+      },
+      "lam10": {
+        "capped": 20,
+        "mean_pieces": 3000.0,
+        "tetrises": 132,
+        "t100": 0.22,
+        "end_occ": 35.935,
+        "deaths": {},
+        "runs": [
+          [
+            2,
+            23.5
+          ],
+          [
+            2,
+            45.9
+          ],
+          [
+            2,
+            56.5
+          ],
+          [
+            2,
+            21.9
+          ],
+          [
+            4,
+            62.6
+          ],
+          [
+            2,
+            77.8
+          ],
+          [
+            2,
+            52.8
+          ],
+          [
+            2,
+            28.4
+          ],
+          [
+            2,
+            41.4
+          ],
+          [
+            2,
+            30.3
+          ],
+          [
+            3,
+            64.0
+          ],
+          [
+            2,
+            10.8
+          ],
+          [
+            2,
+            75.2
+          ],
+          [
+            2,
+            42.5
+          ],
+          [
+            2,
+            24.9
+          ],
+          [
+            4,
+            47.4
+          ],
+          [
+            2,
+            23.1
+          ],
+          [
+            3,
+            58.8
+          ],
+          [
+            3,
+            24.4
+          ],
+          [
+            2,
+            28.6
+          ]
+        ],
+        "releases": [
+          2,
+          3,
+          1,
+          1,
+          2,
+          3,
+          1,
+          2,
+          1,
+          3,
+          2,
+          0,
+          3,
+          1,
+          1,
+          1,
+          3,
+          3,
+          3,
+          1
+        ],
+        "fail_games": 1,
+        "per_seed": {
+          "20592": {
+            "arm": "lam10",
+            "seed": 20592,
+            "pieces": 3000,
+            "lines": 1196,
+            "clears": {
+              "0": 1986,
+              "1": 857,
+              "2": 136,
+              "3": 17,
+              "4": 4
+            },
+            "reason": "max_pieces",
+            "windows": [
+              {
+                "pieces": 200,
+                "lines": 78,
+                "tetrises": 0,
+                "mean_occ": 20.3,
+                "mean_top": 3.58,
+                "mean_holes": 0.55
+              },
+              {
+                "pieces": 200,
+                "lines": 78,
+                "tetrises": 2,
+                "mean_occ": 23.45,
+                "mean_top": 4.04,
+                "mean_holes": 0.81
+              },
+              {
+                "pieces": 200,
+                "lines": 81,
+                "tetrises": 0,
+                "mean_occ": 40.2,
+                "mean_top": 5.875,
+                "mean_holes": 2.665
+              },
+              {
+                "pieces": 200,
+                "lines": 80,
+                "tetrises": 0,
+                "mean_occ": 17.0,
+                "mean_top": 3.105,
+                "mean_holes": 0.29
+              },
+              {
+                "pieces": 200,
+                "lines": 81,
+                "tetrises": 0,
+                "mean_occ": 24.05,
+                "mean_top": 4.17,
+                "mean_holes": 0.865
+              },
+              {
+                "pieces": 200,
+                "lines": 80,
+                "tetrises": 0,
+                "mean_occ": 40.45,
+                "mean_top": 6.02,
+                "mean_holes": 2.42
+              },
+              {
+                "pieces": 200,
+                "lines": 79,
+                "tetrises": 0,
+                "mean_occ": 31.65,
+                "mean_top": 5.045,
+                "mean_holes": 1.57
+              },
+              {
+                "pieces": 200,
+                "lines": 81,
+                "tetrises": 1,
+                "mean_occ": 35.35,
+                "mean_top": 5.33,
+                "mean_holes": 2.175
+              },
+              {
+                "pieces": 200,
+                "lines": 79,
+                "tetrises": 1,
+                "mean_occ": 39.75,
+                "mean_top": 5.775,
+                "mean_holes": 2.645
+              },
+              {
+                "pieces": 200,
+                "lines": 82,
+                "tetrises": 0,
+                "mean_occ": 34.35,
+                "mean_top": 5.275,
+                "mean_holes": 1.74
+              },
+              {
+                "pieces": 200,
+                "lines": 75,
+                "tetrises": 0,
+                "mean_occ": 31.7,
+                "mean_top": 5.02,
+                "mean_holes": 1.95
+              },
+              {
+                "pieces": 200,
+                "lines": 82,
+                "tetrises": 0,
+                "mean_occ": 51.75,
+                "mean_top": 7.3,
+                "mean_holes": 4.15
+              },
+              {
+                "pieces": 200,
+                "lines": 82,
+                "tetrises": 0,
+                "mean_occ": 25.65,
+                "mean_top": 4.28,
+                "mean_holes": 1.37
+              },
+              {
+                "pieces": 200,
+                "lines": 76,
+                "tetrises": 0,
+                "mean_occ": 32.05,
+                "mean_top": 4.975,
+                "mean_holes": 1.115
+              },
+              {
+                "pieces": 200,
+                "lines": 82,
+                "tetrises": 0,
+                "mean_occ": 32.7,
+                "mean_top": 4.995,
+                "mean_holes": 1.05
+              }
+            ],
+            "tetris_at": [
+              252,
+              337,
+              1431,
+              1610
+            ],
+            "final": {
+              "occ": 40,
+              "top": 6.0,
+              "holes": 1.0
+            },
+            "s": 629.6
+          },
+          "20593": {
+            "arm": "lam10",
+            "seed": 20593,
+            "pieces": 3000,
+            "lines": 1195,
+            "clears": {
+              "0": 2003,
+              "1": 835,
+              "2": 131,
+              "3": 26,
+              "4": 5
+            },
+            "reason": "max_pieces",
+            "windows": [
+              {
+                "pieces": 200,
+                "lines": 79,
+                "tetrises": 0,
+                "mean_occ": 25.8,
+                "mean_top": 4.425,
+                "mean_holes": 1.275
+              },
+              {
+                "pieces": 200,
+                "lines": 74,
+                "tetrises": 0,
+                "mean_occ": 39.65,
+                "mean_top": 5.95,
+                "mean_holes": 2.755
+              },
+              {
+                "pieces": 200,
+                "lines": 86,
+                "tetrises": 1,
+                "mean_occ": 47.3,
+                "mean_top": 6.725,
+                "mean_holes": 2.97
+              },
+              {
+                "pieces": 200,
+                "lines": 78,
+                "tetrises": 0,
+                "mean_occ": 20.95,
+                "mean_top": 3.75,
+                "mean_holes": 0.385
+              },
+              {
+                "pieces": 200,
+                "lines": 80,
+                "tetrises": 0,
+                "mean_occ": 64.45,
+                "mean_top": 8.835,
+                "mean_holes": 5.11
+              },
+              {
+                "pieces": 200,
+                "lines": 82,
+                "tetrises": 2,
+                "mean_occ": 28.05,
+                "mean_top": 4.56,
+                "mean_holes": 1.035
+              },
+              {
+                "pieces": 200,
+                "lines": 78,
+                "tetrises": 0,
+                "mean_occ": 55.1,
+                "mean_top": 7.63,
+                "mean_holes": 3.845
+              },
+              {
+                "pieces": 200,
+                "lines": 81,
+                "tetrises": 0,
+                "mean_occ": 33.4,
+                "mean_top": 5.31,
+                "mean_holes": 1.885
+              },
+              {
+                "pieces": 200,
+                "lines": 80,
+                "tetrises": 0,
+                "mean_occ": 20.55,
+                "mean_top": 3.735,
+                "mean_holes": 0.59
+              },
+              {
+                "pieces": 200,
+                "lines": 80,
+                "tetrises": 1,
+                "mean_occ": 47.2,
+                "mean_top": 6.67,
+                "mean_holes": 3.14
+              },
+              {
+                "pieces": 200,
+                "lines": 79,
+                "tetrises": 0,
+                "mean_occ": 48.1,
+                "mean_top": 6.815,
+                "mean_holes": 3.485
+              },
+              {
+                "pieces": 200,
+                "lines": 79,
+                "tetrises": 0,
+                "mean_occ": 28.35,
+                "mean_top": 4.695,
+                "mean_holes": 1.305
+              },
+              {
+                "pieces": 200,
+                "lines": 79,
+                "tetrises": 0,
+                "mean_occ": 36.3,
+                "mean_top": 5.49,
+                "mean_holes": 2.28
+              },
+              {
+                "pieces": 200,
+                "lines": 75,
+                "tetrises": 1,
+                "mean_occ": 74.3,
+                "mean_top": 9.915,
+                "mean_holes": 6.46
+              },
+              {
+                "pieces": 200,
+                "lines": 85,
+                "tetrises": 0,
+                "mean_occ": 70.4,
+                "mean_top": 9.25,
+                "mean_holes": 5.87
+              }
+            ],
+            "tetris_at": [
+              550,
+              1114,
+              1151,
+              1868,
+              2777
+            ],
+            "final": {
+              "occ": 50,
+              "top": 6.0,
+              "holes": 3.0
+            },
+            "s": 653.3
+          },
+          "20594": {
+            "arm": "lam10",
+            "seed": 20594,
+            "pieces": 3000,
+            "lines": 1197,
+            "clears": {
+              "0": 1991,
+              "1": 859,
+              "2": 121,
+              "3": 20,
+              "4": 9
+            },
+            "reason": "max_pieces",
+            "windows": [
+              {
+                "pieces": 200,
+                "lines": 79,
+                "tetrises": 1,
+                "mean_occ": 20.1,
+                "mean_top": 3.635,
+                "mean_holes": 0.355
+              },
+              {
+                "pieces": 200,
+                "lines": 72,
+                "tetrises": 1,
+                "mean_occ": 22.3,
+                "mean_top": 3.965,
+                "mean_holes": 1.095
+              },
+              {
+                "pieces": 200,
+                "lines": 83,
+                "tetrises": 0,
+                "mean_occ": 76.6,
+                "mean_top": 10.095,
+                "mean_holes": 7.085
+              },
+              {
+                "pieces": 200,
+                "lines": 85,
+                "tetrises": 2,
+                "mean_occ": 36.15,
+                "mean_top": 5.505,
+                "mean_holes": 3.045
+              },
+              {
+                "pieces": 200,
+                "lines": 78,
+                "tetrises": 0,
+                "mean_occ": 19.6,
+                "mean_top": 3.6,
+                "mean_holes": 0.335
+              },
+              {
+                "pieces": 200,
+                "lines": 81,
+                "tetrises": 1,
+                "mean_occ": 20.75,
+                "mean_top": 3.715,
+                "mean_holes": 0.63
+              },
+              {
+                "pieces": 200,
+                "lines": 80,
+                "tetrises": 0,
+                "mean_occ": 21.85,
+                "mean_top": 3.87,
+                "mean_holes": 0.84
+              },
+              {
+                "pieces": 200,
+                "lines": 72,
+                "tetrises": 1,
+                "mean_occ": 39.5,
+                "mean_top": 5.885,
+                "mean_holes": 2.08
+              },
+              {
+                "pieces": 200,
+                "lines": 86,
+                "tetrises": 1,
+                "mean_occ": 45.75,
+                "mean_top": 6.505,
+                "mean_holes": 2.91
+              },
+              {
+                "pieces": 200,
+                "lines": 82,
+                "tetrises": 0,
+                "mean_occ": 31.2,
+                "mean_top": 4.825,
+                "mean_holes": 1.545
+              },
+              {
+                "pieces": 200,
+                "lines": 78,
+                "tetrises": 0,
+                "mean_occ": 20.75,
+                "mean_top": 3.705,
+                "mean_holes": 0.57
+              },
+              {
+                "pieces": 200,
+                "lines": 82,
+                "tetrises": 0,
+                "mean_occ": 33.75,
+                "mean_top": 5.16,
+                "mean_holes": 1.62
+              },
+              {
+                "pieces": 200,
+                "lines": 81,
+                "tetrises": 0,
+                "mean_occ": 26.75,
+                "mean_top": 4.345,
+                "mean_holes": 1.225
+              },
+              {
+                "pieces": 200,
+                "lines": 71,
+                "tetrises": 2,
+                "mean_occ": 52.05,
+                "mean_top": 7.29,
+                "mean_holes": 1.485
+              },
+              {
+                "pieces": 200,
+                "lines": 87,
+                "tetrises": 0,
+                "mean_occ": 39.95,
+                "mean_top": 5.825,
+                "mean_holes": 1.43
+              }
+            ],
+            "tetris_at": [
+              69,
+              269,
+              604,
+              786,
+              1039,
+              1445,
+              1754,
+              2663,
+              2683
+            ],
+            "final": {
+              "occ": 30,
+              "top": 6.0,
+              "holes": 0.0
+            },
+            "s": 656.3
+          },
+          "20595": {
+            "arm": "lam10",
+            "seed": 20595,
+            "pieces": 3000,
+            "lines": 1199,
+            "clears": {
+              "0": 1995,
+              "1": 846,
+              "2": 130,
+              "3": 23,
+              "4": 6
+            },
+            "reason": "max_pieces",
+            "windows": [
+              {
+                "pieces": 200,
+                "lines": 77,
+                "tetrises": 0,
+                "mean_occ": 34.5,
+                "mean_top": 5.355,
+                "mean_holes": 1.74
+              },
+              {
+                "pieces": 200,
+                "lines": 75,
+                "tetrises": 0,
+                "mean_occ": 61.15,
+                "mean_top": 8.53,
+                "mean_holes": 7.08
+              },
+              {
+                "pieces": 200,
+                "lines": 86,
+                "tetrises": 0,
+                "mean_occ": 50.1,
+                "mean_top": 7.03,
+                "mean_holes": 5.11
+              },
+              {
+                "pieces": 200,
+                "lines": 74,
+                "tetrises": 0,
+                "mean_occ": 66.6,
+                "mean_top": 9.055,
+                "mean_holes": 4.395
+              },
+              {
+                "pieces": 200,
+                "lines": 86,
+                "tetrises": 0,
+                "mean_occ": 65.25,
+                "mean_top": 8.75,
+                "mean_holes": 4.22
+              },
+              {
+                "pieces": 200,
+                "lines": 79,
+                "tetrises": 1,
+                "mean_occ": 36.0,
+                "mean_top": 5.42,
+                "mean_holes": 2.06
+              },
+              {
+                "pieces": 200,
+                "lines": 82,
+                "tetrises": 1,
+                "mean_occ": 19.05,
+                "mean_top": 3.47,
+                "mean_holes": 0.335
+              },
+              {
+                "pieces": 200,
+                "lines": 79,
+                "tetrises": 0,
+                "mean_occ": 20.85,
+                "mean_top": 3.69,
+                "mean_holes": 0.68
+              },
+              {
+                "pieces": 200,
+                "lines": 80,
+                "tetrises": 1,
+                "mean_occ": 30.35,
+                "mean_top": 4.795,
+                "mean_holes": 0.915
+              },
+              {
+                "pieces": 200,
+                "lines": 75,
+                "tetrises": 0,
+                "mean_occ": 42.8,
+                "mean_top": 6.27,
+                "mean_holes": 3.315
+              },
+              {
+                "pieces": 200,
+                "lines": 86,
+                "tetrises": 0,
+                "mean_occ": 34.85,
+                "mean_top": 5.215,
+                "mean_holes": 2.15
+              },
+              {
+                "pieces": 200,
+                "lines": 76,
+                "tetrises": 1,
+                "mean_occ": 29.2,
+                "mean_top": 4.78,
+                "mean_holes": 0.65
+              },
+              {
+                "pieces": 200,
+                "lines": 82,
+                "tetrises": 0,
+                "mean_occ": 33.75,
+                "mean_top": 5.1,
+                "mean_holes": 2.125
+              },
+              {
+                "pieces": 200,
+                "lines": 81,
+                "tetrises": 2,
+                "mean_occ": 27.3,
+                "mean_top": 4.43,
+                "mean_holes": 0.235
+              },
+              {
+                "pieces": 200,
+                "lines": 81,
+                "tetrises": 0,
+                "mean_occ": 26.2,
+                "mean_top": 4.305,
+                "mean_holes": 1.23
+              }
+            ],
+            "tetris_at": [
+              1035,
+              1290,
+              1760,
+              2293,
+              2618,
+              2677
+            ],
+            "final": {
+              "occ": 10,
+              "top": 2.0,
+              "holes": 0.0
+            },
+            "s": 659.7
+          },
+          "20596": {
+            "arm": "lam10",
+            "seed": 20596,
+            "pieces": 3000,
+            "lines": 1197,
+            "clears": {
+              "0": 1993,
+              "1": 852,
+              "2": 125,
+              "3": 25,
+              "4": 5
+            },
+            "reason": "max_pieces",
+            "windows": [
+              {
+                "pieces": 200,
+                "lines": 77,
+                "tetrises": 0,
+                "mean_occ": 16.85,
+                "mean_top": 3.275,
+                "mean_holes": 0.42
+              },
+              {
+                "pieces": 200,
+                "lines": 81,
+                "tetrises": 1,
+                "mean_occ": 18.15,
+                "mean_top": 3.39,
+                "mean_holes": 0.25
+              },
+              {
+                "pieces": 200,
+                "lines": 78,
+                "tetrises": 0,
+                "mean_occ": 31.8,
+                "mean_top": 4.98,
+                "mean_holes": 1.65
+              },
+              {
+                "pieces": 200,
+                "lines": 80,
+                "tetrises": 1,
+                "mean_occ": 21.45,
+                "mean_top": 3.805,
+                "mean_holes": 0.325
+              },
+              {
+                "pieces": 200,
+                "lines": 79,
+                "tetrises": 0,
+                "mean_occ": 34.8,
+                "mean_top": 5.24,
+                "mean_holes": 2.24
+              },
+              {
+                "pieces": 200,
+                "lines": 80,
+                "tetrises": 0,
+                "mean_occ": 48.45,
+                "mean_top": 6.97,
+                "mean_holes": 3.565
+              },
+              {
+                "pieces": 200,
+                "lines": 78,
+                "tetrises": 0,
+                "mean_occ": 53.1,
+                "mean_top": 7.405,
+                "mean_holes": 3.85
+              },
+              {
+                "pieces": 200,
+                "lines": 77,
+                "tetrises": 1,
+                "mean_occ": 84.1,
+                "mean_top": 10.82,
+                "mean_holes": 8.615
+              },
+              {
+                "pieces": 200,
+                "lines": 78,
+                "tetrises": 0,
+                "mean_occ": 85.0,
+                "mean_top": 10.925,
+                "mean_holes": 8.65
+              },
+              {
+                "pieces": 200,
+                "lines": 83,
+                "tetrises": 0,
+                "mean_occ": 98.05,
+                "mean_top": 12.52,
+                "mean_holes": 11.205
+              },
+              {
+                "pieces": 200,
+                "lines": 85,
+                "tetrises": 1,
+                "mean_occ": 62.8,
+                "mean_top": 8.53,
+                "mean_holes": 5.75
+              },
+              {
+                "pieces": 200,
+                "lines": 82,
+                "tetrises": 1,
+                "mean_occ": 38.55,
+                "mean_top": 5.75,
+                "mean_holes": 2.315
+              },
+              {
+                "pieces": 200,
+                "lines": 80,
+                "tetrises": 0,
+                "mean_occ": 22.85,
+                "mean_top": 3.93,
+                "mean_holes": 0.68
+              },
+              {
+                "pieces": 200,
+                "lines": 80,
+                "tetrises": 0,
+                "mean_occ": 21.2,
+                "mean_top": 3.87,
+                "mean_holes": 0.545
+              },
+              {
+                "pieces": 200,
+                "lines": 79,
+                "tetrises": 0,
+                "mean_occ": 27.4,
+                "mean_top": 4.45,
+                "mean_holes": 1.345
+              }
+            ],
+            "tetris_at": [
+              354,
+              703,
+              1583,
+              2155,
+              2352
+            ],
+            "final": {
+              "occ": 30,
+              "top": 5.0,
+              "holes": 0.0
+            },
+            "s": 843.8
+          },
+          "20597": {
+            "arm": "lam10",
+            "seed": 20597,
+            "pieces": 3000,
+            "lines": 1196,
+            "clears": {
+              "0": 1989,
+              "1": 854,
+              "2": 131,
+              "3": 24,
+              "4": 2
+            },
+            "reason": "max_pieces",
+            "windows": [
+              {
+                "pieces": 200,
+                "lines": 78,
+                "tetrises": 0,
+                "mean_occ": 32.25,
+                "mean_top": 5.175,
+                "mean_holes": 1.57
+              },
+              {
+                "pieces": 200,
+                "lines": 79,
+                "tetrises": 0,
+                "mean_occ": 21.55,
+                "mean_top": 3.84,
+                "mean_holes": 0.645
+              },
+              {
+                "pieces": 200,
+                "lines": 74,
+                "tetrises": 0,
+                "mean_occ": 58.45,
+                "mean_top": 7.84,
+                "mean_holes": 5.005
+              },
+              {
+                "pieces": 200,
+                "lines": 79,
+                "tetrises": 0,
+                "mean_occ": 99.35,
+                "mean_top": 12.56,
+                "mean_holes": 8.44
+              },
+              {
+                "pieces": 200,
+                "lines": 87,
+                "tetrises": 0,
+                "mean_occ": 64.4,
+                "mean_top": 8.625,
+                "mean_holes": 4.83
+              },
+              {
+                "pieces": 200,
+                "lines": 81,
+                "tetrises": 0,
+                "mean_occ": 15.75,
+                "mean_top": 3.24,
+                "mean_holes": 0.09
+              },
+              {
+                "pieces": 200,
+                "lines": 81,
+                "tetrises": 0,
+                "mean_occ": 19.95,
+                "mean_top": 3.63,
+                "mean_holes": 0.42
+              },
+              {
+                "pieces": 200,
+                "lines": 76,
+                "tetrises": 1,
+                "mean_occ": 20.65,
+                "mean_top": 3.695,
+                "mean_holes": 0.53
+              },
+              {
+                "pieces": 200,
+                "lines": 81,
+                "tetrises": 0,
+                "mean_occ": 21.5,
+                "mean_top": 3.74,
+                "mean_holes": 0.385
+              },
+              {
+                "pieces": 200,
+                "lines": 83,
+                "tetrises": 0,
+                "mean_occ": 20.75,
+                "mean_top": 3.72,
+                "mean_holes": 0.185
+              },
+              {
+                "pieces": 200,
+                "lines": 78,
+                "tetrises": 0,
+                "mean_occ": 41.15,
+                "mean_top": 6.01,
+                "mean_holes": 2.015
+              },
+              {
+                "pieces": 200,
+                "lines": 80,
+                "tetrises": 1,
+                "mean_occ": 42.8,
+                "mean_top": 6.165,
+                "mean_holes": 2.82
+              },
+              {
+                "pieces": 200,
+                "lines": 78,
+                "tetrises": 0,
+                "mean_occ": 73.35,
+                "mean_top": 9.91,
+                "mean_holes": 5.885
+              },
+              {
+                "pieces": 200,
+                "lines": 74,
+                "tetrises": 0,
+                "mean_occ": 87.75,
+                "mean_top": 11.63,
+                "mean_holes": 9.975
+              },
+              {
+                "pieces": 200,
+                "lines": 87,
+                "tetrises": 0,
+                "mean_occ": 49.25,
+                "mean_top": 7.035,
+                "mean_holes": 4.275
+              }
+            ],
+            "tetris_at": [
+              1410,
+              2326
+            ],
+            "final": {
+              "occ": 40,
+              "top": 6.0,
+              "holes": 0.0
+            },
+            "s": 854.2
+          },
+          "20598": {
+            "arm": "lam10",
+            "seed": 20598,
+            "pieces": 3000,
+            "lines": 1199,
+            "clears": {
+              "0": 1985,
+              "1": 861,
+              "2": 129,
+              "3": 20,
+              "4": 5
+            },
+            "reason": "max_pieces",
+            "windows": [
+              {
+                "pieces": 200,
+                "lines": 79,
+                "tetrises": 0,
+                "mean_occ": 22.0,
+                "mean_top": 3.87,
+                "mean_holes": 0.365
+              },
+              {
+                "pieces": 200,
+                "lines": 77,
+                "tetrises": 0,
+                "mean_occ": 21.7,
+                "mean_top": 3.74,
+                "mean_holes": 0.38
+              },
+              {
+                "pieces": 200,
+                "lines": 80,
+                "tetrises": 0,
+                "mean_occ": 25.15,
+                "mean_top": 4.24,
+                "mean_holes": 1.015
+              },
+              {
+                "pieces": 200,
+                "lines": 83,
+                "tetrises": 1,
+                "mean_occ": 22.2,
+                "mean_top": 4.035,
+                "mean_holes": 0.49
+              },
+              {
+                "pieces": 200,
+                "lines": 76,
+                "tetrises": 0,
+                "mean_occ": 25.9,
+                "mean_top": 4.295,
+                "mean_holes": 0.995
+              },
+              {
+                "pieces": 200,
+                "lines": 83,
+                "tetrises": 0,
+                "mean_occ": 20.6,
+                "mean_top": 3.715,
+                "mean_holes": 0.225
+              },
+              {
+                "pieces": 200,
+                "lines": 80,
+                "tetrises": 1,
+                "mean_occ": 23.9,
+                "mean_top": 4.09,
+                "mean_holes": 0.73
+              },
+              {
+                "pieces": 200,
+                "lines": 78,
+                "tetrises": 0,
+                "mean_occ": 24.95,
+                "mean_top": 4.28,
+                "mean_holes": 1.105
+              },
+              {
+                "pieces": 200,
+                "lines": 80,
+                "tetrises": 0,
+                "mean_occ": 50.85,
+                "mean_top": 7.365,
+                "mean_holes": 4.91
+              },
+              {
+                "pieces": 200,
+                "lines": 77,
+                "tetrises": 0,
+                "mean_occ": 77.8,
+                "mean_top": 10.645,
+                "mean_holes": 8.575
+              },
+              {
+                "pieces": 200,
+                "lines": 81,
+                "tetrises": 0,
+                "mean_occ": 59.7,
+                "mean_top": 8.28,
+                "mean_holes": 7.215
+              },
+              {
+                "pieces": 200,
+                "lines": 85,
+                "tetrises": 0,
+                "mean_occ": 24.1,
+                "mean_top": 4.13,
+                "mean_holes": 1.05
+              },
+              {
+                "pieces": 200,
+                "lines": 78,
+                "tetrises": 1,
+                "mean_occ": 21.7,
+                "mean_top": 3.835,
+                "mean_holes": 0.4
+              },
+              {
+                "pieces": 200,
+                "lines": 81,
+                "tetrises": 0,
+                "mean_occ": 16.4,
+                "mean_top": 3.12,
+                "mean_holes": 0.13
+              },
+              {
+                "pieces": 200,
+                "lines": 81,
+                "tetrises": 2,
+                "mean_occ": 20.25,
+                "mean_top": 3.55,
+                "mean_holes": 0.445
+              }
+            ],
+            "tetris_at": [
+              778,
+              1376,
+              2498,
+              2837,
+              2888
+            ],
+            "final": {
+              "occ": 10,
+              "top": 2.0,
+              "holes": 0.0
+            },
+            "s": 864.1
+          },
+          "20599": {
+            "arm": "lam10",
+            "seed": 20599,
+            "pieces": 3000,
+            "lines": 1199,
+            "clears": {
+              "0": 2003,
+              "1": 828,
+              "2": 140,
+              "3": 25,
+              "4": 4
+            },
+            "reason": "max_pieces",
+            "windows": [
+              {
+                "pieces": 200,
+                "lines": 75,
+                "tetrises": 0,
+                "mean_occ": 21.35,
+                "mean_top": 3.94,
+                "mean_holes": 0.705
+              },
+              {
+                "pieces": 200,
+                "lines": 79,
+                "tetrises": 0,
+                "mean_occ": 39.55,
+                "mean_top": 5.79,
+                "mean_holes": 2.74
+              },
+              {
+                "pieces": 200,
+                "lines": 84,
+                "tetrises": 0,
+                "mean_occ": 49.75,
+                "mean_top": 6.925,
+                "mean_holes": 3.57
+              },
+              {
+                "pieces": 200,
+                "lines": 75,
+                "tetrises": 0,
+                "mean_occ": 35.15,
+                "mean_top": 5.5,
+                "mean_holes": 1.515
+              },
+              {
+                "pieces": 200,
+                "lines": 85,
+                "tetrises": 0,
+                "mean_occ": 50.05,
+                "mean_top": 7.025,
+                "mean_holes": 4.045
+              },
+              {
+                "pieces": 200,
+                "lines": 79,
+                "tetrises": 0,
+                "mean_occ": 25.3,
+                "mean_top": 4.2,
+                "mean_holes": 0.78
+              },
+              {
+                "pieces": 200,
+                "lines": 81,
+                "tetrises": 1,
+                "mean_occ": 19.7,
+                "mean_top": 3.475,
+                "mean_holes": 0.33
+              },
+              {
+                "pieces": 200,
+                "lines": 78,
+                "tetrises": 0,
+                "mean_occ": 19.55,
+                "mean_top": 3.655,
+                "mean_holes": 0.415
+              },
+              {
+                "pieces": 200,
+                "lines": 82,
+                "tetrises": 0,
+                "mean_occ": 21.8,
+                "mean_top": 3.735,
+                "mean_holes": 0.88
+              },
+              {
+                "pieces": 200,
+                "lines": 77,
+                "tetrises": 0,
+                "mean_occ": 32.8,
+                "mean_top": 5.145,
+                "mean_holes": 2.14
+              },
+              {
+                "pieces": 200,
+                "lines": 84,
+                "tetrises": 1,
+                "mean_occ": 34.6,
+                "mean_top": 5.22,
+                "mean_holes": 1.965
+              },
+              {
+                "pieces": 200,
+                "lines": 79,
+                "tetrises": 1,
+                "mean_occ": 21.35,
+                "mean_top": 3.635,
+                "mean_holes": 0.355
+              },
+              {
+                "pieces": 200,
+                "lines": 80,
+                "tetrises": 1,
+                "mean_occ": 19.2,
+                "mean_top": 3.48,
+                "mean_holes": 0.485
+              },
+              {
+                "pieces": 200,
+                "lines": 78,
+                "tetrises": 0,
+                "mean_occ": 57.9,
+                "mean_top": 8.115,
+                "mean_holes": 4.365
+              },
+              {
+                "pieces": 200,
+                "lines": 83,
+                "tetrises": 0,
+                "mean_occ": 28.6,
+                "mean_top": 4.61,
+                "mean_holes": 0.765
+              }
+            ],
+            "tetris_at": [
+              1210,
+              2059,
+              2392,
+              2478
+            ],
+            "final": {
+              "occ": 10,
+              "top": 2.0,
+              "holes": 0.0
+            },
+            "s": 858.0
+          },
+          "20600": {
+            "arm": "lam10",
+            "seed": 20600,
+            "pieces": 3000,
+            "lines": 1198,
+            "clears": {
+              "0": 2028,
+              "1": 795,
+              "2": 138,
+              "3": 29,
+              "4": 10
+            },
+            "reason": "max_pieces",
+            "windows": [
+              {
+                "pieces": 200,
+                "lines": 76,
+                "tetrises": 2,
+                "mean_occ": 25.8,
+                "mean_top": 4.375,
+                "mean_holes": 0.64
+              },
+              {
+                "pieces": 200,
+                "lines": 82,
+                "tetrises": 1,
+                "mean_occ": 28.3,
+                "mean_top": 4.55,
+                "mean_holes": 0.96
+              },
+              {
+                "pieces": 200,
+                "lines": 81,
+                "tetrises": 2,
+                "mean_occ": 27.15,
+                "mean_top": 4.42,
+                "mean_holes": 0.375
+              },
+              {
+                "pieces": 200,
+                "lines": 74,
+                "tetrises": 0,
+                "mean_occ": 44.75,
+                "mean_top": 6.415,
+                "mean_holes": 2.53
+              },
+              {
+                "pieces": 200,
+                "lines": 86,
+                "tetrises": 0,
+                "mean_occ": 43.25,
+                "mean_top": 6.21,
+                "mean_holes": 3.075
+              },
+              {
+                "pieces": 200,
+                "lines": 76,
+                "tetrises": 0,
+                "mean_occ": 35.5,
+                "mean_top": 5.385,
+                "mean_holes": 1.57
+              },
+              {
+                "pieces": 200,
+                "lines": 83,
+                "tetrises": 1,
+                "mean_occ": 19.55,
+                "mean_top": 3.555,
+                "mean_holes": 0.535
+              },
+              {
+                "pieces": 200,
+                "lines": 78,
+                "tetrises": 1,
+                "mean_occ": 26.95,
+                "mean_top": 4.32,
+                "mean_holes": 0.785
+              },
+              {
+                "pieces": 200,
+                "lines": 79,
+                "tetrises": 0,
+                "mean_occ": 60.9,
+                "mean_top": 8.165,
+                "mean_holes": 3.735
+              },
+              {
+                "pieces": 200,
+                "lines": 81,
+                "tetrises": 1,
+                "mean_occ": 24.15,
+                "mean_top": 4.03,
+                "mean_holes": 0.785
+              },
+              {
+                "pieces": 200,
+                "lines": 81,
+                "tetrises": 1,
+                "mean_occ": 35.95,
+                "mean_top": 5.485,
+                "mean_holes": 2.09
+              },
+              {
+                "pieces": 200,
+                "lines": 80,
+                "tetrises": 0,
+                "mean_occ": 24.75,
+                "mean_top": 4.125,
+                "mean_holes": 0.755
+              },
+              {
+                "pieces": 200,
+                "lines": 81,
+                "tetrises": 0,
+                "mean_occ": 25.8,
+                "mean_top": 4.175,
+                "mean_holes": 0.725
+              },
+              {
+                "pieces": 200,
+                "lines": 81,
+                "tetrises": 0,
+                "mean_occ": 25.05,
+                "mean_top": 4.235,
+                "mean_holes": 1.265
+              },
+              {
+                "pieces": 200,
+                "lines": 79,
+                "tetrises": 1,
+                "mean_occ": 18.0,
+                "mean_top": 3.37,
+                "mean_holes": 0.16
+              }
+            ],
+            "tetris_at": [
+              37,
+              98,
+              210,
+              447,
+              510,
+              1366,
+              1461,
+              1809,
+              2196,
+              2997
+            ],
+            "final": {
+              "occ": 20,
+              "top": 4.0,
+              "holes": 0.0
+            },
+            "s": 859.3
+          },
+          "20601": {
+            "arm": "lam10",
+            "seed": 20601,
+            "pieces": 3000,
+            "lines": 1197,
+            "clears": {
+              "0": 1999,
+              "1": 843,
+              "2": 127,
+              "3": 24,
+              "4": 7
+            },
+            "reason": "max_pieces",
+            "windows": [
+              {
+                "pieces": 200,
+                "lines": 73,
+                "tetrises": 0,
+                "mean_occ": 40.2,
+                "mean_top": 6.01,
+                "mean_holes": 3.775
+              },
+              {
+                "pieces": 200,
+                "lines": 81,
+                "tetrises": 1,
+                "mean_occ": 69.4,
+                "mean_top": 9.52,
+                "mean_holes": 6.03
+              },
+              {
+                "pieces": 200,
+                "lines": 75,
+                "tetrises": 0,
+                "mean_occ": 69.35,
+                "mean_top": 9.355,
+                "mean_holes": 7.165
+              },
+              {
+                "pieces": 200,
+                "lines": 89,
+                "tetrises": 0,
+                "mean_occ": 59.4,
+                "mean_top": 8.155,
+                "mean_holes": 6.55
+              },
+              {
+                "pieces": 200,
+                "lines": 79,
+                "tetrises": 1,
+                "mean_occ": 34.0,
+                "mean_top": 5.25,
+                "mean_holes": 1.925
+              },
+              {
+                "pieces": 200,
+                "lines": 81,
+                "tetrises": 0,
+                "mean_occ": 27.1,
+                "mean_top": 4.595,
+                "mean_holes": 1.525
+              },
+              {
+                "pieces": 200,
+                "lines": 80,
+                "tetrises": 2,
+                "mean_occ": 21.0,
+                "mean_top": 3.795,
+                "mean_holes": 0.425
+              },
+              {
+                "pieces": 200,
+                "lines": 71,
+                "tetrises": 0,
+                "mean_occ": 73.3,
+                "mean_top": 9.86,
+                "mean_holes": 5.705
+              },
+              {
+                "pieces": 200,
+                "lines": 81,
+                "tetrises": 0,
+                "mean_occ": 75.0,
+                "mean_top": 9.745,
+                "mean_holes": 5.595
+              },
+              {
+                "pieces": 200,
+                "lines": 84,
+                "tetrises": 0,
+                "mean_occ": 38.7,
+                "mean_top": 5.82,
+                "mean_holes": 2.415
+              },
+              {
+                "pieces": 200,
+                "lines": 85,
+                "tetrises": 1,
+                "mean_occ": 28.0,
+                "mean_top": 4.585,
+                "mean_holes": 0.87
+              },
+              {
+                "pieces": 200,
+                "lines": 79,
+                "tetrises": 1,
+                "mean_occ": 19.6,
+                "mean_top": 3.615,
+                "mean_holes": 0.33
+              },
+              {
+                "pieces": 200,
+                "lines": 79,
+                "tetrises": 0,
+                "mean_occ": 22.45,
+                "mean_top": 4.025,
+                "mean_holes": 0.945
+              },
+              {
+                "pieces": 200,
+                "lines": 76,
+                "tetrises": 0,
+                "mean_occ": 49.9,
+                "mean_top": 7.065,
+                "mean_holes": 4.115
+              },
+              {
+                "pieces": 200,
+                "lines": 84,
+                "tetrises": 1,
+                "mean_occ": 29.75,
+                "mean_top": 4.775,
+                "mean_holes": 1.56
+              }
+            ],
+            "tetris_at": [
+              258,
+              964,
+              1214,
+              1332,
+              2018,
+              2267,
+              2866
+            ],
+            "final": {
+              "occ": 30,
+              "top": 5.0,
+              "holes": 1.0
+            },
+            "s": 844.6
+          },
+          "20602": {
+            "arm": "lam10",
+            "seed": 20602,
+            "pieces": 3000,
+            "lines": 1197,
+            "clears": {
+              "0": 2005,
+              "1": 833,
+              "2": 131,
+              "3": 22,
+              "4": 9
+            },
+            "reason": "max_pieces",
+            "windows": [
+              {
+                "pieces": 200,
+                "lines": 79,
+                "tetrises": 1,
+                "mean_occ": 25.1,
+                "mean_top": 4.18,
+                "mean_holes": 0.89
+              },
+              {
+                "pieces": 200,
+                "lines": 73,
+                "tetrises": 1,
+                "mean_occ": 29.35,
+                "mean_top": 4.79,
+                "mean_holes": 0.72
+              },
+              {
+                "pieces": 200,
+                "lines": 81,
+                "tetrises": 0,
+                "mean_occ": 45.2,
+                "mean_top": 6.465,
+                "mean_holes": 2.485
+              },
+              {
+                "pieces": 200,
+                "lines": 85,
+                "tetrises": 0,
+                "mean_occ": 29.1,
+                "mean_top": 4.645,
+                "mean_holes": 2.1
+              },
+              {
+                "pieces": 200,
+                "lines": 80,
+                "tetrises": 2,
+                "mean_occ": 25.9,
+                "mean_top": 4.36,
+                "mean_holes": 0.985
+              },
+              {
+                "pieces": 200,
+                "lines": 79,
+                "tetrises": 0,
+                "mean_occ": 23.9,
+                "mean_top": 4.11,
+                "mean_holes": 0.795
+              },
+              {
+                "pieces": 200,
+                "lines": 81,
+                "tetrises": 1,
+                "mean_occ": 31.75,
+                "mean_top": 5.11,
+                "mean_holes": 2.025
+              },
+              {
+                "pieces": 200,
+                "lines": 80,
+                "tetrises": 0,
+                "mean_occ": 15.9,
+                "mean_top": 3.145,
+                "mean_holes": 0.415
+              },
+              {
+                "pieces": 200,
+                "lines": 81,
+                "tetrises": 1,
+                "mean_occ": 19.8,
+                "mean_top": 3.675,
+                "mean_holes": 0.34
+              },
+              {
+                "pieces": 200,
+                "lines": 76,
+                "tetrises": 3,
+                "mean_occ": 24.25,
+                "mean_top": 4.185,
+                "mean_holes": 1.28
+              },
+              {
+                "pieces": 200,
+                "lines": 77,
+                "tetrises": 0,
+                "mean_occ": 79.95,
+                "mean_top": 10.665,
+                "mean_holes": 9.535
+              },
+              {
+                "pieces": 200,
+                "lines": 86,
+                "tetrises": 0,
+                "mean_occ": 77.95,
+                "mean_top": 10.33,
+                "mean_holes": 8.415
+              },
+              {
+                "pieces": 200,
+                "lines": 81,
+                "tetrises": 0,
+                "mean_occ": 18.0,
+                "mean_top": 3.455,
+                "mean_holes": 0.34
+              },
+              {
+                "pieces": 200,
+                "lines": 74,
+                "tetrises": 0,
+                "mean_occ": 60.85,
+                "mean_top": 8.28,
+                "mean_holes": 4.7
+              },
+              {
+                "pieces": 200,
+                "lines": 84,
+                "tetrises": 0,
+                "mean_occ": 34.25,
+                "mean_top": 5.36,
+                "mean_holes": 1.7
+              }
+            ],
+            "tetris_at": [
+              68,
+              268,
+              878,
+              991,
+              1237,
+              1760,
+              1903,
+              1929,
+              1956
+            ],
+            "final": {
+              "occ": 30,
+              "top": 5.0,
+              "holes": 0.0
+            },
+            "s": 819.6
+          },
+          "20603": {
+            "arm": "lam10",
+            "seed": 20603,
+            "pieces": 3000,
+            "lines": 1194,
+            "clears": {
+              "0": 2023,
+              "1": 798,
+              "2": 147,
+              "3": 26,
+              "4": 6
+            },
+            "reason": "max_pieces",
+            "windows": [
+              {
+                "pieces": 200,
+                "lines": 74,
+                "tetrises": 0,
+                "mean_occ": 53.15,
+                "mean_top": 7.37,
+                "mean_holes": 3.76
+              },
+              {
+                "pieces": 200,
+                "lines": 84,
+                "tetrises": 0,
+                "mean_occ": 40.65,
+                "mean_top": 5.84,
+                "mean_holes": 2.32
+              },
+              {
+                "pieces": 200,
+                "lines": 77,
+                "tetrises": 0,
+                "mean_occ": 25.25,
+                "mean_top": 4.3,
+                "mean_holes": 0.665
+              },
+              {
+                "pieces": 200,
+                "lines": 76,
+                "tetrises": 1,
+                "mean_occ": 33.25,
+                "mean_top": 5.315,
+                "mean_holes": 1.39
+              },
+              {
+                "pieces": 200,
+                "lines": 83,
+                "tetrises": 0,
+                "mean_occ": 36.05,
+                "mean_top": 5.515,
+                "mean_holes": 2.185
+              },
+              {
+                "pieces": 200,
+                "lines": 84,
+                "tetrises": 0,
+                "mean_occ": 21.35,
+                "mean_top": 3.8,
+                "mean_holes": 0.415
+              },
+              {
+                "pieces": 200,
+                "lines": 77,
+                "tetrises": 0,
+                "mean_occ": 43.85,
+                "mean_top": 6.3,
+                "mean_holes": 2.545
+              },
+              {
+                "pieces": 200,
+                "lines": 82,
+                "tetrises": 0,
+                "mean_occ": 39.7,
+                "mean_top": 5.765,
+                "mean_holes": 2.615
+              },
+              {
+                "pieces": 200,
+                "lines": 79,
+                "tetrises": 1,
+                "mean_occ": 26.8,
+                "mean_top": 4.42,
+                "mean_holes": 0.855
+              },
+              {
+                "pieces": 200,
+                "lines": 82,
+                "tetrises": 0,
+                "mean_occ": 22.75,
+                "mean_top": 3.87,
+                "mean_holes": 0.98
+              },
+              {
+                "pieces": 200,
+                "lines": 80,
+                "tetrises": 3,
+                "mean_occ": 31.35,
+                "mean_top": 4.98,
+                "mean_holes": 1.035
+              },
+              {
+                "pieces": 200,
+                "lines": 80,
+                "tetrises": 0,
+                "mean_occ": 33.15,
+                "mean_top": 5.15,
+                "mean_holes": 1.975
+              },
+              {
+                "pieces": 200,
+                "lines": 74,
+                "tetrises": 0,
+                "mean_occ": 36.9,
+                "mean_top": 5.565,
+                "mean_holes": 1.43
+              },
+              {
+                "pieces": 200,
+                "lines": 87,
+                "tetrises": 0,
+                "mean_occ": 24.0,
+                "mean_top": 4.045,
+                "mean_holes": 0.755
+              },
+              {
+                "pieces": 200,
+                "lines": 75,
+                "tetrises": 1,
+                "mean_occ": 29.8,
+                "mean_top": 4.78,
+                "mean_holes": 0.65
+              }
+            ],
+            "tetris_at": [
+              602,
+              1707,
+              2056,
+              2083,
+              2171,
+              2845
+            ],
+            "final": {
+              "occ": 60,
+              "top": 7.0,
+              "holes": 1.0
+            },
+            "s": 786.6
+          },
+          "20604": {
+            "arm": "lam10",
+            "seed": 20604,
+            "pieces": 3000,
+            "lines": 1199,
+            "clears": {
+              "0": 2023,
+              "1": 802,
+              "2": 136,
+              "3": 31,
+              "4": 8
+            },
+            "reason": "max_pieces",
+            "windows": [
+              {
+                "pieces": 200,
+                "lines": 79,
+                "tetrises": 0,
+                "mean_occ": 40.0,
+                "mean_top": 6.09,
+                "mean_holes": 0.285
+              },
+              {
+                "pieces": 200,
+                "lines": 79,
+                "tetrises": 0,
+                "mean_occ": 22.55,
+                "mean_top": 4.07,
+                "mean_holes": 0.32
+              },
+              {
+                "pieces": 200,
+                "lines": 76,
+                "tetrises": 1,
+                "mean_occ": 63.2,
+                "mean_top": 8.525,
+                "mean_holes": 3.73
+              },
+              {
+                "pieces": 200,
+                "lines": 83,
+                "tetrises": 0,
+                "mean_occ": 29.65,
+                "mean_top": 4.755,
+                "mean_holes": 0.57
+              },
+              {
+                "pieces": 200,
+                "lines": 76,
+                "tetrises": 1,
+                "mean_occ": 45.65,
+                "mean_top": 6.58,
+                "mean_holes": 4.085
+              },
+              {
+                "pieces": 200,
+                "lines": 84,
+                "tetrises": 0,
+                "mean_occ": 51.75,
+                "mean_top": 7.315,
+                "mean_holes": 4.465
+              },
+              {
+                "pieces": 200,
+                "lines": 76,
+                "tetrises": 0,
+                "mean_occ": 34.5,
+                "mean_top": 5.23,
+                "mean_holes": 1.97
+              },
+              {
+                "pieces": 200,
+                "lines": 78,
+                "tetrises": 1,
+                "mean_occ": 71.85,
+                "mean_top": 9.36,
+                "mean_holes": 5.88
+              },
+              {
+                "pieces": 200,
+                "lines": 81,
+                "tetrises": 0,
+                "mean_occ": 109.65,
+                "mean_top": 14.01,
+                "mean_holes": 9.45
+              },
+              {
+                "pieces": 200,
+                "lines": 83,
+                "tetrises": 1,
+                "mean_occ": 37.2,
+                "mean_top": 5.51,
+                "mean_holes": 2.255
+              },
+              {
+                "pieces": 200,
+                "lines": 82,
+                "tetrises": 1,
+                "mean_occ": 28.55,
+                "mean_top": 4.57,
+                "mean_holes": 1.15
+              },
+              {
+                "pieces": 200,
+                "lines": 78,
+                "tetrises": 1,
+                "mean_occ": 62.35,
+                "mean_top": 8.305,
+                "mean_holes": 3.615
+              },
+              {
+                "pieces": 200,
+                "lines": 82,
+                "tetrises": 0,
+                "mean_occ": 26.55,
+                "mean_top": 4.415,
+                "mean_holes": 0.96
+              },
+              {
+                "pieces": 200,
+                "lines": 81,
+                "tetrises": 1,
+                "mean_occ": 23.4,
+                "mean_top": 4.04,
+                "mean_holes": 0.435
+              },
+              {
+                "pieces": 200,
+                "lines": 81,
+                "tetrises": 1,
+                "mean_occ": 32.05,
+                "mean_top": 5.125,
+                "mean_holes": 1.675
+              }
+            ],
+            "tetris_at": [
+              484,
+              987,
+              1583,
+              1921,
+              2137,
+              2240,
+              2697,
+              2864
+            ],
+            "final": {
+              "occ": 10,
+              "top": 4.0,
+              "holes": 0.0
+            },
+            "s": 798.8
+          },
+          "20605": {
+            "arm": "lam10",
+            "seed": 20605,
+            "pieces": 3000,
+            "lines": 1196,
+            "clears": {
+              "0": 1968,
+              "1": 897,
+              "2": 111,
+              "3": 19,
+              "4": 5
+            },
+            "reason": "max_pieces",
+            "windows": [
+              {
+                "pieces": 200,
+                "lines": 79,
+                "tetrises": 0,
+                "mean_occ": 19.65,
+                "mean_top": 3.58,
+                "mean_holes": 0.445
+              },
+              {
+                "pieces": 200,
+                "lines": 79,
+                "tetrises": 1,
+                "mean_occ": 20.85,
+                "mean_top": 3.66,
+                "mean_holes": 0.155
+              },
+              {
+                "pieces": 200,
+                "lines": 78,
+                "tetrises": 0,
+                "mean_occ": 40.45,
+                "mean_top": 6.09,
+                "mean_holes": 2.305
+              },
+              {
+                "pieces": 200,
+                "lines": 82,
+                "tetrises": 0,
+                "mean_occ": 63.35,
+                "mean_top": 8.69,
+                "mean_holes": 2.615
+              },
+              {
+                "pieces": 200,
+                "lines": 81,
+                "tetrises": 0,
+                "mean_occ": 20.35,
+                "mean_top": 3.705,
+                "mean_holes": 0.44
+              },
+              {
+                "pieces": 200,
+                "lines": 77,
+                "tetrises": 1,
+                "mean_occ": 25.0,
+                "mean_top": 4.215,
+                "mean_holes": 0.955
+              },
+              {
+                "pieces": 200,
+                "lines": 79,
+                "tetrises": 0,
+                "mean_occ": 38.45,
+                "mean_top": 5.875,
+                "mean_holes": 3.98
+              },
+              {
+                "pieces": 200,
+                "lines": 84,
+                "tetrises": 1,
+                "mean_occ": 22.15,
+                "mean_top": 3.96,
+                "mean_holes": 0.69
+              },
+              {
+                "pieces": 200,
+                "lines": 73,
+                "tetrises": 0,
+                "mean_occ": 26.1,
+                "mean_top": 4.36,
+                "mean_holes": 1.0
+              },
+              {
+                "pieces": 200,
+                "lines": 86,
+                "tetrises": 0,
+                "mean_occ": 38.75,
+                "mean_top": 5.63,
+                "mean_holes": 2.49
+              },
+              {
+                "pieces": 200,
+                "lines": 80,
+                "tetrises": 0,
+                "mean_occ": 34.0,
+                "mean_top": 5.135,
+                "mean_holes": 2.04
+              },
+              {
+                "pieces": 200,
+                "lines": 78,
+                "tetrises": 1,
+                "mean_occ": 21.15,
+                "mean_top": 3.665,
+                "mean_holes": 0.335
+              },
+              {
+                "pieces": 200,
+                "lines": 80,
+                "tetrises": 0,
+                "mean_occ": 26.75,
+                "mean_top": 4.395,
+                "mean_holes": 0.665
+              },
+              {
+                "pieces": 200,
+                "lines": 82,
+                "tetrises": 1,
+                "mean_occ": 30.7,
+                "mean_top": 4.87,
+                "mean_holes": 1.21
+              },
+              {
+                "pieces": 200,
+                "lines": 78,
+                "tetrises": 0,
+                "mean_occ": 25.65,
+                "mean_top": 4.34,
+                "mean_holes": 0.73
+              }
+            ],
+            "tetris_at": [
+              290,
+              1138,
+              1485,
+              2353,
+              2706
+            ],
+            "final": {
+              "occ": 40,
+              "top": 7.0,
+              "holes": 1.0
+            },
+            "s": 800.7
+          },
+          "20606": {
+            "arm": "lam10",
+            "seed": 20606,
+            "pieces": 3000,
+            "lines": 1195,
+            "clears": {
+              "0": 1999,
+              "1": 833,
+              "2": 147,
+              "3": 16,
+              "4": 5
+            },
+            "reason": "max_pieces",
+            "windows": [
+              {
+                "pieces": 200,
+                "lines": 74,
+                "tetrises": 0,
+                "mean_occ": 37.55,
+                "mean_top": 5.82,
+                "mean_holes": 2.845
+              },
+              {
+                "pieces": 200,
+                "lines": 84,
+                "tetrises": 0,
+                "mean_occ": 47.4,
+                "mean_top": 6.795,
+                "mean_holes": 4.77
+              },
+              {
+                "pieces": 200,
+                "lines": 77,
+                "tetrises": 0,
+                "mean_occ": 35.8,
+                "mean_top": 5.485,
+                "mean_holes": 1.8
+              },
+              {
+                "pieces": 200,
+                "lines": 84,
+                "tetrises": 0,
+                "mean_occ": 20.6,
+                "mean_top": 3.63,
+                "mean_holes": 0.715
+              },
+              {
+                "pieces": 200,
+                "lines": 77,
+                "tetrises": 0,
+                "mean_occ": 19.8,
+                "mean_top": 3.52,
+                "mean_holes": 0.485
+              },
+              {
+                "pieces": 200,
+                "lines": 76,
+                "tetrises": 0,
+                "mean_occ": 40.1,
+                "mean_top": 6.135,
+                "mean_holes": 4.085
+              },
+              {
+                "pieces": 200,
+                "lines": 86,
+                "tetrises": 0,
+                "mean_occ": 33.6,
+                "mean_top": 5.335,
+                "mean_holes": 3.12
+              },
+              {
+                "pieces": 200,
+                "lines": 81,
+                "tetrises": 0,
+                "mean_occ": 45.3,
+                "mean_top": 6.525,
+                "mean_holes": 2.515
+              },
+              {
+                "pieces": 200,
+                "lines": 78,
+                "tetrises": 0,
+                "mean_occ": 19.95,
+                "mean_top": 3.64,
+                "mean_holes": 0.345
+              },
+              {
+                "pieces": 200,
+                "lines": 79,
+                "tetrises": 0,
+                "mean_occ": 46.9,
+                "mean_top": 6.9,
+                "mean_holes": 3.66
+              },
+              {
+                "pieces": 200,
+                "lines": 80,
+                "tetrises": 0,
+                "mean_occ": 27.15,
+                "mean_top": 4.55,
+                "mean_holes": 1.06
+              },
+              {
+                "pieces": 200,
+                "lines": 83,
+                "tetrises": 1,
+                "mean_occ": 27.1,
+                "mean_top": 4.5,
+                "mean_holes": 0.495
+              },
+              {
+                "pieces": 200,
+                "lines": 76,
+                "tetrises": 3,
+                "mean_occ": 26.0,
+                "mean_top": 4.335,
+                "mean_holes": 0.515
+              },
+              {
+                "pieces": 200,
+                "lines": 78,
+                "tetrises": 0,
+                "mean_occ": 29.9,
+                "mean_top": 4.835,
+                "mean_holes": 1.71
+              },
+              {
+                "pieces": 200,
+                "lines": 82,
+                "tetrises": 1,
+                "mean_occ": 50.9,
+                "mean_top": 7.13,
+                "mean_holes": 3.28
+              }
+            ],
+            "tetris_at": [
+              2317,
+              2431,
+              2458,
+              2481,
+              2861
+            ],
+            "final": {
+              "occ": 50,
+              "top": 7.0,
+              "holes": 3.0
+            },
+            "s": 800.1
+          },
+          "20607": {
+            "arm": "lam10",
+            "seed": 20607,
+            "pieces": 3000,
+            "lines": 1194,
+            "clears": {
+              "0": 2018,
+              "1": 813,
+              "2": 136,
+              "3": 23,
+              "4": 10
+            },
+            "reason": "max_pieces",
+            "windows": [
+              {
+                "pieces": 200,
+                "lines": 79,
+                "tetrises": 0,
+                "mean_occ": 25.9,
+                "mean_top": 4.27,
+                "mean_holes": 1.035
+              },
+              {
+                "pieces": 200,
+                "lines": 78,
+                "tetrises": 1,
+                "mean_occ": 21.0,
+                "mean_top": 3.775,
+                "mean_holes": 0.5
+              },
+              {
+                "pieces": 200,
+                "lines": 78,
+                "tetrises": 0,
+                "mean_occ": 41.0,
+                "mean_top": 5.965,
+                "mean_holes": 1.935
+              },
+              {
+                "pieces": 200,
+                "lines": 80,
+                "tetrises": 1,
+                "mean_occ": 30.0,
+                "mean_top": 4.67,
+                "mean_holes": 1.38
+              },
+              {
+                "pieces": 200,
+                "lines": 84,
+                "tetrises": 2,
+                "mean_occ": 28.85,
+                "mean_top": 4.52,
+                "mean_holes": 0.865
+              },
+              {
+                "pieces": 200,
+                "lines": 80,
+                "tetrises": 0,
+                "mean_occ": 24.55,
+                "mean_top": 4.205,
+                "mean_holes": 0.79
+              },
+              {
+                "pieces": 200,
+                "lines": 73,
+                "tetrises": 0,
+                "mean_occ": 55.35,
+                "mean_top": 8.07,
+                "mean_holes": 1.57
+              },
+              {
+                "pieces": 200,
+                "lines": 86,
+                "tetrises": 1,
+                "mean_occ": 58.1,
+                "mean_top": 7.835,
+                "mean_holes": 1.535
+              },
+              {
+                "pieces": 200,
+                "lines": 76,
+                "tetrises": 0,
+                "mean_occ": 24.1,
+                "mean_top": 4.205,
+                "mean_holes": 0.855
+              },
+              {
+                "pieces": 200,
+                "lines": 84,
+                "tetrises": 1,
+                "mean_occ": 38.3,
+                "mean_top": 5.585,
+                "mean_holes": 2.07
+              },
+              {
+                "pieces": 200,
+                "lines": 80,
+                "tetrises": 1,
+                "mean_occ": 23.75,
+                "mean_top": 4.165,
+                "mean_holes": 0.66
+              },
+              {
+                "pieces": 200,
+                "lines": 79,
+                "tetrises": 1,
+                "mean_occ": 27.0,
+                "mean_top": 4.43,
+                "mean_holes": 1.19
+              },
+              {
+                "pieces": 200,
+                "lines": 78,
+                "tetrises": 0,
+                "mean_occ": 30.6,
+                "mean_top": 4.9,
+                "mean_holes": 1.91
+              },
+              {
+                "pieces": 200,
+                "lines": 80,
+                "tetrises": 2,
+                "mean_occ": 37.45,
+                "mean_top": 5.64,
+                "mean_holes": 1.495
+              },
+              {
+                "pieces": 200,
+                "lines": 79,
+                "tetrises": 0,
+                "mean_occ": 71.15,
+                "mean_top": 9.47,
+                "mean_holes": 5.05
+              }
+            ],
+            "tetris_at": [
+              350,
+              736,
+              824,
+              967,
+              1490,
+              1838,
+              2011,
+              2303,
+              2647,
+              2685
+            ],
+            "final": {
+              "occ": 60,
+              "top": 9.0,
+              "holes": 5.0
+            },
+            "s": 806.0
+          },
+          "20608": {
+            "arm": "lam10",
+            "seed": 20608,
+            "pieces": 3000,
+            "lines": 1198,
+            "clears": {
+              "0": 2026,
+              "1": 791,
+              "2": 153,
+              "3": 19,
+              "4": 11
+            },
+            "reason": "max_pieces",
+            "windows": [
+              {
+                "pieces": 200,
+                "lines": 79,
+                "tetrises": 0,
+                "mean_occ": 29.45,
+                "mean_top": 4.665,
+                "mean_holes": 1.435
+              },
+              {
+                "pieces": 200,
+                "lines": 80,
+                "tetrises": 0,
+                "mean_occ": 23.9,
+                "mean_top": 4.07,
+                "mean_holes": 0.815
+              },
+              {
+                "pieces": 200,
+                "lines": 78,
+                "tetrises": 2,
+                "mean_occ": 21.8,
+                "mean_top": 3.83,
+                "mean_holes": 0.585
+              },
+              {
+                "pieces": 200,
+                "lines": 77,
+                "tetrises": 1,
+                "mean_occ": 50.85,
+                "mean_top": 7.175,
+                "mean_holes": 3.92
+              },
+              {
+                "pieces": 200,
+                "lines": 84,
+                "tetrises": 1,
+                "mean_occ": 25.05,
+                "mean_top": 4.22,
+                "mean_holes": 0.885
+              },
+              {
+                "pieces": 200,
+                "lines": 71,
+                "tetrises": 0,
+                "mean_occ": 74.1,
+                "mean_top": 9.745,
+                "mean_holes": 5.11
+              },
+              {
+                "pieces": 200,
+                "lines": 80,
+                "tetrises": 0,
+                "mean_occ": 67.25,
+                "mean_top": 9.1,
+                "mean_holes": 6.945
+              },
+              {
+                "pieces": 200,
+                "lines": 88,
+                "tetrises": 2,
+                "mean_occ": 41.2,
+                "mean_top": 6.12,
+                "mean_holes": 2.83
+              },
+              {
+                "pieces": 200,
+                "lines": 81,
+                "tetrises": 2,
+                "mean_occ": 25.2,
+                "mean_top": 4.265,
+                "mean_holes": 0.73
+              },
+              {
+                "pieces": 200,
+                "lines": 81,
+                "tetrises": 1,
+                "mean_occ": 23.9,
+                "mean_top": 4.09,
+                "mean_holes": 0.675
+              },
+              {
+                "pieces": 200,
+                "lines": 79,
+                "tetrises": 0,
+                "mean_occ": 28.7,
+                "mean_top": 4.58,
+                "mean_holes": 0.61
+              },
+              {
+                "pieces": 200,
+                "lines": 77,
+                "tetrises": 2,
+                "mean_occ": 47.05,
+                "mean_top": 6.63,
+                "mean_holes": 2.785
+              },
+              {
+                "pieces": 200,
+                "lines": 83,
+                "tetrises": 0,
+                "mean_occ": 23.9,
+                "mean_top": 4.145,
+                "mean_holes": 0.685
+              },
+              {
+                "pieces": 200,
+                "lines": 78,
+                "tetrises": 0,
+                "mean_occ": 32.75,
+                "mean_top": 5.13,
+                "mean_holes": 1.1
+              },
+              {
+                "pieces": 200,
+                "lines": 82,
+                "tetrises": 0,
+                "mean_occ": 28.85,
+                "mean_top": 4.675,
+                "mean_holes": 0.99
+              }
+            ],
+            "tetris_at": [
+              414,
+              586,
+              620,
+              878,
+              1405,
+              1418,
+              1653,
+              1792,
+              1874,
+              2370,
+              2379
+            ],
+            "final": {
+              "occ": 20,
+              "top": 3.0,
+              "holes": 0.0
+            },
+            "s": 639.0
+          },
+          "20609": {
+            "arm": "lam10",
+            "seed": 20609,
+            "pieces": 3000,
+            "lines": 1197,
+            "clears": {
+              "0": 2012,
+              "1": 818,
+              "2": 137,
+              "3": 27,
+              "4": 6
+            },
+            "reason": "max_pieces",
+            "windows": [
+              {
+                "pieces": 200,
+                "lines": 78,
+                "tetrises": 2,
+                "mean_occ": 34.35,
+                "mean_top": 5.21,
+                "mean_holes": 1.225
+              },
+              {
+                "pieces": 200,
+                "lines": 81,
+                "tetrises": 0,
+                "mean_occ": 20.15,
+                "mean_top": 3.675,
+                "mean_holes": 0.31
+              },
+              {
+                "pieces": 200,
+                "lines": 77,
+                "tetrises": 0,
+                "mean_occ": 29.8,
+                "mean_top": 4.81,
+                "mean_holes": 1.045
+              },
+              {
+                "pieces": 200,
+                "lines": 79,
+                "tetrises": 1,
+                "mean_occ": 36.1,
+                "mean_top": 5.505,
+                "mean_holes": 2.8
+              },
+              {
+                "pieces": 200,
+                "lines": 84,
+                "tetrises": 0,
+                "mean_occ": 34.4,
+                "mean_top": 5.285,
+                "mean_holes": 1.68
+              },
+              {
+                "pieces": 200,
+                "lines": 76,
+                "tetrises": 0,
+                "mean_occ": 28.15,
+                "mean_top": 4.78,
+                "mean_holes": 1.105
+              },
+              {
+                "pieces": 200,
+                "lines": 84,
+                "tetrises": 0,
+                "mean_occ": 31.1,
+                "mean_top": 4.885,
+                "mean_holes": 2.04
+              },
+              {
+                "pieces": 200,
+                "lines": 76,
+                "tetrises": 0,
+                "mean_occ": 57.85,
+                "mean_top": 7.925,
+                "mean_holes": 4.31
+              },
+              {
+                "pieces": 200,
+                "lines": 79,
+                "tetrises": 0,
+                "mean_occ": 86.9,
+                "mean_top": 11.25,
+                "mean_holes": 8.32
+              },
+              {
+                "pieces": 200,
+                "lines": 84,
+                "tetrises": 1,
+                "mean_occ": 44.3,
+                "mean_top": 6.31,
+                "mean_holes": 2.975
+              },
+              {
+                "pieces": 200,
+                "lines": 79,
+                "tetrises": 0,
+                "mean_occ": 20.1,
+                "mean_top": 3.59,
+                "mean_holes": 0.385
+              },
+              {
+                "pieces": 200,
+                "lines": 79,
+                "tetrises": 0,
+                "mean_occ": 40.05,
+                "mean_top": 5.915,
+                "mean_holes": 1.575
+              },
+              {
+                "pieces": 200,
+                "lines": 73,
+                "tetrises": 1,
+                "mean_occ": 39.45,
+                "mean_top": 5.78,
+                "mean_holes": 1.635
+              },
+              {
+                "pieces": 200,
+                "lines": 83,
+                "tetrises": 0,
+                "mean_occ": 111.65,
+                "mean_top": 13.835,
+                "mean_holes": 7.21
+              },
+              {
+                "pieces": 200,
+                "lines": 85,
+                "tetrises": 1,
+                "mean_occ": 47.55,
+                "mean_top": 6.65,
+                "mean_holes": 1.68
+              }
+            ],
+            "tetris_at": [
+              63,
+              149,
+              749,
+              1836,
+              2526,
+              2909
+            ],
+            "final": {
+              "occ": 30,
+              "top": 5.0,
+              "holes": 1.0
+            },
+            "s": 635.1
+          },
+          "20610": {
+            "arm": "lam10",
+            "seed": 20610,
+            "pieces": 3000,
+            "lines": 1198,
+            "clears": {
+              "0": 1998,
+              "1": 841,
+              "2": 132,
+              "3": 23,
+              "4": 6
+            },
+            "reason": "max_pieces",
+            "windows": [
+              {
+                "pieces": 200,
+                "lines": 78,
+                "tetrises": 0,
+                "mean_occ": 27.75,
+                "mean_top": 4.54,
+                "mean_holes": 0.535
+              },
+              {
+                "pieces": 200,
+                "lines": 81,
+                "tetrises": 0,
+                "mean_occ": 24.95,
+                "mean_top": 4.2,
+                "mean_holes": 0.7
+              },
+              {
+                "pieces": 200,
+                "lines": 77,
+                "tetrises": 0,
+                "mean_occ": 34.15,
+                "mean_top": 5.235,
+                "mean_holes": 2.09
+              },
+              {
+                "pieces": 200,
+                "lines": 80,
+                "tetrises": 0,
+                "mean_occ": 56.85,
+                "mean_top": 7.83,
+                "mean_holes": 4.01
+              },
+              {
+                "pieces": 200,
+                "lines": 80,
+                "tetrises": 1,
+                "mean_occ": 22.9,
+                "mean_top": 3.975,
+                "mean_holes": 0.795
+              },
+              {
+                "pieces": 200,
+                "lines": 75,
+                "tetrises": 0,
+                "mean_occ": 99.2,
+                "mean_top": 12.845,
+                "mean_holes": 10.82
+              },
+              {
+                "pieces": 200,
+                "lines": 83,
+                "tetrises": 0,
+                "mean_occ": 66.7,
+                "mean_top": 9.08,
+                "mean_holes": 6.585
+              },
+              {
+                "pieces": 200,
+                "lines": 81,
+                "tetrises": 0,
+                "mean_occ": 59.3,
+                "mean_top": 8.235,
+                "mean_holes": 5.26
+              },
+              {
+                "pieces": 200,
+                "lines": 84,
+                "tetrises": 0,
+                "mean_occ": 41.15,
+                "mean_top": 6.005,
+                "mean_holes": 3.18
+              },
+              {
+                "pieces": 200,
+                "lines": 79,
+                "tetrises": 0,
+                "mean_occ": 18.75,
+                "mean_top": 3.565,
+                "mean_holes": 0.495
+              },
+              {
+                "pieces": 200,
+                "lines": 81,
+                "tetrises": 1,
+                "mean_occ": 25.4,
+                "mean_top": 4.305,
+                "mean_holes": 0.805
+              },
+              {
+                "pieces": 200,
+                "lines": 77,
+                "tetrises": 2,
+                "mean_occ": 27.6,
+                "mean_top": 4.5,
+                "mean_holes": 0.385
+              },
+              {
+                "pieces": 200,
+                "lines": 80,
+                "tetrises": 1,
+                "mean_occ": 43.1,
+                "mean_top": 6.34,
+                "mean_holes": 3.835
+              },
+              {
+                "pieces": 200,
+                "lines": 82,
+                "tetrises": 0,
+                "mean_occ": 23.2,
+                "mean_top": 3.98,
+                "mean_holes": 1.17
+              },
+              {
+                "pieces": 200,
+                "lines": 80,
+                "tetrises": 1,
+                "mean_occ": 24.7,
+                "mean_top": 4.265,
+                "mean_holes": 0.645
+              }
+            ],
+            "tetris_at": [
+              894,
+              2024,
+              2324,
+              2355,
+              2504,
+              2918
+            ],
+            "final": {
+              "occ": 20,
+              "top": 4.0,
+              "holes": 0.0
+            },
+            "s": 605.7
+          },
+          "20611": {
+            "arm": "lam10",
+            "seed": 20611,
+            "pieces": 3000,
+            "lines": 1195,
+            "clears": {
+              "0": 2012,
+              "1": 819,
+              "2": 140,
+              "3": 20,
+              "4": 9
+            },
+            "reason": "max_pieces",
+            "windows": [
+              {
+                "pieces": 200,
+                "lines": 76,
+                "tetrises": 0,
+                "mean_occ": 33.9,
+                "mean_top": 5.345,
+                "mean_holes": 1.55
+              },
+              {
+                "pieces": 200,
+                "lines": 79,
+                "tetrises": 0,
+                "mean_occ": 69.65,
+                "mean_top": 9.29,
+                "mean_holes": 4.975
+              },
+              {
+                "pieces": 200,
+                "lines": 84,
+                "tetrises": 0,
+                "mean_occ": 20.6,
+                "mean_top": 3.64,
+                "mean_holes": 0.595
+              },
+              {
+                "pieces": 200,
+                "lines": 79,
+                "tetrises": 1,
+                "mean_occ": 33.6,
+                "mean_top": 5.225,
+                "mean_holes": 0.995
+              },
+              {
+                "pieces": 200,
+                "lines": 80,
+                "tetrises": 1,
+                "mean_occ": 24.65,
+                "mean_top": 4.265,
+                "mean_holes": 0.835
+              },
+              {
+                "pieces": 200,
+                "lines": 78,
+                "tetrises": 0,
+                "mean_occ": 39.5,
+                "mean_top": 5.845,
+                "mean_holes": 1.83
+              },
+              {
+                "pieces": 200,
+                "lines": 80,
+                "tetrises": 0,
+                "mean_occ": 53.2,
+                "mean_top": 7.46,
+                "mean_holes": 3.29
+              },
+              {
+                "pieces": 200,
+                "lines": 81,
+                "tetrises": 0,
+                "mean_occ": 41.45,
+                "mean_top": 6.17,
+                "mean_holes": 2.935
+              },
+              {
+                "pieces": 200,
+                "lines": 82,
+                "tetrises": 0,
+                "mean_occ": 31.2,
+                "mean_top": 4.985,
+                "mean_holes": 1.46
+              },
+              {
+                "pieces": 200,
+                "lines": 78,
+                "tetrises": 0,
+                "mean_occ": 23.25,
+                "mean_top": 3.85,
+                "mean_holes": 0.63
+              },
+              {
+                "pieces": 200,
+                "lines": 79,
+                "tetrises": 0,
+                "mean_occ": 19.15,
+                "mean_top": 3.635,
+                "mean_holes": 0.435
+              },
+              {
+                "pieces": 200,
+                "lines": 83,
+                "tetrises": 1,
+                "mean_occ": 20.95,
+                "mean_top": 3.85,
+                "mean_holes": 0.295
+              },
+              {
+                "pieces": 200,
+                "lines": 78,
+                "tetrises": 1,
+                "mean_occ": 24.7,
+                "mean_top": 4.12,
+                "mean_holes": 0.82
+              },
+              {
+                "pieces": 200,
+                "lines": 77,
+                "tetrises": 3,
+                "mean_occ": 29.85,
+                "mean_top": 4.795,
+                "mean_holes": 0.835
+              },
+              {
+                "pieces": 200,
+                "lines": 81,
+                "tetrises": 2,
+                "mean_occ": 31.3,
+                "mean_top": 5.08,
+                "mean_holes": 0.825
+              }
+            ],
+            "tetris_at": [
+              754,
+              920,
+              2281,
+              2548,
+              2615,
+              2653,
+              2733,
+              2850,
+              2886
+            ],
+            "final": {
+              "occ": 50,
+              "top": 8.0,
+              "holes": 2.0
+            },
+            "s": 621.0
+          }
+        }
+      },
+      "paired": {
+        "d_pieces": 0.0,
+        "t": 0.0,
+        "wins": 0,
+        "losses": 0,
+        "d_t100": 0.17333333333333334,
+        "t_t100": 8.189657873412719
+      }
+    }
+  }
+}

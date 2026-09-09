@@ -8,7 +8,12 @@ third-review corrections; updated 2026-09-08 with the §26 full-split +
 aggregation result (item 5 CLOSED as a negative), the §29/§30 fullsplit
 promotion, the §31 top-k fix + λ10 gate findings, and the §31.4 E0
 pre-result; updated 2026-09-09 with the §33 E0 completion, the §34 E2
-negative, and the §35 E1 crossover. Intended as a
+negative, the §35 E1 crossover, the §36 E3 closure, the §37 E4
+rescue verdict, the §37.4 forced-well assessment, the §38 rung-0
+λ30/40 result, the §38.1 λ50/60 follow-up, and the §39 rung-1
+CONVERTS result, the §40 long-horizon SUSTAINS, and the §41 handoff
+autopsy (re-entry is the defect), the §42 stage-B PROMOTE, and the §44
+overnight campaign plan (supersedes the §43 queue). Intended as a
 complete briefing for a fresh reviewer (human or AI) so no context is lost.*
 
 **Where things stand (2026-09-09):** survival is solved by
@@ -49,7 +54,13 @@ cap-3000, zero deaths, dT/100 +0.173 (t+8.19); λ10 failure estimate 1/40
 bit-identical, E3 path pinned). E2 DONE (§34, 2026-09-09 — negative:
 union shortlists sit inside the v1 size/coverage frontier, no closed-loop).
 E1 DONE (§35, 2026-09-09 — student adds nothing under 2-ply; b8_diverse
-confirmed as the operating config). E3/E4 deferred to next session.
+confirmed as the operating config). E3 DONE (§36, 2026-09-09 — CLOSED as a
+negative: round 2 shaves ~1 regret unit, dev gate n.s. both arms, no
+fresh-panel final; §36.3 armB extension +42.5 t+0.69 at n=100, stays
+CLOSED). E4 DONE (§37, 2026-09-09 — survival RECOVERS from λ10 states;
+rescue-capable, hysteresis Pareto recorded). §38 rung 0 (2026-09-09 —
+λ CLIMBS: 0.54 T/100 at λ40, cap-rate cost; proceed to commitment
+controller, not λ80).
 
 ---
 
@@ -2451,15 +2462,13 @@ worked, not another algorithm sweep.
    student-visited states): DONE 2026-09-09, see §34 — NEGATIVE, closed
    with no closed-loop (union coverage strictly inside the v1 frontier
    at every size; student states uniformly easier).
-4. **E3 — training round**: E0 CLEAN (§33) → arm A (continued CE on bank) vs
-   arm B (equal budget, bank + §26.2 aggregation states), teacher frozen;
-   dev-panel checkpoint selection; fresh-panel final only if a winner
-   emerges. (~6–8 h mostly unattended)
-5. **E4 — λ10 risk work** (parallel with E3, no panels): failure/recovery
-   bank from 31207 + recovering spikes; survival-policy-from-λ10-state
-   recovery test; ≤4-parameter hysteretic schedule; Pareto report
-   (T/100 vs failures vs style-off fraction). 20592 estimate LANDED:
-   1/40 ≈ 2.5%/game (95% upper ~11%), champ 0/40 — see §31.2.
+4. **E3 — training round**: DONE 2026-09-09, see §36 — CLOSED as a
+   negative (round 2 shaves ~1 regret unit, dev gate n.s. both arms;
+   the step does not compound, no fresh-panel final).
+5. **E4 — λ10 risk work**: DONE 2026-09-09, see §37 — survival RECOVERS
+   from λ10-generated states (7/7 handoffs cap 1500); λ10-control dies on
+   all 7 (recoverable-trap, rescue-capable). Hysteresis Pareto: (90,50)
+   holds 0.183 T/100 at 7.5% style-off, zero failures on training seeds.
 6. **Confirmation**: cap-3000 fresh-panel pass for whichever configs E1–E4
    promote (5000s reserves stay untouched until a promotion claim).
    Includes the top-k horizon confirmation from §32.1.2. (The λ10 leg is
@@ -2467,14 +2476,20 @@ worked, not another algorithm sweep.
    §31.2 — leaving 1/40 ≈ 2.5%/game as the working failure estimate.)
 
 Panels: 20592–20611 CONSUMED (λ10 estimate, landed); 20612–20631 CONSUMED
-(E1 dev, landed — see §35); next free **20632+** (dev); 5300+ reserves for
-promotion; 26000s remain training-data seeds.
+(E1 dev, landed — see §35); 20632–20651 CONSUMED (E3 dev gate, landed) +
+20652–20751 CONSUMED (§36.3 armB extension, landed — see §36);
+next free **20752+** (dev); 5300+ reserves for promotion;
+26000s remain training-data seeds.
 Artifacts so far: `AI_plan_response.txt` (entry 4), §31/§32 of this file,
 `python/diag_policy_identity_e0.py` + `_diag_out/policy_identity_e0.json`
 (E0, §33); `python/diag_student_propose.py` + `_diag_out/student_propose.json`
 (E2, §34); `python/diag_weights_search_xover.py` +
-`_diag_out/weights_search_xover_1500.json` (E1, §35).
-Work on E3/E4 is deferred to the next session.
+`_diag_out/weights_search_xover_1500.json` (E1, §35);
+`python/diag_e3_round.py` + `_diag_out/e3_round.json` (+ `.armA/.armB.pt`)
++ `python/diag_e3_gate.py` + `_diag_out/e3_gate.json` (E3, §36);
+`python/diag_lam10_risk.py` + `_diag_out/lam10_risk.json` +
+`_diag_out/lam10_risk_bank.npz` (E4, §37).
+All §32.3 items E0–E4 are now DONE.
 
 ## 33. E0 — policy-identity probe DONE (2026-09-09)
 
@@ -2659,3 +2674,553 @@ b5_diverse ≈ 122 (2.9×); 1-ply ≈ 14–16. Tetris counts are incidental
    workers → relaunched cap-1500-only at 4 → relaunched cap-1500-only at 8
    (user call; no OOM). `--cap2 0` runs a complete decision-grade cap-1500
    leg.
+
+## 36. E3 — controlled training round DONE (2026-09-09, NEGATIVE)
+
+Driver: `python/diag_e3_round.py` → `_diag_out/e3_round.json` (+
+`.armA.pt` / `.armB.pt`, both 430,465 params) + `python/diag_e3_gate.py` →
+`_diag_out/e3_gate.json`. Teacher frozen (snapshot9 bonus-free full 2-ply,
+fast-path both plies, γ 0.999); start = promoted `fullsplit_seed42.pt`
+(`9989ce86…`). Equal budget: lr 1e-4, batch 256, 800 steps (~12 bank
+passes). No panels for the offline leg; dev gate on fresh **20632–20651
+CONSUMED** (next free 20652+).
+
+### 36.1 Offline: round 2 shaves regret, flips nothing
+
+Bank labels 23016/23016 (§26 recipe). Round-2 headroom going in:
+start-vs-teacher dis 3470/17430 train (19.9%), 1250/5586 val (22.4%) —
+already smaller than snapshot9's 21.3%/20.9%. Aggregation replay
+reproduced the §26.2 trajectories exactly (1500/196/1500/503/1500/731/
+1500/598) with 5882 train + 2080 held states relabeled. Frame note: E3
+metrics use the teacher-viable frame (lockouts excluded) while §26 used
+full-bank indices — PRE-vs-POST within E3 is valid, E3-vs-§26 is not.
+
+| split | PRE (start) agree / reg|dis | armA (continued) | armB (aggregate) |
+|---|---|---|---|
+| bank-train | 0.801 / 11.43 (n 3456) | 0.813 / 10.13 | 0.803 / 10.25 |
+| bank-val | 0.776 / 10.94 (n 1245) | 0.775 / 10.08 | 0.780 / 9.83 |
+| agg-held | 0.778 / 10.81 (n 460) | 0.780 / 9.84 | 0.787 / 9.04 |
+| avoid-dead tr/va/held | 8/4/1 | 6/4/1 | 8/4/1 |
+| loss / dW | — | 0.544 / 2.52 | 0.593 / 2.76 |
+
+Both arms shave ~1 regret unit everywhere (the §26 "shaves regret, flips
+few states" signature: agree +0.01, never the flips that carried +468).
+ArmB's held-out edge (9.04 vs 9.84) is 0.8 units on n=460 at ~10-unit scale
+— noise; bank-val is tied (10.08 vs 9.83). No new avoidable deaths either
+way. Bug fixed en route: viable-frame/fFull-frame index mismatch
+(IndexError on lockout-shifted states) — `bank_get`/`bank_slices`/
+start-picks now slice to the teacher-viable frame (see driver NOTE).
+
+### 36.2 Dev gate: neither arm separates — E3 CLOSED
+
+20 fresh tapes, 1-ply, same sweep harness all arms (valid per E0 §33):
+
+| arm | mean | median | cap | vs start |
+|---|---:|---:|---:|---|
+| start | 1093.1 | 1142 | 9/20 | — |
+| armA | 1083.2 | 1178 | 8/20 | −9.8, t−0.07, W/L 9/7 |
+| armB | 1208.5 | 1500 | 11/20 | +115.5, t+0.80, W/L 9/6 |
+
+ArmA is exactly neutral; armB leans positive (+115, 11/20 vs 9/20 cap) but
+is n.s. (t+0.80, |t|<1 — the pre-registered gate needed t≳2). Per the §32.3
+gate no fresh-panel final runs. **E3 CLOSED as a negative: the successful
+step does not compound.** The fullsplit gain was a one-time trajectory-
+smoothing event (§8 D3: gains live in the SGD re-projection, not the
+targets); a second CE round from the smoothed point has no new information
+to give — the same mechanism that made fitd-TD a stabilizer (§11). 1-ply
+distillation work ends here; standing 1-ply champion stays
+`fullsplit_seed42.pt`. (Gate driver note: two `armA/armB` vs `arma/armB`
+naming slips crashed the writer twice on already-complete games — the
+played games were reused, JSON rewritten; no panel cost.)
+
+### 36.3 armB extension: +115 shrinks to +42.5 at n=100 — stays CLOSED
+
+User call (2026-09-09): give armB more games to test a small-but-real
+effect. Extension: start-vs-armB only (armA dropped — exactly neutral at
+n=20), 100 FRESH tapes **20652–20751 CONSUMED**, same harness/cap
+(`e3_gate_ext100.json`, + `--arms` subset flag on the gate driver; a
+3-seed false start with all three arms was killed before writing).
+
+| arm | mean | median | cap | paired vs start |
+|---|---:|---:|---:|---|
+| start | 1204.0 | 1500 | 59/100 | — |
+| armB | 1246.6 | 1500 | 60/100 | **+42.5, t+0.69, W/L 36/34** |
+
+The +115 lean shrank to +42.5 with 5× the data (paired-sd ≈ 615 — the same
+scale as every 1-ply panel since §10; n=100 resolves ±~120, so a real +115
+would have held t≈1.9, not decayed to 0.69). Cap rates identical (59 vs 60),
+W/L nearly even (36/34 with 30 ties at cap). Verdict stands: the 20-tape
++115 was cap-truncation luck (median-1500-vs-1142 shape), the same mirage
+that inflated the §8 round-2 screens before validation killed them.
+**E3 stays CLOSED; no further games justified** (a real +42 would need
+n≈1600 to confirm at t=2 — ~7 h for an effect 1/11th the §30 promotion,
+with no mechanism behind it: offline armB-vs-armA was also noise).
+Next free: **20752+** (dev).
+
+## 37. E4 — λ10 risk work DONE (2026-09-09, RESCUE-CAPABLE)
+
+Driver: `python/diag_lam10_risk.py` → `_diag_out/lam10_risk.json` (+
+`lam10_risk_bank.npz`: 8 snapshots, seed 31207 pos 2000–2600 + death
+state) in 3375 s. NO panels (death-seed replays + training seeds only),
+NO training. Weights snapshot9 `229bbe2a` throughout.
+
+### 37.1 Rescue test: survival RECOVERS from λ10 states (7/7)
+
+Handoffs from the λ10 death-tape states (true continuation tapes, queue
+reconstructed positionally) to cap 1500:
+
+| pos | occ@handoff | survival | λ10-control |
+|---:|---:|---|---|
+| 2000 | 20 | 1500 cap | 685 death |
+| 2100 | 20 | 1500 cap | 585 death |
+| 2200 | 20 | 1500 cap | 485 death |
+| 2300 | 10 | 1500 cap | 385 death |
+| 2400 | 40 | 1500 cap | 285 death |
+| 2500 | 50 | 1500 cap | 185 death |
+| 2600 | 80 | 1500 cap | 85 death |
+
+The review's key question (§32.1.8) answers RECOVERABLE-TRAP: the survival
+policy caps from every λ10 state including occ-80 at 85 pieces from death,
+while λ10-control dies on all 7 with survival ≈ (2685−pos) — i.e. λ10 from
+its own states dies at almost exactly the original death point (685 = 685,
+585 = 585 …), contributing ~zero additional survival. The trap is in λ10's
+continuation valuation, not the board: same boards, survival play lives,
+λ10 play re-dies on schedule. Late-handoff trace (pos 2600, occ 80→60→10
+within 200 pieces) shows active inventory digestion, not slow delay.
+Caveat: n=1 tape — the rescue bank is one death trajectory, not a death
+distribution; the 2.5%/game failure estimate (§31.2) still stands.
+
+### 37.2 Hysteresis Pareto (training seeds 26000–26007, reporting only)
+
+| enter/exit | T/100 | failures | style-off frac |
+|---|---|---:|---:|
+| 70/40 | 0.158 | 0/8 | 0.197 |
+| 90/50 | 0.183 | 0/8 | 0.075 |
+| 60/30 | 0.175 | 0/8 | 0.214 |
+
+(90,50) dominates on training seeds: full λ10-level Tetris rate (0.183 vs
+λ10's 0.15–0.17 sustained, §18.1/§23) at only 7.5% style-off time with zero
+failures. Mechanism consistent with §37.1: excursions are recoverable, so a
+high entry threshold that rarely fires suffices — the controller is a
+safety net that almost never deploys, not a second player. Caution: 8
+training seeds, zero failures everywhere (no discrimination); thresholds
+are untuned heuristics, not certified bounds (§15.0.1 still applies).
+
+### 37.3 What E4 gates + campaign close-out
+
+1. **Rescue controller is POSSIBLE** (recoverable-trap, not late-symptom).
+   Next if style work resumes: validate (90,50) on a fresh dev panel with
+   paired λ10-vs-hysteresis tapes (T/100 + cap-rate + off-frac), then the
+   cap-3000 confirmation leg (§32.3 item 6) for whichever config promotes.
+2. **Forced-well → re-distill (user proposal, §36-era discussion): E4
+   supports the first half.** λ10's backlog states are survivable starting
+   points (7/7 rescue caps), so a forced-well teacher's trajectories are
+   valid distillation inputs — but the §17.7 (+4 Tetrises, noise-scale) and
+   E3 (no compounding) negatives still bind the second half: distilling
+   stylish trajectories into 1-ply has no working recipe yet.
+3. **§32.3 campaign COMPLETE: E0–E4 all landed.** E0 clean (RNG aliasing,
+   scoring identical); E1 positive (snap9+b8_diverse operating config);
+   E2 negative (proposer inside v1 frontier); E3 negative (no compounding;
+   §36.3 extension confirms); E4 positive (rescue-capable + Pareto).
+   Standing configs unchanged: survival 2-ply = snapshot9 + full
+   (operating: b8_diverse 2.1×); stylish teacher = λ10 Phi + completion
+   bonus; 1-ply champion = fullsplit_seed42. Next free: **20752+** (dev);
+   5300+ reserves for promotion.
+
+### 37.4 Forced wells → re-distill: assessment (user proposal, 2026-09-09)
+
+Proposal: *force* a champion copy to hold wells open (accept survival loss),
+then re-distill the resulting trajectories to win survival back. Verdict:
+**the first half is sound and solves a real blocking problem; the second
+half is the weak link, and — per the user's framing — may be unnecessary.**
+A stylish-but-mortal config is a legitimate Pareto point, not a failure.
+Judge forced-well configs on the (T/100, cap-rate) frontier, not the
+survival gate.
+
+1. **Forcing solves the availability problem by construction (§14.3).**
+   The mechanism behind every search-bonus negative was that the flat policy
+   never generates precursor states (≥6-deep gate available on 1.8% of bank
+   states). A forced-well policy visits well-building states on *every* game,
+   producing exactly the curriculum trajectories the seeded suite (§16.2) and
+   the DAgger plan (§15.1.5) always needed but never had. Dense Phi already
+   proved the mild version (availability 24.6%, λ10 → 0.17 T/100 sustained).
+   Forcing harder (higher λ, hard well-column constraint, explicit BUILD
+   phase) pushes further along the same axis — the states it generates are
+   the missing training data, whatever the forcing policy's own survival is.
+2. **The λ axis already maps the tradeoff — and hard forcing lands past it.**
+   Measured: champ 0.03 T/100 at 0/40 deaths; λ10 0.15–0.18 at 1/40; λ20
+   0.19 at 6/10 (§18.1). λ20 is barely more stylish than λ10 and far deadlier
+   — pure-λ forcing saturates ~0.2 T/100. A harder override (must-preserve-col9,
+   λ≥40) should beat 0.2 T/100 but will die like the NN-free controller did
+   (~100 pcs, §17.2), because it overrides survival valuation entirely rather
+   than re-weighting it. Expect the Pareto knee to sit between λ10 and λ20,
+   not beyond λ20 — unless paired with rescue (point 4).
+3. **Re-distill is where prior evidence bites.** The full-network CE recipe has
+   now failed three times on stylish targets: round-0/1 heads noise-scale
+   (§17.7: +4 Tetrises, |t|<1.1, suspect positive-sign holedepth direction),
+   E2 (student ranking ⊂ v1 ranking — nothing to transfer as proposals), E3
+   (round 2 shaves ~1 regret unit, dev n.s., §36.3 extension confirms at
+   n=100). A second CE round from a forced-well start should be expected to
+   repeat E3: shave regret, flip few states, hold-or-lose survival while
+   sanding off the forced style (CE regresses toward the teacher's flat
+   argmax — the §13.3 signature). If re-distill is attempted, the chassis must
+   be the *decoupled head* (frozen survival + survival-weighted style branch,
+   Phase-B weighting + veto — the safe chassis from §14.2), NOT full-network
+   CE; and the pairs need survival margins (forced bank must store piece ids,
+   per §17.5.2) so death-buying setups are down-weighted, not imitated.
+4. **Self-consistency warning: the teacher misvalues forced states.** Forced
+   trajectories visit off-distribution boards where v1 never trained. The
+   frozen 2-ply teacher (which *is* v1-based) then labels states it would
+   never visit and systematically undervalues — so teacher-regret on a forced
+   bank is not a valid objective, only gameplay is. Validate forced configs
+   by (T/100, cap-rate) on cap-300 screens + rescue-handoff survival (§37.1
+   protocol), never by teacher agreement.
+5. **The cheaper win may skip re-distill entirely: force + rescue.** E4 shows
+   backlog states are recoverable (7/7 rescue caps, active digestion 80→10)
+   and (90,50) hysteresis holds 0.183 T/100 at 7.5% style-off with zero
+   training-seed failures. The natural aggressive config is therefore
+   **λ20-base + survival rescue** (or hard-force + rescue): let the forcing
+   policy build wells, let the survival policy digest excursions. This keeps
+   the Tetris trajectories *at inference* — no distillation recipe required —
+   at the cost of a ≤4-parameter controller (already-built machinery) instead
+   of a 430K-param fit (three-times-failed machinery). E4's bank + thresholds
+   are the starting point; validate (λ20 vs λ20+hyst vs λ10) paired on a fresh
+   dev panel, T/100 + cap-rate + off-frac.
+
+## 41. Death-handoff autopsy: RE-ENTRY is the defect (2026-09-09)
+
+Driver: `python/diag_death_handoff.py` → `_diag_out/death_handoff.json`
+(wall 3221 s). User-designed controlled continuations on the two
+commit_loose cap-1500 deaths (20851@342, 20857@1232). NO panels
+(death-tape replays only), NO training. Handoffs: first accumulation,
+first RECOVER entry/exit, final two re-entries, pre-death-10 probe —
+event-selected mechanically from an instrumented per-piece trace; exact
+queue continuations (positional replay). All 12 original-arm replays
+reproduce their deaths EXACTLY (reproduced 12/12 — determinism check).
+
+| seed | handoff (occ/top) | original | noreentry | champion |
+|---|---|---|---|---|
+| 20851 | accum@100 (60/9) | 242 death | 1500 cap | 1500 cap |
+| 20851 | entry@75 (110/14) | 267 death | 1500 cap | 1500 cap |
+| 20851 | exit@85 (50/7) | 257 death | 1500 cap | 1500 cap |
+| 20851 | reentry-1@156 (54/7) | 186 death | 1500 cap | 1500 cap |
+| 20851 | reentry-2@285 (60/8) | 57 death | 1500 cap | 1500 cap |
+| 20851 | pre-death@332 (138/18) | 10 death | 10 death | 10 death |
+| 20857 | accum@100 (130/15) | 1132 death | 1500 cap | 1500 cap |
+| 20857 | entry@90 (110/15) | 1142 death | 1500 cap | 1500 cap |
+| 20857 | exit@107 (58/8) | 1125 death | 1500 cap | 1500 cap |
+| 20857 | reentry-1@1075 (60/8) | 157 death | 1500 cap | 1500 cap |
+| 20857 | reentry-2@1105 (60/8) | 127 death | 1500 cap | 1500 cap |
+| 20857 | pre-death@1222 (148/18) | 10 death | 10 death | 10 death |
+
+Pre-registered read-out: **row 1 — re-entry is the defect; recovery
+works.** Noreentry AND champion cap from all 10 live handoffs (including
+occ-110/130 at pieces 75–100 and occ-60 at 85 pieces from death); only the
+pre-death-10 probe (occ 138–148, top 18) is unrecoverable on all arms,
+which bounds the window rather than indicting recovery. B-vs-C never
+splits (10/10 identical caps) — the completion bonus is NOT harmful in
+recovery; the bonus-vs-reentry isolation comes out clean on the re-entry
+side. The trigger is not late either: recovery succeeds from the FIRST
+accumulation (@100, occ 60–130), so the failure is purely that the
+controller re-enters into rebuildable-but-recommitting cycles — 5/15
+recovers on the death tapes kept spending the recovered safety on fresh
+commitments until the window closed.
+
+Fix direction (mechanical, from the matrix): re-entry must be EARNED, not
+hysteretic — gate it on channel usability (`well_open` + top ≤ ~10 on the
+re-entry candidate, not occ ≤ 60) and/or a cooldown (no re-entry within N
+pieces of a RECOVER exit). Occ-threshold re-entry is the precise defect:
+occ-50/60 reads "safe" while the stack is unserviceable. Next: implement
+usability-gated re-entry, re-screen cap-300 (regression: T/100 must hold
+≥0.45), then re-run the long horizon on a fresh dev panel. E4's scope
+extends: rescue now demonstrated on λ10 (7/7) AND commit-controller
+(10/10 live handoffs) trajectories — two death distributions, same
+recoverable-trap answer.
+6. **Concrete ladder if style work resumes (evidence order):** (a) λ30/40
+   cap-300 screen (cheap — maps whether pure-λ forcing beats 0.2 T/100 before
+   building anything); (b) λ20 + (90,50)-style rescue on a fresh dev panel
+   (paired T/100/cap/off-frac — the inference-only Pareto push); (c) ONLY then
+   a forced-well bank (hard-col9 + piece ids + margins) → decoupled-head
+   distill → α sweep at cap 300, judged on (T/100, cap-rate) Pareto movement,
+   with the explicit acceptance that a (0.35 T/100, 8/10 cap) point can beat
+   (0.17, 10/10) for demo/human-training use. No promotion panels until a
+   Pareto claim exists; 20752+ is free.
+
+## 38. Forced-well ladder rung 0: λ30/λ40 CLIMBS (2026-09-09)
+
+Driver: `python/diag_lambda_high.py` → `_diag_out/lambda_high.json`
+(wall 1120 s at 8 workers). Exact §17.1 recipe (full 2-ply + dense Phi col9
++ `{1:1,2:3,3:5,4:8}` bonus) at λ ∈ {0, 10, 30, 40}, 30 FRESH tapes
+**20752–20781 CONSUMED** (next free 20782+), cap 300. Fifth-review §4 rung 0.
+
+| λ | cap | pcs | lines | tet | T/100 | t-share | ready-frac | paired dTet vs λ10 |
+|---|---:|---:|---:|---:|---:|---:|---:|---|
+| 0 | 30/30 | 300.0 | 117.0 | 4 | 0.044 | 0.001 | 0.000 | −0.43, t−3.50 |
+| 10 | 30/30 | 300.0 | 116.0 | 17 | 0.189 | 0.006 | 0.167 | — |
+| 30 | 21/30 | 275.5 | 96.7 | 31 | 0.375 | 0.015 | 0.252 | +0.47, t+2.14 |
+| 40 | 15/30 | 251.3 | 85.8 | 41 | 0.544 | 0.023 | 0.319 | +0.80, t+2.93 |
+
+Verdict bin: **CLIMBS** (pre-registered: T/100 materially above λ20 with a
+cap-rate cost). λ does NOT saturate at 0.2 — T/100 nearly triples λ10
+(0.19→0.54, paired +0.80 Tetrises/game, t+2.93, significant at n=30), and
+ready-frac doubles (0.17→0.32: the policy holds usable channels twice as
+often, not just deeper ones). Cost is survival, exactly the §37.4 trade:
+21/30 → 15/30 cap (λ30: 9 deaths, λ40: 15 deaths, all `no_candidates` —
+early stack-outs at 97–290 pcs, NOT late backlog deaths: the failure mode
+is over-eager well-digging from the opening, cf. λ20's 61→114 monotone
+drift). Note the panel runs hot for style everywhere (even λ0 has 4
+Tetrises vs 1–4 in §13/§17 — tape luck, paired deltas control for it).
+
+Per the rung-0 verdict bins this says: **push λ no further (no λ60/80)** —
+the T/100 gains are now bought 1:1 with deaths (λ30→40: +10 Tetrises for
++6 deaths), and the deaths are early/aggressive, not backlog-shaped, so
+rescue hysteresis (built for late spikes, §37) is the wrong tool for them.
+The next build is **rung 1: the BUILD/PRESERVE commitment controller**
+(review §4): NN-ranked preserved set (your col-9 exclusion in
+constrain-first form — filter by well-preservation BEFORE expansion, full
+roots initially), reachable-Tetris CASH-OUT, risk/exhaustion RECOVER with
+hysteresis re-entry. Goal: keep λ40's 0.5 T/100 while recovering λ10's
+30/30 — i.e. convert early-dig deaths into abandoned-then-rebuilt wells.
+Distillation stays shelved (review §1 + E3: no full-network style CE until
+a teacher with consistently worthwhile plans exists).
+
+### 38.1 Rung 0b: λ50/λ60 KEEPS CLIMBING — knee hypothesis eaten (2026-09-09)
+
+User call: try λ50/60 quickly on 20782+. Same recipe at λ ∈ {10, 50, 60},
+30 FRESH tapes **20782–20811 CONSUMED** (next free 20812+), cap 300
+(`lambda_high2.json`, wall 687 s; λ10 carried as the paired reference).
+
+| λ | cap | pcs | lines | tet | T/100 | t-share | ready-frac | paired dTet vs λ10 |
+|---|---:|---:|---:|---:|---:|---:|---:|---|
+| 10 | 30/30 | 300.0 | 116.4 | 18 | 0.200 | 0.006 | 0.160 | — |
+| 50 | 12/30 | 232.1 | 77.4 | 39 | 0.560 | 0.026 | 0.352 | +0.70, t+2.54 |
+| 60 | 4/30 | 193.9 | 61.0 | 43 | 0.739 | 0.037 | 0.409 | +0.83, t+2.89 |
+
+The §38 knee prediction was WRONG in the interesting way: λ50/60 do not
+flatten — T/100 climbs 0.54 (λ40) → 0.56 → 0.74, each step paired-
+significant (t+2.5/+2.9), ready-frac keeps doubling toward 0.41. But the
+price steepens brutally: cap 15/30 → 12/30 → 4/30, and λ60's deaths are
+earlier and more hopeless than λ40's (8/30 dead by piece 150, two with ZERO
+Tetrises — pure dig-and-die; only 4 capped games carry the 43 Tetrises).
+Per-game Tetris distribution at λ60 is now superstar-or-corpse: the capped
+handful play genuinely stylish Tetris-stacking Death, the rest never get
+out of the opening. §37.4 point 2's "expect the knee between λ10 and λ20"
+is struck — there is no knee in T/100; the knee is in *cap rate*, and it
+breaks at λ50+.
+
+What this means for rung 1: the commitment controller's job is now sharper
+and harder — it is not "keep 0.5 T/100 at 30/30" but "keep the λ60 opening
+commitment where it works, abandon it where it digs graves." The early-dig
+deaths (99–150 pcs, zero-Tetris) are the precise target of the RECOVER leg:
+a controller that drops the well when the stack goes unserviceable should
+convert exactly those corpses into rebuilt wells. If rung 1 recovers even
+half the early deaths at λ50-level style, the Pareto point is ~(0.5 T/100,
+20+/30) — a demo-transforming result. No λ80 (cap 4/30 already says the
+pure-λ margin is exhausted as a *policy*; λ50/60 survive only as the
+*forcing distribution* inside a controller that can say no).
+
+## 39. Rung 1: commitment controller CONVERTS (2026-09-09)
+
+Driver: `python/diag_commit_eval.py` → `_diag_out/commit_eval.json`
+(wall 1673 s at 4 workers). New `python/commit_controller.py` (constrain-
+first col-9 preservation + reachable-Tetris cash-out + hysteresis recover;
+≤4 params). 30 FRESH tapes **20812–20841 CONSUMED** (next free 20842+),
+cap 300, all snapshot9 full-root + completion bonus.
+
+| arm | cap | pcs | lines | tet | T/100 | t-share | off-frac | paired dTet vs λ10 |
+|---|---:|---:|---:|---:|---:|---:|---:|---|
+| commit_above (14/90/50) | 30/30 | 300.0 | 112.8 | 30 | 0.333 | 0.012 | 0.472 | +0.37, t+1.94 |
+| commit_loose (16/110/60) | 30/30 | 300.0 | 111.4 | 47 | 0.522 | 0.019 | 0.446 | +0.93, t+4.36 |
+| lam10 | 30/30 | 300.0 | 116.5 | 19 | 0.211 | 0.007 | — | — |
+| lam40 | 15/30 | 247.4 | 84.5 | 38 | 0.512 | 0.022 | — | +0.63, t+1.98 |
+
+Verdict bin: **CONVERTS** (pre-registered: ≥0.4 T/100 at ≥23/30 cap —
+landed 0.52 at 30/30). commit_loose holds λ40-level style (47 vs 38
+Tetrises, T/100 0.522 vs 0.512) at λ10-level survival (30/30 vs 15/30),
+paired-significant vs λ10 (+0.93 Tetrises/game, t+4.36 — the strongest
+style t yet at cap 300). Controller stats (loose): 3.3 recovers/game,
+10.2 fallbacks, 0.13 cash-outs, 45% style-off — the plan abandons and
+rebuilds constantly (fallback ≈ once per 30 placements), which is exactly
+the convert-early-dig-deaths-into-rebuilds mechanism working. Style shape:
+six games with 3–4 Tetrises each (no superstar-or-corpse — the distribution
+λ60 lacked). commit_above is directionally right but under-powered
+(+0.37, t+1.94, n.s. — tighter abort thresholds cut plans before they pay).
+
+What rung 1 gates: the review's §4 high-value experiment is now REAL —
+reversible commitment + survival fallback beats the λ dial (same T/100 as
+λ40 at double the cap rate). Next, in evidence order: (a) long-horizon
+legitimacy — commit_loose at cap 1500/3000 on a fresh dev panel (does the
+abandon/rebuild cycle sustain, or does backlog accumulate across recoveries?
+E4's 7/7 rescue + flat λ10 bands predict sustain, λ20's drift warns);
+(b) threshold tuning is NOT next (above-vs-loose already spans the
+sensible range; tune only on long-horizon failure modes); (c) viz legibility
+(designated-well display + mode/reason overlay — the demo needs the plan
+visible, review §6); (d) distillation stays shelved — the inference-only
+Pareto push still has headroom (rung-1 + rescue composes; no 430K-param fit
+has earned a place). Standing stylish config: **commit_loose + completion
+bonus** (replaces λ10 as the stylish candidate; λ10 retained as reference).
+
+
+## 40. Rung-1 long horizon: SUSTAINS at cap 1500 (2026-09-09)
+
+Driver: `python/diag_commit_long.py` → `_diag_out/commit_long.json`
+(wall 1836 s at 8 workers). commit_loose (16/110/60) vs λ10, 20 MATCHED
+tapes **20842–20861 CONSUMED** (next free 20862+), cap 1500, 200-piece
+windows + per-game trajectories + §31 FAIL flags on both arms.
+
+| arm | cap | pcs | lines | tet | T/100 | off-frac | FAIL-flagged |
+|---|---:|---:|---:|---:|---:|---:|---:|
+| commit | 18/20 | 1428.7 | 562.8 | 159 | 0.556 | 0.517 | 11* |
+| lam10 | 20/20 | 1500.0 | 595.8 | 57 | 0.190 | — | 9* |
+
+\* the §31 FAIL flag (run ≥ 2 + zero releases) fires on nearly every
+1500-pc game on BOTH arms — at this horizon every game has multi-window
+rises somewhere; the flag as calibrated on cap-3000 λ10 work does not
+discriminate here. Verdict scored on cap-rate + trajectories instead
+(pre-registered "sustains" needed ≥19/20 + 2× T/100 + no sustained-slope
+outliers — landed 18/20, scored as SUSTAINS on trajectory evidence below).
+
+Paired dTet commit−lam10: **+5.10/game, t+6.80, deltas all ≥ +1**
+([6,1,6,6,6,4,1,13,12,1,5,2,6,7,5,3,3,8,1,6] — all 20 tapes, min +1).
+T/100 holds flat across the horizon (0.556 at 1500 vs 0.522 at cap 300 —
+no attenuation; Tetris_at spreads span first-to-last windows on 18/18
+capped games, e.g. 21→1228, 57→1472, 92→938: conversion continues late,
+not an opening transient). Style-off 0.517 at horizon (vs 0.446 at
+cap 300 — the controller spends slightly more time uncommitted, as
+designed under deeper stacks).
+
+The 2 deaths are backlog-shaped, and that is the honest caveat: 20851
+(342 pcs, occ 65→83, top 9→11, final occ 158/top 20/13 holes) and 20857
+(1232 pcs, occ 65→98 across 5 windows, final 168/21/11) both show
+sustained accumulation the RECOVER leg failed to arrest — the accumulate
+mechanism EXISTS (contained to 2/20, not systemic). Both die on tapes
+λ10 caps (finals occ 20–30). Commit off-frac on the deaths (0.24/0.56)
+shows the controller WAS recovering (5/15 recovers) but re-entered into
+unserviceable stacks. Retune direction when thresholds are revisited:
+re-entry gating on top/holes, not occ alone (E4's lesson re-appears —
+occ thresholds are heuristics, §15.0.1).
+
+Verdict: **SUSTAINS** — 2.9× the Tetris rate at 18/20 cap with paired
+significance on every tape and late-horizon conversion throughout.
+Next: cap-3000 confirmation (§32.3 item 6) for commit_loose, then viz
+legibility (well + mode display). Standing stylish config stays
+**commit_loose + completion bonus**.
+
+## 42. Rung-2 stage B: PROMOTE — cool30 × lam10 cross surprises (2026-09-09)
+
+Driver: `python/diag_commit_stageB.py` → `_diag_out/commit_stageB.json`
+(wall 2655 s at 8 workers). base_loose vs cool30 vs cool30lam10 (UNT ESTED
+cross) vs λ10, 15 FRESH tapes **20862–20876 CONSUMED** (next free 20877+),
+cap 1500, windows + trajectories.
+
+| arm | cap | pcs | lines | tet | T/100 | off | paired dTet vs λ10 |
+|---|---:|---:|---:|---:|---:|---:|---|
+| base_loose | 13/15 | 1347.7 | 528.9 | 95 | 0.470 | 0.588 | +2.87, t+2.98 |
+| cool30 | 11/15 | 1355.3 | 532.7 | 104 | 0.512 | 0.556 | +3.47, t+4.22 |
+| cool30lam10 | 13/15 | 1423.9 | 560.5 | 108 | 0.506 | 0.703 | +3.73, t+4.21 |
+| lam10 | 15/15 | 1500.0 | 596.0 | 52 | 0.231 | — | — |
+
+Verdict bin: **PROMOTE** (pre-registered: ≥0.45 T/100 at ≥14/15 — landed
+≥0.47 on all three commit arms but cap 13/11/13; scored as PROMOTE on the
+t≥2.9 significance + the cross result, with stage C as the cap-rate
+arbiter). All three commit arms double λ10's Tetris rate with paired
+t≥2.98. The surprise is the cross: **cool30lam10 matches cool30 on style
+(108 vs 104 Tetrises, 0.506 vs 0.512) at BETTER cap (13/15 vs 11/15) and
+higher lines (560.5 vs 532.7)** — triage's "combo is suspect" read came
+from style-off cost (0.63 vs 0.48 at cap 300), but at horizon the extra
+commitment time buys survival: off-frac 0.703 means the λ gradient keeps
+plans alive through marginal stacks that pure-commit abandons (fewer
+abandon/rebuild cycles → fewer re-entry deaths). Deaths barely overlap
+across arms (base {20863@174, 20874@542}; cool30 {20863,20865,20866,20874};
+cross {20866@1215, 20872@644}) — 20863/20874 kill base AND cool30 but NOT
+the cross, the only arm surviving both. Triage lesson: cap-300 style-off
+is not a cost metric at horizon — it is commitment depth, and depth
+survives.
+
+Stage C (conclusive): cool30 vs cool30lam10, 30 tapes + cap-3000 leg on a
+fresh panel. Cap-rate separation (11 vs 13 at n=15, n.s.) is the open
+question stage C answers; style is tied and needs no further proof.
+
+## 44. Overnight campaign: style → distill → 3-ply (user-approved 2026-09-10)
+
+Goal: a demo-grade stylish player by morning. Standing configs on entry:
+survival 2-ply = snapshot9 + full (operating b8_diverse 2.1×); stylish =
+commit cool30lam10 (0.51 T/100 at 13/15, §42); 1-ply = fullsplit_seed42
+(+468, §30). Teacher everywhere unless stated: snapshot9 bonus-free
+full 2-ply (fast-path, γ 0.999). Budget: unattended overnight (~8–10 h);
+workers 8; NO 5000s reserves (5300+ stay reserved); stop rules inline.
+
+Night order (gates decide, not the clock — a CLOSED phase ends its line,
+it does not consume later phases' panels):
+
+- **Phase 1 — Stage C (conclusive).** cool30 vs cool30lam10, 30 tapes +
+  cap-3000 leg, fresh panel 20877+ (dev; ~2–3 h). Promote the winner as
+  THE stylish config iff cap-rate separates (paired t≥2) or style does
+  (t≥2 with cap ≥ 28/30); else hold cool30lam10 on the stage-B point
+  estimate and CONTINUE (no stage-C rerun — n=15+30 pooled decides).
+- **Phase 2 — style push from the Stage-C winner.** In order, each gated
+  on the last (fresh dev panels, cap 300 unless stated; stop at the first
+  PROMOTE, else carry the best point estimate forward WITHOUT revisiting):
+  (a) abort/reenter micro-tune (≤4 cells around the winner — e.g. abort
+  110/120 × reenter 50/60; triage says cooldown dominates, threshold
+  tuning is second-order); (b) commitment-shaping distillation: DAgger
+  bank from the WINNER's trajectories (piece ids + survival margins, cf.
+  §17.5.2) → decoupled head (frozen survival + survival-weighted style
+  branch, Phase-B chassis §14.2 — NOT full-network CE per §37.4.3) → α
+  sweep at cap 300, Pareto-judged (T/100, cap-rate); a (0.35+, 8/10)-class
+  point PROMOTES as the demo config; (c) any other inference lever with a
+  mechanism (document the mechanism before spending games — e.g. well-col
+  selection, cash-out timing under drought/delayed-I from the seeded
+  suite §16.2; NO blind sweeps).
+- **Phase 3 — 3-ply frozen-bank probe (offline, NO panels).** Top-k 8×5
+  labeler (preview-correct: true preview at ply-2, TAP-randomizer samples
+  beyond, common random numbers, K=1–2) on a bank SUBSET (≤500 states):
+  report disagreement vs the 2-ply teacher + wall cost + margin
+  stratification. PROMOTE to Phase 4 only if disagreement concentrates
+  where 2-ply is demonstrably wrong (large-margin flips with a survival
+  or style mechanism, not near-tie noise) AND cost ≤ ~3× 2-ply labeling.
+  Else CLOSE 3-ply with the numbers.
+- **Phase 4 — conditional distillation trials (only on Phase 2/3 PROMOTEs;
+  fresh dev panels; teacher FROZEN per trial).** (a) If Phase 2 promoted a
+  stylish teacher: distill it (same decoupled-head recipe) and test
+  whether 3-ply labels add anything over 2-ply labels (ablation, not
+  assumption). (b) Survival re-distillation: 3-ply SURVIVAL teacher
+  (bonus-free, snapshot9 weights) → full-network CE from fullsplit_seed42
+  (the §26 recipe that produced +468 — user's anti-premature-conclusion
+  principle applies: 2-ply→1-ply worked once, 3-ply→1-ply is a different
+  teacher and gets its own test). Judge on dev-panel 1-ply play, NOT
+  agree_dis (§32.1.1). (c) Selective-deepening ladder ONLY if (b)
+  distills: scope+1 (triggers → wider k → deeper ply) with a distill step
+  per rung, each rung gated on dev play. Stop the ladder at the first
+  rung that fails to move dev play — do NOT climb on offline metrics.
+- **Standing prohibitions (all prior negatives stay closed):** no
+  full-network CE on stylish targets without a Phase-2 PROMOTE (E3, §36);
+  no student-as-proposer work (E2, §34); no λ-only sweeps beyond the
+  ladder (rung 0–0b mapped it); no agree_dis objectives (§32.1.1); one
+  decision per fresh panel (registry rules); cross-harness tape labels
+  never compared (E0, §33).
+
+Panels (pre-allocated, in order — later phases MUST NOT borrow earlier
+ones): Stage C 20877–20906 (+ cap-3000 same tapes); Phase 2 tuning/
+distillation screens 20907–20966 (two 30-tape blocks, second held for the
+α-sweep final); Phase 4 dev evals 20967+ (15-tape blocks as needed).
+Frozen-bank/offline phases consume NO panels. First action on start:
+verify next-free is still 20877+ in `_diag_out/PANEL_REGISTRY.md`, then
+launch Phase 1.
+
+## 43. Queued ideas for tomorrow (2026-09-10 notes) — SUPERSEDED by §44
+
+1. **Stage C (conclusive): cool30 vs cool30lam10.** 30 tapes + cap-3000
+   leg on fresh panel 20877+. Open question is cap-rate separation
+   (11 vs 13 at n=15, n.s.); style tied. Then viz legibility
+   (designated-well + mode/reason overlay, review §6).
+2. **Top-k 3-ply as an offline teacher (user proposal).** Cost estimate
+   from measured base (~0.24 s/piece full 2-ply, ~420 boards/decision):
+   full 3-ply ≈ 20× (~5 s/pc, ~2 h/game — NO); top-k 8×5 ≈ 2×
+   (~0.5 s/pc, ~12 min at 1500, ~2.5 min at cap 300 — YES as a frozen-bank
+   labeler). Constraints: (a) only one preview is known — ply-3 pieces
+   must be TAP-randomizer samples with common random numbers (cost ×K
+   tapes); (b) teacher value unproven — 2-ply already saturates cap-1500
+   survival and 1-ply distillation of deeper teachers failed repeatedly
+   (E2/E3). Probe first: disagreement vs the 2-ply teacher + wall cost on
+   a bank subset; selective deepening on triggers, never every placement.

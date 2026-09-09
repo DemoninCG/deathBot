@@ -1,0 +1,341 @@
+{
+  "weights": "C:\\My Things\\HTML\\Demonin's Item Shop\\other\\deathBot\\model_weights_snapshot9.pt",
+  "weights_sha256": "229bbe2a91bab6b1d6a58f25440e7504711aabe8dfc26d24dad9ee0461be46ed",
+  "lam": 10.0,
+  "death_seed": 31207,
+  "n_snaps": 8,
+  "bank": "C:\\My Things\\HTML\\Demonin's Item Shop\\other\\deathBot\\deathbot_sim\\_diag_out\\lam10_risk_bank.npz",
+  "rescue": [
+    {
+      "pos": 2000,
+      "occ": 20,
+      "survival": {
+        "label": "survival",
+        "seed": 31207,
+        "pos": 2000,
+        "pieces": 1500,
+        "reason": "max_pieces",
+        "occ_traj": [
+          60,
+          20,
+          20,
+          40,
+          30,
+          30,
+          70,
+          100,
+          130,
+          80,
+          60,
+          30,
+          10,
+          20,
+          10
+        ],
+        "occ_at_handoff": 20
+      },
+      "lam10": {
+        "label": "lam10-control",
+        "seed": 31207,
+        "pos": 2000,
+        "pieces": 685,
+        "reason": "no_candidates",
+        "occ_traj": [
+          20,
+          20,
+          10,
+          40,
+          50,
+          80
+        ],
+        "occ_at_handoff": 20
+      }
+    },
+    {
+      "pos": 2100,
+      "occ": 20,
+      "survival": {
+        "label": "survival",
+        "seed": 31207,
+        "pos": 2100,
+        "pieces": 1500,
+        "reason": "max_pieces",
+        "occ_traj": [
+          20,
+          20,
+          30,
+          30,
+          10,
+          50,
+          20,
+          20,
+          20,
+          20,
+          10,
+          50,
+          50,
+          40,
+          30
+        ],
+        "occ_at_handoff": 20
+      },
+      "lam10": {
+        "label": "lam10-control",
+        "seed": 31207,
+        "pos": 2100,
+        "pieces": 585,
+        "reason": "no_candidates",
+        "occ_traj": [
+          20,
+          10,
+          40,
+          50,
+          80
+        ],
+        "occ_at_handoff": 20
+      }
+    },
+    {
+      "pos": 2200,
+      "occ": 20,
+      "survival": {
+        "label": "survival",
+        "seed": 31207,
+        "pos": 2200,
+        "pieces": 1500,
+        "reason": "max_pieces",
+        "occ_traj": [
+          20,
+          10,
+          20,
+          30,
+          40,
+          10,
+          20,
+          10,
+          10,
+          10,
+          30,
+          30,
+          20,
+          40,
+          10
+        ],
+        "occ_at_handoff": 20
+      },
+      "lam10": {
+        "label": "lam10-control",
+        "seed": 31207,
+        "pos": 2200,
+        "pieces": 485,
+        "reason": "no_candidates",
+        "occ_traj": [
+          10,
+          40,
+          50,
+          80
+        ],
+        "occ_at_handoff": 20
+      }
+    },
+    {
+      "pos": 2300,
+      "occ": 10,
+      "survival": {
+        "label": "survival",
+        "seed": 31207,
+        "pos": 2300,
+        "pieces": 1500,
+        "reason": "max_pieces",
+        "occ_traj": [
+          40,
+          60,
+          20,
+          20,
+          10,
+          20,
+          20,
+          30,
+          10,
+          20,
+          20,
+          20,
+          20,
+          30,
+          10
+        ],
+        "occ_at_handoff": 10
+      },
+      "lam10": {
+        "label": "lam10-control",
+        "seed": 31207,
+        "pos": 2300,
+        "pieces": 385,
+        "reason": "no_candidates",
+        "occ_traj": [
+          40,
+          50,
+          80
+        ],
+        "occ_at_handoff": 10
+      }
+    },
+    {
+      "pos": 2400,
+      "occ": 40,
+      "survival": {
+        "label": "survival",
+        "seed": 31207,
+        "pos": 2400,
+        "pieces": 1500,
+        "reason": "max_pieces",
+        "occ_traj": [
+          50,
+          30,
+          20,
+          20,
+          10,
+          20,
+          40,
+          20,
+          20,
+          10,
+          60,
+          20,
+          20,
+          20,
+          20
+        ],
+        "occ_at_handoff": 40
+      },
+      "lam10": {
+        "label": "lam10-control",
+        "seed": 31207,
+        "pos": 2400,
+        "pieces": 285,
+        "reason": "no_candidates",
+        "occ_traj": [
+          50,
+          80
+        ],
+        "occ_at_handoff": 40
+      }
+    },
+    {
+      "pos": 2500,
+      "occ": 50,
+      "survival": {
+        "label": "survival",
+        "seed": 31207,
+        "pos": 2500,
+        "pieces": 1500,
+        "reason": "max_pieces",
+        "occ_traj": [
+          30,
+          30,
+          20,
+          30,
+          50,
+          20,
+          30,
+          10,
+          30,
+          30,
+          30,
+          20,
+          10,
+          20,
+          10
+        ],
+        "occ_at_handoff": 50
+      },
+      "lam10": {
+        "label": "lam10-control",
+        "seed": 31207,
+        "pos": 2500,
+        "pieces": 185,
+        "reason": "no_candidates",
+        "occ_traj": [
+          80
+        ],
+        "occ_at_handoff": 50
+      }
+    },
+    {
+      "pos": 2600,
+      "occ": 80,
+      "survival": {
+        "label": "survival",
+        "seed": 31207,
+        "pos": 2600,
+        "pieces": 1500,
+        "reason": "max_pieces",
+        "occ_traj": [
+          60,
+          10,
+          10,
+          40,
+          10,
+          10,
+          30,
+          10,
+          20,
+          10,
+          20,
+          10,
+          10,
+          40,
+          70
+        ],
+        "occ_at_handoff": 80
+      },
+      "lam10": {
+        "label": "lam10-control",
+        "seed": 31207,
+        "pos": 2600,
+        "pieces": 85,
+        "reason": "no_candidates",
+        "occ_traj": [],
+        "occ_at_handoff": 80
+      }
+    }
+  ],
+  "hysteresis": [
+    {
+      "enter": 70,
+      "exit": 40,
+      "t_per_100": 0.158,
+      "failures": 0,
+      "style_off_frac": 0.197,
+      "games": 8
+    },
+    {
+      "enter": 90,
+      "exit": 50,
+      "t_per_100": 0.183,
+      "failures": 0,
+      "style_off_frac": 0.075,
+      "games": 8
+    },
+    {
+      "enter": 60,
+      "exit": 30,
+      "t_per_100": 0.175,
+      "failures": 0,
+      "style_off_frac": 0.214,
+      "games": 8
+    }
+  ],
+  "train_seeds": [
+    26000,
+    26001,
+    26002,
+    26003,
+    26004,
+    26005,
+    26006,
+    26007
+  ],
+  "wall_seconds": 3374.9,
+  "note": "NO panels, NO training. Rescue uses TRUE continuation tapes (queue reconstructed positionally). Hysteresis on training seeds = reporting only."
+}

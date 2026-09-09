@@ -1,0 +1,1127 @@
+{
+  "weights": "C:\\My Things\\HTML\\Demonin's Item Shop\\other\\deathBot\\model_weights_snapshot9.pt",
+  "weights_sha256": "229bbe2a91bab6b1d6a58f25440e7504711aabe8dfc26d24dad9ee0461be46ed",
+  "seed0": 20782,
+  "games": 30,
+  "max_pieces": 300,
+  "selection_panel": true,
+  "arms": {
+    "10.0": {
+      "capped": 30,
+      "mean_pieces": 300.0,
+      "mean_lines": 116.4,
+      "tetrises": 18,
+      "t_per_100": 0.2,
+      "tetris_share": 0.0062,
+      "mean_ready_frac": 0.1596,
+      "paired_dTet_vs_lam10": "\u2014",
+      "per_seed": {
+        "20782": {
+          "pieces": 300,
+          "lines": 113,
+          "clears": {
+            "0": 209,
+            "1": 74,
+            "2": 12,
+            "3": 5,
+            "4": 0
+          },
+          "reason": "max_pieces"
+        },
+        "20783": {
+          "pieces": 300,
+          "lines": 116,
+          "clears": {
+            "0": 199,
+            "1": 88,
+            "2": 11,
+            "3": 2,
+            "4": 0
+          },
+          "reason": "max_pieces"
+        },
+        "20784": {
+          "pieces": 300,
+          "lines": 119,
+          "clears": {
+            "0": 202,
+            "1": 82,
+            "2": 11,
+            "3": 5,
+            "4": 0
+          },
+          "reason": "max_pieces"
+        },
+        "20785": {
+          "pieces": 300,
+          "lines": 119,
+          "clears": {
+            "0": 200,
+            "1": 84,
+            "2": 13,
+            "3": 3,
+            "4": 0
+          },
+          "reason": "max_pieces"
+        },
+        "20786": {
+          "pieces": 300,
+          "lines": 118,
+          "clears": {
+            "0": 199,
+            "1": 86,
+            "2": 13,
+            "3": 2,
+            "4": 0
+          },
+          "reason": "max_pieces"
+        },
+        "20787": {
+          "pieces": 300,
+          "lines": 110,
+          "clears": {
+            "0": 207,
+            "1": 78,
+            "2": 14,
+            "3": 0,
+            "4": 1
+          },
+          "reason": "max_pieces"
+        },
+        "20788": {
+          "pieces": 300,
+          "lines": 117,
+          "clears": {
+            "0": 201,
+            "1": 85,
+            "2": 11,
+            "3": 2,
+            "4": 1
+          },
+          "reason": "max_pieces"
+        },
+        "20789": {
+          "pieces": 300,
+          "lines": 116,
+          "clears": {
+            "0": 208,
+            "1": 74,
+            "2": 14,
+            "3": 2,
+            "4": 2
+          },
+          "reason": "max_pieces"
+        },
+        "20790": {
+          "pieces": 300,
+          "lines": 119,
+          "clears": {
+            "0": 201,
+            "1": 81,
+            "2": 16,
+            "3": 2,
+            "4": 0
+          },
+          "reason": "max_pieces"
+        },
+        "20791": {
+          "pieces": 300,
+          "lines": 116,
+          "clears": {
+            "0": 206,
+            "1": 77,
+            "2": 12,
+            "3": 5,
+            "4": 0
+          },
+          "reason": "max_pieces"
+        },
+        "20792": {
+          "pieces": 300,
+          "lines": 117,
+          "clears": {
+            "0": 199,
+            "1": 92,
+            "2": 4,
+            "3": 3,
+            "4": 2
+          },
+          "reason": "max_pieces"
+        },
+        "20793": {
+          "pieces": 300,
+          "lines": 115,
+          "clears": {
+            "0": 206,
+            "1": 79,
+            "2": 9,
+            "3": 6,
+            "4": 0
+          },
+          "reason": "max_pieces"
+        },
+        "20794": {
+          "pieces": 300,
+          "lines": 117,
+          "clears": {
+            "0": 198,
+            "1": 88,
+            "2": 13,
+            "3": 1,
+            "4": 0
+          },
+          "reason": "max_pieces"
+        },
+        "20795": {
+          "pieces": 300,
+          "lines": 118,
+          "clears": {
+            "0": 205,
+            "1": 78,
+            "2": 13,
+            "3": 2,
+            "4": 2
+          },
+          "reason": "max_pieces"
+        },
+        "20796": {
+          "pieces": 300,
+          "lines": 119,
+          "clears": {
+            "0": 200,
+            "1": 83,
+            "2": 15,
+            "3": 2,
+            "4": 0
+          },
+          "reason": "max_pieces"
+        },
+        "20797": {
+          "pieces": 300,
+          "lines": 118,
+          "clears": {
+            "0": 197,
+            "1": 92,
+            "2": 8,
+            "3": 2,
+            "4": 1
+          },
+          "reason": "max_pieces"
+        },
+        "20798": {
+          "pieces": 300,
+          "lines": 119,
+          "clears": {
+            "0": 194,
+            "1": 96,
+            "2": 8,
+            "3": 1,
+            "4": 1
+          },
+          "reason": "max_pieces"
+        },
+        "20799": {
+          "pieces": 300,
+          "lines": 118,
+          "clears": {
+            "0": 202,
+            "1": 81,
+            "2": 15,
+            "3": 1,
+            "4": 1
+          },
+          "reason": "max_pieces"
+        },
+        "20800": {
+          "pieces": 300,
+          "lines": 114,
+          "clears": {
+            "0": 200,
+            "1": 88,
+            "2": 10,
+            "3": 2,
+            "4": 0
+          },
+          "reason": "max_pieces"
+        },
+        "20801": {
+          "pieces": 300,
+          "lines": 116,
+          "clears": {
+            "0": 208,
+            "1": 71,
+            "2": 19,
+            "3": 1,
+            "4": 1
+          },
+          "reason": "max_pieces"
+        },
+        "20802": {
+          "pieces": 300,
+          "lines": 117,
+          "clears": {
+            "0": 200,
+            "1": 84,
+            "2": 15,
+            "3": 1,
+            "4": 0
+          },
+          "reason": "max_pieces"
+        },
+        "20803": {
+          "pieces": 300,
+          "lines": 111,
+          "clears": {
+            "0": 212,
+            "1": 72,
+            "2": 10,
+            "3": 5,
+            "4": 1
+          },
+          "reason": "max_pieces"
+        },
+        "20804": {
+          "pieces": 300,
+          "lines": 117,
+          "clears": {
+            "0": 203,
+            "1": 79,
+            "2": 16,
+            "3": 2,
+            "4": 0
+          },
+          "reason": "max_pieces"
+        },
+        "20805": {
+          "pieces": 300,
+          "lines": 114,
+          "clears": {
+            "0": 207,
+            "1": 77,
+            "2": 11,
+            "3": 5,
+            "4": 0
+          },
+          "reason": "max_pieces"
+        },
+        "20806": {
+          "pieces": 300,
+          "lines": 116,
+          "clears": {
+            "0": 213,
+            "1": 66,
+            "2": 16,
+            "3": 2,
+            "4": 3
+          },
+          "reason": "max_pieces"
+        },
+        "20807": {
+          "pieces": 300,
+          "lines": 114,
+          "clears": {
+            "0": 206,
+            "1": 75,
+            "2": 18,
+            "3": 1,
+            "4": 0
+          },
+          "reason": "max_pieces"
+        },
+        "20808": {
+          "pieces": 300,
+          "lines": 118,
+          "clears": {
+            "0": 204,
+            "1": 80,
+            "2": 11,
+            "3": 4,
+            "4": 1
+          },
+          "reason": "max_pieces"
+        },
+        "20809": {
+          "pieces": 300,
+          "lines": 118,
+          "clears": {
+            "0": 206,
+            "1": 74,
+            "2": 16,
+            "3": 4,
+            "4": 0
+          },
+          "reason": "max_pieces"
+        },
+        "20810": {
+          "pieces": 300,
+          "lines": 119,
+          "clears": {
+            "0": 195,
+            "1": 94,
+            "2": 8,
+            "3": 3,
+            "4": 0
+          },
+          "reason": "max_pieces"
+        },
+        "20811": {
+          "pieces": 300,
+          "lines": 115,
+          "clears": {
+            "0": 209,
+            "1": 71,
+            "2": 17,
+            "3": 2,
+            "4": 1
+          },
+          "reason": "max_pieces"
+        }
+      }
+    },
+    "50.0": {
+      "capped": 12,
+      "mean_pieces": 232.1,
+      "mean_lines": 77.4,
+      "tetrises": 39,
+      "t_per_100": 0.56,
+      "tetris_share": 0.0259,
+      "mean_ready_frac": 0.3518,
+      "paired_dTet_vs_lam10": "+0.70 t+2.54",
+      "per_seed": {
+        "20782": {
+          "pieces": 194,
+          "lines": 60,
+          "clears": {
+            "0": 156,
+            "1": 22,
+            "2": 10,
+            "3": 6,
+            "4": 0
+          },
+          "reason": "no_candidates"
+        },
+        "20783": {
+          "pieces": 125,
+          "lines": 33,
+          "clears": {
+            "0": 102,
+            "1": 16,
+            "2": 5,
+            "3": 1,
+            "4": 1
+          },
+          "reason": "no_candidates"
+        },
+        "20784": {
+          "pieces": 165,
+          "lines": 48,
+          "clears": {
+            "0": 132,
+            "1": 22,
+            "2": 7,
+            "3": 4,
+            "4": 0
+          },
+          "reason": "no_candidates"
+        },
+        "20785": {
+          "pieces": 168,
+          "lines": 50,
+          "clears": {
+            "0": 135,
+            "1": 22,
+            "2": 6,
+            "3": 4,
+            "4": 1
+          },
+          "reason": "no_candidates"
+        },
+        "20786": {
+          "pieces": 300,
+          "lines": 107,
+          "clears": {
+            "0": 234,
+            "1": 37,
+            "2": 20,
+            "3": 6,
+            "4": 3
+          },
+          "reason": "max_pieces"
+        },
+        "20787": {
+          "pieces": 151,
+          "lines": 43,
+          "clears": {
+            "0": 129,
+            "1": 8,
+            "2": 9,
+            "3": 3,
+            "4": 2
+          },
+          "reason": "no_candidates"
+        },
+        "20788": {
+          "pieces": 137,
+          "lines": 38,
+          "clears": {
+            "0": 112,
+            "1": 16,
+            "2": 5,
+            "3": 4,
+            "4": 0
+          },
+          "reason": "no_candidates"
+        },
+        "20789": {
+          "pieces": 300,
+          "lines": 108,
+          "clears": {
+            "0": 225,
+            "1": 50,
+            "2": 17,
+            "3": 8,
+            "4": 0
+          },
+          "reason": "max_pieces"
+        },
+        "20790": {
+          "pieces": 300,
+          "lines": 110,
+          "clears": {
+            "0": 217,
+            "1": 59,
+            "2": 21,
+            "3": 3,
+            "4": 0
+          },
+          "reason": "max_pieces"
+        },
+        "20791": {
+          "pieces": 250,
+          "lines": 83,
+          "clears": {
+            "0": 195,
+            "1": 36,
+            "2": 11,
+            "3": 7,
+            "4": 1
+          },
+          "reason": "no_candidates"
+        },
+        "20792": {
+          "pieces": 283,
+          "lines": 96,
+          "clears": {
+            "0": 212,
+            "1": 49,
+            "2": 19,
+            "3": 3,
+            "4": 0
+          },
+          "reason": "no_candidates"
+        },
+        "20793": {
+          "pieces": 300,
+          "lines": 105,
+          "clears": {
+            "0": 235,
+            "1": 40,
+            "2": 13,
+            "3": 9,
+            "4": 3
+          },
+          "reason": "max_pieces"
+        },
+        "20794": {
+          "pieces": 287,
+          "lines": 98,
+          "clears": {
+            "0": 215,
+            "1": 51,
+            "2": 17,
+            "3": 3,
+            "4": 1
+          },
+          "reason": "no_candidates"
+        },
+        "20795": {
+          "pieces": 229,
+          "lines": 75,
+          "clears": {
+            "0": 184,
+            "1": 27,
+            "2": 11,
+            "3": 2,
+            "4": 5
+          },
+          "reason": "no_candidates"
+        },
+        "20796": {
+          "pieces": 300,
+          "lines": 106,
+          "clears": {
+            "0": 229,
+            "1": 44,
+            "2": 19,
+            "3": 8,
+            "4": 0
+          },
+          "reason": "max_pieces"
+        },
+        "20797": {
+          "pieces": 229,
+          "lines": 74,
+          "clears": {
+            "0": 188,
+            "1": 20,
+            "2": 10,
+            "3": 10,
+            "4": 1
+          },
+          "reason": "no_candidates"
+        },
+        "20798": {
+          "pieces": 300,
+          "lines": 108,
+          "clears": {
+            "0": 227,
+            "1": 45,
+            "2": 21,
+            "3": 7,
+            "4": 0
+          },
+          "reason": "max_pieces"
+        },
+        "20799": {
+          "pieces": 300,
+          "lines": 107,
+          "clears": {
+            "0": 231,
+            "1": 41,
+            "2": 19,
+            "3": 8,
+            "4": 1
+          },
+          "reason": "max_pieces"
+        },
+        "20800": {
+          "pieces": 100,
+          "lines": 22,
+          "clears": {
+            "0": 87,
+            "1": 6,
+            "2": 5,
+            "3": 2,
+            "4": 0
+          },
+          "reason": "no_candidates"
+        },
+        "20801": {
+          "pieces": 300,
+          "lines": 106,
+          "clears": {
+            "0": 225,
+            "1": 53,
+            "2": 15,
+            "3": 5,
+            "4": 2
+          },
+          "reason": "max_pieces"
+        },
+        "20802": {
+          "pieces": 197,
+          "lines": 62,
+          "clears": {
+            "0": 156,
+            "1": 28,
+            "2": 6,
+            "3": 6,
+            "4": 1
+          },
+          "reason": "no_candidates"
+        },
+        "20803": {
+          "pieces": 300,
+          "lines": 109,
+          "clears": {
+            "0": 229,
+            "1": 42,
+            "2": 21,
+            "3": 7,
+            "4": 1
+          },
+          "reason": "max_pieces"
+        },
+        "20804": {
+          "pieces": 300,
+          "lines": 109,
+          "clears": {
+            "0": 242,
+            "1": 28,
+            "2": 14,
+            "3": 11,
+            "4": 5
+          },
+          "reason": "max_pieces"
+        },
+        "20805": {
+          "pieces": 300,
+          "lines": 106,
+          "clears": {
+            "0": 228,
+            "1": 47,
+            "2": 18,
+            "3": 5,
+            "4": 2
+          },
+          "reason": "max_pieces"
+        },
+        "20806": {
+          "pieces": 118,
+          "lines": 30,
+          "clears": {
+            "0": 103,
+            "1": 6,
+            "2": 5,
+            "3": 2,
+            "4": 2
+          },
+          "reason": "no_candidates"
+        },
+        "20807": {
+          "pieces": 107,
+          "lines": 26,
+          "clears": {
+            "0": 91,
+            "1": 10,
+            "2": 3,
+            "3": 2,
+            "4": 1
+          },
+          "reason": "no_candidates"
+        },
+        "20808": {
+          "pieces": 166,
+          "lines": 50,
+          "clears": {
+            "0": 137,
+            "1": 15,
+            "2": 8,
+            "3": 5,
+            "4": 1
+          },
+          "reason": "no_candidates"
+        },
+        "20809": {
+          "pieces": 300,
+          "lines": 105,
+          "clears": {
+            "0": 230,
+            "1": 44,
+            "2": 18,
+            "3": 7,
+            "4": 1
+          },
+          "reason": "max_pieces"
+        },
+        "20810": {
+          "pieces": 261,
+          "lines": 87,
+          "clears": {
+            "0": 207,
+            "1": 31,
+            "2": 15,
+            "3": 6,
+            "4": 2
+          },
+          "reason": "no_candidates"
+        },
+        "20811": {
+          "pieces": 197,
+          "lines": 61,
+          "clears": {
+            "0": 165,
+            "1": 14,
+            "2": 9,
+            "3": 7,
+            "4": 2
+          },
+          "reason": "no_candidates"
+        }
+      }
+    },
+    "60.0": {
+      "capped": 4,
+      "mean_pieces": 193.9,
+      "mean_lines": 61.0,
+      "tetrises": 43,
+      "t_per_100": 0.7392,
+      "tetris_share": 0.0374,
+      "mean_ready_frac": 0.4091,
+      "paired_dTet_vs_lam10": "+0.83 t+2.89",
+      "per_seed": {
+        "20782": {
+          "pieces": 194,
+          "lines": 60,
+          "clears": {
+            "0": 158,
+            "1": 19,
+            "2": 13,
+            "3": 1,
+            "4": 3
+          },
+          "reason": "no_candidates"
+        },
+        "20783": {
+          "pieces": 172,
+          "lines": 51,
+          "clears": {
+            "0": 139,
+            "1": 23,
+            "2": 4,
+            "3": 4,
+            "4": 2
+          },
+          "reason": "no_candidates"
+        },
+        "20784": {
+          "pieces": 300,
+          "lines": 105,
+          "clears": {
+            "0": 232,
+            "1": 41,
+            "2": 18,
+            "3": 8,
+            "4": 1
+          },
+          "reason": "max_pieces"
+        },
+        "20785": {
+          "pieces": 208,
+          "lines": 66,
+          "clears": {
+            "0": 164,
+            "1": 29,
+            "2": 9,
+            "3": 5,
+            "4": 1
+          },
+          "reason": "no_candidates"
+        },
+        "20786": {
+          "pieces": 300,
+          "lines": 108,
+          "clears": {
+            "0": 235,
+            "1": 36,
+            "2": 19,
+            "3": 6,
+            "4": 4
+          },
+          "reason": "max_pieces"
+        },
+        "20787": {
+          "pieces": 281,
+          "lines": 95,
+          "clears": {
+            "0": 216,
+            "1": 44,
+            "2": 15,
+            "3": 3,
+            "4": 3
+          },
+          "reason": "no_candidates"
+        },
+        "20788": {
+          "pieces": 190,
+          "lines": 59,
+          "clears": {
+            "0": 155,
+            "1": 17,
+            "2": 13,
+            "3": 4,
+            "4": 1
+          },
+          "reason": "no_candidates"
+        },
+        "20789": {
+          "pieces": 300,
+          "lines": 107,
+          "clears": {
+            "0": 227,
+            "1": 46,
+            "2": 20,
+            "3": 7,
+            "4": 0
+          },
+          "reason": "max_pieces"
+        },
+        "20790": {
+          "pieces": 205,
+          "lines": 65,
+          "clears": {
+            "0": 159,
+            "1": 33,
+            "2": 8,
+            "3": 4,
+            "4": 1
+          },
+          "reason": "no_candidates"
+        },
+        "20791": {
+          "pieces": 149,
+          "lines": 43,
+          "clears": {
+            "0": 121,
+            "1": 19,
+            "2": 4,
+            "3": 4,
+            "4": 1
+          },
+          "reason": "no_candidates"
+        },
+        "20792": {
+          "pieces": 110,
+          "lines": 26,
+          "clears": {
+            "0": 93,
+            "1": 9,
+            "2": 7,
+            "3": 1,
+            "4": 0
+          },
+          "reason": "no_candidates"
+        },
+        "20793": {
+          "pieces": 146,
+          "lines": 41,
+          "clears": {
+            "0": 122,
+            "1": 13,
+            "2": 6,
+            "3": 4,
+            "4": 1
+          },
+          "reason": "no_candidates"
+        },
+        "20794": {
+          "pieces": 175,
+          "lines": 53,
+          "clears": {
+            "0": 137,
+            "1": 25,
+            "2": 11,
+            "3": 2,
+            "4": 0
+          },
+          "reason": "no_candidates"
+        },
+        "20795": {
+          "pieces": 200,
+          "lines": 63,
+          "clears": {
+            "0": 163,
+            "1": 21,
+            "2": 11,
+            "3": 0,
+            "4": 5
+          },
+          "reason": "no_candidates"
+        },
+        "20796": {
+          "pieces": 139,
+          "lines": 38,
+          "clears": {
+            "0": 117,
+            "1": 12,
+            "2": 4,
+            "3": 6,
+            "4": 0
+          },
+          "reason": "no_candidates"
+        },
+        "20797": {
+          "pieces": 179,
+          "lines": 55,
+          "clears": {
+            "0": 148,
+            "1": 14,
+            "2": 10,
+            "3": 7,
+            "4": 0
+          },
+          "reason": "no_candidates"
+        },
+        "20798": {
+          "pieces": 162,
+          "lines": 47,
+          "clears": {
+            "0": 134,
+            "1": 16,
+            "2": 5,
+            "3": 7,
+            "4": 0
+          },
+          "reason": "no_candidates"
+        },
+        "20799": {
+          "pieces": 172,
+          "lines": 52,
+          "clears": {
+            "0": 135,
+            "1": 24,
+            "2": 11,
+            "3": 2,
+            "4": 0
+          },
+          "reason": "no_candidates"
+        },
+        "20800": {
+          "pieces": 99,
+          "lines": 22,
+          "clears": {
+            "0": 85,
+            "1": 8,
+            "2": 4,
+            "3": 2,
+            "4": 0
+          },
+          "reason": "no_candidates"
+        },
+        "20801": {
+          "pieces": 174,
+          "lines": 52,
+          "clears": {
+            "0": 141,
+            "1": 20,
+            "2": 8,
+            "3": 4,
+            "4": 1
+          },
+          "reason": "no_candidates"
+        },
+        "20802": {
+          "pieces": 300,
+          "lines": 109,
+          "clears": {
+            "0": 237,
+            "1": 32,
+            "2": 20,
+            "3": 7,
+            "4": 4
+          },
+          "reason": "max_pieces"
+        },
+        "20803": {
+          "pieces": 240,
+          "lines": 79,
+          "clears": {
+            "0": 189,
+            "1": 30,
+            "2": 15,
+            "3": 5,
+            "4": 1
+          },
+          "reason": "no_candidates"
+        },
+        "20804": {
+          "pieces": 197,
+          "lines": 61,
+          "clears": {
+            "0": 162,
+            "1": 19,
+            "2": 7,
+            "3": 8,
+            "4": 1
+          },
+          "reason": "no_candidates"
+        },
+        "20805": {
+          "pieces": 195,
+          "lines": 61,
+          "clears": {
+            "0": 154,
+            "1": 26,
+            "2": 12,
+            "3": 1,
+            "4": 2
+          },
+          "reason": "no_candidates"
+        },
+        "20806": {
+          "pieces": 196,
+          "lines": 61,
+          "clears": {
+            "0": 155,
+            "1": 30,
+            "2": 5,
+            "3": 3,
+            "4": 3
+          },
+          "reason": "no_candidates"
+        },
+        "20807": {
+          "pieces": 233,
+          "lines": 76,
+          "clears": {
+            "0": 189,
+            "1": 26,
+            "2": 7,
+            "3": 8,
+            "4": 3
+          },
+          "reason": "no_candidates"
+        },
+        "20808": {
+          "pieces": 150,
+          "lines": 43,
+          "clears": {
+            "0": 126,
+            "1": 11,
+            "2": 8,
+            "3": 4,
+            "4": 1
+          },
+          "reason": "no_candidates"
+        },
+        "20809": {
+          "pieces": 144,
+          "lines": 41,
+          "clears": {
+            "0": 115,
+            "1": 21,
+            "2": 5,
+            "3": 2,
+            "4": 1
+          },
+          "reason": "no_candidates"
+        },
+        "20810": {
+          "pieces": 124,
+          "lines": 32,
+          "clears": {
+            "0": 108,
+            "1": 4,
+            "2": 8,
+            "3": 4,
+            "4": 0
+          },
+          "reason": "no_candidates"
+        },
+        "20811": {
+          "pieces": 183,
+          "lines": 58,
+          "clears": {
+            "0": 151,
+            "1": 14,
+            "2": 13,
+            "3": 2,
+            "4": 3
+          },
+          "reason": "no_candidates"
+        }
+      }
+    }
+  },
+  "wall_seconds": 687.0
+}

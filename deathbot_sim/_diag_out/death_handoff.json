@@ -1,0 +1,487 @@
+{
+  "weights": "C:\\My Things\\HTML\\Demonin's Item Shop\\other\\deathBot\\model_weights_snapshot9.pt",
+  "weights_sha256": "229bbe2a91bab6b1d6a58f25440e7504711aabe8dfc26d24dad9ee0461be46ed",
+  "deaths": {
+    "20851": {
+      "death_pos": 342,
+      "n_trace": 342,
+      "handoffs": [
+        {
+          "label": "first-accumulation",
+          "pos": 100,
+          "occ": 60,
+          "top": 9,
+          "continuations": {
+            "original": {
+              "mode": "original",
+              "seed": 20851,
+              "handoff_pos": 100,
+              "occ_at_handoff": 60,
+              "top_at_handoff": 9,
+              "pieces_after": 242,
+              "reason": "no_candidates",
+              "latched": null
+            },
+            "noreentry": {
+              "mode": "noreentry",
+              "seed": 20851,
+              "handoff_pos": 100,
+              "occ_at_handoff": 60,
+              "top_at_handoff": 9,
+              "pieces_after": 1500,
+              "reason": "max_pieces",
+              "latched": "reentry-disabled"
+            },
+            "champion": {
+              "mode": "champion",
+              "seed": 20851,
+              "handoff_pos": 100,
+              "occ_at_handoff": 60,
+              "top_at_handoff": 9,
+              "pieces_after": 1500,
+              "reason": "max_pieces",
+              "latched": null
+            }
+          },
+          "reproduced": true
+        },
+        {
+          "label": "first-RECOVER-entry",
+          "pos": 75,
+          "occ": 110,
+          "top": 14,
+          "continuations": {
+            "original": {
+              "mode": "original",
+              "seed": 20851,
+              "handoff_pos": 75,
+              "occ_at_handoff": 110,
+              "top_at_handoff": 14,
+              "pieces_after": 267,
+              "reason": "no_candidates",
+              "latched": null
+            },
+            "noreentry": {
+              "mode": "noreentry",
+              "seed": 20851,
+              "handoff_pos": 75,
+              "occ_at_handoff": 110,
+              "top_at_handoff": 14,
+              "pieces_after": 1500,
+              "reason": "max_pieces",
+              "latched": "reentry-disabled"
+            },
+            "champion": {
+              "mode": "champion",
+              "seed": 20851,
+              "handoff_pos": 75,
+              "occ_at_handoff": 110,
+              "top_at_handoff": 14,
+              "pieces_after": 1500,
+              "reason": "max_pieces",
+              "latched": null
+            }
+          },
+          "reproduced": true
+        },
+        {
+          "label": "first-RECOVER-exit",
+          "pos": 85,
+          "occ": 50,
+          "top": 7,
+          "continuations": {
+            "original": {
+              "mode": "original",
+              "seed": 20851,
+              "handoff_pos": 85,
+              "occ_at_handoff": 50,
+              "top_at_handoff": 7,
+              "pieces_after": 257,
+              "reason": "no_candidates",
+              "latched": null
+            },
+            "noreentry": {
+              "mode": "noreentry",
+              "seed": 20851,
+              "handoff_pos": 85,
+              "occ_at_handoff": 50,
+              "top_at_handoff": 7,
+              "pieces_after": 1500,
+              "reason": "max_pieces",
+              "latched": "reentry-disabled"
+            },
+            "champion": {
+              "mode": "champion",
+              "seed": 20851,
+              "handoff_pos": 85,
+              "occ_at_handoff": 50,
+              "top_at_handoff": 7,
+              "pieces_after": 1500,
+              "reason": "max_pieces",
+              "latched": null
+            }
+          },
+          "reproduced": true
+        },
+        {
+          "label": "final-reentry-1",
+          "pos": 156,
+          "occ": 54,
+          "top": 7,
+          "continuations": {
+            "original": {
+              "mode": "original",
+              "seed": 20851,
+              "handoff_pos": 156,
+              "occ_at_handoff": 54,
+              "top_at_handoff": 7,
+              "pieces_after": 186,
+              "reason": "no_candidates",
+              "latched": null
+            },
+            "noreentry": {
+              "mode": "noreentry",
+              "seed": 20851,
+              "handoff_pos": 156,
+              "occ_at_handoff": 54,
+              "top_at_handoff": 7,
+              "pieces_after": 1500,
+              "reason": "max_pieces",
+              "latched": "reentry-disabled"
+            },
+            "champion": {
+              "mode": "champion",
+              "seed": 20851,
+              "handoff_pos": 156,
+              "occ_at_handoff": 54,
+              "top_at_handoff": 7,
+              "pieces_after": 1500,
+              "reason": "max_pieces",
+              "latched": null
+            }
+          },
+          "reproduced": true
+        },
+        {
+          "label": "final-reentry-2",
+          "pos": 285,
+          "occ": 60,
+          "top": 8,
+          "continuations": {
+            "original": {
+              "mode": "original",
+              "seed": 20851,
+              "handoff_pos": 285,
+              "occ_at_handoff": 60,
+              "top_at_handoff": 8,
+              "pieces_after": 57,
+              "reason": "no_candidates",
+              "latched": null
+            },
+            "noreentry": {
+              "mode": "noreentry",
+              "seed": 20851,
+              "handoff_pos": 285,
+              "occ_at_handoff": 60,
+              "top_at_handoff": 8,
+              "pieces_after": 1500,
+              "reason": "max_pieces",
+              "latched": "reentry-disabled"
+            },
+            "champion": {
+              "mode": "champion",
+              "seed": 20851,
+              "handoff_pos": 285,
+              "occ_at_handoff": 60,
+              "top_at_handoff": 8,
+              "pieces_after": 1500,
+              "reason": "max_pieces",
+              "latched": null
+            }
+          },
+          "reproduced": true
+        },
+        {
+          "label": "pre-death-10",
+          "pos": 332,
+          "occ": 138,
+          "top": 18,
+          "continuations": {
+            "original": {
+              "mode": "original",
+              "seed": 20851,
+              "handoff_pos": 332,
+              "occ_at_handoff": 138,
+              "top_at_handoff": 18,
+              "pieces_after": 10,
+              "reason": "no_candidates",
+              "latched": null
+            },
+            "noreentry": {
+              "mode": "noreentry",
+              "seed": 20851,
+              "handoff_pos": 332,
+              "occ_at_handoff": 138,
+              "top_at_handoff": 18,
+              "pieces_after": 10,
+              "reason": "no_candidates",
+              "latched": "reentry-disabled"
+            },
+            "champion": {
+              "mode": "champion",
+              "seed": 20851,
+              "handoff_pos": 332,
+              "occ_at_handoff": 138,
+              "top_at_handoff": 18,
+              "pieces_after": 10,
+              "reason": "no_candidates",
+              "latched": null
+            }
+          },
+          "reproduced": true
+        }
+      ]
+    },
+    "20857": {
+      "death_pos": 1232,
+      "n_trace": 1232,
+      "handoffs": [
+        {
+          "label": "first-accumulation",
+          "pos": 100,
+          "occ": 130,
+          "top": 15,
+          "continuations": {
+            "original": {
+              "mode": "original",
+              "seed": 20857,
+              "handoff_pos": 100,
+              "occ_at_handoff": 130,
+              "top_at_handoff": 15,
+              "pieces_after": 1132,
+              "reason": "no_candidates",
+              "latched": null
+            },
+            "noreentry": {
+              "mode": "noreentry",
+              "seed": 20857,
+              "handoff_pos": 100,
+              "occ_at_handoff": 130,
+              "top_at_handoff": 15,
+              "pieces_after": 1500,
+              "reason": "max_pieces",
+              "latched": "reentry-disabled"
+            },
+            "champion": {
+              "mode": "champion",
+              "seed": 20857,
+              "handoff_pos": 100,
+              "occ_at_handoff": 130,
+              "top_at_handoff": 15,
+              "pieces_after": 1500,
+              "reason": "max_pieces",
+              "latched": null
+            }
+          },
+          "reproduced": true
+        },
+        {
+          "label": "first-RECOVER-entry",
+          "pos": 90,
+          "occ": 110,
+          "top": 15,
+          "continuations": {
+            "original": {
+              "mode": "original",
+              "seed": 20857,
+              "handoff_pos": 90,
+              "occ_at_handoff": 110,
+              "top_at_handoff": 15,
+              "pieces_after": 1142,
+              "reason": "no_candidates",
+              "latched": null
+            },
+            "noreentry": {
+              "mode": "noreentry",
+              "seed": 20857,
+              "handoff_pos": 90,
+              "occ_at_handoff": 110,
+              "top_at_handoff": 15,
+              "pieces_after": 1500,
+              "reason": "max_pieces",
+              "latched": "reentry-disabled"
+            },
+            "champion": {
+              "mode": "champion",
+              "seed": 20857,
+              "handoff_pos": 90,
+              "occ_at_handoff": 110,
+              "top_at_handoff": 15,
+              "pieces_after": 1500,
+              "reason": "max_pieces",
+              "latched": null
+            }
+          },
+          "reproduced": true
+        },
+        {
+          "label": "first-RECOVER-exit",
+          "pos": 107,
+          "occ": 58,
+          "top": 8,
+          "continuations": {
+            "original": {
+              "mode": "original",
+              "seed": 20857,
+              "handoff_pos": 107,
+              "occ_at_handoff": 58,
+              "top_at_handoff": 8,
+              "pieces_after": 1125,
+              "reason": "no_candidates",
+              "latched": null
+            },
+            "noreentry": {
+              "mode": "noreentry",
+              "seed": 20857,
+              "handoff_pos": 107,
+              "occ_at_handoff": 58,
+              "top_at_handoff": 8,
+              "pieces_after": 1500,
+              "reason": "max_pieces",
+              "latched": "reentry-disabled"
+            },
+            "champion": {
+              "mode": "champion",
+              "seed": 20857,
+              "handoff_pos": 107,
+              "occ_at_handoff": 58,
+              "top_at_handoff": 8,
+              "pieces_after": 1500,
+              "reason": "max_pieces",
+              "latched": null
+            }
+          },
+          "reproduced": true
+        },
+        {
+          "label": "final-reentry-1",
+          "pos": 1075,
+          "occ": 60,
+          "top": 12,
+          "continuations": {
+            "original": {
+              "mode": "original",
+              "seed": 20857,
+              "handoff_pos": 1075,
+              "occ_at_handoff": 60,
+              "top_at_handoff": 12,
+              "pieces_after": 157,
+              "reason": "no_candidates",
+              "latched": null
+            },
+            "noreentry": {
+              "mode": "noreentry",
+              "seed": 20857,
+              "handoff_pos": 1075,
+              "occ_at_handoff": 60,
+              "top_at_handoff": 12,
+              "pieces_after": 1500,
+              "reason": "max_pieces",
+              "latched": "reentry-disabled"
+            },
+            "champion": {
+              "mode": "champion",
+              "seed": 20857,
+              "handoff_pos": 1075,
+              "occ_at_handoff": 60,
+              "top_at_handoff": 12,
+              "pieces_after": 1500,
+              "reason": "max_pieces",
+              "latched": null
+            }
+          },
+          "reproduced": true
+        },
+        {
+          "label": "final-reentry-2",
+          "pos": 1105,
+          "occ": 60,
+          "top": 8,
+          "continuations": {
+            "original": {
+              "mode": "original",
+              "seed": 20857,
+              "handoff_pos": 1105,
+              "occ_at_handoff": 60,
+              "top_at_handoff": 8,
+              "pieces_after": 127,
+              "reason": "no_candidates",
+              "latched": null
+            },
+            "noreentry": {
+              "mode": "noreentry",
+              "seed": 20857,
+              "handoff_pos": 1105,
+              "occ_at_handoff": 60,
+              "top_at_handoff": 8,
+              "pieces_after": 1500,
+              "reason": "max_pieces",
+              "latched": "reentry-disabled"
+            },
+            "champion": {
+              "mode": "champion",
+              "seed": 20857,
+              "handoff_pos": 1105,
+              "occ_at_handoff": 60,
+              "top_at_handoff": 8,
+              "pieces_after": 1500,
+              "reason": "max_pieces",
+              "latched": null
+            }
+          },
+          "reproduced": true
+        },
+        {
+          "label": "pre-death-10",
+          "pos": 1222,
+          "occ": 148,
+          "top": 18,
+          "continuations": {
+            "original": {
+              "mode": "original",
+              "seed": 20857,
+              "handoff_pos": 1222,
+              "occ_at_handoff": 148,
+              "top_at_handoff": 18,
+              "pieces_after": 10,
+              "reason": "no_candidates",
+              "latched": null
+            },
+            "noreentry": {
+              "mode": "noreentry",
+              "seed": 20857,
+              "handoff_pos": 1222,
+              "occ_at_handoff": 148,
+              "top_at_handoff": 18,
+              "pieces_after": 10,
+              "reason": "no_candidates",
+              "latched": "reentry-disabled"
+            },
+            "champion": {
+              "mode": "champion",
+              "seed": 20857,
+              "handoff_pos": 1222,
+              "occ_at_handoff": 148,
+              "top_at_handoff": 18,
+              "pieces_after": 10,
+              "reason": "no_candidates",
+              "latched": null
+            }
+          },
+          "reproduced": true
+        }
+      ]
+    }
+  },
+  "wall_seconds": 3221.0
+}

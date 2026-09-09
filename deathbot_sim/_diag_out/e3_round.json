@@ -1,0 +1,136 @@
+{
+  "teacher": "C:\\My Things\\HTML\\Demonin's Item Shop\\other\\deathBot\\model_weights_snapshot9.pt",
+  "teacher_sha256": "229bbe2a91bab6b1d6a58f25440e7504711aabe8dfc26d24dad9ee0461be46ed",
+  "start": "C:\\My Things\\HTML\\Demonin's Item Shop\\other\\deathBot\\deathbot_sim\\_diag_out\\fullsplit_seed42.pt",
+  "start_sha256": "9989ce86390bcba6f26c3b5206a2180febd7013c520478e83b3406b44e8cab3a",
+  "bank": "C:\\My Things\\HTML\\Demonin's Item Shop\\other\\deathBot\\deathbot_sim\\_diag_out\\state_bank_snapshot9_32games.npz",
+  "steps": 800,
+  "batch_size": 256,
+  "lr": 0.0001,
+  "seed": 43,
+  "gamma_ply": 0.999,
+  "agg_seed0": 26000,
+  "agg_cap": 1500,
+  "n_bank_fit": 17265,
+  "n_agg_train": 5882,
+  "n_agg_held": 2080,
+  "pre": {
+    "bank_train": {
+      "tag": "pre_bank_train",
+      "n": 17430,
+      "agree_all": 0.8009179575444636,
+      "reg_dis_live_mean": 11.433803380214938,
+      "reg_dis_live_n": 3456,
+      "reg_live_mean": 2.269294462873877,
+      "avoidable_dead": 8,
+      "all_dead_states": 9,
+      "dead_picks": 17
+    },
+    "bank_val": {
+      "tag": "pre_bank_val",
+      "n": 5586,
+      "agree_all": 0.7762262799856785,
+      "reg_dis_live_mean": 10.937250144819847,
+      "reg_dis_live_n": 1245,
+      "reg_live_mean": 2.4403004355377615,
+      "avoidable_dead": 4,
+      "all_dead_states": 2,
+      "dead_picks": 6
+    },
+    "agg_held": {
+      "tag": "pre_agg_held",
+      "n": 2080,
+      "agree_all": 0.7783653846153846,
+      "reg_dis_live_mean": 10.805021796140721,
+      "reg_dis_live_n": 460,
+      "reg_live_mean": 2.3907215133356092,
+      "avoidable_dead": 1,
+      "all_dead_states": 0,
+      "dead_picks": 1
+    }
+  },
+  "armA": {
+    "name": "armA_continued",
+    "loss": 0.5442,
+    "dW": 2.5159,
+    "wall_s": 2146.1,
+    "bank_train": {
+      "tag": "armA_continued_bank_train",
+      "n": 17430,
+      "agree_all": 0.8134825014343087,
+      "reg_dis_live_mean": 10.13381193380698,
+      "reg_dis_live_n": 3458,
+      "reg_live_mean": 2.11218872428476,
+      "avoidable_dead": 6,
+      "all_dead_states": 9,
+      "dead_picks": 15
+    },
+    "bank_val": {
+      "tag": "armA_continued_bank_val",
+      "n": 5586,
+      "agree_all": 0.7749731471535983,
+      "reg_dis_live_mean": 10.0831080679859,
+      "reg_dis_live_n": 1245,
+      "reg_live_mean": 2.4298249540015573,
+      "avoidable_dead": 4,
+      "all_dead_states": 2,
+      "dead_picks": 6
+    },
+    "agg_held": {
+      "tag": "armA_continued_agg_held",
+      "n": 2080,
+      "agree_all": 0.7802884615384615,
+      "reg_dis_live_mean": 9.842955949352486,
+      "reg_dis_live_n": 460,
+      "reg_live_mean": 2.3980218685596766,
+      "avoidable_dead": 1,
+      "all_dead_states": 0,
+      "dead_picks": 1
+    }
+  },
+  "armB": {
+    "name": "armB_aggregate",
+    "loss": 0.5932,
+    "dW": 2.7552,
+    "wall_s": 2000.7,
+    "bank_train": {
+      "tag": "armB_aggregate_bank_train",
+      "n": 17430,
+      "agree_all": 0.8029259896729777,
+      "reg_dis_live_mean": 10.25408454116109,
+      "reg_dis_live_n": 3457,
+      "reg_live_mean": 2.2500856864345224,
+      "avoidable_dead": 8,
+      "all_dead_states": 9,
+      "dead_picks": 17
+    },
+    "bank_val": {
+      "tag": "armB_aggregate_bank_val",
+      "n": 5586,
+      "agree_all": 0.7799856784819191,
+      "reg_dis_live_mean": 9.829063688066828,
+      "reg_dis_live_n": 1245,
+      "reg_live_mean": 2.385060531055063,
+      "avoidable_dead": 4,
+      "all_dead_states": 2,
+      "dead_picks": 6
+    },
+    "agg_held": {
+      "tag": "armB_aggregate_agg_held",
+      "n": 2080,
+      "agree_all": 0.7870192307692307,
+      "reg_dis_live_mean": 9.040211255787119,
+      "reg_dis_live_n": 460,
+      "reg_live_mean": 2.2472737777335476,
+      "avoidable_dead": 1,
+      "all_dead_states": 0,
+      "dead_picks": 1
+    }
+  },
+  "checkpoints": {
+    "armA": "..\\_diag_out\\e3_round.armA.pt",
+    "armB": "..\\_diag_out\\e3_round.armB.pt"
+  },
+  "wall_seconds": 6358.6,
+  "note": "OFFLINE ONLY: no panels, no gameplay. Dev-panel 1-ply gate (20632+, paired vs start) only if an arm separates on held-out regret without new avoidable deaths."
+}

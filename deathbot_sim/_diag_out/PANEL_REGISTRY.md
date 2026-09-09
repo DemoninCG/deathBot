@@ -343,6 +343,78 @@
     item 6 (file: weights_search_xover_1500.json). Next free: 20632+
     (dev); 5300+ reserves for promotion.
 
+- seeds: 20632-20651
+  protocol: corrected-lockout, cap 1500 (§32.3 E3 dev gate)
+  status: CONSUMED
+  history: E3 dev gate 2026-09-09 (start vs armA vs armB 1-ply, 20 fresh
+    tapes: start 1093.1 9/20 / armA 1083.2 8/20, −9.8 t−0.07 / armB
+    1208.5 11/20, +115.5 t+0.80 — neither arm separates at n=20; E3
+    CLOSED offline-negative, no fresh-panel final (files: e3_gate.json,
+    e3_round.json). Next free: 20652+ (dev); 5300+ reserves for
+    promotion.
+
+- seeds: 20652-20751
+  protocol: corrected-lockout, cap 1500 (§36.3 armB extension)
+  status: CONSUMED
+  history: armB-vs-start extension 2026-09-09, 100 fresh tapes
+    (start vs armB only — armA dropped after the 20-tape gate went
+    exactly neutral): start 1204.0 (59/100) vs armB 1246.6 (60/100),
+    paired +42.5, t+0.69, W/L 36/34 — the +115 lean shrank to +42.5,
+    n.s. E3 stays CLOSED (file: e3_gate_ext100.json). Next free: 20752+
+    (dev); 5300+ reserves for promotion.
+
+- seeds: 20752-20781
+  protocol: corrected-lockout, cap 300 (forced-well rung 0, §38)
+  status: CONSUMED
+  history: rung 0 λ30/40 2026-09-09 (λ 0/10/30/40 × 30 tapes, cap 300):
+    T/100 0.044/0.189/0.375/0.544 (tet 4/17/31/41, paired dTet vs λ10
+    +0.47 t+2.14 / +0.80 t+2.93); cap 30/30/21/30/15/30 — CLIMBS bin:
+    λ NOT saturated, deaths are early well-digging (97-290 pcs), not
+    backlog drift. Next: rung-1 commitment controller, not λ60
+- seeds: 20782-20811
+  protocol: corrected-lockout, cap 300 (forced-well rung 0b, §38.1)
+  status: CONSUMED
+  history: rung 0b λ50/60 2026-09-09 (λ 10/50/60 × 30 tapes, cap 300,
+    λ10 paired reference): T/100 0.200/0.560/0.739 (tet 18/39/43,
+    dTet +0.70 t+2.54 / +0.83 t+2.89); cap 30/12/4 — KEEPS CLIMBING,
+    §38 knee prediction wrong; deaths early-dig (8/30 by pc 150, two
+    zero-Tetris). λ60 as forcing distribution only (file:
+    lambda_high2.json). Next free: 20812+ (dev);
+    5300+ reserves for promotion.
+
+- seeds: 20812-20841
+  protocol: corrected-lockout, cap 300 (forced-well rung 1, §39)
+  status: CONSUMED
+  history: rung 1 commitment screen 2026-09-09 (commit_above/loose vs
+    lam10/lam40 × 30 tapes, cap 300): T/100 0.333/0.522 vs 0.211/0.512
+    (tet 30/47 vs 19/38, dTet +0.37 t+1.94 / +0.93 t+4.36); cap
+    30/30/30/15 — CONVERTS bin: loose holds λ40-level style at λ10-level
+- seeds: 20862-20876
+  protocol: corrected-lockout, cap 1500 (rung-2 stage B, §42)
+  status: CONSUMED
+  history: stage B 2026-09-09 (base_loose vs cool30 vs cool30lam10 vs
+    lam10 × 15 tapes, cap 1500, windows + trajectories): T/100
+    0.470/0.512/0.506 vs 0.231 (tet 95/104/108 vs 52, dTet +2.87
+    t+2.98 / +3.47 t+4.22 / +3.73 t+4.21); cap 13/11/13 vs 15 —
+    PROMOTE bin (all commit arms ≥0.45 T/100, all t≥2.9). cool30lam10
+    matches cool30 on style at better cap (13/15 vs 11/15). Stage C:
+    cool30 vs cool30lam10, 30 tapes + cap-3000 leg
+    (file: commit_stageB.json). Next free: 20877+ (dev);
+    5300+ reserves for promotion.
+
+- seeds: 20842-20861
+  protocol: corrected-lockout, cap 1500 (rung-1 long horizon, §40)
+  status: CONSUMED
+  history: commit_loose vs lam10 long screen 2026-09-09 (20 matched
+    tapes, cap 1500, 200pc windows + per-game trajectories + FAIL flags):
+    commit 18/20 (1428.7, 159 tet, 0.556 T/100) vs lam10 20/20 (1500,
+    57 tet, 0.190) — SUSTAINS bin: style 2.9× at 18/20 cap, paired
+    dTet +5.10 t+6.80 (every tape ≥ +1). 2 deaths are backlog-shaped
+    (occ 65→83+, top 9→12+) on tapes lam10 caps — the accumulate
+    mechanism, contained to 2/20. Next: cap-3000 confirmation
+    (file: commit_long.json). Next free: 20862+ (dev);
+    5300+ reserves for promotion.
+
 - seeds: 31200-31219
   protocol: corrected-lockout, cap 1500 + cap-3000 stress (λ10 gate, §31)
   status: CONSUMED

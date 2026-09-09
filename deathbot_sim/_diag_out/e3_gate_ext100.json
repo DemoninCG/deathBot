@@ -1,0 +1,935 @@
+{
+  "seed0": 20652,
+  "games": 100,
+  "cap": 1500,
+  "selection_panel": true,
+  "arms": {
+    "start": {
+      "weights": "C:\\My Things\\HTML\\Demonin's Item Shop\\other\\deathBot\\deathbot_sim\\_diag_out\\fullsplit_seed42.pt",
+      "sha256": "9989ce86390bcba6",
+      "mean_pieces": 1204.0,
+      "median_pieces": 1500.0,
+      "capped": 59,
+      "per_seed": {
+        "20652": {
+          "pieces": 329,
+          "reason": "no_candidates"
+        },
+        "20653": {
+          "pieces": 1500,
+          "reason": "max_pieces"
+        },
+        "20654": {
+          "pieces": 1138,
+          "reason": "no_candidates"
+        },
+        "20655": {
+          "pieces": 1500,
+          "reason": "max_pieces"
+        },
+        "20656": {
+          "pieces": 316,
+          "reason": "no_candidates"
+        },
+        "20657": {
+          "pieces": 1500,
+          "reason": "max_pieces"
+        },
+        "20658": {
+          "pieces": 1500,
+          "reason": "max_pieces"
+        },
+        "20659": {
+          "pieces": 1500,
+          "reason": "max_pieces"
+        },
+        "20660": {
+          "pieces": 1081,
+          "reason": "no_candidates"
+        },
+        "20661": {
+          "pieces": 269,
+          "reason": "no_candidates"
+        },
+        "20662": {
+          "pieces": 971,
+          "reason": "no_candidates"
+        },
+        "20663": {
+          "pieces": 1500,
+          "reason": "max_pieces"
+        },
+        "20664": {
+          "pieces": 1500,
+          "reason": "max_pieces"
+        },
+        "20665": {
+          "pieces": 294,
+          "reason": "no_candidates"
+        },
+        "20666": {
+          "pieces": 1271,
+          "reason": "no_candidates"
+        },
+        "20667": {
+          "pieces": 1500,
+          "reason": "max_pieces"
+        },
+        "20668": {
+          "pieces": 1500,
+          "reason": "max_pieces"
+        },
+        "20669": {
+          "pieces": 597,
+          "reason": "no_candidates"
+        },
+        "20670": {
+          "pieces": 654,
+          "reason": "no_candidates"
+        },
+        "20671": {
+          "pieces": 1500,
+          "reason": "max_pieces"
+        },
+        "20672": {
+          "pieces": 432,
+          "reason": "no_candidates"
+        },
+        "20673": {
+          "pieces": 1500,
+          "reason": "max_pieces"
+        },
+        "20674": {
+          "pieces": 1500,
+          "reason": "max_pieces"
+        },
+        "20675": {
+          "pieces": 1500,
+          "reason": "max_pieces"
+        },
+        "20676": {
+          "pieces": 1500,
+          "reason": "max_pieces"
+        },
+        "20677": {
+          "pieces": 1500,
+          "reason": "max_pieces"
+        },
+        "20678": {
+          "pieces": 906,
+          "reason": "no_candidates"
+        },
+        "20679": {
+          "pieces": 1500,
+          "reason": "max_pieces"
+        },
+        "20680": {
+          "pieces": 586,
+          "reason": "no_candidates"
+        },
+        "20681": {
+          "pieces": 697,
+          "reason": "no_candidates"
+        },
+        "20682": {
+          "pieces": 1099,
+          "reason": "no_candidates"
+        },
+        "20683": {
+          "pieces": 1500,
+          "reason": "max_pieces"
+        },
+        "20684": {
+          "pieces": 700,
+          "reason": "no_candidates"
+        },
+        "20685": {
+          "pieces": 1500,
+          "reason": "max_pieces"
+        },
+        "20686": {
+          "pieces": 1500,
+          "reason": "max_pieces"
+        },
+        "20687": {
+          "pieces": 1500,
+          "reason": "max_pieces"
+        },
+        "20688": {
+          "pieces": 556,
+          "reason": "no_candidates"
+        },
+        "20689": {
+          "pieces": 1053,
+          "reason": "lockout"
+        },
+        "20690": {
+          "pieces": 1500,
+          "reason": "max_pieces"
+        },
+        "20691": {
+          "pieces": 1500,
+          "reason": "max_pieces"
+        },
+        "20692": {
+          "pieces": 837,
+          "reason": "no_candidates"
+        },
+        "20693": {
+          "pieces": 1500,
+          "reason": "max_pieces"
+        },
+        "20694": {
+          "pieces": 1500,
+          "reason": "max_pieces"
+        },
+        "20695": {
+          "pieces": 1500,
+          "reason": "max_pieces"
+        },
+        "20696": {
+          "pieces": 1500,
+          "reason": "max_pieces"
+        },
+        "20697": {
+          "pieces": 341,
+          "reason": "no_candidates"
+        },
+        "20698": {
+          "pieces": 921,
+          "reason": "no_candidates"
+        },
+        "20699": {
+          "pieces": 1500,
+          "reason": "max_pieces"
+        },
+        "20700": {
+          "pieces": 605,
+          "reason": "no_candidates"
+        },
+        "20701": {
+          "pieces": 1500,
+          "reason": "max_pieces"
+        },
+        "20702": {
+          "pieces": 1500,
+          "reason": "max_pieces"
+        },
+        "20703": {
+          "pieces": 1500,
+          "reason": "max_pieces"
+        },
+        "20704": {
+          "pieces": 725,
+          "reason": "no_candidates"
+        },
+        "20705": {
+          "pieces": 1500,
+          "reason": "max_pieces"
+        },
+        "20706": {
+          "pieces": 1500,
+          "reason": "max_pieces"
+        },
+        "20707": {
+          "pieces": 1500,
+          "reason": "max_pieces"
+        },
+        "20708": {
+          "pieces": 1030,
+          "reason": "no_candidates"
+        },
+        "20709": {
+          "pieces": 1500,
+          "reason": "max_pieces"
+        },
+        "20710": {
+          "pieces": 259,
+          "reason": "no_candidates"
+        },
+        "20711": {
+          "pieces": 1500,
+          "reason": "max_pieces"
+        },
+        "20712": {
+          "pieces": 735,
+          "reason": "no_candidates"
+        },
+        "20713": {
+          "pieces": 1500,
+          "reason": "max_pieces"
+        },
+        "20714": {
+          "pieces": 1500,
+          "reason": "max_pieces"
+        },
+        "20715": {
+          "pieces": 740,
+          "reason": "no_candidates"
+        },
+        "20716": {
+          "pieces": 1500,
+          "reason": "max_pieces"
+        },
+        "20717": {
+          "pieces": 558,
+          "reason": "no_candidates"
+        },
+        "20718": {
+          "pieces": 1500,
+          "reason": "max_pieces"
+        },
+        "20719": {
+          "pieces": 390,
+          "reason": "no_candidates"
+        },
+        "20720": {
+          "pieces": 534,
+          "reason": "lockout"
+        },
+        "20721": {
+          "pieces": 1500,
+          "reason": "max_pieces"
+        },
+        "20722": {
+          "pieces": 1500,
+          "reason": "max_pieces"
+        },
+        "20723": {
+          "pieces": 1500,
+          "reason": "max_pieces"
+        },
+        "20724": {
+          "pieces": 1121,
+          "reason": "lockout"
+        },
+        "20725": {
+          "pieces": 1500,
+          "reason": "max_pieces"
+        },
+        "20726": {
+          "pieces": 1500,
+          "reason": "max_pieces"
+        },
+        "20727": {
+          "pieces": 1500,
+          "reason": "max_pieces"
+        },
+        "20728": {
+          "pieces": 556,
+          "reason": "no_candidates"
+        },
+        "20729": {
+          "pieces": 1500,
+          "reason": "max_pieces"
+        },
+        "20730": {
+          "pieces": 942,
+          "reason": "no_candidates"
+        },
+        "20731": {
+          "pieces": 1500,
+          "reason": "max_pieces"
+        },
+        "20732": {
+          "pieces": 1500,
+          "reason": "max_pieces"
+        },
+        "20733": {
+          "pieces": 1457,
+          "reason": "no_candidates"
+        },
+        "20734": {
+          "pieces": 1500,
+          "reason": "max_pieces"
+        },
+        "20735": {
+          "pieces": 859,
+          "reason": "lockout"
+        },
+        "20736": {
+          "pieces": 1359,
+          "reason": "no_candidates"
+        },
+        "20737": {
+          "pieces": 1363,
+          "reason": "no_candidates"
+        },
+        "20738": {
+          "pieces": 1500,
+          "reason": "max_pieces"
+        },
+        "20739": {
+          "pieces": 1039,
+          "reason": "no_candidates"
+        },
+        "20740": {
+          "pieces": 765,
+          "reason": "no_candidates"
+        },
+        "20741": {
+          "pieces": 1500,
+          "reason": "max_pieces"
+        },
+        "20742": {
+          "pieces": 1500,
+          "reason": "max_pieces"
+        },
+        "20743": {
+          "pieces": 1500,
+          "reason": "max_pieces"
+        },
+        "20744": {
+          "pieces": 1500,
+          "reason": "max_pieces"
+        },
+        "20745": {
+          "pieces": 344,
+          "reason": "lockout"
+        },
+        "20746": {
+          "pieces": 1500,
+          "reason": "max_pieces"
+        },
+        "20747": {
+          "pieces": 1500,
+          "reason": "max_pieces"
+        },
+        "20748": {
+          "pieces": 1500,
+          "reason": "max_pieces"
+        },
+        "20749": {
+          "pieces": 1500,
+          "reason": "max_pieces"
+        },
+        "20750": {
+          "pieces": 1500,
+          "reason": "max_pieces"
+        },
+        "20751": {
+          "pieces": 1475,
+          "reason": "no_candidates"
+        }
+      }
+    },
+    "armB": {
+      "weights": "C:\\My Things\\HTML\\Demonin's Item Shop\\other\\deathBot\\deathbot_sim\\_diag_out\\e3_round.armB.pt",
+      "sha256": "a12768b3d01c26c7",
+      "mean_pieces": 1246.6,
+      "median_pieces": 1500.0,
+      "capped": 60,
+      "per_seed": {
+        "20652": {
+          "pieces": 1500,
+          "reason": "max_pieces"
+        },
+        "20653": {
+          "pieces": 1500,
+          "reason": "max_pieces"
+        },
+        "20654": {
+          "pieces": 575,
+          "reason": "no_candidates"
+        },
+        "20655": {
+          "pieces": 1088,
+          "reason": "no_candidates"
+        },
+        "20656": {
+          "pieces": 1500,
+          "reason": "max_pieces"
+        },
+        "20657": {
+          "pieces": 384,
+          "reason": "no_candidates"
+        },
+        "20658": {
+          "pieces": 317,
+          "reason": "no_candidates"
+        },
+        "20659": {
+          "pieces": 1500,
+          "reason": "max_pieces"
+        },
+        "20660": {
+          "pieces": 1500,
+          "reason": "max_pieces"
+        },
+        "20661": {
+          "pieces": 1092,
+          "reason": "no_candidates"
+        },
+        "20662": {
+          "pieces": 1500,
+          "reason": "max_pieces"
+        },
+        "20663": {
+          "pieces": 1500,
+          "reason": "max_pieces"
+        },
+        "20664": {
+          "pieces": 1321,
+          "reason": "no_candidates"
+        },
+        "20665": {
+          "pieces": 1500,
+          "reason": "max_pieces"
+        },
+        "20666": {
+          "pieces": 1500,
+          "reason": "max_pieces"
+        },
+        "20667": {
+          "pieces": 560,
+          "reason": "no_candidates"
+        },
+        "20668": {
+          "pieces": 1500,
+          "reason": "max_pieces"
+        },
+        "20669": {
+          "pieces": 1500,
+          "reason": "max_pieces"
+        },
+        "20670": {
+          "pieces": 764,
+          "reason": "no_candidates"
+        },
+        "20671": {
+          "pieces": 681,
+          "reason": "no_candidates"
+        },
+        "20672": {
+          "pieces": 1500,
+          "reason": "max_pieces"
+        },
+        "20673": {
+          "pieces": 1326,
+          "reason": "no_candidates"
+        },
+        "20674": {
+          "pieces": 657,
+          "reason": "no_candidates"
+        },
+        "20675": {
+          "pieces": 1500,
+          "reason": "max_pieces"
+        },
+        "20676": {
+          "pieces": 863,
+          "reason": "no_candidates"
+        },
+        "20677": {
+          "pieces": 1500,
+          "reason": "max_pieces"
+        },
+        "20678": {
+          "pieces": 1500,
+          "reason": "max_pieces"
+        },
+        "20679": {
+          "pieces": 1500,
+          "reason": "max_pieces"
+        },
+        "20680": {
+          "pieces": 1500,
+          "reason": "max_pieces"
+        },
+        "20681": {
+          "pieces": 1500,
+          "reason": "max_pieces"
+        },
+        "20682": {
+          "pieces": 1500,
+          "reason": "max_pieces"
+        },
+        "20683": {
+          "pieces": 1191,
+          "reason": "no_candidates"
+        },
+        "20684": {
+          "pieces": 1500,
+          "reason": "max_pieces"
+        },
+        "20685": {
+          "pieces": 1500,
+          "reason": "max_pieces"
+        },
+        "20686": {
+          "pieces": 1500,
+          "reason": "max_pieces"
+        },
+        "20687": {
+          "pieces": 709,
+          "reason": "no_candidates"
+        },
+        "20688": {
+          "pieces": 264,
+          "reason": "no_candidates"
+        },
+        "20689": {
+          "pieces": 1500,
+          "reason": "max_pieces"
+        },
+        "20690": {
+          "pieces": 555,
+          "reason": "no_candidates"
+        },
+        "20691": {
+          "pieces": 1141,
+          "reason": "no_candidates"
+        },
+        "20692": {
+          "pieces": 1500,
+          "reason": "max_pieces"
+        },
+        "20693": {
+          "pieces": 858,
+          "reason": "no_candidates"
+        },
+        "20694": {
+          "pieces": 1354,
+          "reason": "no_candidates"
+        },
+        "20695": {
+          "pieces": 680,
+          "reason": "no_candidates"
+        },
+        "20696": {
+          "pieces": 1170,
+          "reason": "no_candidates"
+        },
+        "20697": {
+          "pieces": 1500,
+          "reason": "max_pieces"
+        },
+        "20698": {
+          "pieces": 1500,
+          "reason": "max_pieces"
+        },
+        "20699": {
+          "pieces": 359,
+          "reason": "no_candidates"
+        },
+        "20700": {
+          "pieces": 1500,
+          "reason": "max_pieces"
+        },
+        "20701": {
+          "pieces": 1500,
+          "reason": "max_pieces"
+        },
+        "20702": {
+          "pieces": 654,
+          "reason": "no_candidates"
+        },
+        "20703": {
+          "pieces": 557,
+          "reason": "no_candidates"
+        },
+        "20704": {
+          "pieces": 406,
+          "reason": "no_candidates"
+        },
+        "20705": {
+          "pieces": 1500,
+          "reason": "max_pieces"
+        },
+        "20706": {
+          "pieces": 1500,
+          "reason": "max_pieces"
+        },
+        "20707": {
+          "pieces": 1500,
+          "reason": "max_pieces"
+        },
+        "20708": {
+          "pieces": 1500,
+          "reason": "max_pieces"
+        },
+        "20709": {
+          "pieces": 1428,
+          "reason": "no_candidates"
+        },
+        "20710": {
+          "pieces": 1178,
+          "reason": "no_candidates"
+        },
+        "20711": {
+          "pieces": 1500,
+          "reason": "max_pieces"
+        },
+        "20712": {
+          "pieces": 1500,
+          "reason": "max_pieces"
+        },
+        "20713": {
+          "pieces": 1500,
+          "reason": "max_pieces"
+        },
+        "20714": {
+          "pieces": 631,
+          "reason": "no_candidates"
+        },
+        "20715": {
+          "pieces": 1285,
+          "reason": "no_candidates"
+        },
+        "20716": {
+          "pieces": 1500,
+          "reason": "max_pieces"
+        },
+        "20717": {
+          "pieces": 1500,
+          "reason": "max_pieces"
+        },
+        "20718": {
+          "pieces": 1103,
+          "reason": "no_candidates"
+        },
+        "20719": {
+          "pieces": 1500,
+          "reason": "max_pieces"
+        },
+        "20720": {
+          "pieces": 1121,
+          "reason": "no_candidates"
+        },
+        "20721": {
+          "pieces": 1228,
+          "reason": "no_candidates"
+        },
+        "20722": {
+          "pieces": 1500,
+          "reason": "max_pieces"
+        },
+        "20723": {
+          "pieces": 1482,
+          "reason": "no_candidates"
+        },
+        "20724": {
+          "pieces": 1500,
+          "reason": "max_pieces"
+        },
+        "20725": {
+          "pieces": 1500,
+          "reason": "max_pieces"
+        },
+        "20726": {
+          "pieces": 425,
+          "reason": "no_candidates"
+        },
+        "20727": {
+          "pieces": 1500,
+          "reason": "max_pieces"
+        },
+        "20728": {
+          "pieces": 1500,
+          "reason": "max_pieces"
+        },
+        "20729": {
+          "pieces": 1500,
+          "reason": "max_pieces"
+        },
+        "20730": {
+          "pieces": 1500,
+          "reason": "max_pieces"
+        },
+        "20731": {
+          "pieces": 1500,
+          "reason": "max_pieces"
+        },
+        "20732": {
+          "pieces": 312,
+          "reason": "no_candidates"
+        },
+        "20733": {
+          "pieces": 1500,
+          "reason": "max_pieces"
+        },
+        "20734": {
+          "pieces": 867,
+          "reason": "no_candidates"
+        },
+        "20735": {
+          "pieces": 1500,
+          "reason": "max_pieces"
+        },
+        "20736": {
+          "pieces": 541,
+          "reason": "no_candidates"
+        },
+        "20737": {
+          "pieces": 986,
+          "reason": "no_candidates"
+        },
+        "20738": {
+          "pieces": 1500,
+          "reason": "max_pieces"
+        },
+        "20739": {
+          "pieces": 1500,
+          "reason": "max_pieces"
+        },
+        "20740": {
+          "pieces": 1500,
+          "reason": "max_pieces"
+        },
+        "20741": {
+          "pieces": 1500,
+          "reason": "max_pieces"
+        },
+        "20742": {
+          "pieces": 1500,
+          "reason": "max_pieces"
+        },
+        "20743": {
+          "pieces": 1500,
+          "reason": "max_pieces"
+        },
+        "20744": {
+          "pieces": 1256,
+          "reason": "no_candidates"
+        },
+        "20745": {
+          "pieces": 1288,
+          "reason": "no_candidates"
+        },
+        "20746": {
+          "pieces": 1500,
+          "reason": "max_pieces"
+        },
+        "20747": {
+          "pieces": 1500,
+          "reason": "max_pieces"
+        },
+        "20748": {
+          "pieces": 1500,
+          "reason": "max_pieces"
+        },
+        "20749": {
+          "pieces": 1500,
+          "reason": "max_pieces"
+        },
+        "20750": {
+          "pieces": 1500,
+          "reason": "max_pieces"
+        },
+        "20751": {
+          "pieces": 1500,
+          "reason": "max_pieces"
+        }
+      }
+    }
+  },
+  "wall_seconds": 1083.2,
+  "armB_vs_start": {
+    "paired_d": 42.5,
+    "paired_t": 0.69,
+    "W": 36,
+    "L": 34,
+    "deltas": [
+      1171,
+      0,
+      -563,
+      -412,
+      1184,
+      -1116,
+      -1183,
+      0,
+      419,
+      823,
+      529,
+      0,
+      -179,
+      1206,
+      229,
+      -940,
+      0,
+      903,
+      110,
+      -819,
+      1068,
+      -174,
+      -843,
+      0,
+      -637,
+      0,
+      594,
+      0,
+      914,
+      803,
+      401,
+      -309,
+      800,
+      0,
+      0,
+      -791,
+      -292,
+      447,
+      -945,
+      -359,
+      663,
+      -642,
+      -146,
+      -820,
+      -330,
+      1159,
+      579,
+      -1141,
+      895,
+      0,
+      -846,
+      -943,
+      -319,
+      0,
+      0,
+      0,
+      470,
+      -72,
+      919,
+      0,
+      765,
+      0,
+      -869,
+      545,
+      0,
+      942,
+      -397,
+      1110,
+      587,
+      -272,
+      0,
+      -18,
+      379,
+      0,
+      -1075,
+      0,
+      944,
+      0,
+      558,
+      0,
+      -1188,
+      43,
+      -633,
+      641,
+      -818,
+      -377,
+      0,
+      461,
+      735,
+      0,
+      0,
+      0,
+      -244,
+      944,
+      0,
+      0,
+      0,
+      0,
+      0,
+      25
+    ]
+  }
+}

@@ -1,285 +1,184 @@
-The 300-game result changes the recommendation substantially. You now have a validated learning improvement, a validated search-speed improvement, and a credible—though riskier—style improvement. This is no longer a project where the only positive evidence comes from inference-time search.
+Bottom line
 
-I would reopen improvement work, but as a bounded campaign built around the methods that just worked, rather than another broad search through training algorithms.
+I would move into the demo phase now, while leaving room for one tightly bounded, inference-only style experiment. I would not start another general training campaign.
 
-My priority order would be:
+That is a resource-allocation recommendation—not a conclusion that the policy has reached its theoretical limits. The project has demonstrated three useful assets:
 
-    Unify and audit the actual policy implementations.
-    Test the improved student as both a player and a search component.
-    Run one controlled round of continued search distillation and genuine aggregation.
-    Improve λ10’s risk management rather than simply increasing its style weight.
-    Confirm promising configurations on longer horizons.
+    A substantially improved 1-ply network: fullsplit_seed42.
+    A strong survival search policy, with a practical speedup through b8_diverse.
+    A modest but sustained style preference, plus evidence that switching back to survival play can rescue at least some dangerous style-generated positions.
 
-1. First, update the interpretation of these results
-The student is a decisive success—not merely an encouraging signal
+The remaining research opportunities are real, but most require a new source of information or a meaningfully different control formulation. Repeating training, increasing λ, or adding another small sweep is unlikely to produce a large improvement.
 
-The +468-piece improvement over 300 paired games is strong evidence for the student checkpoint under the sweep harness. It establishes that:
+The forced-well idea has merit primarily as a reversible inference-time constraint or training curriculum. “Force wells, then distill survival back into the network” is much less well-supported.
+1. What I would—and would not—conclude from the results
 
-    this architecture can internalize useful information from search;
-    hard-argmax CE can provide a substantial improvement;
-    the full-split fitting diagnostics were inadequate as a gameplay gate;
-    poor teacher reproduction does not imply poor policy improvement.
+A few distinctions matter for the decision.
+The 1-ply improvement is genuine; its proposed mechanism is not established
 
-However, I would slightly amend this explanation:
+The +468-piece promotion result is strong evidence that search-to-network training worked.
 
-    “The flipped quarter of decisions carries large survival value.”
+However, §36’s explanation that this was necessarily a “one-time trajectory-smoothing event” goes beyond the evidence. That student was trained against a stronger, different policy—not merely its own transformed outputs. A second round failing to improve significantly does not establish that the first round contained no useful teacher information.
 
-That is plausible, but not established. Training also changed formerly agreed decisions, score margins, and behavior on states outside the bank. The demonstrated conclusion is:
+Similarly, the extension’s +42.5 with (t=0.69) supports “not worth pursuing at this budget,” not “the true effect is zero.” The former is sufficient reason to stop.
+Full-network style distillation has not actually been ruled out
 
-    The update extracted enough useful structure from the teacher to produce a much stronger policy, despite imperfect—and in some respects worse—ranking fidelity.
+§37.4 overstates the negative evidence:
 
-That distinction matters when deciding what to optimize next. You should not assume that maximizing agree_dis is now the correct objective.
-Top-k is promising, but “champion-equivalent” remains horizon-specific
+    The earlier style students were small feature-based heads.
+    E2 tested survival-policy proposals.
+    E3 continued survival-teacher distillation.
 
-All four variants surviving 20/20 games is excellent evidence for their practical usefulness. It does not establish equal failure rates over longer games.
+Those are not three failures of full-network imitation of a strong stylish teacher. Nor do they establish that a decoupled head is the only acceptable architecture. Freezing survival weights also does not make the resulting combined policy survival-safe.
 
-Also, this sentence no longer follows:
+This leaves a legitimate research opportunity—but not one I would pursue before establishing a teacher whose style is worth copying.
+The rescue result is encouraging, but narrower than “forced states are recoverable”
 
-    “Diverse shortlist, not v1 top-k” still stands.
+The seven successful handoffs are seven starting points on one death trajectory, including several low-occupancy positions. They establish an important existence result: the survival policy can actively recover from that trajectory, including a late state.
 
-Both naive and diverse shortlists passed. Diversity is a reasonable precaution, but its advantage over naive shortlisting has not been demonstrated. Similarly, the difference between 6 and 15 incidental Tetrises is not a compelling reason to reject a faster survival policy. Test style preservation using a genuinely stylish configuration instead.
-λ10 should be treated as a measured trade-off, not forced into “safe/unsafe”
+They do not establish that:
 
-The style increase is now convincing. Its inventory behavior is clearly different from λ20’s accumulation failure.
+    occupancy 90 is generally a timely intervention threshold;
+    λ20-generated positions are similarly recoverable;
+    hard-forced nine-column stacks are recoverable;
+    the controller will recognize danger before the recovery window closes.
 
-But the observed death at 2685 pieces remains evidence, even if the fresh 20-game panel subsequently has zero deaths. With zero failures in 20 games, the one-sided 95% upper bound on per-game failure probability is still about 14% at that horizon.
+Those questions need direct testing if forcing is made more aggressive.
+2. Is the current style actually sufficient for the intended demo?
 
-I would describe λ10 as:
+This is worth deciding before doing more optimization.
 
-    A sustained style improvement with an observed additional long-horizon failure mode.
+The sustained λ10 results are roughly 0.15–0.22 Tetrises per 100 pieces: approximately one Tetris every 450–670 placements. At stable throughput, that means only roughly 1.5–2.2% of cleared lines are cleared in Tetrises.
 
-That is enough to justify improving it. It need not first be certified indistinguishable from the survival champion.
-2. Highest priority: resolve the policy identity problem
+That is a convincing improvement over the baseline, but it is not yet recognizable, sustained Tetris stacking in the ordinary human sense.
 
-The student’s sweep-versus-aggregation discrepancy is now more important, not less.
+Consequently:
 
-The promotion remains valid for the sweep policy: both weights were compared in that harness. But you need to know which policy was actually promoted before building another training round around it.
-A bounded audit
+    For a demo of “a learned evaluator plus search surviving 20G,” you already have enough.
+    For a demo of “a bot demonstrating good Tetris-oriented Death stacking,” the current style may still fall short.
+    For human training, legibility, reachable placement choices, and recovery explanations may currently be more valuable than the small Tetris-rate increase.
 
-For one tape where the student’s trajectories diverge:
+I would inspect representative, unselected recordings and make that product decision explicitly. A sixfold improvement over an almost-zero baseline can sound more impressive than it looks.
+3. Where the forced-well idea has real weight
 
-    Run both implementations from exactly the same board and queue.
-    Compare candidate sets using canonical identifiers:
-        placement geometry;
-        resulting board;
-        lockout status.
-    Compare:
-        encoded board tensors;
-        current/preview inputs;
-        scores aligned by canonical candidate;
-        masks;
-        tie-breaking;
-        selected action.
-    Stop at the first difference, not the first death.
+There are three different proposals hiding under that name.
+A. Increase λ further
 
-Do the same for visualization when convenient, but prioritize the training/evaluation discrepancy.
+This is the least interesting version.
 
-The durable fix is one shared policy implementation with adapters for collection, evaluation, and visualization. Keep the promoted configuration versioned; do not silently “correct” it.
-Why this has unusually high expected value
+It is cheap to test, but the λ20 result already suggests that stronger pressure along the existing potential can increase inventory and risk without producing much additional sustained Tetris throughput.
 
-The project has repeatedly paid for experiments whose conclusions were later overturned by differences between nominally equivalent policies.
+I would not infer a universal ceiling of 0.2 Tetrises/100 from the current runs—deaths and policy dynamics complicate that interpretation—but the evidence does not make λ30/40 an especially promising next investment.
+B. Reserve a well as a temporary strategic commitment
 
-The next distillation campaign needs to answer:
+This is meaningfully different, and has not been cleanly tested by the existing negatives.
 
-    Is the student being trained and deployed with the same input semantics?
+A scalar potential says:
 
-In particular, verify true-preview versus duplicated-piece slots in the actual training and deployment tensors. The previous audit of the incumbent’s weak response to preview substitution did not establish that a newly trained student would also be insensitive.
-3. Next: run a small weights × search crossover
+    “Prefer this setup, unless another move scores better.”
 
-This is my highest-value new performance experiment. You have improved both weights and search, but have not measured their interaction.
+A well-preservation constraint says:
 
-Use a fixed development panel and a longer cap—perhaps 3000 pieces—because 1500 increasingly hides differences.
+    “While pursuing this plan, choose the best survival move among placements that preserve it.”
 
-A compact matrix would be:
-Weights	Inference	Purpose
-snapshot9	full 2-ply	Established reference
-fullsplit	1-ply	New fast baseline
-snapshot9	beam5 or beam8	Established cheaper search
-fullsplit	same beam5 or beam8	Do stronger weights permit cheaper search?
-fullsplit	full 2-ply	Does the student improve search evaluation?
+That distinction matters. A shallow evaluator can repeatedly abandon a beneficial long-term plan because each individual abandonment looks locally attractive. A temporary constraint can prevent those reversals without requiring the value function to understand the entire future payoff.
 
-A modest paired development panel is sufficient for triage; it is not a final reliability claim.
+Also, the NN-free controller’s failure does not rule this out. There is a substantial difference between:
 
-Record:
+    choosing placements by a hand-coded well potential; and
+    using the existing neural/search survival evaluation inside a constrained set of placements.
 
-    survival distribution and cap rate;
-    early failures;
-    wall time per decision, including upper percentiles;
-    occupancy/height excursions;
-    reason for death.
+The latter retains the project’s strongest capability.
 
-Do not spend much interpretive effort on incidental Tetrises in these bonus-free policies.
-Why this is valuable
+However, merely reserving a column is insufficient. In 20G, the well must be reachable under ARS, and the surrounding stack must remain serviceable. A geometrically open column is not automatically a usable I channel.
+C. Force wells, then retrain to regain survival
 
-The student may:
+This is plausible as a curriculum, but there is no automatic restoration mechanism.
 
-    improve both greedy play and search;
-    improve greedy play but not search;
-    permit a much narrower shortlist;
-    hurt search despite better greedy behavior.
+The crucial question is: what produces the labels that teach safer well stacking?
 
-All four are possible.
+    Imitating the forced policy can reproduce its mistakes.
+    Imitating the flat survival policy on forced states can teach the student to dismantle the well.
+    Regressing toward the student’s own outcomes recreates familiar weak-target problems.
 
-Search distillation changes what the scalar scores represent. A model trained to rank one-step candidates like a two-step teacher is not automatically a better leaf value function. The interaction must be measured.
+The missing ingredient is not simply more well-containing boards. It is better decisions on those boards that preserve useful style while avoiding unnecessary risk.
 
-For the initial crossover, use one model consistently at both plies. Do not mix snapshot9 root values with student leaf values in an additive score without checking their scale and semantics.
-4. A particularly attractive speed experiment: student proposals, incumbent evaluation
+A risk-controlled style teacher, successful recovery trajectories, or counterfactual continuations could provide that information. Forcing alone does not.
 
-There is another way to exploit the student that avoids requiring it to be a good leaf evaluator.
+If a controller’s mode or chosen well changes its preferred action, that information also needs to be available to the student; otherwise the imitation task can contain conflicting targets.
+4. The one remaining style experiment I would consider high-value
 
-Use the student to propose promising roots, but score the expanded roots with the unchanged snapshot9 2-ply teacher.
+I would favor reversible well commitment with survival fallback, rather than another distillation attempt.
 
-For example, build a small union of:
+A minimal version would be:
 
-    top roots under snapshot9;
-    top roots under the student;
-    one or two geometry-based safety candidates.
+    BUILD/PRESERVE: designate one well and use the existing survival scorer to rank placements that preserve a usable channel and reasonable outside-well structure.
+    CASH OUT: take an appropriate reachable Tetris, then reassess the plan.
+    RECOVER: drop the commitment when risk becomes excessive or acceptable preserving moves disappear.
+    Re-enter style only after recovery, using hysteresis to avoid oscillation.
 
-Then fully expand only that union.
+This is not the old NN-free controller: the NN/search still performs the placement selection.
 
-This cleanly separates two roles:
+Two implementation details are important:
 
-    Student: predicts which actions deserve expensive consideration.
-    Teacher: makes the final decision using its existing scoring function.
+    Do not apply the constraint only after a survival top-k shortlist has discarded the relevant setup moves. Initially use full root expansion, or explicitly retain well-preserving candidates. The bonus-free shortlist results do not establish stylish-candidate coverage.
+    Treat occupancy thresholds and value margins as heuristics, not certified safety conditions. Forced stacking can create dangerous geometry at relatively low occupancy.
 
-Cheap offline test first
+Cheapest preliminary check
 
-On a mixed state bank, measure:
+Before building that controller, the already available λ20 + rescue variant is a sensible low-cost test. It asks whether stronger style pressure becomes useful when its accumulation failure is interrupted.
 
-    fraction of states where the shortlist contains the full teacher’s winner;
-    missed-winner regret;
-    avoidable-dead omissions;
-    number of unique shortlisted roots;
-    measured inference cost.
+But run the actual switching policy on the known death tape—not just manual handoffs—and inspect whether it intervenes in time. Then test a small, fixed set of additional tapes.
 
-Include student-visited and high-stack states, not only the original bank.
+I would compare a few fixed policies, not launch a broad parameter search:
 
-Then take only the best one or two shortlist designs into closed-loop evaluation.
+    λ10 reference;
+    λ10 with rescue;
+    λ20 with the same rescue rule.
 
-The student is explicitly trained to predict the search teacher’s choices, so proposal generation is a particularly natural use of its learned information. It could outperform a plain v1 shortlist even if student-weighted 2-ply search does not.
-5. Reopen training with one controlled iteration—not a new algorithm sweep
+If aggressive style mostly creates a cycle of build backlog → rescue by singles → rebuild backlog, it has not solved the style problem. Measure Tetris conversion and time between Tetrises, not only occupancy and style-off fraction.
 
-The simplest productive question is now:
+Stop if the result is not visibly or quantitatively material. Another small improvement over 0.18 Tetrises/100 would not justify reopening the whole campaign.
+5. Are there unexplored paths for better 1-ply survival?
 
-    Does more of the successful learning process continue to help, and does student-state aggregation make it better?
+Yes, but I do not see an obvious remaining cheap one with sufficiently strong expected value.
 
-I would compare two arms, both starting from the promoted fullsplit checkpoint.
-Arm A: continued fitting on the existing bank
+The credible research directions would involve something different from continued hard-argmax CE:
 
-Continue the successful hard-argmax CE recipe with several saved checkpoints.
+    More structured preview-aware learning: predicting useful properties of the next-piece continuation, rather than asking the network to recover everything through one scalar ranking loss.
+    Counterfactual training concentrated on consequential mistakes: using actual survival outcomes or recovery quality to distinguish important errors from harmless teacher disagreements.
+    A different training distribution and objective: particularly successful risk-controlled style trajectories, if fast stylish play becomes the primary goal.
 
-This answers whether the first run stopped while there was still useful improvement available. The earlier argument that validation agreement had plateaued no longer justifies ruling this out.
-Arm B: equal-budget fitting with student-state aggregation
+Those avenues are not invalidated by the existing experiments. But they require additional target design, labeling, diagnostics, and validation. They are research projects, not obvious next patches.
 
-Collect states from the promoted student using the canonical playing policy, label them with the frozen snapshot9 full-search teacher, and mix them with the original bank.
+The successful fullsplit result also warns against using offline imitation fidelity as a hard gameplay gate. Conversely, that lesson does not imply that every modest offline change deserves another large evaluation.
 
-Use approximately the same optimizer-update budget as Arm A so the comparison addresses new data versus additional optimization, rather than both simultaneously.
+For now, I would retain fullsplit_seed42 as the 1-ply champion. If its practical demo performance is adequate, there is little reason to spend heavily on another uncertain increment.
+6. What I would do in the demo phase
 
-Include:
+The most valuable remaining engineering work is making the demonstrated policy reliably be the displayed and executed policy.
 
-    ordinary student trajectories;
-    high-stack and recovery states;
-    disagreements;
-    a substantial share of ordinary agreements, to resist forgetting.
+My priorities would be:
 
-If you oversample particular categories, report metrics on an unweighted validation distribution as well.
-Keep the teacher fixed initially
+    Resolve the visualizer divergence.
+    Use a shared, explicit piece tape and stop at the first difference in board, candidate set, score, or action. E0 shows why “same seed” is insufficient. Do not assume the remaining issue is candidate ordering before tracing it.
 
-Do not simultaneously change:
+    Support canonical recorded replays.
+    Store the piece sequence, chosen placement, input path, board transitions, and complete policy configuration. Offline search can then be displayed at the desired speed without maintaining a second decision implementation.
 
-    teacher weights;
-    search depth;
-    training loss;
-    input semantics;
-    and data distribution.
+    Audit execution at the intended TAP timing.
+    Static reachability and a BFS input path are not, by themselves, an end-to-end demonstration of execution under the intended input and timing conditions.
 
-The current teacher has already demonstrated that it can improve the student. Exploit that result before introducing another moving target.
-Change the gates
+    Make the plan visible.
+    Display the designated well, build/recover mode, and a short reason for abandonment or recovery. This could improve the human-training value more than another small numerical style gain.
 
-Use offline metrics for diagnosis:
+    Match claims to the actual configuration and horizon.
+    The long-horizon stylish results, shortened-beam survival results, and rescue training-seed results are different pieces of evidence. Do not silently combine them into a claim that the final composite policy has already passed all those tests.
 
-    teacher regret;
-    avoidable-dead choices;
-    corrections versus newly introduced disagreements;
-    performance stratified by stack condition.
+Recommendation
 
-But use a reused gameplay development panel to decide which checkpoints deserve final testing. A checkpoint should not need 95% disagreement agreement before being allowed to play.
+Proceed with the demo. Do not restart broad training.
 
-If one more iteration improves convincingly, then run a second aggregation round and replicate the recipe across training schedules/seeds. If it does not, you have a useful stopping point without launching a large campaign.
+If stronger Tetris-oriented behavior is essential to the demo, reserve a small, explicit budget for force/commit + rescue, beginning with the existing λ20-plus-hysteresis machinery. That is the best remaining near-term opportunity because it exploits capabilities already demonstrated and changes the decision structure rather than merely repeating training.
 
-I would not make soft targets, residual learning, or a new architecture the first experiment now. They remain reasonable alternatives, but hard CE has just earned the right to be the control.
-6. For style, target the backlog-spike failure mode
-
-λ10’s problem is no longer “cannot sustain setups.” It appears to be:
-
-    Usually stable setup-seeking behavior, with occasional excursions from which its continued style pressure fails to recover.
-
-That suggests a low-dimensional controller rather than a larger λ.
-First build a compact failure-and-recovery bank
-
-Collect states around:
-
-    the λ10 death at 2685;
-    large λ10 spikes that successfully recover;
-    comparable champion excursions.
-
-Include some lead-up, not just the final nearly dead boards.
-
-Ask:
-
-    When does λ10 first choose differently from the survival policy?
-    When would switching to pure survival still permit recovery?
-    Does the survival policy recover from the same λ10-generated state, or only avoid reaching it?
-
-That last distinction is important. A rescue controller is useful only if it intervenes before the state becomes unrecoverable.
-Then test a simple hysteretic style schedule
-
-For example:
-
-    normal conditions: λ10 + completion bonus;
-    elevated risk: reduce setup pressure;
-    severe risk: temporarily use the bonus-free survival policy;
-    restore style only after reaching a lower recovery threshold.
-
-Risk could initially use occupancy, top height, holes, or placement availability. Keep the parameter count small.
-
-Hysteresis matters: without separate entry and exit thresholds, the policy can repeatedly build and dismantle the same plan.
-
-This is not a survival guarantee. It is a specific, testable intervention against an observed failure mode.
-Evaluate a Pareto frontier
-
-Track:
-
-    Tetrises per piece;
-    long-horizon failures;
-    high-stack dwell time;
-    recovery from excursions;
-    how often the controller disables style.
-
-The objective should be “retain most of λ10’s style while reducing catastrophic excursions,” not “never show a positive occupancy slope.”
-
-And test λ10 with cheap search separately. The bonus-free shortlist results do not establish that the same shortlist preserves setup moves.
-7. What I would defer
-
-Despite the renewed optimism, I would still defer:
-
-    training a new architecture from scratch;
-    a broad PPO/TD algorithm campaign;
-    deeper stochastic search on every move;
-    elaborate well-column switching;
-    distilling style before checking the improved survival student plus direct Phi;
-    large final evaluations of every intermediate checkpoint.
-
-The current evidence supports a much narrower program: better weights, cheaper search, one more search-distillation iteration, and targeted style recovery.
-Suggested immediate sequence
-Order	Experiment	Decision it enables
-1	First-divergence audit of sweep vs collector	Establish the exact deployed/trained policy
-2	Student weights × search crossover	Identify the best accuracy–compute configuration
-3	Student-assisted shortlist coverage, then gameplay	Exploit learned search knowledge cheaply
-4	Continued CE vs equal-budget student-state aggregation	Test whether the learning improvement compounds
-5	λ10 failure/recovery analysis and hysteretic fallback	Improve style without blindly increasing risk
-6	Fresh long-horizon confirmation of the best configurations	Support promotion claims
-
-I would keep a small demo available as a sanity check, even while postponing the polished demo phase. Watching representative failures can expose problems that aggregate metrics miss.
-
-The central update is that the project has now demonstrated successful search-to-network learning—not merely failed to disprove it. That makes another bounded improvement campaign well justified. The strongest next move is not to search for a radically new idea, but to determine whether the successful teacher–student step can be repeated and whether the resulting student lets you spend search only where it pays.
+Keep full-network style distillation and longer-horizon style planning on the future roadmap. They remain scientifically open—but they should follow a teacher that makes consistently worthwhile plans, not be expected to manufacture that teacher from forced trajectories after the fact.

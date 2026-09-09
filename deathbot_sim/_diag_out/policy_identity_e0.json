@@ -1,0 +1,204 @@
+{
+  "explore_offset": 7000000001,
+  "cap": 1500,
+  "probe_cap": 400,
+  "student": "C:\\My Things\\HTML\\Demonin's Item Shop\\other\\deathBot\\deathbot_sim\\_diag_out\\fullsplit_seed42.pt",
+  "student_sha256": "9989ce86390bcba6f26c3b5206a2180febd7013c520478e83b3406b44e8cab3a",
+  "incumbent": "C:\\My Things\\HTML\\Demonin's Item Shop\\other\\deathBot\\model_weights_snapshot9.pt",
+  "incumbent_sha256": "229bbe2a91bab6b1d6a58f25440e7504711aabe8dfc26d24dad9ee0461be46ed",
+  "tapes": {
+    "26000": {
+      "student": {
+        "aliased": {
+          "pieces": 1500,
+          "reason": "max_pieces"
+        },
+        "separate": {
+          "pieces": 1500,
+          "reason": "max_pieces"
+        }
+      },
+      "incumbent": {
+        "aliased": {
+          "pieces": 1079,
+          "reason": "no_candidates"
+        },
+        "separate": {
+          "pieces": 363,
+          "reason": "no_candidates"
+        }
+      }
+    },
+    "26001": {
+      "student": {
+        "aliased": {
+          "pieces": 1500,
+          "reason": "max_pieces"
+        },
+        "separate": {
+          "pieces": 196,
+          "reason": "no_candidates"
+        }
+      },
+      "incumbent": {
+        "aliased": {
+          "pieces": 316,
+          "reason": "no_candidates"
+        },
+        "separate": {
+          "pieces": 468,
+          "reason": "no_candidates"
+        }
+      }
+    },
+    "26002": {
+      "student": {
+        "aliased": {
+          "pieces": 1500,
+          "reason": "max_pieces"
+        },
+        "separate": {
+          "pieces": 1500,
+          "reason": "max_pieces"
+        }
+      },
+      "incumbent": {
+        "aliased": {
+          "pieces": 1173,
+          "reason": "no_candidates"
+        },
+        "separate": {
+          "pieces": 393,
+          "reason": "no_candidates"
+        }
+      }
+    },
+    "26003": {
+      "student": {
+        "aliased": {
+          "pieces": 1500,
+          "reason": "max_pieces"
+        },
+        "separate": {
+          "pieces": 503,
+          "reason": "no_candidates"
+        }
+      },
+      "incumbent": {
+        "aliased": {
+          "pieces": 340,
+          "reason": "no_candidates"
+        },
+        "separate": {
+          "pieces": 646,
+          "reason": "no_candidates"
+        }
+      }
+    },
+    "26004": {
+      "student": {
+        "aliased": {
+          "pieces": 1121,
+          "reason": "no_candidates"
+        },
+        "separate": {
+          "pieces": 1500,
+          "reason": "max_pieces"
+        }
+      },
+      "incumbent": {
+        "aliased": {
+          "pieces": 279,
+          "reason": "no_candidates"
+        },
+        "separate": {
+          "pieces": 599,
+          "reason": "no_candidates"
+        }
+      }
+    },
+    "26005": {
+      "student": {
+        "aliased": {
+          "pieces": 1217,
+          "reason": "no_candidates"
+        },
+        "separate": {
+          "pieces": 731,
+          "reason": "no_candidates"
+        }
+      },
+      "incumbent": {
+        "aliased": {
+          "pieces": 1040,
+          "reason": "no_candidates"
+        },
+        "separate": {
+          "pieces": 368,
+          "reason": "no_candidates"
+        }
+      }
+    },
+    "26006": {
+      "student": {
+        "aliased": {
+          "pieces": 1500,
+          "reason": "max_pieces"
+        },
+        "separate": {
+          "pieces": 1500,
+          "reason": "max_pieces"
+        }
+      },
+      "incumbent": {
+        "aliased": {
+          "pieces": 532,
+          "reason": "no_candidates"
+        },
+        "separate": {
+          "pieces": 1500,
+          "reason": "max_pieces"
+        }
+      }
+    },
+    "26007": {
+      "student": {
+        "aliased": {
+          "pieces": 940,
+          "reason": "no_candidates"
+        },
+        "separate": {
+          "pieces": 598,
+          "reason": "lockout"
+        }
+      },
+      "incumbent": {
+        "aliased": {
+          "pieces": 606,
+          "reason": "no_candidates"
+        },
+        "separate": {
+          "pieces": 1100,
+          "reason": "no_candidates"
+        }
+      }
+    }
+  },
+  "parity": {
+    "26000": {
+      "diverged": false,
+      "steps_compared": 400,
+      "max_score_diff": 0.0,
+      "terminal": null
+    },
+    "26001": {
+      "diverged": false,
+      "steps_compared": 196,
+      "max_score_diff": 0.0,
+      "terminal": "no_candidates",
+      "at_step": 196
+    }
+  },
+  "wall_seconds": 146.7,
+  "note": "26000-26007 are TRAINING seeds (reporting only). select_candidate_index draws explore_rng.random() per placement even at epsilon=0; aliased play_group != separate tapes. Collector (\u00a726.2, no RNG draw) == separate by construction. E3 must fix one convention for both arms."
+}

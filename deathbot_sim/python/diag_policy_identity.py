@@ -2,9 +2,15 @@
 
 §29 reported the same student net scoring 1347.2 (5/8 cap) under the sweep
 harness vs 1003.5 (4/8 cap) under the diag_student_aggregate collector on
-the SAME training seeds. This probe replays ONE seeded game through both
-implementations simultaneously and reports the FIRST divergence, aligned
-by canonical (state, x, y) geometry of the grounded piece:
+the SAME training seeds. RESOLVED by §32.3 E0 (2026-09-09,
+_diag_out/policy_identity_e0.json): the gap is RNG aliasing, NOT scoring.
+`select_candidate_index` draws explore_rng.random() per placement even at
+epsilon=0; the sweep harness aliases explore_rng to the env rng (shared
+object), the collector draws nothing — so "tape N" differs between the
+two (7/8 of 26000-26007). Scoring itself is bit-identical (maxdiff 0.0
+over 400 lockstep steps on 26000, 196 on 26001). See diag_policy_identity_e0.py
+for the quantitative rerun; this file is kept as the lockstep probe.
+"""
 
   A. sweep path  : search_locks + NeuralScorer.score_batch
                    (selfplay.play_game_detailed internals)
@@ -98,6 +104,9 @@ def main() -> None:
         candsB = boardB.search_locks(pqB.current)
         keysB_all = [canon_key(c.piece) for c in candsB]
         assert len(candsB) == nc, (len(candsB), nc)  # 19 pin: same order
+        # viableB holds BULK indices; v1/boards/cur_t/nxt_t are packed over
+        # viable candidates only, so key -> viable-list position (0..k-1).
+        posB_viable = {keysB_all[i]: j for j, i in enumerate(viableB)}
         boards = flat_rows_to_tensor(rows[viableB].reshape(-1), len(viableB))
         cur_t = torch.full((len(viableB),), cur_idx, dtype=torch.long)
         nxt_t = torch.full((len(viableB),), nxt_idx, dtype=torch.long)
@@ -115,13 +124,13 @@ def main() -> None:
             print("  only in A:", sorted(setA - setB)[:10])
             print("  only in B:", sorted(setB - setA)[:10])
             break
-        # aligned scores on the union of viable keys
+        # aligned scores on the union of viable keys (boards/cur_t/nxt_t
+        # are packed over viable candidates only: B index = viable position)
         posA = {keysA_all[i]: i for i in viableA}
-        posB = {keysB_all[i]: i for i in viableB}
         maxdiff = 0.0
         worst = None
         for k in setA:
-            ja, jb = posA[k], posB[k]
+            ja, jb = posA[k], posB_viable[k]
             with torch.no_grad():
                 vv = net(boards[jb:jb + 1], cur_t[jb:jb + 1],
                          nxt_t[jb:jb + 1]).item()
@@ -138,7 +147,7 @@ def main() -> None:
             print(f"  A pick {keyA} (score {sa:.4f}); "
                   f"B pick {keyB} (score {sb:.4f})")
             print(f"  A's score for B's pick: {scoresA_all[posA[keyB]]:.4f}")
-            print(f"  B's score for A's pick: {v1[posB[keyA]]:.4f}")
+            print(f"  B's score for A's pick: {v1[posB_viable[keyA]]:.4f}")
             break
         # commit both via their own paths
         afterA = make_afterstate(boardA, candsA[bestA])

@@ -6,10 +6,12 @@
 the §18 long-sustain verdict, the §19 steps-1+4 probe, and the §20
 third-review corrections; updated 2026-09-08 with the §26 full-split +
 aggregation result (item 5 CLOSED as a negative), the §29/§30 fullsplit
-promotion, and the §31 top-k fix + λ10 gate findings. Intended as a
+promotion, the §31 top-k fix + λ10 gate findings, and the §31.4 E0
+pre-result; updated 2026-09-09 with the §33 E0 completion, the §34 E2
+negative, and the §35 E1 crossover. Intended as a
 complete briefing for a fresh reviewer (human or AI) so no context is lost.*
 
-**Where things stand (2026-09-08):** survival is solved by
+**Where things stand (2026-09-09):** survival is solved by
 *inference*, not weights — **snapshot9 + full-expansion 2-ply caps every
 game** (30/30 at cap 1500, 4/4 at cap 5000). The active program is *style*:
 the bot survives but plays flat (near-zero Tetrises), and the goal is
@@ -43,7 +45,11 @@ policy-identity audit first, then weights×search crossover, student-as-proposer
 one controlled training round, λ10 hysteretic risk control. §31 amendments
 inline. λ10 selection pass (20592–20611) landed same day: 20/20 vs 20/20
 cap-3000, zero deaths, dT/100 +0.173 (t+8.19); λ10 failure estimate 1/40
-≈ 2.5%/game. E0–E4 deferred to next session.
+≈ 2.5%/game. E0 DONE (§33, 2026-09-09 — RNG-aliasing root cause, scoring
+bit-identical, E3 path pinned). E2 DONE (§34, 2026-09-09 — negative:
+union shortlists sit inside the v1 size/coverage frontier, no closed-loop).
+E1 DONE (§35, 2026-09-09 — student adds nothing under 2-ply; b8_diverse
+confirmed as the operating config). E3/E4 deferred to next session.
 
 ---
 
@@ -2305,6 +2311,17 @@ failure estimate is 1/40 ≈ 2.5% per game (95% one-sided upper bound ~11%);
 champ: 0/40. **Standing stylish teacher config λ10 Phi + completion bonus
 is now failure-rate-estimated and unblocked for E4 risk work (§32.3).**
 
+### 31.4 E0 pre-result — the §29 gap reproduced in one line (2026-09-09)
+
+While scoping E0, the §29 harness gap (sweep 1347.2 vs collector 1003.5
+on seeds 26000–26007) was reproduced as pure RNG aliasing:
+`play_game_detailed(..., epsilon=0.0)` with a SHARED env/explore Random
+vs `explore_rng=Random(99999)` gives 1500 vs 196 on seed 26001 (the
+`fitd-style separate` with offset +7_000_000_001 also gives 196 — the
+collector value). `select_candidate_index` draws `rng.random()` before
+the greedy pick even at epsilon=0, shifting the TAP history-reroll stream.
+Full 8-seed table in `policy_identity_e0.json` (§33).
+
 ### 31.3 Panel/registry status after this round
 
 - 20572–20591 CONSUMED (top-k gate). 31200–31219 CONSUMED (λ10 gate,
@@ -2423,18 +2440,18 @@ worked, not another algorithm sweep.
 ### 32.3 Adopted execution order (replaces §26.3 list; §28 demo plan updated)
 
 1. **E0 — policy-identity first-divergence probe** (blocking E3 only):
-   sweep vs collector on one divergent 26000s tape, canonical candidate
-   alignment, stop at first difference; log slot semantics used by each
-   path. Fix or version-pin whichever path E3 will train on. (~minutes)
-2. **E1 — weights × search crossover**: 2×5 matrix at cap 1500 (20-tape
-   dev panel 20612–20631, paired), cap-3000 columns on the same tapes for
-   horizon check. Decides the accuracy–compute configuration and whether
-   the student improves full-2-ply leaves. (~4–6 h)
+   DONE 2026-09-09, see §33. Scoring paths bit-identical (maxdiff 0.0);
+   §29 gap = RNG aliasing (`select_candidate_index` draws explore_rng
+   per placement even at ε=0). E3 must fix one tape convention for both
+   arms (collector ≡ separate-RNG).
+2. **E1 — weights × search crossover**: DONE 2026-09-09, see §35.
+   Student adds nothing under 2-ply (all-search cells identical 20/20);
+   b8_diverse confirmed as the operating config (2.1×, Tetris-neutral).
 3. **E2 — student-proposal shortlist probe** (offline, frozen bank +
-   student-visited states): coverage/regret/size vs v1-top-k baselines;
-   closed-loop only if it beats k=8's 1.000 coverage at smaller k.
-   (~1–2 h, no panels consumed unless promoted to closed-loop)
-4. **E3 — training round**: E0 clean → arm A (continued CE on bank) vs
+   student-visited states): DONE 2026-09-09, see §34 — NEGATIVE, closed
+   with no closed-loop (union coverage strictly inside the v1 frontier
+   at every size; student states uniformly easier).
+4. **E3 — training round**: E0 CLEAN (§33) → arm A (continued CE on bank) vs
    arm B (equal budget, bank + §26.2 aggregation states), teacher frozen;
    dev-panel checkpoint selection; fresh-panel final only if a winner
    emerges. (~6–8 h mostly unattended)
@@ -2449,9 +2466,196 @@ worked, not another algorithm sweep.
    DONE: 20592–20611 landed 20/20 vs 20/20 with zero deaths — see
    §31.2 — leaving 1/40 ≈ 2.5%/game as the working failure estimate.)
 
-Panels: 20592–20611 CONSUMED (λ10 estimate, landed); next free **20612+**
-(dev); 5300+ reserves for promotion; 26000s remain training-data seeds.
-Artifacts so far: `AI_plan_response.txt` (entry 4), §31/§32 of this file;
-E0–E4 drivers to be added under `python/` as they land. Work on E0–E4 is
-deferred to the next session (user decision 2026-09-08); nothing new is
-launched today.
+Panels: 20592–20611 CONSUMED (λ10 estimate, landed); 20612–20631 CONSUMED
+(E1 dev, landed — see §35); next free **20632+** (dev); 5300+ reserves for
+promotion; 26000s remain training-data seeds.
+Artifacts so far: `AI_plan_response.txt` (entry 4), §31/§32 of this file,
+`python/diag_policy_identity_e0.py` + `_diag_out/policy_identity_e0.json`
+(E0, §33); `python/diag_student_propose.py` + `_diag_out/student_propose.json`
+(E2, §34); `python/diag_weights_search_xover.py` +
+`_diag_out/weights_search_xover_1500.json` (E1, §35).
+Work on E3/E4 is deferred to the next session.
+
+## 33. E0 — policy-identity probe DONE (2026-09-09)
+
+Driver: `python/diag_policy_identity_e0.py` → `_diag_out/policy_identity_e0.json`
+(8 training seeds 26000–26007, REPORTING ONLY; lockstep parity caps 26000@400
++ 26001@196; wall ~147 s). Student `9989ce86…`, incumbent `229bbe2a…` throughout.
+No panels consumed, no checkpoints saved, no training.
+
+### 33.1 Result: the §29 gap is RNG aliasing, not scoring
+
+`select_candidate_index` draws `explore_rng.random()` on EVERY placement even
+at ε=0 (before the greedy pick). The sweep harness aliases explore→env (one
+shared `Random(seed)`), the §26.2 collector draws nothing — so "tape N" names
+two different piece streams. Replays of the same 8 training seeds under both
+conventions (`separate` = `explore_rng=Random(seed+7_000_000_001)`, the
+train_fitd/parallel-worker convention):
+
+| seed | student aliased | student separate | incumb aliased | incumb separate | collector (§26.2) |
+|---|---:|---:|---:|---:|---:|
+| 26000 | 1500 | 1500 | 1079 | 363 | 1500 |
+| 26001 | 1500 | 196 | 316 | 468 | 196 |
+| 26002 | 1500 | 1500 | 1173 | 393 | 1500 |
+| 26003 | 1500 | 503 | 340 | 646 | 503 |
+| 26004 | 1121 | 1500 | 279 | 599 | 1500 |
+| 26005 | 1217 | 731 | 1040 | 368 | 731 |
+| 26006 | 1500 | 1500 | 532 | 1500 | 1500 |
+| 26007 | 940 | 598 | 606 | 1100 | 598 |
+
+Student aliased mean 1347.2 = `fullsplit_paired_26000.json` exactly;
+student separate mean 1003.5 = `student_aggregate.json` exactly (8/8 match).
+7/8 student tapes and 8/8 incumbent tapes differ across conventions — tape
+labels are convention-relative, not absolute. The incumbent moves MORE than
+the student (e.g. 26002: 1173→393), so neither convention flatters one arm.
+
+### 33.2 Scoring parity: bit-identical, both tapes
+
+Lockstep probe (shared queue, canonical (state,x,y) alignment, stop at first
+difference): sweep `score_batch` path vs collector bulk-forward path agree to
+**maxdiff 0.0** over 400 steps on 26000 AND 196 steps to terminal on 26001
+(the divergent tape — parity holds right up to its `no_candidates` death).
+Viable sets identical by geometry throughout. Preview-slot semantics cleared
+as a side effect: at 1-ply cur≠nxt almost always, so the `cur==nxt` fast path
+never fires on either path — both call `net(boards, cur, nxt)` with the true
+preview (§21's 0.6% finding concerned the 2-ply teacher; the student-1-ply
+comparison here is exact). 2-ply eval tapes are unaffected regardless (two_ply
+draws explore_rng only when ε>0; all cap-1500/3000 evals use ε=0).
+
+### 33.3 Fixes landed with E0
+
+- `selfplay.py::play_game_detailed` docstring now carries the RNG CONTRACT
+  (default `None` = historical aliased tapes preserved; pass an explicit
+  dedicated stream for convention-clean play). No behavior change — suite
+  **181 passed, 2 skipped** after the edit.
+- `diag_policy_identity.py` (legacy single-seed probe): fixed a REAL latent
+  indexing bug exposed while building E0 — the B-side key→index map stored
+  bulk indices into the viable-packed `v1` list (IndexError the first time a
+  lockout candidate precedes a viable one; 26000's 400 clean steps never
+  triggered it). Now maps to viable-list positions. Docstring records the
+  E0 resolution. The legacy probe passes unchanged.
+- New: `diag_policy_identity_e0.py` (quantitative rerun) +
+  `policy_identity_e0.json` (evidence).
+
+### 33.4 What E0 gates for E3
+
+E0 is CLEAN in the §32.1.4 scoped sense: no scoring fix needed, no refactor
+needed. The version-pin is the tape convention: **E3 (arm A continued-CE vs
+arm B bank+aggregation) MUST run both arms under ONE convention** — recommend
+`separate` (`Random(seed+7_000_000_001)`, matching the §26.2 aggregation
+states already on disk: 8028 states / 1801 disagreements) so the bank labels
+and the dev-panel play use the same tapes the aggregation data was collected
+on. Promoted paired numbers (§30: +468.4, t+14.1) stand — both arms shared
+one harness. Cross-harness tape labels (sweep-N vs collector-N) must never be
+compared directly. E1 can proceed independently (paired inside one harness).
+
+## 34. E2 — student-proposal shortlist probe DONE (2026-09-09, NEGATIVE)
+
+Driver: `python/diag_student_propose.py` → `_diag_out/student_propose.json`
+(wall ~684 s; frozen bank + training-seed replays only — NO panels, NO
+gameplay, NO training). Teacher = versioned CHAMPION (snapshot9 bonus-free
+full 2-ply, fast-path both plies, γ_ply 0.999) throughout.
+
+### 34.1 Protocol
+
+- States: 397 frozen-bank states (incumbent-trajectory, seed 7) + 7963
+  student-visited states (student 1-ply greedy replays of training seeds
+  26000–26007 under the separate-RNG convention — E0-verified identical to
+  the §26.2 collector tapes). All 8360 labeled by the frozen teacher
+  (8359 eval, 1 all-dead skipped, 0 skipped).
+- Shortlists (viable-order indices): `v1_k{k}` = top-k by incumbent 1-ply
+  (k = 3/5/8); `union_{a}_{b}` = top-a incumbent + top-b student +
+  lowest-top viable (dedup).
+- Metrics: coverage (teacher winner ∈ shortlist), regret|miss
+  (positive-regret, live only), dead-miss count, mean size; split by source
+  (bank vs student) and teacher-margin bucket.
+
+### 34.2 Result: union sits inside the v1 frontier — no closed-loop
+
+| list | cover | miss | reg|miss | dead | size | bank | stud |
+|---|---:|---:|---:|---:|---:|---:|---:|
+| v1_k3 | 0.957 | 360 | 14.28 | 7 | 2.99 | 0.930 | 0.958 |
+| v1_k5 | 0.982 | 151 | 12.94 | 3 | 4.90 | 0.967 | 0.983 |
+| v1_k8 | 0.994 | 50 | 10.30 | 2 | 7.54 | 0.980 | 0.995 |
+| union_3_3 | 0.972 | 234 | 12.87 | 6 | 3.31 | 0.960 | 0.973 |
+| union_2_2 | 0.942 | 486 | 13.27 | 6 | 2.23 | 0.914 | 0.943 |
+| union_3_2 | 0.965 | 297 | 13.11 | 6 | 3.05 | 0.940 | 0.966 |
+| union_5_3 | 0.985 | 124 | 12.19 | 3 | 4.95 | 0.972 | 0.986 |
+
+Gate check (§32.3: beat k=8's coverage at smaller k): union_3_3 (size 3.3,
+cover 0.972) sits strictly BETWEEN v1_k3 (2.99/0.957) and v1_k5
+(4.90/0.982) — inside the frontier, not beating it. union_5_3 ≈ v1_k5 on
+coverage at the same size (0.985 vs 0.982). No bucket is an exception:
+union loses to size-matched v1 in every margin bucket (<1: 0.925 vs 0.959;
+1–5: 0.954 vs 0.973; 5–20: 0.967 vs 0.977; 20+: 0.994 vs 0.995).
+Student-visited states are uniformly EASIER than bank states for every list
+(+2–4 pts) — the review's hoped-for off-bank advantage is not there.
+
+### 34.3 Interpretation + what E2 gates
+
+The student learned the teacher's argmax well enough to play +468, but as a
+proposer its ranking carries no information the incumbent's v1 ranking lacks
+— its top picks are a subset of v1's top picks on these states. Per §32.2,
+proposal value would need a signal v1 doesn't have (e.g. stylish-config
+setup moves, where rare-but-critical geometry could favor diversity — test
+diversity there, not here). **E2 CLOSED as a negative with no closed-loop**
+(as the §32.3 gate prescribes). E1/E3 proceed independently; student compute
+stays in training (E3), not search.
+
+## 35. E1 — weights × search crossover DONE (2026-09-09)
+
+Driver: `python/diag_weights_search_xover.py` →
+`_diag_out/weights_search_xover_1500.json` (wall 4199 s at 8 workers).
+2 weights (snapshot9 `229bbe2a` vs fullsplit student `9989ce86`) × 5
+searches (1-ply / b5_diverse / b8_diverse / b8_v1 / full 2-ply), 20 matched
+tapes (dev panel **20612–20631 CONSUMED**), cap 1500, ε=0 throughout (per
+E0 §33 both 1-ply and 2-ply paths draw explore_rng only when ε>0, so all
+10 cells share identical tapes by construction). Cap-3000 horizon leg
+deferred (§32.2 amendment stands — primary decision is cap-1500 legibility).
+
+### 35.1 Result: student adds nothing under 2-ply; 1-ply edge inconclusive
+
+| cell | snap9 cap | stud cap | dPieces (stu−snp) | tet snp/stu | s/g snp | s/g stu |
+|---|---:|---:|---:|---:|---:|---:|
+| ply1 | 3/20 | 10/20 | +180.2, t+1.19 | 23/6 | 13.6 | 15.7 |
+| b5_diverse | 20/20 | 20/20 | +0.0, t+0.00 | 14/6 | 122.2 | 122.5 |
+| b8_diverse | 20/20 | 20/20 | +0.0, t+0.00 | 19/5 | 174.8 | 170.4 |
+| b8_v1 | 20/20 | 20/20 | +0.0, t+0.00 | 9/3 | 175.8 | 163.5 |
+| full | 20/20 | 20/20 | +0.0, t+0.00 | 14/7 | 365.1 | 305.6 |
+
+Every 2-ply cell caps all 20 tapes on BOTH weights with paired pieces
+delta EXACTLY 0 and lines within 1 (snap9 ≈ student ≈ 597–598) — search
+saturates the cap-1500 horizon and erases the +468 1-ply gap completely.
+Whether the student improves 2-ply LEAVES is untestable at this cap: no
+cell leaves a single uncapped game on either weight. The 1-ply cell favors
+the student (+180, 10/20 vs 3/20 cap) but is n.s. (t+1.19; paired deltas
+range −889…+1337, sd ≈ 680 — this dev panel runs harsher tapes than the
+§30 promotion panel, and n=20 cannot resolve it; the §30 +468/t+14.1 on
+300 games stands as the 1-ply verdict).
+
+Speeds (this panel): full ≈ 305–365 s/g; b8_diverse ≈ 170–175 (2.0–2.1×);
+b5_diverse ≈ 122 (2.9×); 1-ply ≈ 14–16. Tetris counts are incidental
+(single-digit per cell, no arm 2× the other consistently — same noise as
+§31.1's 9/6-vs-15 question, still unresolved and still not a gate).
+
+### 35.2 Decision + what E1 gates
+
+1. **Operating config: snapshot9 + b8_diverse** (2.1× full cost,
+   Tetris-neutral here: 19 vs 5 incidental). The student buys nothing under
+   search, so the 2-ply champion stays snapshot9 weights — no new weights
+   file, no 2-ply promotion question. (E3's training round targets 1-ply
+   play, where the student's +468 lives; E1 gives no reason to change that.)
+2. **Student permits no narrower search**: b5 cells are identically
+   saturated on both weights — the cheap-search question (§32.1.5) answers
+   NO at cap 1500. Revisit only if a harder horizon (cap 3000+) separates
+   the cells.
+3. **Cap-3000 horizon leg NOT run** (deferred for wall-time: the cap-1500
+   leg already saturates; horizon confirmation belongs to §32.3 item 6 for
+   whichever configs E3/E4 promote, on fresh panels).
+4. Lesson (recorded): the "games slow down over time" worry during the run
+   was completion-order bias — `as_completed` returns fast (1-ply/short)
+   games first, capped full-2-ply stragglers last — not degradation. The
+   driver docstring now notes this. Killed run: two-leg (1500+3000) at 4
+   workers → relaunched cap-1500-only at 4 → relaunched cap-1500-only at 8
+   (user call; no OOM). `--cap2 0` runs a complete decision-grade cap-1500
+   leg.

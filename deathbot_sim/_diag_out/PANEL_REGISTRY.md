@@ -331,6 +331,18 @@
     ~11%), champ 0/40 (file: lam10_gate_20592.json). Next free: 20612+
     (§32.3 E1 dev panel); 5300+ reserves for promotion.
 
+- seeds: 20612-20631
+  protocol: corrected-lockout, cap 1500 (§32.3 E1 dev)
+  status: CONSUMED
+  history: E1 weights×search crossover 2026-09-09 (snap9 vs fullsplit ×
+    1-ply/b5_div/b8_div/b8_v1/full, 20 matched tapes, cap 1500, eps=0):
+    1-ply stud +180.2 t+1.19 (10/20 vs 3/20 cap, n.s.); every 2-ply cell
+    20/20 both weights, paired dPieces EXACTLY 0 — search saturates cap
+    1500, student adds nothing under 2-ply. DECISION: operating config
+    snap9+b8_diverse (2.1x, Tetris-neutral). Cap-3000 leg deferred to
+    item 6 (file: weights_search_xover_1500.json). Next free: 20632+
+    (dev); 5300+ reserves for promotion.
+
 - seeds: 31200-31219
   protocol: corrected-lockout, cap 1500 + cap-3000 stress (λ10 gate, §31)
   status: CONSUMED

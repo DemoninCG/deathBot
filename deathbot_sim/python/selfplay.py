@@ -337,9 +337,31 @@ def play_game_detailed(
         checkpoints uses this to reproduce the historical benchmark.
 
     ``reason`` is one of "no_candidates", "lockout", "max_pieces".
+
+    RNG CONTRACT (§32 E0): ``select_candidate_index`` draws
+    ``explore_rng.random()`` on EVERY placement even at epsilon=0 (the draw
+    happens before the greedy pick). With the historical default
+    (``explore_rng`` aliased to ``rng``) that draw advances the shared
+    stream once per placement, so the TAP history-reroll draws that follow
+    come from a shifted stream: "tape N" under aliasing differs from "tape
+    N" under a separate exploration stream (verified 2026-09-09 on training
+    seeds 26000–26007: 7/8 tapes differ; separate-RNG play reproduces the
+    diag_student_aggregate collector 8/8, aliased play reproduces the sweep
+    harness). The §26.2 collector never calls this function (direct greedy
+    argmax, no RNG draw), which is why it always plays separate-RNG tapes.
+    2-ply play (two_ply.py) only draws when epsilon>0, so its cap-1500/3000
+    eval tapes are unaffected. All promoted paired numbers (§30: +468.4,
+    t+14.1) compare arms inside ONE harness and are unaffected — only the
+    cross-harness tape LABELS differ. Canonical going forward: pass an
+    explicit dedicated stream per game (``random.Random(seed +
+    7_000_000_001)``, as train_fitd and the parallel worker already do);
+    the ``None`` default preserves historical aliased tapes for
+    reproducibility of existing panels. E3 MUST use one convention for
+    both arms — see _diag_out/policy_identity_e0.json.
     """
     rng = rng or random.Random()
-    explore_rng = explore_rng or rng  # same stream unless caller separates
+    if explore_rng is None:
+        explore_rng = rng  # historical default: aliased (see contract above)
     board = ds.Board()
     piece_queue = PieceQueue(rng)
 

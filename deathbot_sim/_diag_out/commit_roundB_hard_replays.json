@@ -1,0 +1,551 @@
+{
+  "weights": "C:\\My Things\\HTML\\Demonin's Item Shop\\other\\deathBot\\model_weights_snapshot9.pt",
+  "weights_sha256": "229bbe2a91bab6b1d6a58f25440e7504711aabe8dfc26d24dad9ee0461be46ed",
+  "seed0": 32000,
+  "seeds": [
+    20851,
+    20857
+  ],
+  "games": 2,
+  "cap": 800,
+  "reporting_only": true,
+  "replay_of_prior_tapes": true,
+  "arms": {
+    "baseline": {
+      "params": {
+        "abort_top": 16,
+        "abort_occ": 110,
+        "reenter_occ": 60,
+        "cooldown": 30,
+        "lam": 10.0
+      },
+      "capped": 1,
+      "mean_pieces": 779.5,
+      "tetrises": 13,
+      "t_per_100": 0.8339,
+      "paired_dtet_vs_baseline": 0.0,
+      "paired_t_vs_baseline": 0.0,
+      "controller_exits": 0,
+      "per_seed": [
+        {
+          "arm": "baseline",
+          "seed": 20851,
+          "pieces": 759,
+          "lines": 286,
+          "clears": {
+            "0": 540,
+            "1": 171,
+            "2": 31,
+            "3": 15,
+            "4": 2
+          },
+          "reason": "no_candidates",
+          "seconds": 188.78,
+          "stats": {
+            "preserved_decisions": 280,
+            "fallbacks": 0,
+            "cashouts": 0,
+            "recovers": 4,
+            "style_off": 479,
+            "decisions": 759,
+            "reentries": 3,
+            "reentry_denied_top": 0,
+            "reentry_denied_cool": 19,
+            "reentry_denied_holes": 0,
+            "reentry_denied_geometry": 1,
+            "debt_exits": 0,
+            "progress_exits": 0,
+            "uniform_expansions": 0,
+            "ranked_cashouts": 0,
+            "ready_exits": 0,
+            "max_commit_debt": 0.0,
+            "masked_expansions": 104
+          }
+        },
+        {
+          "arm": "baseline",
+          "seed": 20857,
+          "pieces": 800,
+          "lines": 310,
+          "clears": {
+            "0": 600,
+            "1": 130,
+            "2": 41,
+            "3": 18,
+            "4": 11
+          },
+          "reason": "max_pieces",
+          "seconds": 228.26,
+          "stats": {
+            "preserved_decisions": 446,
+            "fallbacks": 4,
+            "cashouts": 0,
+            "recovers": 10,
+            "style_off": 350,
+            "decisions": 800,
+            "reentries": 9,
+            "reentry_denied_top": 0,
+            "reentry_denied_cool": 93,
+            "reentry_denied_holes": 0,
+            "reentry_denied_geometry": 4,
+            "debt_exits": 0,
+            "progress_exits": 0,
+            "uniform_expansions": 0,
+            "ranked_cashouts": 0,
+            "ready_exits": 0,
+            "max_commit_debt": 0.0,
+            "masked_expansions": 182
+          }
+        }
+      ]
+    },
+    "reenter_top10": {
+      "params": {
+        "abort_top": 16,
+        "abort_occ": 110,
+        "reenter_occ": 60,
+        "reenter_top": 10,
+        "cooldown": 30,
+        "lam": 10.0
+      },
+      "capped": 1,
+      "mean_pieces": 779.5,
+      "tetrises": 13,
+      "t_per_100": 0.8339,
+      "paired_dtet_vs_baseline": 0.0,
+      "paired_t_vs_baseline": 0.0,
+      "controller_exits": 0,
+      "per_seed": [
+        {
+          "arm": "reenter_top10",
+          "seed": 20851,
+          "pieces": 759,
+          "lines": 286,
+          "clears": {
+            "0": 540,
+            "1": 171,
+            "2": 31,
+            "3": 15,
+            "4": 2
+          },
+          "reason": "no_candidates",
+          "seconds": 189.79,
+          "stats": {
+            "preserved_decisions": 280,
+            "fallbacks": 0,
+            "cashouts": 0,
+            "recovers": 4,
+            "style_off": 479,
+            "decisions": 759,
+            "reentries": 3,
+            "reentry_denied_top": 0,
+            "reentry_denied_cool": 19,
+            "reentry_denied_holes": 0,
+            "reentry_denied_geometry": 1,
+            "debt_exits": 0,
+            "progress_exits": 0,
+            "uniform_expansions": 0,
+            "ranked_cashouts": 0,
+            "ready_exits": 0,
+            "max_commit_debt": 0.0,
+            "masked_expansions": 104
+          }
+        },
+        {
+          "arm": "reenter_top10",
+          "seed": 20857,
+          "pieces": 800,
+          "lines": 310,
+          "clears": {
+            "0": 600,
+            "1": 130,
+            "2": 41,
+            "3": 18,
+            "4": 11
+          },
+          "reason": "max_pieces",
+          "seconds": 228.52,
+          "stats": {
+            "preserved_decisions": 446,
+            "fallbacks": 4,
+            "cashouts": 0,
+            "recovers": 10,
+            "style_off": 350,
+            "decisions": 800,
+            "reentries": 9,
+            "reentry_denied_top": 0,
+            "reentry_denied_cool": 93,
+            "reentry_denied_holes": 0,
+            "reentry_denied_geometry": 4,
+            "debt_exits": 0,
+            "progress_exits": 0,
+            "uniform_expansions": 0,
+            "ranked_cashouts": 0,
+            "ready_exits": 0,
+            "max_commit_debt": 0.0,
+            "masked_expansions": 182
+          }
+        }
+      ]
+    },
+    "watch80": {
+      "params": {
+        "abort_top": 16,
+        "abort_occ": 110,
+        "reenter_occ": 60,
+        "cooldown": 30,
+        "lam": 10.0,
+        "progress_patience": 80
+      },
+      "capped": 2,
+      "mean_pieces": 800.0,
+      "tetrises": 15,
+      "t_per_100": 0.9375,
+      "paired_dtet_vs_baseline": 1.0,
+      "paired_t_vs_baseline": 1.0,
+      "controller_exits": 1,
+      "per_seed": [
+        {
+          "arm": "watch80",
+          "seed": 20851,
+          "pieces": 800,
+          "lines": 310,
+          "clears": {
+            "0": 587,
+            "1": 142,
+            "2": 49,
+            "3": 18,
+            "4": 4
+          },
+          "reason": "max_pieces",
+          "seconds": 215.52,
+          "stats": {
+            "preserved_decisions": 414,
+            "fallbacks": 3,
+            "cashouts": 0,
+            "recovers": 10,
+            "style_off": 383,
+            "decisions": 800,
+            "reentries": 10,
+            "reentry_denied_top": 0,
+            "reentry_denied_cool": 56,
+            "reentry_denied_holes": 0,
+            "reentry_denied_geometry": 1,
+            "debt_exits": 0,
+            "progress_exits": 1,
+            "uniform_expansions": 0,
+            "ranked_cashouts": 0,
+            "ready_exits": 0,
+            "max_commit_debt": 0.0,
+            "masked_expansions": 148
+          }
+        },
+        {
+          "arm": "watch80",
+          "seed": 20857,
+          "pieces": 800,
+          "lines": 310,
+          "clears": {
+            "0": 600,
+            "1": 130,
+            "2": 41,
+            "3": 18,
+            "4": 11
+          },
+          "reason": "max_pieces",
+          "seconds": 229.55,
+          "stats": {
+            "preserved_decisions": 446,
+            "fallbacks": 4,
+            "cashouts": 0,
+            "recovers": 10,
+            "style_off": 350,
+            "decisions": 800,
+            "reentries": 9,
+            "reentry_denied_top": 0,
+            "reentry_denied_cool": 93,
+            "reentry_denied_holes": 0,
+            "reentry_denied_geometry": 4,
+            "debt_exits": 0,
+            "progress_exits": 0,
+            "uniform_expansions": 0,
+            "ranked_cashouts": 0,
+            "ready_exits": 0,
+            "max_commit_debt": 0.0,
+            "masked_expansions": 182
+          }
+        }
+      ]
+    },
+    "cashout_q": {
+      "params": {
+        "abort_top": 16,
+        "abort_occ": 110,
+        "reenter_occ": 60,
+        "cooldown": 30,
+        "lam": 10.0,
+        "rank_cashouts": true
+      },
+      "capped": 1,
+      "mean_pieces": 779.5,
+      "tetrises": 13,
+      "t_per_100": 0.8339,
+      "paired_dtet_vs_baseline": 0.0,
+      "paired_t_vs_baseline": 0.0,
+      "controller_exits": 0,
+      "per_seed": [
+        {
+          "arm": "cashout_q",
+          "seed": 20851,
+          "pieces": 759,
+          "lines": 286,
+          "clears": {
+            "0": 540,
+            "1": 171,
+            "2": 31,
+            "3": 15,
+            "4": 2
+          },
+          "reason": "no_candidates",
+          "seconds": 193.11,
+          "stats": {
+            "preserved_decisions": 280,
+            "fallbacks": 0,
+            "cashouts": 0,
+            "recovers": 4,
+            "style_off": 479,
+            "decisions": 759,
+            "reentries": 3,
+            "reentry_denied_top": 0,
+            "reentry_denied_cool": 19,
+            "reentry_denied_holes": 0,
+            "reentry_denied_geometry": 1,
+            "debt_exits": 0,
+            "progress_exits": 0,
+            "uniform_expansions": 0,
+            "ranked_cashouts": 0,
+            "ready_exits": 0,
+            "max_commit_debt": 0.0,
+            "masked_expansions": 104
+          }
+        },
+        {
+          "arm": "cashout_q",
+          "seed": 20857,
+          "pieces": 800,
+          "lines": 310,
+          "clears": {
+            "0": 600,
+            "1": 130,
+            "2": 41,
+            "3": 18,
+            "4": 11
+          },
+          "reason": "max_pieces",
+          "seconds": 229.72,
+          "stats": {
+            "preserved_decisions": 446,
+            "fallbacks": 4,
+            "cashouts": 0,
+            "recovers": 10,
+            "style_off": 350,
+            "decisions": 800,
+            "reentries": 9,
+            "reentry_denied_top": 0,
+            "reentry_denied_cool": 93,
+            "reentry_denied_holes": 0,
+            "reentry_denied_geometry": 4,
+            "debt_exits": 0,
+            "progress_exits": 0,
+            "uniform_expansions": 0,
+            "ranked_cashouts": 0,
+            "ready_exits": 0,
+            "max_commit_debt": 0.0,
+            "masked_expansions": 182
+          }
+        }
+      ]
+    },
+    "reentry_cert": {
+      "params": {
+        "abort_top": 16,
+        "abort_occ": 110,
+        "reenter_occ": 60,
+        "reenter_top": 10,
+        "reenter_holes": 2,
+        "reentry_min_progress": 1.0,
+        "cooldown": 30,
+        "lam": 10.0
+      },
+      "capped": 2,
+      "mean_pieces": 800.0,
+      "tetrises": 10,
+      "t_per_100": 0.625,
+      "paired_dtet_vs_baseline": -1.5,
+      "paired_t_vs_baseline": -0.2308,
+      "controller_exits": 0,
+      "per_seed": [
+        {
+          "arm": "reentry_cert",
+          "seed": 20851,
+          "pieces": 800,
+          "lines": 309,
+          "clears": {
+            "0": 580,
+            "1": 161,
+            "2": 36,
+            "3": 16,
+            "4": 7
+          },
+          "reason": "max_pieces",
+          "seconds": 206.5,
+          "stats": {
+            "preserved_decisions": 324,
+            "fallbacks": 5,
+            "cashouts": 1,
+            "recovers": 6,
+            "style_off": 470,
+            "decisions": 800,
+            "reentries": 5,
+            "reentry_denied_top": 0,
+            "reentry_denied_cool": 37,
+            "reentry_denied_holes": 23,
+            "reentry_denied_geometry": 19,
+            "debt_exits": 0,
+            "progress_exits": 0,
+            "uniform_expansions": 0,
+            "ranked_cashouts": 0,
+            "ready_exits": 0,
+            "max_commit_debt": 0.0,
+            "masked_expansions": 128
+          }
+        },
+        {
+          "arm": "reentry_cert",
+          "seed": 20857,
+          "pieces": 800,
+          "lines": 310,
+          "clears": {
+            "0": 576,
+            "1": 161,
+            "2": 43,
+            "3": 17,
+            "4": 3
+          },
+          "reason": "max_pieces",
+          "seconds": 209.53,
+          "stats": {
+            "preserved_decisions": 374,
+            "fallbacks": 1,
+            "cashouts": 1,
+            "recovers": 8,
+            "style_off": 424,
+            "decisions": 800,
+            "reentries": 7,
+            "reentry_denied_top": 0,
+            "reentry_denied_cool": 79,
+            "reentry_denied_holes": 96,
+            "reentry_denied_geometry": 22,
+            "debt_exits": 0,
+            "progress_exits": 0,
+            "uniform_expansions": 0,
+            "ranked_cashouts": 0,
+            "ready_exits": 0,
+            "max_commit_debt": 0.0,
+            "masked_expansions": 149
+          }
+        }
+      ]
+    },
+    "ready8": {
+      "params": {
+        "abort_top": 16,
+        "abort_occ": 110,
+        "reenter_occ": 60,
+        "cooldown": 30,
+        "lam": 10.0,
+        "ready_patience": 8
+      },
+      "capped": 2,
+      "mean_pieces": 800.0,
+      "tetrises": 8,
+      "t_per_100": 0.5,
+      "paired_dtet_vs_baseline": -2.5,
+      "paired_t_vs_baseline": -0.4545,
+      "controller_exits": 0,
+      "per_seed": [
+        {
+          "arm": "ready8",
+          "seed": 20851,
+          "pieces": 800,
+          "lines": 316,
+          "clears": {
+            "0": 564,
+            "1": 179,
+            "2": 39,
+            "3": 13,
+            "4": 5
+          },
+          "reason": "max_pieces",
+          "seconds": 200.71,
+          "stats": {
+            "preserved_decisions": 327,
+            "fallbacks": 1,
+            "cashouts": 0,
+            "recovers": 6,
+            "style_off": 472,
+            "decisions": 800,
+            "reentries": 6,
+            "reentry_denied_top": 0,
+            "reentry_denied_cool": 49,
+            "reentry_denied_holes": 0,
+            "reentry_denied_geometry": 16,
+            "debt_exits": 0,
+            "progress_exits": 0,
+            "uniform_expansions": 0,
+            "ranked_cashouts": 0,
+            "ready_exits": 2,
+            "max_commit_debt": 0.0,
+            "masked_expansions": 125
+          }
+        },
+        {
+          "arm": "ready8",
+          "seed": 20857,
+          "pieces": 800,
+          "lines": 315,
+          "clears": {
+            "0": 583,
+            "1": 142,
+            "2": 55,
+            "3": 17,
+            "4": 3
+          },
+          "reason": "max_pieces",
+          "seconds": 213.44,
+          "stats": {
+            "preserved_decisions": 463,
+            "fallbacks": 2,
+            "cashouts": 0,
+            "recovers": 9,
+            "style_off": 335,
+            "decisions": 800,
+            "reentries": 8,
+            "reentry_denied_top": 0,
+            "reentry_denied_cool": 152,
+            "reentry_denied_holes": 0,
+            "reentry_denied_geometry": 0,
+            "debt_exits": 0,
+            "progress_exits": 0,
+            "uniform_expansions": 0,
+            "ranked_cashouts": 0,
+            "ready_exits": 5,
+            "max_commit_debt": 0.0,
+            "masked_expansions": 178
+          }
+        }
+      ]
+    }
+  },
+  "wall_seconds": 449.75
+}

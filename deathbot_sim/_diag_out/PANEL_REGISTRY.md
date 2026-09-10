@@ -415,6 +415,82 @@
     (file: commit_long.json). Next free: 20862+ (dev);
     5300+ reserves for promotion.
 
+- seeds: 20877-20891
+  protocol: corrected-lockout, cap 1500 (Stage C mini, §44.4 — CORRECTED controller)
+  status: CONSUMED
+  history: stage C mini 2026-09-10 (corrected cool30 vs corrected
+    cool30lam10 × 15 tapes, cap 1500 only, --arms subset, minimal run
+    after the 4-arm+cap3000 plan projected 5-6h): cool30 11/15 (1263.6,
+    84 tet, 0.443 T/100) vs cross 11/15 (1329.3, 125 tet, 0.627),
+    paired dTet +2.73 t+2.10, dPc +65.7 t+0.39, discordant 3/3 —
+    style separates but cap tied, NOT a promotion (file:
+    commit_stageC_mini.json). Next free: 20892+ (dev);
+    5300+ reserves for promotion.
+
+- seeds: 20892-20899
+  protocol: corrected-lockout, cap 1500 (λ20/λ30 inside-commit probe, §44.5)
+  status: CONSUMED
+  history: scouting 2026-09-10 (corrected cool30lam20 vs cool30lam30 ×
+    8 tapes, cap 1500): lam20 7/8 (1363.8, 51 tet, 0.468 T/100) vs
+    lam30 6/8 (1362.9, 47 tet, 0.431) — no Pareto gain over the §44.4
+    cross estimate (0.627 T/100 at 11/15); no further λ cells (file:
+    commit_stageC_lam2030.json). Next free: 20900+ (dev);
+    5300+ reserves for promotion.
+
+- seeds: 20900-20929
+  protocol: corrected-lockout, cap 300 (Step-4 micro-tune, §44.6)
+  status: CONSUMED
+  history: micro-tune 2026-09-10 (abort 110/120 × reenter 50/60 ×
+    30 tapes, cap 300, matched): all 30/30 cap, T/100
+    0.678/0.622/0.733/0.722; best lean a120_r50 +0.33 t+1.31 n.s. —
+    NEUTRAL, no promotion, winner carried forward (file:
+    commit_microtune.json). Next free: 20930+ (dev);
+    5300+ reserves for promotion.
+
+- seeds: 20930-20959
+  protocol: corrected-lockout, cap 300 (Step-4 α-sweep final, §44.7)
+  status: CONSUMED
+  history: commitment-shaping distill screen 2026-09-10 (veto {10,25} ×
+    α {0,0.5,1.0,2.0} × 30 tapes, cap 300): α=0 27/30 (7 tet);
+    α=0.5 29/30 (9); α=1.0 27/26 (9); α=2.0 18/21 (13-14) —
+    style grows with α but survival collapses first; (0.35+, 8/10)
+    gate FAILS, distillation CLOSED (file: commit_head.json).
+    Next free: 20960+ (dev); 5300+ reserves for promotion.
+
+- seeds: 20960-20989
+  protocol: corrected-lockout, cap 300 + cap 1500 same tapes (Round C, §47)
+  status: CONSUMED
+  history: Round C 2026-09-10 (corrected cool30lam10 baseline vs watch80 /
+    reentry_cert / ready8 × 30 tapes, both caps; leg1-only arms
+    reenter_top10 / cashout_q / debt80 / uniform at cap 300):
+    leg1 cap300: base 30/30 (61 tet) / watch80 30/30 (64, +0.10 t+0.90) /
+    cert 30/30 (54, −0.23 t−1.13) / ready8 29/30 (65, +0.13 t+0.47,
+    1 death 20986@225) / reenter_top10 ≡ base / cashout_q ≡ base /
+    debt80 30/30 (25, −1.20 t−3.56) / uniform 30/30 (64, +0.10 t+0.28).
+    leg2 cap1500: base 27/30 (1441.8, 260 tet, 0.601 T/100) /
+    watch80 27/30 (1441.3, 271, +0.37 t+0.66, identical death tapes) /
+    cert 28/30 (1448.6, 259, −0.03 t−0.05, 3 saves + 2 new deaths,
+    disc 3/2 p=1.0) / ready8 28/30 (1426.9, 236, −0.80 t−0.90,
+    3 saves + 2 new deaths, disc 3/2 p=1.0) — DECISION: no promotion
+    (all |t|<1, all p=1.0); debt80 CONFIRM-REJECTED (t−3.56);
+    reenter_top10/cashout_q confirmed INACTIVE (byte-identical);
+    uniform stays rejected; watch80 opt-in only; cert fallback only
+    (file: commit_roundC.json). Next free: 20990+ (dev);
+    5300+ reserves for promotion.
+
+- seeds: 20990-21019
+  protocol: corrected-lockout, cap 300 + cap 1500 same tapes (a120 follow-up, §47.4)
+  status: CONSUMED
+  history: a120_r50 follow-up 2026-09-10 (a110_r60 default vs a120_r50
+    lean × 30 tapes, both caps): leg1 cap300: base 30/30 (58 tet) /
+    a120 29/30 (48, dTet −0.33 t−0.87, dPc −1.3 t−1.00, disc 0/1 p=1.0).
+    leg2 cap1500: base 27/30 (1416.2, 252 tet, 0.593 T/100) /
+    a120 27/30 (1437.5, 232, 0.538, dTet −0.67 t−0.84, dPc +21.4
+    t+0.31, disc 3/3 p=1.0; 3 saves + 3 new deaths) — DECISION: no
+    promotion, HOLD a110_r60; §44.6 lean reversed, NEUTRAL confirmed
+    (file: commit_a120_followup.json). Next free: 21020+ (dev);
+    5300+ reserves for promotion.
+
 - seeds: 31200-31219
   protocol: corrected-lockout, cap 1500 + cap-3000 stress (λ10 gate, §31)
   status: CONSUMED

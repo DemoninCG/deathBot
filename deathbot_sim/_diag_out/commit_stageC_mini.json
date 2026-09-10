@@ -1,0 +1,3067 @@
+{
+ "weights": "C:\\My Things\\HTML\\Demonin's Item Shop\\other\\deathBot\\model_weights_snapshot9.pt",
+ "weights_sha256": "229bbe2a91bab6b1d6a58f25440e7504711aabe8dfc26d24dad9ee0461be46ed",
+ "seed0": 20877,
+ "games": 15,
+ "cap": 1500,
+ "cap2": 0,
+ "selection_panel": true,
+ "arms_config": {
+  "base_loose": {
+   "abort_top": 16,
+   "abort_occ": 110,
+   "reenter_occ": 60
+  },
+  "cool30": {
+   "abort_top": 16,
+   "abort_occ": 110,
+   "reenter_occ": 60,
+   "cooldown": 30
+  },
+  "cool30lam10": {
+   "abort_top": 16,
+   "abort_occ": 110,
+   "reenter_occ": 60,
+   "cooldown": 30,
+   "lam": 10.0
+  }
+ },
+ "legs": {
+  "cap1500": {
+   "cool30": {
+    "capped": 11,
+    "mean_pieces": 1263.6,
+    "mean_lines": 495.3,
+    "tetrises": 84,
+    "t_per_100": 0.4432,
+    "t_per_capped": 7.0,
+    "mean_longest_gap": 429.9,
+    "paired_dTet": 0.0,
+    "paired_dTet_t": 0.0,
+    "paired_dPieces": 0.0,
+    "paired_dPieces_t": 0.0,
+    "discordant_cap_vs_lam10": "",
+    "per_seed": {
+     "20877": {
+      "pieces": 1041,
+      "lines": 399,
+      "clears": {
+       "0": 738,
+       "1": 224,
+       "2": 63,
+       "3": 15,
+       "4": 1
+      },
+      "reason": "no_candidates",
+      "windows": [
+       {
+        "pieces": 200,
+        "lines": 74,
+        "tetrises": 0,
+        "mean_occ": 100.9,
+        "mean_top": 13.24,
+        "mean_holes": 5.155
+       },
+       {
+        "pieces": 200,
+        "lines": 77,
+        "tetrises": 0,
+        "mean_occ": 70.9,
+        "mean_top": 9.755,
+        "mean_holes": 3.52
+       },
+       {
+        "pieces": 200,
+        "lines": 81,
+        "tetrises": 0,
+        "mean_occ": 81.2,
+        "mean_top": 10.875,
+        "mean_holes": 4.155
+       },
+       {
+        "pieces": 200,
+        "lines": 81,
+        "tetrises": 1,
+        "mean_occ": 74.65,
+        "mean_top": 10.055,
+        "mean_holes": 3.62
+       },
+       {
+        "pieces": 200,
+        "lines": 71,
+        "tetrises": 0,
+        "mean_occ": 119.0,
+        "mean_top": 15.44,
+        "mean_holes": 13.655
+       },
+       {
+        "pieces": 41,
+        "lines": 15,
+        "tetrises": 0,
+        "mean_occ": 141.0731707317073,
+        "mean_top": 17.682926829268293,
+        "mean_holes": 15.24390243902439
+       }
+      ],
+      "tetris_at": [
+       768
+      ],
+      "longest_no_tetris_gap": 768,
+      "final": {
+       "occ": 174,
+       "top": 21.0,
+       "holes": 17.0
+      },
+      "board_chain_head": 3285770111,
+      "board_chain": 2298279892,
+      "style_off_frac": 0.6426512968299711,
+      "ctrl_stats": {
+       "preserved_decisions": 367,
+       "fallbacks": 5,
+       "cashouts": 0,
+       "recovers": 11,
+       "style_off": 669,
+       "decisions": 1041,
+       "reentries": 10,
+       "reentry_denied_top": 0,
+       "reentry_denied_cool": 61,
+       "masked_expansions": 165
+      }
+     },
+     "20878": {
+      "pieces": 869,
+      "lines": 331,
+      "clears": {
+       "0": 615,
+       "1": 194,
+       "2": 46,
+       "3": 11,
+       "4": 3
+      },
+      "reason": "no_candidates",
+      "windows": [
+       {
+        "pieces": 200,
+        "lines": 74,
+        "tetrises": 0,
+        "mean_occ": 77.6,
+        "mean_top": 10.46,
+        "mean_holes": 4.67
+       },
+       {
+        "pieces": 200,
+        "lines": 76,
+        "tetrises": 1,
+        "mean_occ": 82.35,
+        "mean_top": 11.24,
+        "mean_holes": 4.86
+       },
+       {
+        "pieces": 200,
+        "lines": 79,
+        "tetrises": 1,
+        "mean_occ": 102.4,
+        "mean_top": 13.32,
+        "mean_holes": 5.77
+       },
+       {
+        "pieces": 200,
+        "lines": 85,
+        "tetrises": 1,
+        "mean_occ": 81.45,
+        "mean_top": 10.815,
+        "mean_holes": 4.215
+       },
+       {
+        "pieces": 69,
+        "lines": 17,
+        "tetrises": 0,
+        "mean_occ": 113.04347826086956,
+        "mean_top": 14.942028985507246,
+        "mean_holes": 11.579710144927537
+       }
+      ],
+      "tetris_at": [
+       343,
+       575,
+       701
+      ],
+      "longest_no_tetris_gap": 343,
+      "final": {
+       "occ": 166,
+       "top": 21.0,
+       "holes": 24.0
+      },
+      "board_chain_head": 4171516159,
+      "board_chain": 2904872207,
+      "style_off_frac": 0.6052934407364787,
+      "ctrl_stats": {
+       "preserved_decisions": 334,
+       "fallbacks": 9,
+       "cashouts": 0,
+       "recovers": 10,
+       "style_off": 526,
+       "decisions": 869,
+       "reentries": 9,
+       "reentry_denied_top": 1,
+       "reentry_denied_cool": 10,
+       "masked_expansions": 134
+      }
+     },
+     "20879": {
+      "pieces": 1500,
+      "lines": 593,
+      "clears": {
+       "0": 1067,
+       "1": 315,
+       "2": 84,
+       "3": 26,
+       "4": 8
+      },
+      "reason": "max_pieces",
+      "windows": [
+       {
+        "pieces": 200,
+        "lines": 72,
+        "tetrises": 0,
+        "mean_occ": 67.7,
+        "mean_top": 9.38,
+        "mean_holes": 1.365
+       },
+       {
+        "pieces": 200,
+        "lines": 83,
+        "tetrises": 2,
+        "mean_occ": 62.15,
+        "mean_top": 8.73,
+        "mean_holes": 0.5
+       },
+       {
+        "pieces": 200,
+        "lines": 80,
+        "tetrises": 3,
+        "mean_occ": 73.35,
+        "mean_top": 9.86,
+        "mean_holes": 0.98
+       },
+       {
+        "pieces": 200,
+        "lines": 76,
+        "tetrises": 0,
+        "mean_occ": 78.9,
+        "mean_top": 11.055,
+        "mean_holes": 2.34
+       },
+       {
+        "pieces": 200,
+        "lines": 81,
+        "tetrises": 1,
+        "mean_occ": 79.4,
+        "mean_top": 10.49,
+        "mean_holes": 4.45
+       },
+       {
+        "pieces": 200,
+        "lines": 80,
+        "tetrises": 0,
+        "mean_occ": 92.45,
+        "mean_top": 12.545,
+        "mean_holes": 6.885
+       },
+       {
+        "pieces": 200,
+        "lines": 84,
+        "tetrises": 1,
+        "mean_occ": 74.3,
+        "mean_top": 10.4,
+        "mean_holes": 2.99
+       },
+       {
+        "pieces": 100,
+        "lines": 37,
+        "tetrises": 1,
+        "mean_occ": 79.1,
+        "mean_top": 10.55,
+        "mean_holes": 3.05
+       }
+      ],
+      "tetris_at": [
+       218,
+       225,
+       496,
+       576,
+       597,
+       937,
+       1233,
+       1498
+      ],
+      "longest_no_tetris_gap": 340,
+      "final": {
+       "occ": 70,
+       "top": 10.0,
+       "holes": 3.0
+      },
+      "board_chain_head": 845668015,
+      "board_chain": 3383224387,
+      "style_off_frac": 0.5393333333333333,
+      "ctrl_stats": {
+       "preserved_decisions": 683,
+       "fallbacks": 8,
+       "cashouts": 0,
+       "recovers": 17,
+       "style_off": 809,
+       "decisions": 1500,
+       "reentries": 16,
+       "reentry_denied_top": 0,
+       "reentry_denied_cool": 119,
+       "masked_expansions": 297
+      }
+     },
+     "20880": {
+      "pieces": 1500,
+      "lines": 593,
+      "clears": {
+       "0": 1082,
+       "1": 286,
+       "2": 97,
+       "3": 27,
+       "4": 8
+      },
+      "reason": "max_pieces",
+      "windows": [
+       {
+        "pieces": 200,
+        "lines": 78,
+        "tetrises": 0,
+        "mean_occ": 56.65,
+        "mean_top": 8.055,
+        "mean_holes": 0.09
+       },
+       {
+        "pieces": 200,
+        "lines": 76,
+        "tetrises": 2,
+        "mean_occ": 46.25,
+        "mean_top": 7.19,
+        "mean_holes": 0.205
+       },
+       {
+        "pieces": 200,
+        "lines": 77,
+        "tetrises": 1,
+        "mean_occ": 65.25,
+        "mean_top": 9.375,
+        "mean_holes": 1.0
+       },
+       {
+        "pieces": 200,
+        "lines": 82,
+        "tetrises": 1,
+        "mean_occ": 76.7,
+        "mean_top": 10.62,
+        "mean_holes": 1.93
+       },
+       {
+        "pieces": 200,
+        "lines": 77,
+        "tetrises": 2,
+        "mean_occ": 82.6,
+        "mean_top": 11.205,
+        "mean_holes": 4.19
+       },
+       {
+        "pieces": 200,
+        "lines": 83,
+        "tetrises": 0,
+        "mean_occ": 88.4,
+        "mean_top": 11.82,
+        "mean_holes": 4.09
+       },
+       {
+        "pieces": 200,
+        "lines": 76,
+        "tetrises": 2,
+        "mean_occ": 60.85,
+        "mean_top": 8.85,
+        "mean_holes": 0.53
+       },
+       {
+        "pieces": 100,
+        "lines": 44,
+        "tetrises": 0,
+        "mean_occ": 114.5,
+        "mean_top": 14.79,
+        "mean_holes": 1.79
+       }
+      ],
+      "tetris_at": [
+       272,
+       315,
+       536,
+       774,
+       958,
+       970,
+       1268,
+       1317
+      ],
+      "longest_no_tetris_gap": 298,
+      "final": {
+       "occ": 70,
+       "top": 10.0,
+       "holes": 0.0
+      },
+      "board_chain_head": 1882131201,
+      "board_chain": 4220293876,
+      "style_off_frac": 0.42733333333333334,
+      "ctrl_stats": {
+       "preserved_decisions": 854,
+       "fallbacks": 5,
+       "cashouts": 0,
+       "recovers": 13,
+       "style_off": 641,
+       "decisions": 1500,
+       "reentries": 12,
+       "reentry_denied_top": 25,
+       "reentry_denied_cool": 69,
+       "masked_expansions": 365
+      }
+     },
+     "20881": {
+      "pieces": 1500,
+      "lines": 594,
+      "clears": {
+       "0": 1074,
+       "1": 305,
+       "2": 83,
+       "3": 29,
+       "4": 9
+      },
+      "reason": "max_pieces",
+      "windows": [
+       {
+        "pieces": 200,
+        "lines": 75,
+        "tetrises": 0,
+        "mean_occ": 52.05,
+        "mean_top": 7.97,
+        "mean_holes": 0.79
+       },
+       {
+        "pieces": 200,
+        "lines": 76,
+        "tetrises": 2,
+        "mean_occ": 85.95,
+        "mean_top": 11.655,
+        "mean_holes": 2.9
+       },
+       {
+        "pieces": 200,
+        "lines": 81,
+        "tetrises": 1,
+        "mean_occ": 83.95,
+        "mean_top": 10.785,
+        "mean_holes": 4.99
+       },
+       {
+        "pieces": 200,
+        "lines": 80,
+        "tetrises": 1,
+        "mean_occ": 84.25,
+        "mean_top": 11.46,
+        "mean_holes": 4.375
+       },
+       {
+        "pieces": 200,
+        "lines": 81,
+        "tetrises": 0,
+        "mean_occ": 85.6,
+        "mean_top": 11.185,
+        "mean_holes": 3.915
+       },
+       {
+        "pieces": 200,
+        "lines": 83,
+        "tetrises": 1,
+        "mean_occ": 74.15,
+        "mean_top": 10.025,
+        "mean_holes": 1.385
+       },
+       {
+        "pieces": 200,
+        "lines": 75,
+        "tetrises": 2,
+        "mean_occ": 72.7,
+        "mean_top": 10.07,
+        "mean_holes": 2.74
+       },
+       {
+        "pieces": 100,
+        "lines": 43,
+        "tetrises": 2,
+        "mean_occ": 63.9,
+        "mean_top": 8.74,
+        "mean_holes": 1.28
+       }
+      ],
+      "tetris_at": [
+       272,
+       326,
+       451,
+       677,
+       1200,
+       1209,
+       1349,
+       1413,
+       1462
+      ],
+      "longest_no_tetris_gap": 523,
+      "final": {
+       "occ": 60,
+       "top": 8.0,
+       "holes": 1.0
+      },
+      "board_chain_head": 2333176711,
+      "board_chain": 3477086943,
+      "style_off_frac": 0.5613333333333334,
+      "ctrl_stats": {
+       "preserved_decisions": 651,
+       "fallbacks": 7,
+       "cashouts": 0,
+       "recovers": 13,
+       "style_off": 842,
+       "decisions": 1500,
+       "reentries": 12,
+       "reentry_denied_top": 14,
+       "reentry_denied_cool": 34,
+       "masked_expansions": 286
+      }
+     },
+     "20882": {
+      "pieces": 172,
+      "lines": 52,
+      "clears": {
+       "0": 135,
+       "1": 28,
+       "2": 5,
+       "3": 2,
+       "4": 2
+      },
+      "reason": "no_candidates",
+      "windows": [
+       {
+        "pieces": 172,
+        "lines": 52,
+        "tetrises": 2,
+        "mean_occ": 82.04651162790698,
+        "mean_top": 11.075581395348838,
+        "mean_holes": 2.4244186046511627
+       }
+      ],
+      "tetris_at": [
+       44,
+       71
+      ],
+      "longest_no_tetris_gap": 101,
+      "final": {
+       "occ": 168,
+       "top": 21.0,
+       "holes": 8.0
+      },
+      "board_chain_head": 2333176711,
+      "board_chain": 1416050003,
+      "style_off_frac": 0.4186046511627907,
+      "ctrl_stats": {
+       "preserved_decisions": 98,
+       "fallbacks": 2,
+       "cashouts": 0,
+       "recovers": 1,
+       "style_off": 72,
+       "decisions": 172,
+       "reentries": 0,
+       "reentry_denied_top": 0,
+       "reentry_denied_cool": 0,
+       "masked_expansions": 39
+      }
+     },
+     "20883": {
+      "pieces": 1500,
+      "lines": 591,
+      "clears": {
+       "0": 1058,
+       "1": 328,
+       "2": 85,
+       "3": 23,
+       "4": 6
+      },
+      "reason": "max_pieces",
+      "windows": [
+       {
+        "pieces": 200,
+        "lines": 74,
+        "tetrises": 0,
+        "mean_occ": 74.95,
+        "mean_top": 10.44,
+        "mean_holes": 2.105
+       },
+       {
+        "pieces": 200,
+        "lines": 80,
+        "tetrises": 2,
+        "mean_occ": 64.4,
+        "mean_top": 9.49,
+        "mean_holes": 0.625
+       },
+       {
+        "pieces": 200,
+        "lines": 79,
+        "tetrises": 1,
+        "mean_occ": 82.65,
+        "mean_top": 11.475,
+        "mean_holes": 1.92
+       },
+       {
+        "pieces": 200,
+        "lines": 78,
+        "tetrises": 0,
+        "mean_occ": 76.25,
+        "mean_top": 10.48,
+        "mean_holes": 1.505
+       },
+       {
+        "pieces": 200,
+        "lines": 81,
+        "tetrises": 0,
+        "mean_occ": 95.5,
+        "mean_top": 12.265,
+        "mean_holes": 3.825
+       },
+       {
+        "pieces": 200,
+        "lines": 80,
+        "tetrises": 3,
+        "mean_occ": 78.55,
+        "mean_top": 10.75,
+        "mean_holes": 1.685
+       },
+       {
+        "pieces": 200,
+        "lines": 80,
+        "tetrises": 0,
+        "mean_occ": 91.9,
+        "mean_top": 12.22,
+        "mean_holes": 3.095
+       },
+       {
+        "pieces": 100,
+        "lines": 39,
+        "tetrises": 0,
+        "mean_occ": 79.7,
+        "mean_top": 10.67,
+        "mean_holes": 1.47
+       }
+      ],
+      "tetris_at": [
+       217,
+       253,
+       483,
+       1024,
+       1083,
+       1110
+      ],
+      "longest_no_tetris_gap": 541,
+      "final": {
+       "occ": 90,
+       "top": 11.0,
+       "holes": 4.0
+      },
+      "board_chain_head": 2333176711,
+      "board_chain": 2429191570,
+      "style_off_frac": 0.5653333333333334,
+      "ctrl_stats": {
+       "preserved_decisions": 646,
+       "fallbacks": 6,
+       "cashouts": 0,
+       "recovers": 15,
+       "style_off": 848,
+       "decisions": 1500,
+       "reentries": 14,
+       "reentry_denied_top": 1,
+       "reentry_denied_cool": 56,
+       "masked_expansions": 268
+      }
+     },
+     "20884": {
+      "pieces": 1500,
+      "lines": 591,
+      "clears": {
+       "0": 1028,
+       "1": 377,
+       "2": 74,
+       "3": 18,
+       "4": 3
+      },
+      "reason": "max_pieces",
+      "windows": [
+       {
+        "pieces": 200,
+        "lines": 73,
+        "tetrises": 1,
+        "mean_occ": 56.1,
+        "mean_top": 8.31,
+        "mean_holes": 0.695
+       },
+       {
+        "pieces": 200,
+        "lines": 79,
+        "tetrises": 0,
+        "mean_occ": 80.5,
+        "mean_top": 10.485,
+        "mean_holes": 3.335
+       },
+       {
+        "pieces": 200,
+        "lines": 79,
+        "tetrises": 0,
+        "mean_occ": 91.8,
+        "mean_top": 11.55,
+        "mean_holes": 2.985
+       },
+       {
+        "pieces": 200,
+        "lines": 80,
+        "tetrises": 1,
+        "mean_occ": 81.6,
+        "mean_top": 10.985,
+        "mean_holes": 2.12
+       },
+       {
+        "pieces": 200,
+        "lines": 79,
+        "tetrises": 0,
+        "mean_occ": 78.55,
+        "mean_top": 10.665,
+        "mean_holes": 3.04
+       },
+       {
+        "pieces": 200,
+        "lines": 80,
+        "tetrises": 1,
+        "mean_occ": 86.0,
+        "mean_top": 11.395,
+        "mean_holes": 2.89
+       },
+       {
+        "pieces": 200,
+        "lines": 80,
+        "tetrises": 0,
+        "mean_occ": 85.05,
+        "mean_top": 11.125,
+        "mean_holes": 2.97
+       },
+       {
+        "pieces": 100,
+        "lines": 41,
+        "tetrises": 0,
+        "mean_occ": 57.7,
+        "mean_top": 8.79,
+        "mean_holes": 1.43
+       }
+      ],
+      "tetris_at": [
+       41,
+       669,
+       1102
+      ],
+      "longest_no_tetris_gap": 628,
+      "final": {
+       "occ": 90,
+       "top": 13.0,
+       "holes": 12.0
+      },
+      "board_chain_head": 2951465111,
+      "board_chain": 468287907,
+      "style_off_frac": 0.6646666666666666,
+      "ctrl_stats": {
+       "preserved_decisions": 496,
+       "fallbacks": 7,
+       "cashouts": 0,
+       "recovers": 14,
+       "style_off": 997,
+       "decisions": 1500,
+       "reentries": 13,
+       "reentry_denied_top": 2,
+       "reentry_denied_cool": 65,
+       "masked_expansions": 221
+      }
+     },
+     "20885": {
+      "pieces": 1500,
+      "lines": 593,
+      "clears": {
+       "0": 1057,
+       "1": 327,
+       "2": 90,
+       "3": 18,
+       "4": 8
+      },
+      "reason": "max_pieces",
+      "windows": [
+       {
+        "pieces": 200,
+        "lines": 70,
+        "tetrises": 0,
+        "mean_occ": 64.55,
+        "mean_top": 10.095,
+        "mean_holes": 0.765
+       },
+       {
+        "pieces": 200,
+        "lines": 82,
+        "tetrises": 4,
+        "mean_occ": 86.1,
+        "mean_top": 11.405,
+        "mean_holes": 2.365
+       },
+       {
+        "pieces": 200,
+        "lines": 81,
+        "tetrises": 0,
+        "mean_occ": 69.95,
+        "mean_top": 9.965,
+        "mean_holes": 3.355
+       },
+       {
+        "pieces": 200,
+        "lines": 78,
+        "tetrises": 0,
+        "mean_occ": 78.65,
+        "mean_top": 10.58,
+        "mean_holes": 3.54
+       },
+       {
+        "pieces": 200,
+        "lines": 85,
+        "tetrises": 2,
+        "mean_occ": 76.15,
+        "mean_top": 10.15,
+        "mean_holes": 3.06
+       },
+       {
+        "pieces": 200,
+        "lines": 75,
+        "tetrises": 2,
+        "mean_occ": 71.75,
+        "mean_top": 9.965,
+        "mean_holes": 1.935
+       },
+       {
+        "pieces": 200,
+        "lines": 83,
+        "tetrises": 0,
+        "mean_occ": 89.0,
+        "mean_top": 11.31,
+        "mean_holes": 5.165
+       },
+       {
+        "pieces": 100,
+        "lines": 39,
+        "tetrises": 0,
+        "mean_occ": 60.8,
+        "mean_top": 8.16,
+        "mean_holes": 2.08
+       }
+      ],
+      "tetris_at": [
+       266,
+       300,
+       333,
+       381,
+       844,
+       923,
+       1041,
+       1164
+      ],
+      "longest_no_tetris_gap": 463,
+      "final": {
+       "occ": 70,
+       "top": 10.0,
+       "holes": 2.0
+      },
+      "board_chain_head": 352845563,
+      "board_chain": 4198709706,
+      "style_off_frac": 0.55,
+      "ctrl_stats": {
+       "preserved_decisions": 663,
+       "fallbacks": 11,
+       "cashouts": 1,
+       "recovers": 14,
+       "style_off": 825,
+       "decisions": 1500,
+       "reentries": 14,
+       "reentry_denied_top": 29,
+       "reentry_denied_cool": 47,
+       "masked_expansions": 286
+      }
+     },
+     "20886": {
+      "pieces": 372,
+      "lines": 133,
+      "clears": {
+       "0": 276,
+       "1": 67,
+       "2": 22,
+       "3": 6,
+       "4": 1
+      },
+      "reason": "no_candidates",
+      "windows": [
+       {
+        "pieces": 200,
+        "lines": 74,
+        "tetrises": 0,
+        "mean_occ": 54.05,
+        "mean_top": 8.105,
+        "mean_holes": 1.675
+       },
+       {
+        "pieces": 172,
+        "lines": 59,
+        "tetrises": 1,
+        "mean_occ": 86.0,
+        "mean_top": 11.656976744186046,
+        "mean_holes": 7.5
+       }
+      ],
+      "tetris_at": [
+       232
+      ],
+      "longest_no_tetris_gap": 232,
+      "final": {
+       "occ": 158,
+       "top": 21.0,
+       "holes": 12.0
+      },
+      "board_chain_head": 1882131201,
+      "board_chain": 3141406978,
+      "style_off_frac": 0.45161290322580644,
+      "ctrl_stats": {
+       "preserved_decisions": 200,
+       "fallbacks": 4,
+       "cashouts": 0,
+       "recovers": 4,
+       "style_off": 168,
+       "decisions": 372,
+       "reentries": 3,
+       "reentry_denied_top": 0,
+       "reentry_denied_cool": 31,
+       "masked_expansions": 86
+      }
+     },
+     "20887": {
+      "pieces": 1500,
+      "lines": 590,
+      "clears": {
+       "0": 1061,
+       "1": 326,
+       "2": 81,
+       "3": 26,
+       "4": 6
+      },
+      "reason": "max_pieces",
+      "windows": [
+       {
+        "pieces": 200,
+        "lines": 74,
+        "tetrises": 1,
+        "mean_occ": 62.7,
+        "mean_top": 9.1,
+        "mean_holes": 0.035
+       },
+       {
+        "pieces": 200,
+        "lines": 74,
+        "tetrises": 0,
+        "mean_occ": 96.45,
+        "mean_top": 12.435,
+        "mean_holes": 2.905
+       },
+       {
+        "pieces": 200,
+        "lines": 84,
+        "tetrises": 1,
+        "mean_occ": 67.0,
+        "mean_top": 9.13,
+        "mean_holes": 0.66
+       },
+       {
+        "pieces": 200,
+        "lines": 79,
+        "tetrises": 0,
+        "mean_occ": 78.2,
+        "mean_top": 10.805,
+        "mean_holes": 5.265
+       },
+       {
+        "pieces": 200,
+        "lines": 83,
+        "tetrises": 2,
+        "mean_occ": 68.4,
+        "mean_top": 9.515,
+        "mean_holes": 3.95
+       },
+       {
+        "pieces": 200,
+        "lines": 77,
+        "tetrises": 0,
+        "mean_occ": 72.7,
+        "mean_top": 10.475,
+        "mean_holes": 3.89
+       },
+       {
+        "pieces": 200,
+        "lines": 80,
+        "tetrises": 1,
+        "mean_occ": 78.35,
+        "mean_top": 10.67,
+        "mean_holes": 3.055
+       },
+       {
+        "pieces": 100,
+        "lines": 39,
+        "tetrises": 1,
+        "mean_occ": 68.1,
+        "mean_top": 9.36,
+        "mean_holes": 1.38
+       }
+      ],
+      "tetris_at": [
+       145,
+       474,
+       874,
+       992,
+       1263,
+       1434
+      ],
+      "longest_no_tetris_gap": 400,
+      "final": {
+       "occ": 100,
+       "top": 14.0,
+       "holes": 2.0
+      },
+      "board_chain_head": 2333176711,
+      "board_chain": 1656074219,
+      "style_off_frac": 0.516,
+      "ctrl_stats": {
+       "preserved_decisions": 719,
+       "fallbacks": 7,
+       "cashouts": 0,
+       "recovers": 16,
+       "style_off": 774,
+       "decisions": 1500,
+       "reentries": 15,
+       "reentry_denied_top": 9,
+       "reentry_denied_cool": 91,
+       "masked_expansions": 299
+      }
+     },
+     "20888": {
+      "pieces": 1500,
+      "lines": 592,
+      "clears": {
+       "0": 1079,
+       "1": 295,
+       "2": 90,
+       "3": 27,
+       "4": 9
+      },
+      "reason": "max_pieces",
+      "windows": [
+       {
+        "pieces": 200,
+        "lines": 73,
+        "tetrises": 0,
+        "mean_occ": 74.45,
+        "mean_top": 10.46,
+        "mean_holes": 2.71
+       },
+       {
+        "pieces": 200,
+        "lines": 79,
+        "tetrises": 2,
+        "mean_occ": 64.1,
+        "mean_top": 9.525,
+        "mean_holes": 3.9
+       },
+       {
+        "pieces": 200,
+        "lines": 83,
+        "tetrises": 2,
+        "mean_occ": 68.7,
+        "mean_top": 9.62,
+        "mean_holes": 3.05
+       },
+       {
+        "pieces": 200,
+        "lines": 80,
+        "tetrises": 2,
+        "mean_occ": 67.65,
+        "mean_top": 9.555,
+        "mean_holes": 1.265
+       },
+       {
+        "pieces": 200,
+        "lines": 75,
+        "tetrises": 0,
+        "mean_occ": 87.05,
+        "mean_top": 11.7,
+        "mean_holes": 2.635
+       },
+       {
+        "pieces": 200,
+        "lines": 80,
+        "tetrises": 1,
+        "mean_occ": 66.65,
+        "mean_top": 9.13,
+        "mean_holes": 0.64
+       },
+       {
+        "pieces": 200,
+        "lines": 85,
+        "tetrises": 1,
+        "mean_occ": 95.75,
+        "mean_top": 12.575,
+        "mean_holes": 1.76
+       },
+       {
+        "pieces": 100,
+        "lines": 37,
+        "tetrises": 1,
+        "mean_occ": 79.2,
+        "mean_top": 10.98,
+        "mean_holes": 2.33
+       }
+      ],
+      "tetris_at": [
+       208,
+       333,
+       520,
+       539,
+       619,
+       722,
+       1169,
+       1340,
+       1424
+      ],
+      "longest_no_tetris_gap": 447,
+      "final": {
+       "occ": 80,
+       "top": 10.0,
+       "holes": 3.0
+      },
+      "board_chain_head": 3285770111,
+      "board_chain": 31216396,
+      "style_off_frac": 0.516,
+      "ctrl_stats": {
+       "preserved_decisions": 720,
+       "fallbacks": 5,
+       "cashouts": 1,
+       "recovers": 15,
+       "style_off": 774,
+       "decisions": 1500,
+       "reentries": 14,
+       "reentry_denied_top": 15,
+       "reentry_denied_cool": 107,
+       "masked_expansions": 318
+      }
+     },
+     "20889": {
+      "pieces": 1500,
+      "lines": 590,
+      "clears": {
+       "0": 1072,
+       "1": 303,
+       "2": 94,
+       "3": 25,
+       "4": 6
+      },
+      "reason": "max_pieces",
+      "windows": [
+       {
+        "pieces": 200,
+        "lines": 70,
+        "tetrises": 1,
+        "mean_occ": 65.7,
+        "mean_top": 9.935,
+        "mean_holes": 3.305
+       },
+       {
+        "pieces": 200,
+        "lines": 82,
+        "tetrises": 0,
+        "mean_occ": 88.85,
+        "mean_top": 12.15,
+        "mean_holes": 9.795
+       },
+       {
+        "pieces": 200,
+        "lines": 82,
+        "tetrises": 1,
+        "mean_occ": 69.25,
+        "mean_top": 9.875,
+        "mean_holes": 1.53
+       },
+       {
+        "pieces": 200,
+        "lines": 78,
+        "tetrises": 1,
+        "mean_occ": 83.35,
+        "mean_top": 10.98,
+        "mean_holes": 1.02
+       },
+       {
+        "pieces": 200,
+        "lines": 79,
+        "tetrises": 2,
+        "mean_occ": 79.0,
+        "mean_top": 10.835,
+        "mean_holes": 2.21
+       },
+       {
+        "pieces": 200,
+        "lines": 78,
+        "tetrises": 1,
+        "mean_occ": 80.6,
+        "mean_top": 10.805,
+        "mean_holes": 2.705
+       },
+       {
+        "pieces": 200,
+        "lines": 83,
+        "tetrises": 0,
+        "mean_occ": 65.65,
+        "mean_top": 9.31,
+        "mean_holes": 1.755
+       },
+       {
+        "pieces": 100,
+        "lines": 38,
+        "tetrises": 0,
+        "mean_occ": 86.4,
+        "mean_top": 11.76,
+        "mean_holes": 1.79
+       }
+      ],
+      "tetris_at": [
+       122,
+       423,
+       762,
+       839,
+       931,
+       1104
+      ],
+      "longest_no_tetris_gap": 396,
+      "final": {
+       "occ": 100,
+       "top": 14.0,
+       "holes": 2.0
+      },
+      "board_chain_head": 661236318,
+      "board_chain": 2456941754,
+      "style_off_frac": 0.5353333333333333,
+      "ctrl_stats": {
+       "preserved_decisions": 690,
+       "fallbacks": 7,
+       "cashouts": 0,
+       "recovers": 18,
+       "style_off": 803,
+       "decisions": 1500,
+       "reentries": 17,
+       "reentry_denied_top": 26,
+       "reentry_denied_cool": 104,
+       "masked_expansions": 281
+      }
+     },
+     "20890": {
+      "pieces": 1500,
+      "lines": 596,
+      "clears": {
+       "0": 1049,
+       "1": 341,
+       "2": 84,
+       "3": 17,
+       "4": 9
+      },
+      "reason": "max_pieces",
+      "windows": [
+       {
+        "pieces": 200,
+        "lines": 74,
+        "tetrises": 1,
+        "mean_occ": 54.5,
+        "mean_top": 8.27,
+        "mean_holes": 0.785
+       },
+       {
+        "pieces": 200,
+        "lines": 77,
+        "tetrises": 1,
+        "mean_occ": 74.6,
+        "mean_top": 10.055,
+        "mean_holes": 3.86
+       },
+       {
+        "pieces": 200,
+        "lines": 81,
+        "tetrises": 2,
+        "mean_occ": 92.15,
+        "mean_top": 12.135,
+        "mean_holes": 6.885
+       },
+       {
+        "pieces": 200,
+        "lines": 80,
+        "tetrises": 0,
+        "mean_occ": 93.5,
+        "mean_top": 11.915,
+        "mean_holes": 5.6
+       },
+       {
+        "pieces": 200,
+        "lines": 81,
+        "tetrises": 2,
+        "mean_occ": 74.55,
+        "mean_top": 10.395,
+        "mean_holes": 5.455
+       },
+       {
+        "pieces": 200,
+        "lines": 80,
+        "tetrises": 2,
+        "mean_occ": 82.05,
+        "mean_top": 11.2,
+        "mean_holes": 5.785
+       },
+       {
+        "pieces": 200,
+        "lines": 80,
+        "tetrises": 1,
+        "mean_occ": 67.55,
+        "mean_top": 9.47,
+        "mean_holes": 4.41
+       },
+       {
+        "pieces": 100,
+        "lines": 43,
+        "tetrises": 0,
+        "mean_occ": 76.7,
+        "mean_top": 10.37,
+        "mean_holes": 5.73
+       }
+      ],
+      "tetris_at": [
+       103,
+       370,
+       504,
+       529,
+       906,
+       911,
+       1017,
+       1153,
+       1318
+      ],
+      "longest_no_tetris_gap": 377,
+      "final": {
+       "occ": 40,
+       "top": 6.0,
+       "holes": 3.0
+      },
+      "board_chain_head": 3285770111,
+      "board_chain": 3389697971,
+      "style_off_frac": 0.5913333333333334,
+      "ctrl_stats": {
+       "preserved_decisions": 606,
+       "fallbacks": 7,
+       "cashouts": 0,
+       "recovers": 14,
+       "style_off": 887,
+       "decisions": 1500,
+       "reentries": 14,
+       "reentry_denied_top": 15,
+       "reentry_denied_cool": 54,
+       "masked_expansions": 242
+      }
+     },
+     "20891": {
+      "pieces": 1500,
+      "lines": 592,
+      "clears": {
+       "0": 1075,
+       "1": 300,
+       "2": 88,
+       "3": 32,
+       "4": 5
+      },
+      "reason": "max_pieces",
+      "windows": [
+       {
+        "pieces": 200,
+        "lines": 69,
+        "tetrises": 1,
+        "mean_occ": 61.7,
+        "mean_top": 8.825,
+        "mean_holes": 0.77
+       },
+       {
+        "pieces": 200,
+        "lines": 82,
+        "tetrises": 2,
+        "mean_occ": 83.65,
+        "mean_top": 11.385,
+        "mean_holes": 2.355
+       },
+       {
+        "pieces": 200,
+        "lines": 83,
+        "tetrises": 0,
+        "mean_occ": 77.5,
+        "mean_top": 10.43,
+        "mean_holes": 2.035
+       },
+       {
+        "pieces": 200,
+        "lines": 76,
+        "tetrises": 0,
+        "mean_occ": 71.45,
+        "mean_top": 10.035,
+        "mean_holes": 0.825
+       },
+       {
+        "pieces": 200,
+        "lines": 82,
+        "tetrises": 2,
+        "mean_occ": 85.05,
+        "mean_top": 11.515,
+        "mean_holes": 3.1
+       },
+       {
+        "pieces": 200,
+        "lines": 81,
+        "tetrises": 0,
+        "mean_occ": 63.6,
+        "mean_top": 9.425,
+        "mean_holes": 2.895
+       },
+       {
+        "pieces": 200,
+        "lines": 81,
+        "tetrises": 0,
+        "mean_occ": 64.75,
+        "mean_top": 9.285,
+        "mean_holes": 1.5
+       },
+       {
+        "pieces": 100,
+        "lines": 38,
+        "tetrises": 0,
+        "mean_occ": 68.2,
+        "mean_top": 9.2,
+        "mean_holes": 0.25
+       }
+      ],
+      "tetris_at": [
+       34,
+       297,
+       312,
+       904,
+       923
+      ],
+      "longest_no_tetris_gap": 592,
+      "final": {
+       "occ": 80,
+       "top": 10.0,
+       "holes": 0.0
+      },
+      "board_chain_head": 1882131201,
+      "board_chain": 4028184691,
+      "style_off_frac": 0.49733333333333335,
+      "ctrl_stats": {
+       "preserved_decisions": 739,
+       "fallbacks": 15,
+       "cashouts": 0,
+       "recovers": 15,
+       "style_off": 746,
+       "decisions": 1500,
+       "reentries": 15,
+       "reentry_denied_top": 18,
+       "reentry_denied_cool": 72,
+       "masked_expansions": 328
+      }
+     }
+    },
+    "style_off_frac": 0.539,
+    "mean_recovers": 12.67,
+    "mean_reentries": 11.87,
+    "mean_fallbacks": 7.0,
+    "mean_cashouts": 0.133
+   },
+   "cool30lam10": {
+    "capped": 11,
+    "mean_pieces": 1329.3,
+    "mean_lines": 520.5,
+    "tetrises": 125,
+    "t_per_100": 0.6269,
+    "t_per_capped": 9.727,
+    "mean_longest_gap": 447.2,
+    "paired_dTet": 2.733,
+    "paired_dTet_t": 2.1,
+    "paired_dPieces": 65.7,
+    "paired_dPieces_t": 0.39,
+    "discordant_cap_vs_lam10": "3/3 vs cool30",
+    "per_seed": {
+     "20877": {
+      "pieces": 1500,
+      "lines": 588,
+      "clears": {
+       "0": 1056,
+       "1": 344,
+       "2": 70,
+       "3": 16,
+       "4": 14
+      },
+      "reason": "max_pieces",
+      "windows": [
+       {
+        "pieces": 200,
+        "lines": 72,
+        "tetrises": 3,
+        "mean_occ": 77.65,
+        "mean_top": 10.425,
+        "mean_holes": 2.7
+       },
+       {
+        "pieces": 200,
+        "lines": 77,
+        "tetrises": 1,
+        "mean_occ": 82.0,
+        "mean_top": 10.74,
+        "mean_holes": 3.69
+       },
+       {
+        "pieces": 200,
+        "lines": 83,
+        "tetrises": 2,
+        "mean_occ": 95.15,
+        "mean_top": 12.02,
+        "mean_holes": 6.24
+       },
+       {
+        "pieces": 200,
+        "lines": 81,
+        "tetrises": 0,
+        "mean_occ": 83.95,
+        "mean_top": 10.815,
+        "mean_holes": 5.195
+       },
+       {
+        "pieces": 200,
+        "lines": 79,
+        "tetrises": 4,
+        "mean_occ": 78.25,
+        "mean_top": 10.275,
+        "mean_holes": 3.4
+       },
+       {
+        "pieces": 200,
+        "lines": 78,
+        "tetrises": 3,
+        "mean_occ": 80.6,
+        "mean_top": 10.635,
+        "mean_holes": 3.655
+       },
+       {
+        "pieces": 200,
+        "lines": 84,
+        "tetrises": 0,
+        "mean_occ": 77.7,
+        "mean_top": 10.745,
+        "mean_holes": 3.15
+       },
+       {
+        "pieces": 100,
+        "lines": 34,
+        "tetrises": 1,
+        "mean_occ": 85.7,
+        "mean_top": 11.62,
+        "mean_holes": 3.89
+       }
+      ],
+      "tetris_at": [
+       69,
+       98,
+       126,
+       269,
+       456,
+       471,
+       904,
+       923,
+       934,
+       948,
+       1047,
+       1083,
+       1180,
+       1445
+      ],
+      "longest_no_tetris_gap": 433,
+      "final": {
+       "occ": 120,
+       "top": 16.0,
+       "holes": 5.0
+      },
+      "board_chain_head": 3285770111,
+      "board_chain": 98709063,
+      "style_off_frac": 0.63,
+      "ctrl_stats": {
+       "preserved_decisions": 549,
+       "fallbacks": 6,
+       "cashouts": 0,
+       "recovers": 16,
+       "style_off": 945,
+       "decisions": 1500,
+       "reentries": 15,
+       "reentry_denied_top": 1,
+       "reentry_denied_cool": 76,
+       "masked_expansions": 204
+      }
+     },
+     "20878": {
+      "pieces": 1467,
+      "lines": 570,
+      "clears": {
+       "0": 1036,
+       "1": 325,
+       "2": 80,
+       "3": 19,
+       "4": 7
+      },
+      "reason": "no_candidates",
+      "windows": [
+       {
+        "pieces": 200,
+        "lines": 72,
+        "tetrises": 3,
+        "mean_occ": 56.4,
+        "mean_top": 8.35,
+        "mean_holes": 0.75
+       },
+       {
+        "pieces": 200,
+        "lines": 83,
+        "tetrises": 0,
+        "mean_occ": 83.95,
+        "mean_top": 10.985,
+        "mean_holes": 5.995
+       },
+       {
+        "pieces": 200,
+        "lines": 77,
+        "tetrises": 1,
+        "mean_occ": 79.4,
+        "mean_top": 10.62,
+        "mean_holes": 5.18
+       },
+       {
+        "pieces": 200,
+        "lines": 84,
+        "tetrises": 0,
+        "mean_occ": 78.85,
+        "mean_top": 10.53,
+        "mean_holes": 3.72
+       },
+       {
+        "pieces": 200,
+        "lines": 72,
+        "tetrises": 0,
+        "mean_occ": 94.2,
+        "mean_top": 12.245,
+        "mean_holes": 5.825
+       },
+       {
+        "pieces": 200,
+        "lines": 86,
+        "tetrises": 1,
+        "mean_occ": 90.65,
+        "mean_top": 11.905,
+        "mean_holes": 5.065
+       },
+       {
+        "pieces": 200,
+        "lines": 70,
+        "tetrises": 2,
+        "mean_occ": 108.9,
+        "mean_top": 14.09,
+        "mean_holes": 5.68
+       },
+       {
+        "pieces": 67,
+        "lines": 26,
+        "tetrises": 0,
+        "mean_occ": 136.29850746268656,
+        "mean_top": 16.82089552238806,
+        "mean_holes": 7.6716417910447765
+       }
+      ],
+      "tetris_at": [
+       17,
+       52,
+       79,
+       412,
+       1086,
+       1214,
+       1230
+      ],
+      "longest_no_tetris_gap": 674,
+      "final": {
+       "occ": 168,
+       "top": 21.0,
+       "holes": 9.0
+      },
+      "board_chain_head": 4171516159,
+      "board_chain": 1208064985,
+      "style_off_frac": 0.6244035446489434,
+      "ctrl_stats": {
+       "preserved_decisions": 544,
+       "fallbacks": 7,
+       "cashouts": 0,
+       "recovers": 11,
+       "style_off": 916,
+       "decisions": 1467,
+       "reentries": 10,
+       "reentry_denied_top": 5,
+       "reentry_denied_cool": 23,
+       "masked_expansions": 208
+      }
+     },
+     "20879": {
+      "pieces": 979,
+      "lines": 376,
+      "clears": {
+       "0": 701,
+       "1": 207,
+       "2": 51,
+       "3": 13,
+       "4": 7
+      },
+      "reason": "no_candidates",
+      "windows": [
+       {
+        "pieces": 200,
+        "lines": 76,
+        "tetrises": 2,
+        "mean_occ": 59.9,
+        "mean_top": 8.24,
+        "mean_holes": 1.5
+       },
+       {
+        "pieces": 200,
+        "lines": 78,
+        "tetrises": 0,
+        "mean_occ": 81.8,
+        "mean_top": 11.215,
+        "mean_holes": 5.395
+       },
+       {
+        "pieces": 200,
+        "lines": 78,
+        "tetrises": 0,
+        "mean_occ": 90.1,
+        "mean_top": 11.705,
+        "mean_holes": 7.325
+       },
+       {
+        "pieces": 200,
+        "lines": 83,
+        "tetrises": 3,
+        "mean_occ": 80.25,
+        "mean_top": 10.985,
+        "mean_holes": 4.63
+       },
+       {
+        "pieces": 179,
+        "lines": 61,
+        "tetrises": 2,
+        "mean_occ": 67.98882681564245,
+        "mean_top": 10.374301675977653,
+        "mean_holes": 2.17877094972067
+       }
+      ],
+      "tetris_at": [
+       24,
+       40,
+       610,
+       717,
+       794,
+       907,
+       937
+      ],
+      "longest_no_tetris_gap": 570,
+      "final": {
+       "occ": 156,
+       "top": 21.0,
+       "holes": 8.0
+      },
+      "board_chain_head": 845668015,
+      "board_chain": 1362870600,
+      "style_off_frac": 0.5873340143003064,
+      "ctrl_stats": {
+       "preserved_decisions": 396,
+       "fallbacks": 7,
+       "cashouts": 1,
+       "recovers": 9,
+       "style_off": 575,
+       "decisions": 979,
+       "reentries": 8,
+       "reentry_denied_top": 35,
+       "reentry_denied_cool": 41,
+       "masked_expansions": 169
+      }
+     },
+     "20880": {
+      "pieces": 1500,
+      "lines": 591,
+      "clears": {
+       "0": 1043,
+       "1": 363,
+       "2": 61,
+       "3": 26,
+       "4": 7
+      },
+      "reason": "max_pieces",
+      "windows": [
+       {
+        "pieces": 200,
+        "lines": 72,
+        "tetrises": 2,
+        "mean_occ": 52.7,
+        "mean_top": 7.985,
+        "mean_holes": 0.555
+       },
+       {
+        "pieces": 200,
+        "lines": 74,
+        "tetrises": 1,
+        "mean_occ": 77.45,
+        "mean_top": 10.465,
+        "mean_holes": 1.415
+       },
+       {
+        "pieces": 200,
+        "lines": 84,
+        "tetrises": 1,
+        "mean_occ": 93.3,
+        "mean_top": 12.255,
+        "mean_holes": 4.13
+       },
+       {
+        "pieces": 200,
+        "lines": 83,
+        "tetrises": 2,
+        "mean_occ": 66.25,
+        "mean_top": 9.67,
+        "mean_holes": 4.74
+       },
+       {
+        "pieces": 200,
+        "lines": 86,
+        "tetrises": 0,
+        "mean_occ": 64.4,
+        "mean_top": 8.885,
+        "mean_holes": 5.105
+       },
+       {
+        "pieces": 200,
+        "lines": 72,
+        "tetrises": 1,
+        "mean_occ": 66.9,
+        "mean_top": 9.42,
+        "mean_holes": 0.285
+       },
+       {
+        "pieces": 200,
+        "lines": 81,
+        "tetrises": 0,
+        "mean_occ": 80.05,
+        "mean_top": 10.92,
+        "mean_holes": 3.855
+       },
+       {
+        "pieces": 100,
+        "lines": 39,
+        "tetrises": 0,
+        "mean_occ": 85.7,
+        "mean_top": 11.19,
+        "mean_holes": 5.74
+       }
+      ],
+      "tetris_at": [
+       34,
+       172,
+       286,
+       480,
+       619,
+       651,
+       1057
+      ],
+      "longest_no_tetris_gap": 443,
+      "final": {
+       "occ": 90,
+       "top": 11.0,
+       "holes": 5.0
+      },
+      "board_chain_head": 1882131201,
+      "board_chain": 2046891949,
+      "style_off_frac": 0.6306666666666667,
+      "ctrl_stats": {
+       "preserved_decisions": 549,
+       "fallbacks": 5,
+       "cashouts": 0,
+       "recovers": 11,
+       "style_off": 946,
+       "decisions": 1500,
+       "reentries": 10,
+       "reentry_denied_top": 108,
+       "reentry_denied_cool": 101,
+       "masked_expansions": 211
+      }
+     },
+     "20881": {
+      "pieces": 1500,
+      "lines": 590,
+      "clears": {
+       "0": 1050,
+       "1": 340,
+       "2": 85,
+       "3": 20,
+       "4": 5
+      },
+      "reason": "max_pieces",
+      "windows": [
+       {
+        "pieces": 200,
+        "lines": 71,
+        "tetrises": 0,
+        "mean_occ": 81.45,
+        "mean_top": 11.065,
+        "mean_holes": 1.17
+       },
+       {
+        "pieces": 200,
+        "lines": 80,
+        "tetrises": 0,
+        "mean_occ": 75.1,
+        "mean_top": 10.22,
+        "mean_holes": 2.79
+       },
+       {
+        "pieces": 200,
+        "lines": 79,
+        "tetrises": 1,
+        "mean_occ": 88.6,
+        "mean_top": 11.44,
+        "mean_holes": 4.78
+       },
+       {
+        "pieces": 200,
+        "lines": 79,
+        "tetrises": 1,
+        "mean_occ": 93.15,
+        "mean_top": 11.795,
+        "mean_holes": 4.635
+       },
+       {
+        "pieces": 200,
+        "lines": 83,
+        "tetrises": 1,
+        "mean_occ": 76.55,
+        "mean_top": 10.375,
+        "mean_holes": 3.415
+       },
+       {
+        "pieces": 200,
+        "lines": 82,
+        "tetrises": 1,
+        "mean_occ": 72.6,
+        "mean_top": 9.675,
+        "mean_holes": 3.83
+       },
+       {
+        "pieces": 200,
+        "lines": 80,
+        "tetrises": 1,
+        "mean_occ": 73.85,
+        "mean_top": 9.89,
+        "mean_holes": 4.985
+       },
+       {
+        "pieces": 100,
+        "lines": 36,
+        "tetrises": 0,
+        "mean_occ": 74.9,
+        "mean_top": 10.05,
+        "mean_holes": 1.37
+       }
+      ],
+      "tetris_at": [
+       473,
+       693,
+       847,
+       1168,
+       1277
+      ],
+      "longest_no_tetris_gap": 473,
+      "final": {
+       "occ": 100,
+       "top": 13.0,
+       "holes": 1.0
+      },
+      "board_chain_head": 2333176711,
+      "board_chain": 304359404,
+      "style_off_frac": 0.6573333333333333,
+      "ctrl_stats": {
+       "preserved_decisions": 507,
+       "fallbacks": 7,
+       "cashouts": 0,
+       "recovers": 17,
+       "style_off": 986,
+       "decisions": 1500,
+       "reentries": 16,
+       "reentry_denied_top": 0,
+       "reentry_denied_cool": 107,
+       "masked_expansions": 185
+      }
+     },
+     "20882": {
+      "pieces": 1500,
+      "lines": 586,
+      "clears": {
+       "0": 1044,
+       "1": 352,
+       "2": 84,
+       "3": 14,
+       "4": 6
+      },
+      "reason": "max_pieces",
+      "windows": [
+       {
+        "pieces": 200,
+        "lines": 73,
+        "tetrises": 1,
+        "mean_occ": 61.1,
+        "mean_top": 8.66,
+        "mean_holes": 0.33
+       },
+       {
+        "pieces": 200,
+        "lines": 78,
+        "tetrises": 1,
+        "mean_occ": 85.85,
+        "mean_top": 11.74,
+        "mean_holes": 2.425
+       },
+       {
+        "pieces": 200,
+        "lines": 79,
+        "tetrises": 0,
+        "mean_occ": 89.5,
+        "mean_top": 12.085,
+        "mean_holes": 3.555
+       },
+       {
+        "pieces": 200,
+        "lines": 81,
+        "tetrises": 1,
+        "mean_occ": 83.8,
+        "mean_top": 11.355,
+        "mean_holes": 2.235
+       },
+       {
+        "pieces": 200,
+        "lines": 81,
+        "tetrises": 1,
+        "mean_occ": 80.2,
+        "mean_top": 10.79,
+        "mean_holes": 2.59
+       },
+       {
+        "pieces": 200,
+        "lines": 80,
+        "tetrises": 2,
+        "mean_occ": 85.5,
+        "mean_top": 11.065,
+        "mean_holes": 4.915
+       },
+       {
+        "pieces": 200,
+        "lines": 80,
+        "tetrises": 0,
+        "mean_occ": 80.75,
+        "mean_top": 10.64,
+        "mean_holes": 5.315
+       },
+       {
+        "pieces": 100,
+        "lines": 34,
+        "tetrises": 0,
+        "mean_occ": 112.1,
+        "mean_top": 14.0,
+        "mean_holes": 11.46
+       }
+      ],
+      "tetris_at": [
+       55,
+       377,
+       743,
+       862,
+       1070,
+       1118
+      ],
+      "longest_no_tetris_gap": 382,
+      "final": {
+       "occ": 140,
+       "top": 17.0,
+       "holes": 15.0
+      },
+      "board_chain_head": 2333176711,
+      "board_chain": 3357747176,
+      "style_off_frac": 0.666,
+      "ctrl_stats": {
+       "preserved_decisions": 494,
+       "fallbacks": 5,
+       "cashouts": 2,
+       "recovers": 14,
+       "style_off": 999,
+       "decisions": 1500,
+       "reentries": 13,
+       "reentry_denied_top": 3,
+       "reentry_denied_cool": 42,
+       "masked_expansions": 195
+      }
+     },
+     "20883": {
+      "pieces": 345,
+      "lines": 121,
+      "clears": {
+       "0": 255,
+       "1": 67,
+       "2": 16,
+       "3": 6,
+       "4": 1
+      },
+      "reason": "no_candidates",
+      "windows": [
+       {
+        "pieces": 200,
+        "lines": 71,
+        "tetrises": 1,
+        "mean_occ": 57.75,
+        "mean_top": 8.08,
+        "mean_holes": 0.365
+       },
+       {
+        "pieces": 145,
+        "lines": 50,
+        "tetrises": 0,
+        "mean_occ": 104.96551724137932,
+        "mean_top": 13.586206896551724,
+        "mean_holes": 7.813793103448276
+       }
+      ],
+      "tetris_at": [
+       49
+      ],
+      "longest_no_tetris_gap": 296,
+      "final": {
+       "occ": 170,
+       "top": 21.0,
+       "holes": 17.0
+      },
+      "board_chain_head": 2333176711,
+      "board_chain": 581054034,
+      "style_off_frac": 0.5449275362318841,
+      "ctrl_stats": {
+       "preserved_decisions": 155,
+       "fallbacks": 2,
+       "cashouts": 0,
+       "recovers": 4,
+       "style_off": 188,
+       "decisions": 345,
+       "reentries": 3,
+       "reentry_denied_top": 1,
+       "reentry_denied_cool": 47,
+       "masked_expansions": 58
+      }
+     },
+     "20884": {
+      "pieces": 1500,
+      "lines": 593,
+      "clears": {
+       "0": 1030,
+       "1": 376,
+       "2": 72,
+       "3": 15,
+       "4": 7
+      },
+      "reason": "max_pieces",
+      "windows": [
+       {
+        "pieces": 200,
+        "lines": 71,
+        "tetrises": 1,
+        "mean_occ": 73.65,
+        "mean_top": 10.13,
+        "mean_holes": 0.98
+       },
+       {
+        "pieces": 200,
+        "lines": 76,
+        "tetrises": 0,
+        "mean_occ": 96.9,
+        "mean_top": 12.615,
+        "mean_holes": 2.615
+       },
+       {
+        "pieces": 200,
+        "lines": 83,
+        "tetrises": 0,
+        "mean_occ": 95.2,
+        "mean_top": 12.48,
+        "mean_holes": 4.705
+       },
+       {
+        "pieces": 200,
+        "lines": 80,
+        "tetrises": 0,
+        "mean_occ": 98.2,
+        "mean_top": 12.92,
+        "mean_holes": 5.875
+       },
+       {
+        "pieces": 200,
+        "lines": 80,
+        "tetrises": 2,
+        "mean_occ": 79.4,
+        "mean_top": 10.715,
+        "mean_holes": 2.2
+       },
+       {
+        "pieces": 200,
+        "lines": 83,
+        "tetrises": 0,
+        "mean_occ": 102.45,
+        "mean_top": 13.4,
+        "mean_holes": 1.965
+       },
+       {
+        "pieces": 200,
+        "lines": 80,
+        "tetrises": 2,
+        "mean_occ": 105.5,
+        "mean_top": 13.65,
+        "mean_holes": 3.655
+       },
+       {
+        "pieces": 100,
+        "lines": 40,
+        "tetrises": 2,
+        "mean_occ": 85.1,
+        "mean_top": 11.43,
+        "mean_holes": 3.55
+       }
+      ],
+      "tetris_at": [
+       155,
+       874,
+       928,
+       1335,
+       1393,
+       1422,
+       1438
+      ],
+      "longest_no_tetris_gap": 719,
+      "final": {
+       "occ": 70,
+       "top": 9.0,
+       "holes": 3.0
+      },
+      "board_chain_head": 2884549519,
+      "board_chain": 1724760285,
+      "style_off_frac": 0.732,
+      "ctrl_stats": {
+       "preserved_decisions": 398,
+       "fallbacks": 4,
+       "cashouts": 0,
+       "recovers": 11,
+       "style_off": 1098,
+       "decisions": 1500,
+       "reentries": 10,
+       "reentry_denied_top": 3,
+       "reentry_denied_cool": 31,
+       "masked_expansions": 170
+      }
+     },
+     "20885": {
+      "pieces": 1500,
+      "lines": 592,
+      "clears": {
+       "0": 1082,
+       "1": 294,
+       "2": 86,
+       "3": 26,
+       "4": 12
+      },
+      "reason": "max_pieces",
+      "windows": [
+       {
+        "pieces": 200,
+        "lines": 69,
+        "tetrises": 4,
+        "mean_occ": 77.95,
+        "mean_top": 10.495,
+        "mean_holes": 1.44
+       },
+       {
+        "pieces": 200,
+        "lines": 84,
+        "tetrises": 1,
+        "mean_occ": 77.95,
+        "mean_top": 10.38,
+        "mean_holes": 5.205
+       },
+       {
+        "pieces": 200,
+        "lines": 84,
+        "tetrises": 1,
+        "mean_occ": 60.2,
+        "mean_top": 8.435,
+        "mean_holes": 1.525
+       },
+       {
+        "pieces": 200,
+        "lines": 69,
+        "tetrises": 2,
+        "mean_occ": 79.05,
+        "mean_top": 10.705,
+        "mean_holes": 0.885
+       },
+       {
+        "pieces": 200,
+        "lines": 87,
+        "tetrises": 1,
+        "mean_occ": 87.2,
+        "mean_top": 11.515,
+        "mean_holes": 1.92
+       },
+       {
+        "pieces": 200,
+        "lines": 85,
+        "tetrises": 2,
+        "mean_occ": 68.1,
+        "mean_top": 9.275,
+        "mean_holes": 0.635
+       },
+       {
+        "pieces": 200,
+        "lines": 75,
+        "tetrises": 1,
+        "mean_occ": 70.35,
+        "mean_top": 10.04,
+        "mean_holes": 1.295
+       },
+       {
+        "pieces": 100,
+        "lines": 39,
+        "tetrises": 0,
+        "mean_occ": 75.1,
+        "mean_top": 10.21,
+        "mean_holes": 2.83
+       }
+      ],
+      "tetris_at": [
+       11,
+       22,
+       36,
+       57,
+       267,
+       422,
+       632,
+       643,
+       844,
+       1094,
+       1196,
+       1217
+      ],
+      "longest_no_tetris_gap": 283,
+      "final": {
+       "occ": 80,
+       "top": 10.0,
+       "holes": 5.0
+      },
+      "board_chain_head": 352845563,
+      "board_chain": 3627673086,
+      "style_off_frac": 0.4806666666666667,
+      "ctrl_stats": {
+       "preserved_decisions": 775,
+       "fallbacks": 4,
+       "cashouts": 0,
+       "recovers": 12,
+       "style_off": 721,
+       "decisions": 1500,
+       "reentries": 11,
+       "reentry_denied_top": 7,
+       "reentry_denied_cool": 68,
+       "masked_expansions": 318
+      }
+     },
+     "20886": {
+      "pieces": 1500,
+      "lines": 590,
+      "clears": {
+       "0": 1079,
+       "1": 294,
+       "2": 92,
+       "3": 28,
+       "4": 7
+      },
+      "reason": "max_pieces",
+      "windows": [
+       {
+        "pieces": 200,
+        "lines": 74,
+        "tetrises": 0,
+        "mean_occ": 76.3,
+        "mean_top": 10.405,
+        "mean_holes": 4.72
+       },
+       {
+        "pieces": 200,
+        "lines": 77,
+        "tetrises": 0,
+        "mean_occ": 75.85,
+        "mean_top": 10.28,
+        "mean_holes": 1.835
+       },
+       {
+        "pieces": 200,
+        "lines": 84,
+        "tetrises": 1,
+        "mean_occ": 60.5,
+        "mean_top": 8.635,
+        "mean_holes": 0.425
+       },
+       {
+        "pieces": 200,
+        "lines": 80,
+        "tetrises": 1,
+        "mean_occ": 88.65,
+        "mean_top": 12.01,
+        "mean_holes": 4.08
+       },
+       {
+        "pieces": 200,
+        "lines": 80,
+        "tetrises": 1,
+        "mean_occ": 76.05,
+        "mean_top": 10.18,
+        "mean_holes": 3.33
+       },
+       {
+        "pieces": 200,
+        "lines": 79,
+        "tetrises": 0,
+        "mean_occ": 77.1,
+        "mean_top": 10.375,
+        "mean_holes": 1.635
+       },
+       {
+        "pieces": 200,
+        "lines": 80,
+        "tetrises": 3,
+        "mean_occ": 66.25,
+        "mean_top": 9.51,
+        "mean_holes": 2.775
+       },
+       {
+        "pieces": 100,
+        "lines": 36,
+        "tetrises": 1,
+        "mean_occ": 85.1,
+        "mean_top": 11.74,
+        "mean_holes": 2.71
+       }
+      ],
+      "tetris_at": [
+       406,
+       655,
+       816,
+       1217,
+       1306,
+       1319,
+       1403
+      ],
+      "longest_no_tetris_gap": 406,
+      "final": {
+       "occ": 100,
+       "top": 14.0,
+       "holes": 4.0
+      },
+      "board_chain_head": 1882131201,
+      "board_chain": 3383238338,
+      "style_off_frac": 0.5173333333333333,
+      "ctrl_stats": {
+       "preserved_decisions": 713,
+       "fallbacks": 11,
+       "cashouts": 0,
+       "recovers": 18,
+       "style_off": 776,
+       "decisions": 1500,
+       "reentries": 17,
+       "reentry_denied_top": 1,
+       "reentry_denied_cool": 148,
+       "masked_expansions": 302
+      }
+     },
+     "20887": {
+      "pieces": 1500,
+      "lines": 591,
+      "clears": {
+       "0": 1059,
+       "1": 333,
+       "2": 76,
+       "3": 22,
+       "4": 10
+      },
+      "reason": "max_pieces",
+      "windows": [
+       {
+        "pieces": 200,
+        "lines": 71,
+        "tetrises": 1,
+        "mean_occ": 74.5,
+        "mean_top": 10.045,
+        "mean_holes": 2.605
+       },
+       {
+        "pieces": 200,
+        "lines": 79,
+        "tetrises": 0,
+        "mean_occ": 74.15,
+        "mean_top": 10.135,
+        "mean_holes": 2.695
+       },
+       {
+        "pieces": 200,
+        "lines": 81,
+        "tetrises": 3,
+        "mean_occ": 75.4,
+        "mean_top": 10.23,
+        "mean_holes": 2.595
+       },
+       {
+        "pieces": 200,
+        "lines": 87,
+        "tetrises": 4,
+        "mean_occ": 65.65,
+        "mean_top": 9.26,
+        "mean_holes": 0.67
+       },
+       {
+        "pieces": 200,
+        "lines": 75,
+        "tetrises": 1,
+        "mean_occ": 78.5,
+        "mean_top": 11.0,
+        "mean_holes": 2.27
+       },
+       {
+        "pieces": 200,
+        "lines": 77,
+        "tetrises": 1,
+        "mean_occ": 81.6,
+        "mean_top": 11.035,
+        "mean_holes": 3.175
+       },
+       {
+        "pieces": 200,
+        "lines": 83,
+        "tetrises": 0,
+        "mean_occ": 91.45,
+        "mean_top": 11.94,
+        "mean_holes": 4.015
+       },
+       {
+        "pieces": 100,
+        "lines": 38,
+        "tetrises": 0,
+        "mean_occ": 81.8,
+        "mean_top": 10.89,
+        "mean_holes": 2.11
+       }
+      ],
+      "tetris_at": [
+       177,
+       474,
+       567,
+       581,
+       601,
+       729,
+       755,
+       765,
+       849,
+       1066
+      ],
+      "longest_no_tetris_gap": 434,
+      "final": {
+       "occ": 90,
+       "top": 13.0,
+       "holes": 1.0
+      },
+      "board_chain_head": 2333176711,
+      "board_chain": 2094256959,
+      "style_off_frac": 0.638,
+      "ctrl_stats": {
+       "preserved_decisions": 539,
+       "fallbacks": 4,
+       "cashouts": 0,
+       "recovers": 15,
+       "style_off": 957,
+       "decisions": 1500,
+       "reentries": 14,
+       "reentry_denied_top": 33,
+       "reentry_denied_cool": 50,
+       "masked_expansions": 195
+      }
+     },
+     "20888": {
+      "pieces": 1500,
+      "lines": 595,
+      "clears": {
+       "0": 1074,
+       "1": 319,
+       "2": 65,
+       "3": 22,
+       "4": 20
+      },
+      "reason": "max_pieces",
+      "windows": [
+       {
+        "pieces": 200,
+        "lines": 68,
+        "tetrises": 2,
+        "mean_occ": 86.75,
+        "mean_top": 11.99,
+        "mean_holes": 2.935
+       },
+       {
+        "pieces": 200,
+        "lines": 81,
+        "tetrises": 2,
+        "mean_occ": 88.6,
+        "mean_top": 11.66,
+        "mean_holes": 3.935
+       },
+       {
+        "pieces": 200,
+        "lines": 83,
+        "tetrises": 3,
+        "mean_occ": 80.1,
+        "mean_top": 10.755,
+        "mean_holes": 2.99
+       },
+       {
+        "pieces": 200,
+        "lines": 84,
+        "tetrises": 5,
+        "mean_occ": 57.0,
+        "mean_top": 7.985,
+        "mean_holes": 1.2
+       },
+       {
+        "pieces": 200,
+        "lines": 77,
+        "tetrises": 1,
+        "mean_occ": 94.9,
+        "mean_top": 12.44,
+        "mean_holes": 4.37
+       },
+       {
+        "pieces": 200,
+        "lines": 82,
+        "tetrises": 5,
+        "mean_occ": 63.6,
+        "mean_top": 8.695,
+        "mean_holes": 3.025
+       },
+       {
+        "pieces": 200,
+        "lines": 74,
+        "tetrises": 1,
+        "mean_occ": 85.4,
+        "mean_top": 11.675,
+        "mean_holes": 1.52
+       },
+       {
+        "pieces": 100,
+        "lines": 46,
+        "tetrises": 1,
+        "mean_occ": 74.6,
+        "mean_top": 9.74,
+        "mean_holes": 2.88
+       }
+      ],
+      "tetris_at": [
+       14,
+       97,
+       325,
+       344,
+       527,
+       539,
+       552,
+       650,
+       698,
+       722,
+       748,
+       759,
+       908,
+       1075,
+       1138,
+       1169,
+       1174,
+       1194,
+       1330,
+       1448
+      ],
+      "longest_no_tetris_gap": 228,
+      "final": {
+       "occ": 50,
+       "top": 6.0,
+       "holes": 3.0
+      },
+      "board_chain_head": 3285770111,
+      "board_chain": 1781572201,
+      "style_off_frac": 0.52,
+      "ctrl_stats": {
+       "preserved_decisions": 712,
+       "fallbacks": 8,
+       "cashouts": 0,
+       "recovers": 13,
+       "style_off": 780,
+       "decisions": 1500,
+       "reentries": 12,
+       "reentry_denied_top": 5,
+       "reentry_denied_cool": 43,
+       "masked_expansions": 257
+      }
+     },
+     "20889": {
+      "pieces": 1500,
+      "lines": 589,
+      "clears": {
+       "0": 1060,
+       "1": 324,
+       "2": 89,
+       "3": 21,
+       "4": 6
+      },
+      "reason": "max_pieces",
+      "windows": [
+       {
+        "pieces": 200,
+        "lines": 70,
+        "tetrises": 0,
+        "mean_occ": 84.0,
+        "mean_top": 11.14,
+        "mean_holes": 2.625
+       },
+       {
+        "pieces": 200,
+        "lines": 84,
+        "tetrises": 1,
+        "mean_occ": 79.55,
+        "mean_top": 10.485,
+        "mean_holes": 2.43
+       },
+       {
+        "pieces": 200,
+        "lines": 80,
+        "tetrises": 1,
+        "mean_occ": 84.45,
+        "mean_top": 11.18,
+        "mean_holes": 1.46
+       },
+       {
+        "pieces": 200,
+        "lines": 79,
+        "tetrises": 0,
+        "mean_occ": 68.2,
+        "mean_top": 9.295,
+        "mean_holes": 1.3
+       },
+       {
+        "pieces": 200,
+        "lines": 77,
+        "tetrises": 0,
+        "mean_occ": 79.9,
+        "mean_top": 10.825,
+        "mean_holes": 4.815
+       },
+       {
+        "pieces": 200,
+        "lines": 81,
+        "tetrises": 2,
+        "mean_occ": 78.05,
+        "mean_top": 10.48,
+        "mean_holes": 3.975
+       },
+       {
+        "pieces": 200,
+        "lines": 82,
+        "tetrises": 2,
+        "mean_occ": 74.9,
+        "mean_top": 9.91,
+        "mean_holes": 3.215
+       },
+       {
+        "pieces": 100,
+        "lines": 36,
+        "tetrises": 0,
+        "mean_occ": 90.1,
+        "mean_top": 12.08,
+        "mean_holes": 4.63
+       }
+      ],
+      "tetris_at": [
+       293,
+       462,
+       1005,
+       1093,
+       1252,
+       1332
+      ],
+      "longest_no_tetris_gap": 543,
+      "final": {
+       "occ": 110,
+       "top": 15.0,
+       "holes": 6.0
+      },
+      "board_chain_head": 661236318,
+      "board_chain": 431883643,
+      "style_off_frac": 0.5926666666666667,
+      "ctrl_stats": {
+       "preserved_decisions": 604,
+       "fallbacks": 7,
+       "cashouts": 0,
+       "recovers": 16,
+       "style_off": 889,
+       "decisions": 1500,
+       "reentries": 15,
+       "reentry_denied_top": 12,
+       "reentry_denied_cool": 91,
+       "masked_expansions": 243
+      }
+     },
+     "20890": {
+      "pieces": 1500,
+      "lines": 593,
+      "clears": {
+       "0": 1083,
+       "1": 297,
+       "2": 77,
+       "3": 30,
+       "4": 13
+      },
+      "reason": "max_pieces",
+      "windows": [
+       {
+        "pieces": 200,
+        "lines": 69,
+        "tetrises": 0,
+        "mean_occ": 72.15,
+        "mean_top": 9.815,
+        "mean_holes": 1.455
+       },
+       {
+        "pieces": 200,
+        "lines": 83,
+        "tetrises": 2,
+        "mean_occ": 72.45,
+        "mean_top": 9.785,
+        "mean_holes": 1.285
+       },
+       {
+        "pieces": 200,
+        "lines": 84,
+        "tetrises": 3,
+        "mean_occ": 57.5,
+        "mean_top": 8.14,
+        "mean_holes": 1.245
+       },
+       {
+        "pieces": 200,
+        "lines": 77,
+        "tetrises": 0,
+        "mean_occ": 71.6,
+        "mean_top": 10.09,
+        "mean_holes": 1.81
+       },
+       {
+        "pieces": 200,
+        "lines": 78,
+        "tetrises": 4,
+        "mean_occ": 76.05,
+        "mean_top": 10.425,
+        "mean_holes": 2.365
+       },
+       {
+        "pieces": 200,
+        "lines": 81,
+        "tetrises": 3,
+        "mean_occ": 73.0,
+        "mean_top": 10.085,
+        "mean_holes": 0.665
+       },
+       {
+        "pieces": 200,
+        "lines": 80,
+        "tetrises": 1,
+        "mean_occ": 100.0,
+        "mean_top": 13.335,
+        "mean_holes": 2.855
+       },
+       {
+        "pieces": 100,
+        "lines": 41,
+        "tetrises": 0,
+        "mean_occ": 80.5,
+        "mean_top": 10.77,
+        "mean_holes": 5.14
+       }
+      ],
+      "tetris_at": [
+       285,
+       316,
+       515,
+       541,
+       594,
+       816,
+       911,
+       925,
+       941,
+       1093,
+       1170,
+       1198,
+       1346
+      ],
+      "longest_no_tetris_gap": 285,
+      "final": {
+       "occ": 70,
+       "top": 9.0,
+       "holes": 5.0
+      },
+      "board_chain_head": 3285770111,
+      "board_chain": 1925962982,
+      "style_off_frac": 0.5186666666666667,
+      "ctrl_stats": {
+       "preserved_decisions": 715,
+       "fallbacks": 6,
+       "cashouts": 1,
+       "recovers": 17,
+       "style_off": 778,
+       "decisions": 1500,
+       "reentries": 16,
+       "reentry_denied_top": 6,
+       "reentry_denied_cool": 88,
+       "masked_expansions": 271
+      }
+     },
+     "20891": {
+      "pieces": 649,
+      "lines": 242,
+      "clears": {
+       "0": 460,
+       "1": 148,
+       "2": 32,
+       "3": 6,
+       "4": 3
+      },
+      "reason": "no_candidates",
+      "windows": [
+       {
+        "pieces": 200,
+        "lines": 70,
+        "tetrises": 3,
+        "mean_occ": 72.2,
+        "mean_top": 9.965,
+        "mean_holes": 1.82
+       },
+       {
+        "pieces": 200,
+        "lines": 79,
+        "tetrises": 0,
+        "mean_occ": 80.85,
+        "mean_top": 10.74,
+        "mean_holes": 5.435
+       },
+       {
+        "pieces": 200,
+        "lines": 77,
+        "tetrises": 0,
+        "mean_occ": 123.9,
+        "mean_top": 15.405,
+        "mean_holes": 10.1
+       },
+       {
+        "pieces": 49,
+        "lines": 16,
+        "tetrises": 0,
+        "mean_occ": 153.26530612244898,
+        "mean_top": 18.591836734693878,
+        "mean_holes": 10.979591836734693
+       }
+      ],
+      "tetris_at": [
+       19,
+       34,
+       110
+      ],
+      "longest_no_tetris_gap": 539,
+      "final": {
+       "occ": 176,
+       "top": 21.0,
+       "holes": 13.0
+      },
+      "board_chain_head": 1882131201,
+      "board_chain": 1134236653,
+      "style_off_frac": 0.7334360554699538,
+      "ctrl_stats": {
+       "preserved_decisions": 169,
+       "fallbacks": 4,
+       "cashouts": 0,
+       "recovers": 4,
+       "style_off": 476,
+       "decisions": 649,
+       "reentries": 3,
+       "reentry_denied_top": 0,
+       "reentry_denied_cool": 19,
+       "masked_expansions": 73
+      }
+     }
+    },
+    "style_off_frac": 0.605,
+    "mean_recovers": 12.53,
+    "mean_reentries": 11.53,
+    "mean_fallbacks": 5.8,
+    "mean_cashouts": 0.267
+   }
+  }
+ },
+ "wall_seconds": 1556.2
+}

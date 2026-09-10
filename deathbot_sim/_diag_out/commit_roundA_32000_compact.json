@@ -1,0 +1,458 @@
+{
+  "weights": "C:\\My Things\\HTML\\Demonin's Item Shop\\other\\deathBot\\model_weights_snapshot9.pt",
+  "weights_sha256": "229bbe2a91bab6b1d6a58f25440e7504711aabe8dfc26d24dad9ee0461be46ed",
+  "seed0": 32000,
+  "games": 3,
+  "cap": 300,
+  "reporting_only": true,
+  "arms": {
+    "baseline": {
+      "params": {
+        "abort_top": 16,
+        "abort_occ": 110,
+        "reenter_occ": 60,
+        "cooldown": 30,
+        "lam": 10.0
+      },
+      "capped": 3,
+      "mean_pieces": 300.0,
+      "tetrises": 11,
+      "t_per_100": 1.2222,
+      "paired_dtet_vs_baseline": 0.0,
+      "paired_t_vs_baseline": 0.0,
+      "controller_exits": 0,
+      "per_seed": [
+        {
+          "arm": "baseline",
+          "seed": 32000,
+          "pieces": 300,
+          "lines": 116,
+          "clears": {
+            "0": 220,
+            "1": 54,
+            "2": 19,
+            "3": 4,
+            "4": 3
+          },
+          "reason": "max_pieces",
+          "seconds": 81.71,
+          "stats": {
+            "preserved_decisions": 185,
+            "fallbacks": 1,
+            "cashouts": 1,
+            "recovers": 3,
+            "style_off": 113,
+            "decisions": 300,
+            "reentries": 3,
+            "reentry_denied_top": 3,
+            "reentry_denied_cool": 32,
+            "debt_exits": 0,
+            "progress_exits": 0,
+            "uniform_expansions": 0,
+            "max_commit_debt": 0.0,
+            "masked_expansions": 83
+          }
+        },
+        {
+          "arm": "baseline",
+          "seed": 32001,
+          "pieces": 300,
+          "lines": 115,
+          "clears": {
+            "0": 217,
+            "1": 64,
+            "2": 12,
+            "3": 1,
+            "4": 6
+          },
+          "reason": "max_pieces",
+          "seconds": 69.99,
+          "stats": {
+            "preserved_decisions": 143,
+            "fallbacks": 1,
+            "cashouts": 0,
+            "recovers": 2,
+            "style_off": 156,
+            "decisions": 300,
+            "reentries": 1,
+            "reentry_denied_top": 0,
+            "reentry_denied_cool": 0,
+            "debt_exits": 0,
+            "progress_exits": 0,
+            "uniform_expansions": 0,
+            "max_commit_debt": 0.0,
+            "masked_expansions": 49
+          }
+        },
+        {
+          "arm": "baseline",
+          "seed": 32002,
+          "pieces": 300,
+          "lines": 111,
+          "clears": {
+            "0": 223,
+            "1": 54,
+            "2": 14,
+            "3": 7,
+            "4": 2
+          },
+          "reason": "max_pieces",
+          "seconds": 81.44,
+          "stats": {
+            "preserved_decisions": 165,
+            "fallbacks": 1,
+            "cashouts": 0,
+            "recovers": 2,
+            "style_off": 134,
+            "decisions": 300,
+            "reentries": 2,
+            "reentry_denied_top": 8,
+            "reentry_denied_cool": 0,
+            "debt_exits": 0,
+            "progress_exits": 0,
+            "uniform_expansions": 0,
+            "max_commit_debt": 0.0,
+            "masked_expansions": 69
+          }
+        }
+      ]
+    },
+    "reenter_top10": {
+      "params": {
+        "abort_top": 16,
+        "abort_occ": 110,
+        "reenter_occ": 60,
+        "reenter_top": 10,
+        "cooldown": 30,
+        "lam": 10.0
+      },
+      "capped": 3,
+      "mean_pieces": 300.0,
+      "tetrises": 11,
+      "t_per_100": 1.2222,
+      "paired_dtet_vs_baseline": 0.0,
+      "paired_t_vs_baseline": 0.0,
+      "controller_exits": 0,
+      "per_seed": [
+        {
+          "arm": "reenter_top10",
+          "seed": 32000,
+          "pieces": 300,
+          "lines": 116,
+          "clears": {
+            "0": 220,
+            "1": 54,
+            "2": 19,
+            "3": 4,
+            "4": 3
+          },
+          "reason": "max_pieces",
+          "seconds": 81.84,
+          "stats": {
+            "preserved_decisions": 185,
+            "fallbacks": 1,
+            "cashouts": 1,
+            "recovers": 3,
+            "style_off": 113,
+            "decisions": 300,
+            "reentries": 3,
+            "reentry_denied_top": 3,
+            "reentry_denied_cool": 32,
+            "debt_exits": 0,
+            "progress_exits": 0,
+            "uniform_expansions": 0,
+            "max_commit_debt": 0.0,
+            "masked_expansions": 83
+          }
+        },
+        {
+          "arm": "reenter_top10",
+          "seed": 32001,
+          "pieces": 300,
+          "lines": 115,
+          "clears": {
+            "0": 217,
+            "1": 64,
+            "2": 12,
+            "3": 1,
+            "4": 6
+          },
+          "reason": "max_pieces",
+          "seconds": 67.15,
+          "stats": {
+            "preserved_decisions": 143,
+            "fallbacks": 1,
+            "cashouts": 0,
+            "recovers": 2,
+            "style_off": 156,
+            "decisions": 300,
+            "reentries": 1,
+            "reentry_denied_top": 0,
+            "reentry_denied_cool": 0,
+            "debt_exits": 0,
+            "progress_exits": 0,
+            "uniform_expansions": 0,
+            "max_commit_debt": 0.0,
+            "masked_expansions": 49
+          }
+        },
+        {
+          "arm": "reenter_top10",
+          "seed": 32002,
+          "pieces": 300,
+          "lines": 111,
+          "clears": {
+            "0": 223,
+            "1": 54,
+            "2": 14,
+            "3": 7,
+            "4": 2
+          },
+          "reason": "max_pieces",
+          "seconds": 79.87,
+          "stats": {
+            "preserved_decisions": 165,
+            "fallbacks": 1,
+            "cashouts": 0,
+            "recovers": 2,
+            "style_off": 134,
+            "decisions": 300,
+            "reentries": 2,
+            "reentry_denied_top": 8,
+            "reentry_denied_cool": 0,
+            "debt_exits": 0,
+            "progress_exits": 0,
+            "uniform_expansions": 0,
+            "max_commit_debt": 0.0,
+            "masked_expansions": 69
+          }
+        }
+      ]
+    },
+    "debt30": {
+      "params": {
+        "abort_top": 16,
+        "abort_occ": 110,
+        "reenter_occ": 60,
+        "cooldown": 30,
+        "lam": 10.0,
+        "debt_limit": 30.0
+      },
+      "capped": 3,
+      "mean_pieces": 300.0,
+      "tetrises": 2,
+      "t_per_100": 0.2222,
+      "paired_dtet_vs_baseline": -3.0,
+      "paired_t_vs_baseline": -1.964,
+      "controller_exits": 21,
+      "per_seed": [
+        {
+          "arm": "debt30",
+          "seed": 32000,
+          "pieces": 300,
+          "lines": 117,
+          "clears": {
+            "0": 206,
+            "1": 76,
+            "2": 14,
+            "3": 3,
+            "4": 1
+          },
+          "reason": "max_pieces",
+          "seconds": 64.73,
+          "stats": {
+            "preserved_decisions": 70,
+            "fallbacks": 2,
+            "cashouts": 0,
+            "recovers": 7,
+            "style_off": 228,
+            "decisions": 300,
+            "reentries": 6,
+            "reentry_denied_top": 0,
+            "reentry_denied_cool": 130,
+            "debt_exits": 5,
+            "progress_exits": 0,
+            "uniform_expansions": 0,
+            "max_commit_debt": 55.18409821573903,
+            "masked_expansions": 33
+          }
+        },
+        {
+          "arm": "debt30",
+          "seed": 32001,
+          "pieces": 300,
+          "lines": 119,
+          "clears": {
+            "0": 203,
+            "1": 79,
+            "2": 14,
+            "3": 4,
+            "4": 0
+          },
+          "reason": "max_pieces",
+          "seconds": 59.6,
+          "stats": {
+            "preserved_decisions": 72,
+            "fallbacks": 0,
+            "cashouts": 0,
+            "recovers": 8,
+            "style_off": 228,
+            "decisions": 300,
+            "reentries": 7,
+            "reentry_denied_top": 2,
+            "reentry_denied_cool": 207,
+            "debt_exits": 8,
+            "progress_exits": 0,
+            "uniform_expansions": 0,
+            "max_commit_debt": 126.83557079696658,
+            "masked_expansions": 11
+          }
+        },
+        {
+          "arm": "debt30",
+          "seed": 32002,
+          "pieces": 300,
+          "lines": 119,
+          "clears": {
+            "0": 204,
+            "1": 76,
+            "2": 18,
+            "3": 1,
+            "4": 1
+          },
+          "reason": "max_pieces",
+          "seconds": 65.15,
+          "stats": {
+            "preserved_decisions": 85,
+            "fallbacks": 0,
+            "cashouts": 0,
+            "recovers": 8,
+            "style_off": 215,
+            "decisions": 300,
+            "reentries": 7,
+            "reentry_denied_top": 0,
+            "reentry_denied_cool": 206,
+            "debt_exits": 8,
+            "progress_exits": 0,
+            "uniform_expansions": 0,
+            "max_commit_debt": 105.06435052447848,
+            "masked_expansions": 19
+          }
+        }
+      ]
+    },
+    "uniform": {
+      "params": {
+        "abort_top": 16,
+        "abort_occ": 110,
+        "reenter_occ": 60,
+        "cooldown": 30,
+        "lam": 10.0,
+        "uniform_commit_scoring": true
+      },
+      "capped": 3,
+      "mean_pieces": 300.0,
+      "tetrises": 7,
+      "t_per_100": 0.7778,
+      "paired_dtet_vs_baseline": -1.3333,
+      "paired_t_vs_baseline": -0.9177,
+      "controller_exits": 0,
+      "per_seed": [
+        {
+          "arm": "uniform",
+          "seed": 32000,
+          "pieces": 300,
+          "lines": 109,
+          "clears": {
+            "0": 222,
+            "1": 59,
+            "2": 11,
+            "3": 4,
+            "4": 4
+          },
+          "reason": "max_pieces",
+          "seconds": 85.88,
+          "stats": {
+            "preserved_decisions": 159,
+            "fallbacks": 1,
+            "cashouts": 0,
+            "recovers": 4,
+            "style_off": 140,
+            "decisions": 300,
+            "reentries": 3,
+            "reentry_denied_top": 3,
+            "reentry_denied_cool": 29,
+            "debt_exits": 0,
+            "progress_exits": 0,
+            "uniform_expansions": 93,
+            "max_commit_debt": 0.0,
+            "masked_expansions": 159
+          }
+        },
+        {
+          "arm": "uniform",
+          "seed": 32001,
+          "pieces": 300,
+          "lines": 113,
+          "clears": {
+            "0": 225,
+            "1": 48,
+            "2": 18,
+            "3": 7,
+            "4": 2
+          },
+          "reason": "max_pieces",
+          "seconds": 87.26,
+          "stats": {
+            "preserved_decisions": 172,
+            "fallbacks": 2,
+            "cashouts": 0,
+            "recovers": 2,
+            "style_off": 126,
+            "decisions": 300,
+            "reentries": 2,
+            "reentry_denied_top": 5,
+            "reentry_denied_cool": 0,
+            "debt_exits": 0,
+            "progress_exits": 0,
+            "uniform_expansions": 112,
+            "max_commit_debt": 0.0,
+            "masked_expansions": 172
+          }
+        },
+        {
+          "arm": "uniform",
+          "seed": 32002,
+          "pieces": 300,
+          "lines": 113,
+          "clears": {
+            "0": 209,
+            "1": 76,
+            "2": 9,
+            "3": 5,
+            "4": 1
+          },
+          "reason": "max_pieces",
+          "seconds": 69.1,
+          "stats": {
+            "preserved_decisions": 82,
+            "fallbacks": 0,
+            "cashouts": 0,
+            "recovers": 2,
+            "style_off": 218,
+            "decisions": 300,
+            "reentries": 1,
+            "reentry_denied_top": 3,
+            "reentry_denied_cool": 6,
+            "debt_exits": 0,
+            "progress_exits": 0,
+            "uniform_expansions": 50,
+            "max_commit_debt": 0.0,
+            "masked_expansions": 82
+          }
+        }
+      ]
+    }
+  },
+  "wall_seconds": 239.49
+}

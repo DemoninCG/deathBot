@@ -1,0 +1,228 @@
+{
+ "weights": "C:\\My Things\\HTML\\Demonin's Item Shop\\other\\deathBot\\model_weights_snapshot9.pt",
+ "weights_sha256": "229bbe2a91bab6b1d6a58f25440e7504711aabe8dfc26d24dad9ee0461be46ed",
+ "controller": {
+  "abort_top": 16,
+  "abort_occ": 110,
+  "reenter_occ": 60,
+  "cooldown": 30,
+  "lam": 10.0
+ },
+ "jobs": [
+  {
+   "seed": 26000,
+   "pieces": 300,
+   "n_pairs": 73,
+   "stats": {
+    "preserved_decisions": 153,
+    "fallbacks": 3,
+    "cashouts": 0,
+    "recovers": 3,
+    "style_off": 144,
+    "decisions": 153,
+    "reentries": 3,
+    "reentry_denied_top": 0,
+    "reentry_denied_cool": 0,
+    "masked_expansions": 69
+   }
+  },
+  {
+   "seed": 26001,
+   "pieces": 300,
+   "n_pairs": 93,
+   "stats": {
+    "preserved_decisions": 206,
+    "fallbacks": 1,
+    "cashouts": 0,
+    "recovers": 2,
+    "style_off": 93,
+    "decisions": 206,
+    "reentries": 2,
+    "reentry_denied_top": 0,
+    "reentry_denied_cool": 0,
+    "masked_expansions": 68
+   }
+  },
+  {
+   "seed": 26002,
+   "pieces": 300,
+   "n_pairs": 91,
+   "stats": {
+    "preserved_decisions": 177,
+    "fallbacks": 2,
+    "cashouts": 0,
+    "recovers": 3,
+    "style_off": 121,
+    "decisions": 177,
+    "reentries": 3,
+    "reentry_denied_top": 0,
+    "reentry_denied_cool": 0,
+    "masked_expansions": 74
+   }
+  },
+  {
+   "seed": 20851,
+   "pieces": 759,
+   "n_pairs": 135,
+   "stats": {
+    "preserved_decisions": 280,
+    "fallbacks": 0,
+    "cashouts": 0,
+    "recovers": 4,
+    "style_off": 479,
+    "decisions": 280,
+    "reentries": 3,
+    "reentry_denied_top": 0,
+    "reentry_denied_cool": 0,
+    "masked_expansions": 104
+   }
+  },
+  {
+   "seed": 20857,
+   "pieces": 1500,
+   "n_pairs": 332,
+   "stats": {
+    "preserved_decisions": 692,
+    "fallbacks": 6,
+    "cashouts": 0,
+    "recovers": 16,
+    "style_off": 802,
+    "decisions": 692,
+    "reentries": 16,
+    "reentry_denied_top": 0,
+    "reentry_denied_cool": 0,
+    "masked_expansions": 271
+   }
+  }
+ ],
+ "n_pairs": 724,
+ "feature_names": [
+  "wheight",
+  "holes",
+  "holedepth",
+  "cav",
+  "wellcost",
+  "spawn",
+  "lines",
+  "deepwell"
+ ],
+ "overall_mean_delta": [
+  9.292,
+  -0.265,
+  0.468,
+  -1.417,
+  9.646,
+  0.035,
+  -1.001,
+  2.682
+ ],
+ "opposing_vs_global_all": 0.142,
+ "groups": [
+  {
+   "group": "fresh/free/lo",
+   "n": 71,
+   "mean_delta": [
+    6.556,
+    -0.239,
+    0.324,
+    -0.239,
+    3.507,
+    0.0,
+    -0.62,
+    1.338
+   ],
+   "cos_group_mean_to_overall": 0.951,
+   "opposing_vs_own": 0.254,
+   "opposing_vs_global": 0.211
+  },
+  {
+   "group": "fresh/free/mid",
+   "n": 53,
+   "mean_delta": [
+    11.868,
+    -0.226,
+    2.264,
+    -0.717,
+    4.698,
+    0.0,
+    -1.113,
+    2.019
+   ],
+   "cos_group_mean_to_overall": 0.904,
+   "opposing_vs_own": 0.151,
+   "opposing_vs_global": 0.151
+  },
+  {
+   "group": "mid/free/lo",
+   "n": 125,
+   "mean_delta": [
+    8.997,
+    -0.136,
+    0.472,
+    -0.584,
+    3.784,
+    0.0,
+    -0.848,
+    1.608
+   ],
+   "cos_group_mean_to_overall": 0.921,
+   "opposing_vs_own": 0.184,
+   "opposing_vs_global": 0.136
+  },
+  {
+   "group": "mid/free/mid",
+   "n": 278,
+   "mean_delta": [
+    11.131,
+    -0.234,
+    1.27,
+    -2.173,
+    13.457,
+    0.072,
+    -1.245,
+    3.5
+   ],
+   "cos_group_mean_to_overall": 0.996,
+   "opposing_vs_own": 0.104,
+   "opposing_vs_global": 0.112
+  },
+  {
+   "group": "settled/free/lo",
+   "n": 95,
+   "mean_delta": [
+    5.693,
+    -0.253,
+    -0.411,
+    -0.084,
+    3.484,
+    0.0,
+    -0.537,
+    1.411
+   ],
+   "cos_group_mean_to_overall": 0.961,
+   "opposing_vs_own": 0.232,
+   "opposing_vs_global": 0.242
+  },
+  {
+   "group": "settled/free/mid",
+   "n": 102,
+   "mean_delta": [
+    8.562,
+    -0.559,
+    -1.735,
+    -2.804,
+    19.029,
+    0.049,
+    -1.167,
+    4.235
+   ],
+   "cos_group_mean_to_overall": 0.938,
+   "opposing_vs_own": 0.098,
+   "opposing_vs_global": 0.088
+  }
+ ],
+ "collision_checked": 58522,
+ "collisions": 4,
+ "verdict": "WELL-POSED",
+ "wall_seconds": 305.8
+}

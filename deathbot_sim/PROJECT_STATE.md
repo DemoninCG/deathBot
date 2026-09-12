@@ -14,10 +14,18 @@ rescue verdict, the §37.4 forced-well assessment, the §38 rung-0
 CONVERTS result, the §40 long-horizon SUSTAINS, and the §41 handoff
 autopsy (re-entry is the defect), the §42 stage-B PROMOTE, and the §44
 overnight campaign plan (supersedes the §43 queue), and the §47 Round C
-decisive panel (no promotion, debt80 confirm-rejected). Intended as a
-complete briefing for a fresh reviewer (human or AI) so no context is lost.*
+decisive panel (no promotion, debt80 confirm-rejected); updated
+2026-09-10 with the §48 Pareto close-out; updated 2026-09-11 with the
+§49 distillation post-mortem (3 failure classes; +468 replicated 3/3
+seeds; §49.4 answers), the §50 soup/ensemble screen (safe, no
+promotion, pooled n=90), and the §51 dose sweep + gen-2 teacher swap
+(LR axis closed; fs2ply teacher gate-passed; gen-2 GATE PASSED); and
+2026-09-12 with the §51.4 promotion (gen2_seed44 PROMOTED at t+5.97,
+cap-3000 n=100 — **snapshot11 is the new 1-ply champion**). Intended
+as a complete briefing for a fresh reviewer (human or AI) so no
+context is lost.*
 
-**Where things stand (2026-09-09):** survival is solved by
+**Where things stand (2026-09-11):** survival is solved by
 *inference*, not weights — **snapshot9 + full-expansion 2-ply caps every
 game** (30/30 at cap 1500, 4/4 at cap 5000). The active program is *style*:
 the bot survives but plays flat (near-zero Tetrises), and the goal is
@@ -3976,3 +3984,432 @@ step 4c / review §6) — the §27.6 stylish-viz divergence is still
 documented-unfixed, so the visualizer must become a replay consumer
 (§44.1-C replay contract: seed + pinned config + board-hash chain) rather
 than a second policy implementation before any stylish config is shown.
+
+## 49. Distillation post-mortem: why it almost never worked, and why it
+worked twice (2026-09-11, forensic investigation)
+
+The user asked for a definitive answer to the biggest structural question
+in the project: why did distillation almost never work, why DID it work
+twice (C3→snapshot9, §7; fullsplit_seed42, §30), is there a connection,
+and what would raise the odds of another success? Method: read-only
+forensics on existing checkpoints/banks/JSONs (no panels consumed), then
+two new controlled experiments, then a seed replication of the one
+validated success. Drivers prefixed `_` are the new forensics;
+everything lives in `python/` and `_diag_out/`.
+
+### 49.1 The ledger, corrected by direct measurement
+
+`_audit_dw.py` → `_audit_dw_out.json` measures weight displacement (dW =
+L2 from start) of every surviving distill artifact; `_distill_forensics.py`
+→ `_distill_forensics_out.json` re-measures teacher agreement, value-spread
+smoothing, and target affordability on the exact states each arm trained on:
+
+| arm | dose | dW | teacher agree Δ | outcome |
+|---|---|---:|---:|---|
+| C3 self-distill (snap7) | 400×64 mb, lr1e-5, ×10 targets | 1.89 | n/a (self) | **SUCCESS +231** |
+| fullsplit CE (snap9) | 1200×256 fb, lr1e-4 | 4.69 | 0.787→0.80 | **SUCCESS +468** |
+| P2T_T1/T3 (snap9) | 400×64 mb, lr1e-5 | **0.36–0.41** | **+0.0 to +0.4pp** | NEUTRAL (§13.3) |
+| E3 armA/armB (fullsplit start) | 800×256 fb, lr1e-4 | 2.52/2.76 | +0.5–0.6% picks | NEUTRAL (§36) |
+| D1_r2 scale-30 CE | 400×64 mb, lr1e-5 | 1.95 | — | n.s. (§8) |
+
+Key measurement findings:
+
+1. **The headline P2T negative (§13.3) never learned its teacher.** On the
+   795 states P2T trained on, teacher agreement moved 0.0–0.4 percentage
+   points and dW was 0.36–0.41 — versus 4.69 for the successful fullsplit
+   dose (~12× less movement). Its "distillation is neutral" verdict was
+   actually "distillation was under-dosed". This reclassification matters:
+   the project has ONE tested-and-failed negative (E3), not a graveyard.
+2. **Survival-teacher targets are affordable; style-teacher targets are not.**
+   On disagreement states, the 2-ply survival teacher's pick costs the
+   student a mean −5.3 / median −2.8 in v1 units (within-state spread ~40;
+   0/171 picks ≥ 0). The style teachers' picks cost −10.5 (round-1 head) and
+   −23.5 (commit head) — 2–4× more expensive — and every one sits below its
+   1-ply rival (mean margins 0/1267 ≥ 0). The student cannot justify
+   death-buying setups without the teacher's lookahead, which it does not have.
+3. **The successful fit halves the within-state value spread** (40.4 → 17.2);
+   the sharpen control below doubles it (40 → 77). Spread compression is the
+   signature of informative distillation, not of dose.
+4. **Caveat carried forward:** the fullsplit fit was FULL-BATCH (~90 rows/step)
+   while P2T/heads were minibatch-64 (~5.8k rows/step) — `lr × steps` is NOT
+   the right dose unit across these regimens; effective per-row LR differs by
+   orders of magnitude. Historical "same budget" comparisons across arms are
+   therefore approximate at best.
+
+### 49.2 Control: adequate-dose re-projection WITHOUT new information — no gain
+
+`_distill_control.py` → `_control_sharpen.json`: the fullsplit recipe's dose
+(800 steps × 256, lr 1e-4, Adam, full-batch CE) applied with the incumbent's
+OWN argmax as teacher ("sharpening" — zero new information by construction).
+Result: dW 2.75 (movement comparable to successful arms), value spread 40→77
+(sharpening, opposite direction), 99.4% of picks unchanged, and gameplay
+**unchanged**: −40.5 (t −0.41) on 30 report seeds 31000s; +118 (t +0.44) on 8
+training seeds. **Conclusion: SGD re-projection alone does not produce the
+gain — the teacher's information is required.** This kills the pure
+"born-again smoothing" story as the sole mechanism and cleanly separates
+the two successes: C3's gain (self-referential targets) can no longer be
+attributed to trajectory smoothing alone at THIS dose — the §7 +231 was
+seed-fragile (round-2 variants failed validation), while fullsplit's is not.
+
+### 49.3 Replication: the +468 is a property of the RECIPE (3/3 seeds)
+
+`_distill_replicate.py` (+ `_distill_replicate_resume.py` after a terminal
+window closed during eval — fits survived on disk, eval legs re-run with
+per-arm incremental saves; lesson recorded: write partial results) re-ran
+the EXACT fullsplit recipe at schedule seeds 43/44, reporting-only eval:
+
+| arm | 26000s (n=8) | 31000s (n=30) |
+|---|---|---|
+| snap9 | 670.6, 0/8 cap | 750.4, 2/30 cap |
+| fullsplit_seed42 | 1347.2, +676.6 t+4.71, W/L 8/0 | 1123.3, +372.9 t+3.49, W/L 19/10 |
+| repl_seed43 | 1287.9, +617.2 t+3.71, W/L 7/1 | 1192.6, +442.2 t+4.48, W/L 22/7 |
+| repl_seed44 | 1238.6, +568.0 t+2.77, W/L 7/1 | 1087.6, +337.2 t+3.35, W/L 22/8 |
+
+**All three schedule seeds replicate the gain** (t +2.77…+4.71 on both
+panels; harness reproduction verified — snap9 670.6 / seed42 1347.2 match
+§29 exactly). seed43 ≈ seed42; seed44 ≈ 2/3 the effect. The gain is a
+property of the recipe, not a seed-42 draw; magnitude carries ~±20% seed
+variance. Reporting-only — no champion change (§30's +468.4 at n=300
+stands; these seeds' point estimates are 337–617, consistent with it).
+
+### 49.4 The answer
+
+**Why distillation almost never worked — three distinct failure classes,
+not one:**
+
+1. **UNDER-DOSE (most of the ledger).** P2T (§13.3), the §19 400-step probe,
+   and the §24 unbatched tiny-set cells never moved the network (dW ≤ 0.4,
+   agreement +0.0–0.4pp). These "negatives" are un-executed fits, not
+   tested-and-rejected hypotheses. Root cause: collapse-era caution set
+   default lr at 1e-5 with few steps, and the true dose unit (per-row
+   effective LR) was never measured — full-batch vs minibatch-64 differ
+   by orders of magnitude. `§25 TINY FIT` (lr 1e-4, full-batch, 800 steps)
+   proved the update CAN learn when the dose is adequate.
+2. **EXPENSIVE TARGETS (the style distills).** Round-0/1 heads (§17.4/17.7),
+   commit head (§44.7): teacher picks cost the student 2–4× more survival
+   value than the survival teacher's picks (−10.5 to −23.5 vs −2.8 median
+   v1 units), and the student has no lookahead to justify buying setups at
+   survival cost. CE cannot transfer a reason the student cannot represent;
+   style grows only as survival collapses (the §44.7 signature).
+3. **INFO-EXHAUSTED (the one true negative).** E3 (§36): re-running the
+   SAME successful recipe from the ALREADY-DISTILLED start with the SAME
+   teacher shaves ~1 regret unit and flips nothing. The information was
+   extracted in round 1; there is nothing left for round 2 to give.
+
+**Why the two successes worked — the connection:** both are born-again
+re-projections at adequate dose on diverse multi-candidate states, and
+both moved the weights far (dW 1.9 / 4.7) while changing candidate
+rankings materially. They differ in the targets' information content:
+C3's stretched self-targets carried NO new information (pure smoothing;
++231, but see §49.2 — the self-target class is seed-fragile), while
+fullsplit's 2-ply argmax targets carried the teacher's lookahead
+information (smoothing + information; +468, replicated 3/3). The common
+ingredient is the adequate-dose trajectory; the added information is what
+scales the gain from +231 to +468 and makes it robust.
+
+**What would raise the odds next time:**
+
+- **Dose discipline (highest value, cheapest).** Measure effective per-row
+  LR before judging any fit; monitor dW + agreement movement DURING the fit
+  (a fit that has not moved dW by ~1 after a few hundred steps is not
+  testing the hypothesis). The §25 protocol (lr 1e-4, batched) is the
+  default; never conclude "cannot learn" from an lr-1e-5 × few-hundred-step
+  run.
+- **Match target affordability to student capability.** Survival targets
+  (median cost −2.8 v1 units) transfer; style targets that buy setups at
+  survival cost (−10 to −23) do not, at any α tested. A future style
+  distill needs either a student that can evaluate lookahead (2-ply
+  student) or targets whose style does not trade survival directly.
+- **Fresh teacher information, fresh start point.** Distillation extracts
+  the gap between student and teacher ONCE (E3). Re-runs need either a new
+  teacher signal (deeper search — but the §44.8 3-ply probe closed that)
+  or a new state distribution the student has not fit.
+- **Selection on gameplay, not agreement metrics.** agree_dis 0.27 (a
+  "ranking-fidelity failure") still produced +468; E3's arms with better
+  regret metrics produced nothing. Offline metrics are diagnostics only.
+
+**Status:** 1-ply survival distillation is a WORKING lever with a validated
+recipe (replicated 3/3) and one known exhausted direction (re-running from
+the distilled start). Whether a better 1-ply champion than fullsplit_seed42
+can be found by re-running the recipe at more seeds is an open, cheap,
+panel-light question (all this work is reporting-only; 5300+ reserves
+untouched; next free dev range remains 21020+). No champion change from
+this section.
+
+Artifacts: `python/_audit_dw.py` + `_diag_out/_audit_dw_out.json`;
+`python/_distill_forensics.py` + `_diag_out/_distill_forensics_out.json`;
+`python/_distill_control.py` + `_diag_out/_control_sharpen.json`;
+`python/_distill_replicate.py` + `python/_distill_replicate_resume.py` +
+`_diag_out/_fullsplit_replicate.json` (+ `_fullsplit_repl_seed{43,44}.pt`);
+`_diag_out/_sweep_2026-09-04.json` (historical screen). No panels consumed;
+21020+ still free; 5300+ reserves untouched.
+
+## 50. Soup / ensemble over recipe seeds — safe but no promotion (2026-09-11)
+
+Follow-on to §49 (user reopened the path briefly). Question: do the three
+same-recipe checkpoints (s42/s43/s44, §49.3) combine into something better
+than the best member? Drivers: `python/_distill_soup.py` (screen,
+reporting seeds) → `_diag_out/_soup_screen.json`;
+`python/_soup_confirm.py` + `python/_soup_extend.py` →
+`_diag_out/_soup_confirm.json` (pre-registered fresh-panel gate + pooled
+extension). Reporting seeds 26000s/31000s + dev panels 21020–21109
+CONSUMED (next free **21110+**); 5300+ reserves untouched; NO training.
+
+### 50.1 Setup
+
+The §49 replication created the textbook model-soup setting: three
+fine-tunes of ONE init (snapshot9) with ONE recipe, differing only in
+minibatch schedule seed. Geometry measured first: pairwise L2 1.48–1.60,
+cosine ≥0.9989 — same basin, each member ~1/3 as far from the others as
+any is from snap9 (from-snap9 L2 ≈ 4.7). TAPNet is pure conv/linear (no
+BN/dropout), so the element-wise mean is exactly a valid network.
+Motivation: per-seed failures are anti-correlated (31009: +619/−721/−55;
+31012: −718/+0/−1100) while wins correlate — averaging should cancel
+idiosyncratic failures. Contrast with §8's ensemble-teacher negative
+(−162/−176): that mixed HETEROGENEOUS checkpoints (snap5/6/7) from
+different basins; this averages same-basin siblings.
+
+### 50.2 Screen (reporting seeds; paired vs snap9)
+
+| arm | 26000s (n=8) | 31000s (n=30) |
+|---|---|---|
+| snap9 | 670.6 | 750.4, 2/30 |
+| s42 (= champ) | 1347.2 +676.6 t+4.71 | 1123.3 +372.9 t+3.49, 15/30 |
+| s43 | 1287.9 +617.2 t+3.71 | 1192.6 +442.2 t+4.48, 15/30 |
+| s44 | 1238.6 +568.0 t+2.77 | 1087.6 +337.2 t+3.35, 12/30 |
+| soup2_43 | 1308.0 +637.4 t+4.91 | 1145.5 +395.0 t+4.27, 14/30 |
+| **soup3** | 1100.6 +430.0 t+3.19 | **1264.6 +514.2 t+6.33, 19/30** |
+| ensemble344 (mean of 3 value fns) | 1179.2 +508.6 t+2.60 | 1212.7 +462.3 t+5.02, 17/30 |
+
+Readings: every combination stays in the strong band (averaging is SAFE —
+nothing collapses); soup3 is the best point estimate on the larger leg but
+not separated from its members (vs s43 +72 t+0.80; vs s42 +141 t+1.33).
+The value-ensemble is dominated by soup3 (less gain, 3× inference cost) —
+dropped. soup3 costs 1× inference (single forward), same as any member.
+
+### 50.3 Fresh-panel gate + pooled extension — the +130 lean decays to zero
+
+Pre-registered gate (promote soup3 iff pooled paired t ≥ 2.0): block 1
+fresh 21020–21049 gave soup3 1283.8 (19/30 cap) vs champ 1155.3 (16/30):
+**+128.5, t+1.36, W/L 12/7** — HOLD at n=30. Two independent panels then
+agreed in direction and magnitude (31000s +141 t+1.33; 21020s +128
+t+1.36), so per the §36.3 precedent the SAME decision was extended with
+two more fresh blocks (21050–21079, 21080–21109; `python/_soup_extend.py`):
+
+| block | soup3 mean (cap) | s42 mean (cap) | paired delta |
+|---|---|---|---|
+| 1 (21020s) | 1283.8 (19/30) | 1155.3 (16/30) | +128.5, t+1.36 |
+| 2 (21050s) | 1173.6 (14/30) | 1167.6 (16/30) | +6.0 |
+| 3 (21080s) | 1092.8 (12/30) | 1150.2 (17/30) | −57.4 |
+| **POOLED (n=90)** | 1183.4 (45/90) | 1157.7 (49/90) | **+25.7, t+0.42, W/L 28/35** |
+
+**Verdict: HOLD — no promotion.** The textbook winner's-curse decay: the
++130 lean shrank to +26 with 3× the data, and cap rate favors the
+champion (49/90 vs 45/90). This is the third instance of the project's
+n=30 mirage pattern (§8 round-2 screens, §36.3 armB +115→+42.5, now
+soup +128→+26). soup3 ≡ champion within noise; averaging neither helps
+nor hurts at this scale.
+
+### 50.4 What this closes and what it leaves open
+
+1. **Same-basin weight averaging is validated as SAFE** (unlike the §8
+   heterogeneous-ensemble negative) — a known-safe operation for future
+   checkpoint management, but it did not beat the best member here.
+2. **The three recipe seeds are statistically interchangeable** — the
+   +337..+617 spread across s42/s43/s44 on every panel is seed variance
+   of the recipe, not stable per-checkpoint quality. Promoting any single
+   seed over another on panel means is not justified (s42's +468 promotion
+   stands on its n=300 record).
+3. **Value ensembling is dominated** (soup3 ≥ ensemble344 at 1/3 the
+   inference cost) — closed.
+4. **Open (cheap, if the path reopens):** the label cache
+   (`python/_cache_teacher_labels.py` →
+   `_diag_out/_teacher_labels_snap9_bank.npz`, fit pool asserted 17,265)
+   makes additional recipe seeds ~3× cheaper (~10 min fit each); a 5-way
+   soup over seeds 42–46 is the one untested cell with a mechanism (more
+   ingredients → better variance cancellation), but given the pooled
+   verdict above, expected gain is small. No further soups without a new
+   mechanism.
+
+Standing configs: **1-ply champion = snapshot11 ≡ gen2_seed44** (sha
+`23006b0ff8f911c4`; +768 t+5.97 vs snapshot10 at cap-3000 n=100, §51.4);
+fallback = snapshot10 ≡ fullsplit_seed42; survival 2-ply =
+snapshot9 + full 2-ply (b8_diverse operating); stylish = corrected
+cool30lam10. Artifacts added:
+`python/_distill_soup.py`, `python/_soup_vs_members.py`,
+`python/_soup_confirm.py`, `python/_soup_extend.py`,
+`python/_cache_teacher_labels.py`,
+`_diag_out/_soup_screen.json`, `_diag_out/_soup_confirm.json`,
+`_diag_out/_soup_s42_s43{,_s44}.pt`,
+`_diag_out/_teacher_labels_snap9_bank.npz` (label cache).
+
+## 51. Dose sweep + teacher-2 probe + GEN-2 (2026-09-11 evening) —
+first recipe candidate to PASS a fresh-panel gate since §30
+
+Follow-on to §§49–50 (user reopened the path twice: "can we raise the
+odds via LR?" and "why was fullsplit_seed42 + full 2-ply never tested as
+a teacher?"). All work reporting/dev-only; no training panels beyond the
+pre-registered gate below; 5300+ reserves still untouched.
+
+### 51.1 Label cache + dose sweep — the LR axis is CLOSED
+
+`python/_cache_teacher_labels.py` caches the frozen snap9-teacher labels
+(`_teacher_labels_snap9_bank.npz`: 23,016 labels, fit pool 17,265 —
+asserted equal to the original §26/§49 run) making recipe fits ~3×
+cheaper. `python/_dose_sweep.py` → `_diag_out/_dose_sweep.json` measured
+the dose-response around the validated recipe (all from snap9, CE argmax,
+schedule seed 42, shared batches):
+
+| cell | dW | agree tr/val | 31000s (n=30) | vs base |
+|---|---:|---:|---|---|
+| base (1e-4×1200) | 4.69 | 0.801/0.778 | 1022.3, +271.9 t+2.32 | — |
+| lr 3e-4×1200 | 9.42 | 0.825/0.769 | 1066.4, +316.0 t+3.78 | +44.1 t+0.39 (n.s.) |
+| lr 1e-3×1200 | 21.2 | 0.857/**0.758** | 924.6, +174.2 t+1.59 | −97.7 t−0.91 (n.s.) |
+
+Verdict: the validated dose sits AT the play optimum. Higher dose keeps
+raising teacher-fidelity on train while VAL agreement falls (0.778 →
+0.758) and play does not improve — information fully extracted; extra
+dose memorizes (the §30 "agreement ≠ play" lesson in reverse). dW grows
+linearly in every cell with loss still falling — the fits never converge
+on train, and that is fine. Under-dose (1e-5) remains the only harmful
+direction (§49 class 1). **Do not re-run dose cells without a new
+mechanism.**
+
+### 51.2 Teacher-2 probe — the champion's own 2-ply is a NEW teacher
+
+`python/_teacher2_probe.py` → `_diag_out/_teacher2_probe.json` (all
+23,016 bank states). E1 compared OUTCOMES (both teachers cap everything,
+paired pieces delta 0) and never compared DECISIONS; E3 re-ran the SAME
+teacher into the distilled start. The probe tests fs2ply =
+fullsplit_seed42 + full 2-ply as a teacher for the champion start — the
+clean E3 complement (same start, NEW teacher):
+
+| gate | value | threshold | verdict |
+|---|---:|---|---|
+| teacher-teacher agreement | **0.890** | (sanity) | different function (11% of states) |
+| student-vs-fs2ply dis | 17.8% (4,102) | ≥5% | pass |
+| NEW targets (student==snap9-2ply pick ≠ fs2ply pick) | **782** | ≥300 | pass |
+| affordability (fullsplit v1 scale) | median −1.1, 0/4102 ≤ −20 | > −8 | pass |
+
+fs2ply's picks are the most affordable ever measured (survival teacher
+−2.8 median; style teachers −10.5/−23.5). Note: fs2_margin_on_dis mean
+733 vs median 1.7 — a few states have huge 2-ply margins; CE-on-argmax
+is magnitude-blind, noted, not a blocker.
+
+### 51.3 Gen-2: champion start + fs2ply teacher — gate PASSED
+
+`python/_distill_gen2.py` → `_diag_out/_distill_gen2.json` (recipe:
+validated dose lr 1e-4 × 1200 × 256, CE toward fs2ply argmax, from
+fullsplit_seed42; teacher labels cached in
+`_teacher_labels_fs2ply_bank.npz`). PRE agree 0.8245/0.8133; fit
+dynamics healthy on all seeds (dW ~4.0–4.1, agree3k still climbing at
+cutoff — same signature as the validated gen-1 fit). Reporting screens
+(paired vs champion s42 on the same harness):
+
+| schedule seed | 26000s (n=8) | 31000s (n=30) |
+|---|---|---|
+| 42 | 1353.5 (≈champ, +6 n.s.) | 1401.0, **+277.6 t+2.75** |
+| 43 | 1355.5 (+8 n.s.) | 1361.6, **+238.2 t+2.28** |
+| 44 | 1299.4 (−48 n.s.) | 1438.1, **+314.8 t+3.39** |
+
+Three INDEPENDENT training seeds all +238…+315 over the champion — much
+stronger than the soup's single-checkpoint lean. Pre-registered
+fresh-panel gate (`python/_gen2_gate.py` → `_diag_out/_gen2_gate.json`):
+panel 21110–21139 (fresh, previously untouched), PROMOTE-to-promotion-
+panel iff pooled per-tape mean-of-3-seeds delta t ≥ 2.0 AND all three
+per-seed deltas > 0. Result:
+
+| arm | mean | cap | vs champ |
+|---|---:|---:|---|
+| gen2_seed42 | 1353.6 | 23/30 | +180.4 t+1.77 |
+| gen2_seed43 | 1336.2 | 23/30 | +163.1 t+1.71 |
+| gen2_seed44 | 1381.7 | 25/30 | +208.5 t+1.95 |
+| s42_champ | 1173.2 | 15/30 | — |
+| **pooled** | | | **+184.0 t+2.12, all positive** |
+
+**GATE PASSED (pre-registered rule fired).** Every independently-trained
+gen-2 checkpoint beats the champion on fresh tapes; cap rate 23–25/30 vs
+15/30. Unlike the soup (§50, one checkpoint, lean evaporated at n=90),
+this is three independent fits converging. Status: RECIPE promoted to
+promotion-grade testing. No champion change from §51.3 alone.
+
+### 51.4 PROMOTION PANEL — gen2_seed44 PROMOTED to 1-ply champion
+(2026-09-12, `python/_gen2_promotion.py` →
+`_diag_out/_gen2_promotion.json`)
+
+User decision (pre-registered in the driver header before any 5300s
+data): test **gen2_seed44** — the seed leading BOTH independent panels
+(31000s +314.8 t+3.39; gate +208.5 t+1.95, cap 25/30) — acknowledging
+the best-of-3 selection inflates the prior but not the test's validity.
+Protocol per user: **n=100 at cap 3000** (1500-cap rate saturating —
+champ 15/30, gen2 23–25/30 — and longer games carry more signal per
+tape). NOTE: cap-3000 means are NOT comparable to any historical
+cap-1500 table; only the paired within-panel comparison matters here.
+Pre-registered: PROMOTE iff paired t ≥ 2.0 AND cap rate not lower;
+exactly one pre-authorized extension block (+200, pooled n=300) if
+0 < t < 2; stop if delta ≤ 0.
+
+Panel: seeds **5300–5399** (promotion reserve, first use), cap 3000:
+
+| arm | mean | median | cap | paired vs champ |
+|---|---:|---:|---|---|
+| **gen2_seed44** | **2379.3** | 3000 | **61/100** | — |
+| s42_champ | 1611.2 | 1365 | 18/100 | **+768.2, t+5.97**, W/T/L 70/11/19 |
+| snap9 (reference only) | 722.8 | 615 | 0/100 | — |
+
+**PROMOTED — no extension needed.** t+5.97 (the strongest paired
+promotion result in project history, vs §30's +14.1 at cap 1500 —
+different cap, different panel, but the effect is unambiguous on fresh
+tapes), cap rate 61/100 vs 18/100, 70 wins / 19 losses paired.
+`gen2_seed44` → **`model_weights_snapshot11.pt`** (new champion lineage
+file; sha in the promotion JSON). `fullsplit_seed42` =
+`model_weights_snapshot10.pt` retained as fallback champion. Chain:
+snap7 → snap9 (gen-1 self-distill, §7) → snapshot10/fullsplit_seed42
+(gen-1 2-ply-teacher distill, §26/§30) → **snapshot11/gen2_seed44 (gen-2
+self-distill: the champion's own 2-ply expansion distilled back into its
+1-ply weights, §51)**.
+
+What gen-2 established mechanistically: E1's "both cap everything" was
+outcome-identity, not decision-identity (teacher-teacher agreement only
+0.890); the champion's own 2-ply contains 782 targets the previous
+teacher never pointed at; those targets are near-free on the champion's
+own value scale (median −1.1). The self-improvement loop
+(fit → expand → re-fit) has now worked twice at increasing scale and is
+the project's validated improvement lever going forward.
+
+### 51.5 Next steps (evidence order)
+
+1. **Gen-3 candidate (the loop's next iteration):** fit snapshot11's own
+   2-ply expansion back into it — teacher labels ~24 min, fit ~35 min,
+   reporting screen cheap. E3's warning applies to RE-fitting the same
+   start with the SAME teacher; gen-3 is a NEW start (snapshot11) with
+   its own NEW expansion. The open question is whether round 2 of the
+   self-improvement loop still has extractable information (snap9's
+   didn't at gen-1 round 2 — but gen-1 round 2 used the OLD start's
+   bank, and the gate/probe infrastructure now measures headroom BEFORE
+   fitting: run `_teacher2_probe.py` with snapshot11 as both student
+   and teacher first; require new-targets ≥ 300 AND affordability
+   median > −8).
+2. **2-ply playing policy**: re-baseline snapshot11 + full 2-ply on a
+   fresh dev panel — if the 1-ply gain carries through search, the
+   survival ceiling (currently cap-everything) and the λ10 stylish
+   config both inherit a stronger value function. Cap-3000/5000
+   protocols are the natural measure (1500 is saturating).
+3. **Style program inherits a stronger chassis**: re-run the λ10 gate
+   probe (§31.2 style) on snapshot11 — a better value function may shift
+   the survival-vs-style Pareto frontier.
+4. **Promotion reserves**: 5400+ remains untouched (the n=200 extension
+   was pre-authorized but unneeded); next free dev range 21150+.
+
+Artifacts (cumulative for §51): `python/_cache_teacher_labels.py` +
+`_diag_out/_teacher_labels_snap9_bank.npz`;
+`python/_dose_sweep.py` + `_diag_out/_dose_sweep.json` +
+`_dose_{base,lr3e-4,lr1e-3}.pt`;
+`python/_teacher2_probe.py` + `_diag_out/_teacher2_probe{,_test}.json`;
+`python/_distill_gen2.py` + `_diag_out/_distill_gen2.json` +
+`_gen2_seed{42,43,44}.pt` + `_teacher_labels_fs2ply_bank.npz`;
+`python/_gen2_gate.py` + `_diag_out/_gen2_gate.json`;
+`python/_gen2_promotion.py` + `_diag_out/_gen2_promotion.json`;
+`model_weights_snapshot11.pt` (NEW CHAMPION).
+Panels consumed: 21110–21139 (gate), 5300–5399 (promotion; next free
+**5400+**); 26000s/31000s reporting only; dev free **21150+**.

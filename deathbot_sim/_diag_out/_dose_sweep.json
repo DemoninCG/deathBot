@@ -1,0 +1,386 @@
+{
+  "note": "Dose sweep on the validated recipe from snapshot9; reporting-only seeds; no panels.",
+  "cells": {
+    "base": {
+      "lr": 0.0001,
+      "steps": 1200,
+      "wall_fit_s": 2185.1,
+      "final_loss": 0.5824,
+      "dW": 4.6901,
+      "post_train_agree": 0.8007,
+      "post_val_agree": 0.7778,
+      "history": [
+        {
+          "step": 200,
+          "loss": 0.7662,
+          "dW": 2.111,
+          "agree3k": 0.7703
+        },
+        {
+          "step": 400,
+          "loss": 0.6719,
+          "dW": 2.9,
+          "agree3k": 0.7737
+        },
+        {
+          "step": 600,
+          "loss": 0.644,
+          "dW": 3.367,
+          "agree3k": 0.7863
+        },
+        {
+          "step": 800,
+          "loss": 0.6138,
+          "dW": 3.805,
+          "agree3k": 0.7833
+        },
+        {
+          "step": 1000,
+          "loss": 0.6135,
+          "dW": 4.231,
+          "agree3k": 0.7877
+        },
+        {
+          "step": 1200,
+          "loss": 0.5912,
+          "dW": 4.69,
+          "agree3k": 0.7917
+        }
+      ],
+      "checkpoint": "C:\\My Things\\HTML\\Demonin's Item Shop\\other\\deathBot\\deathbot_sim\\_diag_out\\_dose_base.pt",
+      "sha": "29de4c8f7c59300e"
+    },
+    "lr3e-4": {
+      "lr": 0.0003,
+      "steps": 1200,
+      "wall_fit_s": 2051.7,
+      "final_loss": 0.5158,
+      "dW": 9.4245,
+      "post_train_agree": 0.8247,
+      "post_val_agree": 0.7687,
+      "history": [
+        {
+          "step": 200,
+          "loss": 0.6562,
+          "dW": 3.521,
+          "agree3k": 0.7783
+        },
+        {
+          "step": 400,
+          "loss": 0.6165,
+          "dW": 4.813,
+          "agree3k": 0.7937
+        },
+        {
+          "step": 600,
+          "loss": 0.5878,
+          "dW": 5.973,
+          "agree3k": 0.798
+        },
+        {
+          "step": 800,
+          "loss": 0.5545,
+          "dW": 7.157,
+          "agree3k": 0.805
+        },
+        {
+          "step": 1000,
+          "loss": 0.55,
+          "dW": 8.286,
+          "agree3k": 0.807
+        },
+        {
+          "step": 1200,
+          "loss": 0.5235,
+          "dW": 9.424,
+          "agree3k": 0.813
+        }
+      ],
+      "checkpoint": "C:\\My Things\\HTML\\Demonin's Item Shop\\other\\deathBot\\deathbot_sim\\_diag_out\\_dose_lr3e-4.pt",
+      "sha": "2a13dfb682892612"
+    },
+    "lr1e-3": {
+      "lr": 0.001,
+      "steps": 1200,
+      "wall_fit_s": 2169.9,
+      "final_loss": 0.4241,
+      "dW": 21.1553,
+      "post_train_agree": 0.8573,
+      "post_val_agree": 0.7583,
+      "history": [
+        {
+          "step": 200,
+          "loss": 0.6131,
+          "dW": 7.0,
+          "agree3k": 0.79
+        },
+        {
+          "step": 400,
+          "loss": 0.5702,
+          "dW": 10.297,
+          "agree3k": 0.806
+        },
+        {
+          "step": 600,
+          "loss": 0.5329,
+          "dW": 13.458,
+          "agree3k": 0.8117
+        },
+        {
+          "step": 800,
+          "loss": 0.4847,
+          "dW": 16.413,
+          "agree3k": 0.832
+        },
+        {
+          "step": 1000,
+          "loss": 0.4687,
+          "dW": 18.889,
+          "agree3k": 0.8347
+        },
+        {
+          "step": 1200,
+          "loss": 0.4303,
+          "dW": 21.155,
+          "agree3k": 0.85
+        }
+      ],
+      "checkpoint": "C:\\My Things\\HTML\\Demonin's Item Shop\\other\\deathBot\\deathbot_sim\\_diag_out\\_dose_lr1e-3.pt",
+      "sha": "aede1943b3a2a871"
+    }
+  },
+  "eval_report31000": {
+    "snap9": {
+      "mean": 750.4,
+      "per_seed": [
+        1337,
+        356,
+        803,
+        495,
+        875,
+        1085,
+        817,
+        787,
+        289,
+        881,
+        795,
+        531,
+        1500,
+        1133,
+        200,
+        890,
+        470,
+        818,
+        341,
+        1098,
+        1500,
+        687,
+        527,
+        482,
+        831,
+        559,
+        958,
+        600,
+        503,
+        365
+      ]
+    },
+    "base": {
+      "mean": 1022.3,
+      "capped": 11,
+      "delta_vs_snap9": 271.9,
+      "t": 2.32,
+      "wins": 18,
+      "losses": 11,
+      "per_seed": [
+        313,
+        654,
+        1033,
+        1500,
+        933,
+        503,
+        1500,
+        1500,
+        1500,
+        618,
+        305,
+        342,
+        1500,
+        771,
+        1398,
+        614,
+        931,
+        1364,
+        1500,
+        380,
+        1301,
+        1500,
+        1500,
+        1149,
+        711,
+        573,
+        1500,
+        277,
+        1500,
+        1500
+      ]
+    },
+    "lr1e-3": {
+      "mean": 924.6,
+      "capped": 9,
+      "delta_vs_snap9": 174.2,
+      "t": 1.59,
+      "wins": 17,
+      "losses": 12,
+      "per_seed": [
+        1236,
+        434,
+        615,
+        1500,
+        293,
+        567,
+        422,
+        1251,
+        1500,
+        792,
+        834,
+        167,
+        1500,
+        1357,
+        1500,
+        1500,
+        1500,
+        547,
+        1172,
+        1500,
+        400,
+        230,
+        1239,
+        566,
+        494,
+        208,
+        1500,
+        694,
+        1500,
+        721
+      ],
+      "delta_vs_base": -97.7,
+      "t_vs_base": -0.91
+    },
+    "lr3e-4": {
+      "mean": 1066.4,
+      "capped": 13,
+      "delta_vs_snap9": 316.0,
+      "t": 3.78,
+      "wins": 21,
+      "losses": 7,
+      "per_seed": [
+        1500,
+        443,
+        1500,
+        1500,
+        642,
+        1500,
+        888,
+        1500,
+        1500,
+        1500,
+        1328,
+        566,
+        1500,
+        407,
+        283,
+        1500,
+        446,
+        1500,
+        1325,
+        818,
+        1500,
+        611,
+        824,
+        1500,
+        1500,
+        1027,
+        1294,
+        277,
+        453,
+        860
+      ],
+      "delta_vs_base": 44.1,
+      "t_vs_base": 0.39
+    }
+  },
+  "eval_train26000": {
+    "snap9": {
+      "mean": 670.6,
+      "per_seed": [
+        1079,
+        316,
+        1173,
+        340,
+        279,
+        1040,
+        532,
+        606
+      ]
+    },
+    "base": {
+      "mean": 1379.9,
+      "capped": 6,
+      "delta_vs_snap9": 709.2,
+      "t": 3.49,
+      "wins": 7,
+      "losses": 1,
+      "per_seed": [
+        716,
+        1500,
+        1323,
+        1500,
+        1500,
+        1500,
+        1500,
+        1500
+      ]
+    },
+    "lr1e-3": {
+      "mean": 1063.9,
+      "capped": 4,
+      "delta_vs_snap9": 393.2,
+      "t": 1.71,
+      "wins": 7,
+      "losses": 1,
+      "per_seed": [
+        240,
+        357,
+        1500,
+        567,
+        1500,
+        1347,
+        1500,
+        1500
+      ]
+    },
+    "lr3e-4": {
+      "mean": 1010.5,
+      "capped": 3,
+      "delta_vs_snap9": 339.9,
+      "t": 2.11,
+      "wins": 7,
+      "losses": 1,
+      "per_seed": [
+        1500,
+        376,
+        1500,
+        1500,
+        934,
+        664,
+        937,
+        673
+      ]
+    }
+  },
+  "pre_agree": {
+    "train": 0.7867,
+    "val": 0.7914
+  }
+}

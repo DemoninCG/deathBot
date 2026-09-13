@@ -507,3 +507,77 @@
 2. After use for a decision, append the usage to history and mark CONSUMED.
 3. Never reuse a CONSUMED range for selecting among new candidates.
 4. Record protocol (lockout semantics, cap, seed count) beside every result.
+
+- seeds: 21270-21329
+  protocol: corrected-lockout, cap 3000 (loop-gen-2 final gate G1, §52.7)
+  status: CONSUMED
+  history: _loop2_champ_r3.pt (sha 471685c2a717d62b) vs snapshot11, 60 fresh tapes: delta +294.4 t +2.20, cap 50 vs 39 — G1 PASS; G2 PASS (240-game +42.6 t +1.23, worst suite -0.67) — VERDICT PROMOTE-TO-5400-PANEL (file: _loop2_final_gate.json). Next free: 21330+ (dev); 5400+ reserves for promotion.
+
+- seeds: 5400-5499
+  protocol: corrected-lockout, cap 3000 (loop-gen-2 PROMOTION, §52.9)
+  status: CONSUMED
+  history: _loop2_champ_r3.pt (sha 471685c2a717d62b) vs snapshot11, 100 fresh reserve tapes: challenger 2838.0 (89/100 cap, med 3000) vs champion 2554.8 (73/100 cap); paired +283.2, t +2.75, W/T/L 25/65/10 — PROMOTED to model_weights_snapshot12.pt, no extension needed (file: _loop2_promotion.json). Next free: 21330+ (dev); 5500+ reserves for promotion.
+
+- seeds: 21330-21359
+  protocol: corrected-lockout, cap 300 (snapshot12 style re-gate rung-0, §53.1)
+  status: CONSUMED
+  history: snapshot12 λ sweep 2026-09-13 (λ 0/10/30/40 x 30 tapes, cap 300,
+    diag_lambda_high recipe, sha 471685c2a717d62b): λ0 30/30 (2 tet, 0.022
+    T/100, contract holds); λ10 29/30 (296.3 pcs, 95 tet, 1.069 T/100, one
+    death 21350@188 no_candidates); λ30 4/30 (210.9 pcs, 64 tet, 1.012,
+    dTet vs λ10 -1.03 t-2.28); λ40 3/30 (204.1 pcs, 77 tet, 1.258, dTet
+    -0.60 t-1.12) — λ10 dominates both axes; λ30/40 closed on this chassis
+    (file: snap12_lambda_high.json). Next free: 21360+ (dev);
+    5500+ reserves for promotion.
+
+- seeds: 21360-21374
+  protocol: corrected-lockout, cap 300 (snapshot12 controller ministage, §53.2)
+  status: CONSUMED
+  history: corrected cool30 vs cool30lam10 on snapshot12 2026-09-13
+    (15 matched tapes, cap 300, --arms subset, no cap-3000 leg): cool30 15/15
+    (34 tet, 0.756 T/100, off 0.205) vs cross 15/15 (62 tet, 1.378 T/100,
+    off 0.331); paired dTet +1.87 t+3.34, dPc exactly 0 — λ gradient inside
+    the commitment adds style at zero cap cost (file:
+    snap12_commit_ministage.json). Next free: 21375+ (dev);
+    5500+ reserves for promotion.
+
+- seeds: 21375-21404
+  protocol: corrected-lockout, cap 300 (snapshot12 mid-λ knee map, §53.3)
+  status: CONSUMED
+  history: snapshot12 λ 5/10/15/20 x 30 tapes 2026-09-13 (cap 300, sha
+    471685c2a717d62b): λ5 30/30 (5 tet, 0.056 T/100, dTet vs λ10 -3.73
+    t-9.89); λ10 30/30 (117 tet, 1.300 T/100, ref); λ15 28/30 (295.1 pcs,
+    85 tet, 0.960, dTet -1.07 t-2.44, deaths 21378@167 + 21396@287);
+    λ20 20/30 (281.4 pcs, 84 tet, 0.995, dTet -1.10 t-2.21, 10 deaths
+    175-295 pcs all no_candidates) — knee is sharp at λ10; λ15 already
+    survival-negative with no style gain (file: snap12_lambda_mid.json).
+    Next free: 21405+ (dev); 5500+ reserves for promotion.
+
+- seeds: 21405-21424
+  protocol: corrected-lockout, cap 300 (snapshot12 challenger screen, §53.5)
+  status: CONSUMED
+  history: corrected cool30lam10 vs cool30lam20 / watch80 / reentry_cert /
+    a120_r50 on snapshot12 2026-09-13 (20 matched tapes, cap 300, sha
+    471685c2a717d62b; driver paired-dTet columns read +0.00 — no lam10 arm
+    present, so deltas below are manual pairings vs the cross on the same
+    seeds): cross 20/20 (69 tet, 1.150 T/100, ref); a120_r50 20/20 (76,
+    1.267, dTet +0.35 t+0.85 n.s.); watch80 20/20 (77, 1.283, +0.40
+    t+1.80 n.s.); reentry_cert 20/20 (62, 1.033, -0.35 t-1.23 n.s.);
+    cool30lam20 20/20 (50, 0.833, -0.95 t-2.11 — significantly worse
+    style per tape) — no challenger promotes; cross holds (file:
+    snap12_ctrl_challengers.json). Next free: 21425+ (dev);
+    5500+ reserves for promotion.
+
+- seeds: 21425-21474
+  protocol: corrected-lockout, cap 300 (snapshot12 challenger
+    confirmation, §53.6)
+  status: CONSUMED
+  history: corrected cool30lam10 vs watch80 / a120_r50 on snapshot12
+    2026-09-13 (50 matched tapes, cap 300, sha 471685c2a717d62b;
+    lam20 + cert dropped per user call; driver paired columns +0.00 —
+    no lam10 arm, deltas manual vs cross): cross 50/50 (180 tet, 1.200
+    T/100, ref); watch80 50/50 (180, 1.200, dTet +0.00 t+0.00, 40/50
+    deltas exactly 0 — watchdog near-inert on this panel); a120_r50
+    50/50 (185, 1.233, dTet +0.10 t+0.36, W/L 17/18) — both leans
+    evaporate; cross holds (file: snap12_ctrl_challengers50.json).
+    Next free: 21475+ (dev); 5500+ reserves for promotion.

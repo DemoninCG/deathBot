@@ -1,0 +1,4704 @@
+{
+  "note": "Randomized recovery suite (read-only diagnostic; not a gate); identical start boards across arms; TAP pieces; cap 1500.",
+  "arms": {
+    "snap11": {
+      "flat6": {
+        "0": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 7.87
+        },
+        "1": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 8.61
+        },
+        "2": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 7.73
+        },
+        "3": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 9.79
+        },
+        "4": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 7.35
+        },
+        "5": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 8.04
+        },
+        "6": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 10.67
+        },
+        "7": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 10.26
+        },
+        "8": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 11.53
+        },
+        "9": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 9.97
+        },
+        "10": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 10.76
+        },
+        "11": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 10.71
+        },
+        "12": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 14.77
+        },
+        "13": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 24.59
+        },
+        "14": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 16.2
+        },
+        "15": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 12.59
+        },
+        "16": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 11.22
+        },
+        "17": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 9.5
+        },
+        "18": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 8.6
+        },
+        "19": {
+          "pieces": 409,
+          "reason": "no_candidates",
+          "capped": false,
+          "wall_s": 2.95
+        },
+        "mean": 1445.5,
+        "median": 1500.0,
+        "deaths_lt300": 0,
+        "capped": 19
+      },
+      "flat9": {
+        "0": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 8.8
+        },
+        "1": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 9.39
+        },
+        "2": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 9.86
+        },
+        "3": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 9.78
+        },
+        "4": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 9.81
+        },
+        "5": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 14.58
+        },
+        "6": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 11.56
+        },
+        "7": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 11.16
+        },
+        "8": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 9.09
+        },
+        "9": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 6.81
+        },
+        "10": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 8.05
+        },
+        "11": {
+          "pieces": 429,
+          "reason": "no_candidates",
+          "capped": false,
+          "wall_s": 2.25
+        },
+        "12": {
+          "pieces": 189,
+          "reason": "no_candidates",
+          "capped": false,
+          "wall_s": 0.96
+        },
+        "13": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 6.57
+        },
+        "14": {
+          "pieces": 1142,
+          "reason": "no_candidates",
+          "capped": false,
+          "wall_s": 5.85
+        },
+        "15": {
+          "pieces": 1086,
+          "reason": "no_candidates",
+          "capped": false,
+          "wall_s": 6.01
+        },
+        "16": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 7.89
+        },
+        "17": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 8.93
+        },
+        "18": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 6.64
+        },
+        "19": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 7.86
+        },
+        "mean": 1342.3,
+        "median": 1500.0,
+        "deaths_lt300": 1,
+        "capped": 16
+      },
+      "flat12": {
+        "0": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 6.97
+        },
+        "1": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 7.73
+        },
+        "2": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 8.24
+        },
+        "3": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 6.57
+        },
+        "4": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 6.64
+        },
+        "5": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 6.53
+        },
+        "6": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 6.66
+        },
+        "7": {
+          "pieces": 1359,
+          "reason": "no_candidates",
+          "capped": false,
+          "wall_s": 6.1
+        },
+        "8": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 6.46
+        },
+        "9": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 6.55
+        },
+        "10": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 6.6
+        },
+        "11": {
+          "pieces": 1244,
+          "reason": "lockout",
+          "capped": false,
+          "wall_s": 5.52
+        },
+        "12": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 6.59
+        },
+        "13": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 6.75
+        },
+        "14": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 8.01
+        },
+        "15": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 7.67
+        },
+        "16": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 12.51
+        },
+        "17": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 8.32
+        },
+        "18": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 7.31
+        },
+        "19": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 7.46
+        },
+        "mean": 1480.2,
+        "median": 1500.0,
+        "deaths_lt300": 0,
+        "capped": 18
+      },
+      "flat15": {
+        "0": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 7.6
+        },
+        "1": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 6.63
+        },
+        "2": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 6.96
+        },
+        "3": {
+          "pieces": 79,
+          "reason": "no_candidates",
+          "capped": false,
+          "wall_s": 0.36
+        },
+        "4": {
+          "pieces": 66,
+          "reason": "no_candidates",
+          "capped": false,
+          "wall_s": 0.32
+        },
+        "5": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 6.98
+        },
+        "6": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 8.92
+        },
+        "7": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 9.79
+        },
+        "8": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 8.5
+        },
+        "9": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 8.2
+        },
+        "10": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 7.03
+        },
+        "11": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 6.99
+        },
+        "12": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 6.76
+        },
+        "13": {
+          "pieces": 656,
+          "reason": "lockout",
+          "capped": false,
+          "wall_s": 2.89
+        },
+        "14": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 6.95
+        },
+        "15": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 6.61
+        },
+        "16": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 7.08
+        },
+        "17": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 6.47
+        },
+        "18": {
+          "pieces": 218,
+          "reason": "no_candidates",
+          "capped": false,
+          "wall_s": 0.91
+        },
+        "19": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 6.22
+        },
+        "mean": 1251.0,
+        "median": 1500.0,
+        "deaths_lt300": 3,
+        "capped": 16
+      },
+      "rand9": {
+        "0": {
+          "pieces": 226,
+          "reason": "no_candidates",
+          "capped": false,
+          "wall_s": 1.1
+        },
+        "1": {
+          "pieces": 703,
+          "reason": "no_candidates",
+          "capped": false,
+          "wall_s": 3.77
+        },
+        "2": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 7.36
+        },
+        "3": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 7.5
+        },
+        "4": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 6.36
+        },
+        "5": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 6.39
+        },
+        "6": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 6.4
+        },
+        "7": {
+          "pieces": 1005,
+          "reason": "no_candidates",
+          "capped": false,
+          "wall_s": 4.6
+        },
+        "8": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 6.41
+        },
+        "9": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 7.19
+        },
+        "10": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 9.03
+        },
+        "11": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 10.12
+        },
+        "12": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 6.43
+        },
+        "13": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 6.42
+        },
+        "14": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 6.31
+        },
+        "15": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 6.27
+        },
+        "16": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 6.2
+        },
+        "17": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 6.25
+        },
+        "18": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 6.2
+        },
+        "19": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 6.13
+        },
+        "mean": 1371.7,
+        "median": 1500.0,
+        "deaths_lt300": 1,
+        "capped": 17
+      },
+      "rand12": {
+        "0": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 7.26
+        },
+        "1": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 7.19
+        },
+        "2": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 7.49
+        },
+        "3": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 6.34
+        },
+        "4": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 6.19
+        },
+        "5": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 6.22
+        },
+        "6": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 6.24
+        },
+        "7": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 6.19
+        },
+        "8": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 6.12
+        },
+        "9": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 6.22
+        },
+        "10": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 6.95
+        },
+        "11": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 6.24
+        },
+        "12": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 6.11
+        },
+        "13": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 6.12
+        },
+        "14": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 6.2
+        },
+        "15": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 7.17
+        },
+        "16": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 6.19
+        },
+        "17": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 6.16
+        },
+        "18": {
+          "pieces": 69,
+          "reason": "no_candidates",
+          "capped": false,
+          "wall_s": 0.28
+        },
+        "19": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 6.11
+        },
+        "mean": 1428.5,
+        "median": 1500.0,
+        "deaths_lt300": 1,
+        "capped": 19
+      },
+      "holes2": {
+        "0": {
+          "pieces": 838,
+          "reason": "no_candidates",
+          "capped": false,
+          "wall_s": 3.53
+        },
+        "1": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 6.19
+        },
+        "2": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 6.08
+        },
+        "3": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 6.05
+        },
+        "4": {
+          "pieces": 1336,
+          "reason": "no_candidates",
+          "capped": false,
+          "wall_s": 5.45
+        },
+        "5": {
+          "pieces": 643,
+          "reason": "no_candidates",
+          "capped": false,
+          "wall_s": 2.68
+        },
+        "6": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 6.15
+        },
+        "7": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 6.02
+        },
+        "8": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 6.11
+        },
+        "9": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 6.14
+        },
+        "10": {
+          "pieces": 849,
+          "reason": "no_candidates",
+          "capped": false,
+          "wall_s": 3.52
+        },
+        "11": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 6.05
+        },
+        "12": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 6.05
+        },
+        "13": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 6.18
+        },
+        "14": {
+          "pieces": 64,
+          "reason": "no_candidates",
+          "capped": false,
+          "wall_s": 0.25
+        },
+        "15": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 6.11
+        },
+        "16": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 6.06
+        },
+        "17": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 6.18
+        },
+        "18": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 6.1
+        },
+        "19": {
+          "pieces": 785,
+          "reason": "no_candidates",
+          "capped": false,
+          "wall_s": 3.23
+        },
+        "mean": 1275.8,
+        "median": 1500.0,
+        "deaths_lt300": 1,
+        "capped": 14
+      },
+      "holes4": {
+        "0": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 6.24
+        },
+        "1": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 6.23
+        },
+        "2": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 6.1
+        },
+        "3": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 6.15
+        },
+        "4": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 6.07
+        },
+        "5": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 6.13
+        },
+        "6": {
+          "pieces": 811,
+          "reason": "no_candidates",
+          "capped": false,
+          "wall_s": 3.43
+        },
+        "7": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 6.11
+        },
+        "8": {
+          "pieces": 999,
+          "reason": "lockout",
+          "capped": false,
+          "wall_s": 4.14
+        },
+        "9": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 6.12
+        },
+        "10": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 6.15
+        },
+        "11": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 6.15
+        },
+        "12": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 6.09
+        },
+        "13": {
+          "pieces": 120,
+          "reason": "lockout",
+          "capped": false,
+          "wall_s": 0.63
+        },
+        "14": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 6.13
+        },
+        "15": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 6.06
+        },
+        "16": {
+          "pieces": 153,
+          "reason": "no_candidates",
+          "capped": false,
+          "wall_s": 0.65
+        },
+        "17": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 6.2
+        },
+        "18": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 6.1
+        },
+        "19": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 6.1
+        },
+        "mean": 1304.2,
+        "median": 1500.0,
+        "deaths_lt300": 2,
+        "capped": 16
+      },
+      "holes6": {
+        "0": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 6.09
+        },
+        "1": {
+          "pieces": 1342,
+          "reason": "no_candidates",
+          "capped": false,
+          "wall_s": 5.5
+        },
+        "2": {
+          "pieces": 1038,
+          "reason": "no_candidates",
+          "capped": false,
+          "wall_s": 4.32
+        },
+        "3": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 6.08
+        },
+        "4": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 6.15
+        },
+        "5": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 6.41
+        },
+        "6": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 6.46
+        },
+        "7": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 6.13
+        },
+        "8": {
+          "pieces": 743,
+          "reason": "no_candidates",
+          "capped": false,
+          "wall_s": 3.13
+        },
+        "9": {
+          "pieces": 650,
+          "reason": "no_candidates",
+          "capped": false,
+          "wall_s": 2.68
+        },
+        "10": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 6.09
+        },
+        "11": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 6.11
+        },
+        "12": {
+          "pieces": 199,
+          "reason": "no_candidates",
+          "capped": false,
+          "wall_s": 0.79
+        },
+        "13": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 6.12
+        },
+        "14": {
+          "pieces": 333,
+          "reason": "no_candidates",
+          "capped": false,
+          "wall_s": 1.32
+        },
+        "15": {
+          "pieces": 1311,
+          "reason": "no_candidates",
+          "capped": false,
+          "wall_s": 5.46
+        },
+        "16": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 6.1
+        },
+        "17": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 6.07
+        },
+        "18": {
+          "pieces": 573,
+          "reason": "no_candidates",
+          "capped": false,
+          "wall_s": 2.34
+        },
+        "19": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 6.09
+        },
+        "mean": 1209.5,
+        "median": 1500.0,
+        "deaths_lt300": 1,
+        "capped": 12
+      },
+      "drought": {
+        "0": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 6.08
+        },
+        "1": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 6.13
+        },
+        "2": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 7.06
+        },
+        "3": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 6.1
+        },
+        "4": {
+          "pieces": 725,
+          "reason": "no_candidates",
+          "capped": false,
+          "wall_s": 2.91
+        },
+        "5": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 6.21
+        },
+        "6": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 6.79
+        },
+        "7": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 11.24
+        },
+        "8": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 6.55
+        },
+        "9": {
+          "pieces": 201,
+          "reason": "no_candidates",
+          "capped": false,
+          "wall_s": 0.89
+        },
+        "10": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 6.09
+        },
+        "11": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 6.31
+        },
+        "12": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 6.99
+        },
+        "13": {
+          "pieces": 837,
+          "reason": "no_candidates",
+          "capped": false,
+          "wall_s": 3.53
+        },
+        "14": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 6.32
+        },
+        "15": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 6.27
+        },
+        "16": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 7.1
+        },
+        "17": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 8.5
+        },
+        "18": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 6.21
+        },
+        "19": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 6.69
+        },
+        "mean": 1363.2,
+        "median": 1500.0,
+        "deaths_lt300": 1,
+        "capped": 17
+      },
+      "flat18": {
+        "0": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 6.89
+        },
+        "1": {
+          "pieces": 5,
+          "reason": "no_candidates",
+          "capped": false,
+          "wall_s": 0.02
+        },
+        "2": {
+          "pieces": 4,
+          "reason": "no_candidates",
+          "capped": false,
+          "wall_s": 0.02
+        },
+        "3": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 7.05
+        },
+        "4": {
+          "pieces": 36,
+          "reason": "no_candidates",
+          "capped": false,
+          "wall_s": 0.15
+        },
+        "5": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 6.92
+        },
+        "6": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 6.74
+        },
+        "7": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 6.94
+        },
+        "8": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 7.43
+        },
+        "9": {
+          "pieces": 5,
+          "reason": "no_candidates",
+          "capped": false,
+          "wall_s": 0.02
+        },
+        "10": {
+          "pieces": 11,
+          "reason": "no_candidates",
+          "capped": false,
+          "wall_s": 0.04
+        },
+        "11": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 6.48
+        },
+        "12": {
+          "pieces": 18,
+          "reason": "no_candidates",
+          "capped": false,
+          "wall_s": 0.07
+        },
+        "13": {
+          "pieces": 21,
+          "reason": "no_candidates",
+          "capped": false,
+          "wall_s": 0.09
+        },
+        "14": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 8.6
+        },
+        "15": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 7.25
+        },
+        "16": {
+          "pieces": 15,
+          "reason": "no_candidates",
+          "capped": false,
+          "wall_s": 0.07
+        },
+        "17": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 7.07
+        },
+        "18": {
+          "pieces": 60,
+          "reason": "no_candidates",
+          "capped": false,
+          "wall_s": 0.25
+        },
+        "19": {
+          "pieces": 8,
+          "reason": "no_candidates",
+          "capped": false,
+          "wall_s": 0.04
+        },
+        "mean": 759.1,
+        "median": 780.0,
+        "deaths_lt300": 10,
+        "capped": 10
+      },
+      "holes8": {
+        "0": {
+          "pieces": 1049,
+          "reason": "no_candidates",
+          "capped": false,
+          "wall_s": 5.14
+        },
+        "1": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 8.0
+        },
+        "2": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 8.63
+        },
+        "3": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 8.86
+        },
+        "4": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 8.34
+        },
+        "5": {
+          "pieces": 717,
+          "reason": "no_candidates",
+          "capped": false,
+          "wall_s": 3.59
+        },
+        "6": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 8.02
+        },
+        "7": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 8.63
+        },
+        "8": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 6.95
+        },
+        "9": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 7.05
+        },
+        "10": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 7.0
+        },
+        "11": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 6.8
+        },
+        "12": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 6.92
+        },
+        "13": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 7.38
+        },
+        "14": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 7.46
+        },
+        "15": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 7.02
+        },
+        "16": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 7.02
+        },
+        "17": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 6.94
+        },
+        "18": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 7.28
+        },
+        "19": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 6.99
+        },
+        "mean": 1438.3,
+        "median": 1500.0,
+        "deaths_lt300": 0,
+        "capped": 18
+      }
+    },
+    "snap10": {
+      "flat6": {
+        "0": {
+          "pieces": 405,
+          "reason": "no_candidates",
+          "capped": false,
+          "wall_s": 1.9
+        },
+        "1": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 6.71
+        },
+        "2": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 7.44
+        },
+        "3": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 6.9
+        },
+        "4": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 7.49
+        },
+        "5": {
+          "pieces": 467,
+          "reason": "no_candidates",
+          "capped": false,
+          "wall_s": 2.23
+        },
+        "6": {
+          "pieces": 241,
+          "reason": "no_candidates",
+          "capped": false,
+          "wall_s": 1.11
+        },
+        "7": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 7.03
+        },
+        "8": {
+          "pieces": 609,
+          "reason": "no_candidates",
+          "capped": false,
+          "wall_s": 2.73
+        },
+        "9": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 7.4
+        },
+        "10": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 7.04
+        },
+        "11": {
+          "pieces": 187,
+          "reason": "no_candidates",
+          "capped": false,
+          "wall_s": 0.87
+        },
+        "12": {
+          "pieces": 1320,
+          "reason": "no_candidates",
+          "capped": false,
+          "wall_s": 6.1
+        },
+        "13": {
+          "pieces": 712,
+          "reason": "no_candidates",
+          "capped": false,
+          "wall_s": 3.23
+        },
+        "14": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 6.97
+        },
+        "15": {
+          "pieces": 619,
+          "reason": "no_candidates",
+          "capped": false,
+          "wall_s": 2.87
+        },
+        "16": {
+          "pieces": 1105,
+          "reason": "no_candidates",
+          "capped": false,
+          "wall_s": 4.99
+        },
+        "17": {
+          "pieces": 911,
+          "reason": "no_candidates",
+          "capped": false,
+          "wall_s": 4.14
+        },
+        "18": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 10.3
+        },
+        "19": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 8.41
+        },
+        "mean": 1078.8,
+        "median": 1410.0,
+        "deaths_lt300": 2,
+        "capped": 10
+      },
+      "flat9": {
+        "0": {
+          "pieces": 313,
+          "reason": "no_candidates",
+          "capped": false,
+          "wall_s": 1.91
+        },
+        "1": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 10.12
+        },
+        "2": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 7.68
+        },
+        "3": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 7.89
+        },
+        "4": {
+          "pieces": 1471,
+          "reason": "no_candidates",
+          "capped": false,
+          "wall_s": 7.54
+        },
+        "5": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 7.25
+        },
+        "6": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 7.5
+        },
+        "7": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 7.17
+        },
+        "8": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 9.54
+        },
+        "9": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 8.46
+        },
+        "10": {
+          "pieces": 407,
+          "reason": "no_candidates",
+          "capped": false,
+          "wall_s": 2.1
+        },
+        "11": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 8.17
+        },
+        "12": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 7.17
+        },
+        "13": {
+          "pieces": 791,
+          "reason": "no_candidates",
+          "capped": false,
+          "wall_s": 4.88
+        },
+        "14": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 8.9
+        },
+        "15": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 7.59
+        },
+        "16": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 7.87
+        },
+        "17": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 7.65
+        },
+        "18": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 9.89
+        },
+        "19": {
+          "pieces": 1114,
+          "reason": "no_candidates",
+          "capped": false,
+          "wall_s": 6.23
+        },
+        "mean": 1329.8,
+        "median": 1500.0,
+        "deaths_lt300": 0,
+        "capped": 15
+      },
+      "flat12": {
+        "0": {
+          "pieces": 345,
+          "reason": "no_candidates",
+          "capped": false,
+          "wall_s": 1.69
+        },
+        "1": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 6.9
+        },
+        "2": {
+          "pieces": 286,
+          "reason": "no_candidates",
+          "capped": false,
+          "wall_s": 1.24
+        },
+        "3": {
+          "pieces": 767,
+          "reason": "no_candidates",
+          "capped": false,
+          "wall_s": 3.57
+        },
+        "4": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 7.82
+        },
+        "5": {
+          "pieces": 115,
+          "reason": "no_candidates",
+          "capped": false,
+          "wall_s": 0.64
+        },
+        "6": {
+          "pieces": 563,
+          "reason": "no_candidates",
+          "capped": false,
+          "wall_s": 3.19
+        },
+        "7": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 8.63
+        },
+        "8": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 7.52
+        },
+        "9": {
+          "pieces": 453,
+          "reason": "no_candidates",
+          "capped": false,
+          "wall_s": 2.05
+        },
+        "10": {
+          "pieces": 1425,
+          "reason": "no_candidates",
+          "capped": false,
+          "wall_s": 7.71
+        },
+        "11": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 7.43
+        },
+        "12": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 6.77
+        },
+        "13": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 7.48
+        },
+        "14": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 7.25
+        },
+        "15": {
+          "pieces": 1219,
+          "reason": "no_candidates",
+          "capped": false,
+          "wall_s": 6.98
+        },
+        "16": {
+          "pieces": 258,
+          "reason": "no_candidates",
+          "capped": false,
+          "wall_s": 1.42
+        },
+        "17": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 6.9
+        },
+        "18": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 6.54
+        },
+        "19": {
+          "pieces": 621,
+          "reason": "no_candidates",
+          "capped": false,
+          "wall_s": 2.74
+        },
+        "mean": 1052.6,
+        "median": 1462.5,
+        "deaths_lt300": 3,
+        "capped": 10
+      },
+      "flat15": {
+        "0": {
+          "pieces": 589,
+          "reason": "no_candidates",
+          "capped": false,
+          "wall_s": 2.82
+        },
+        "1": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 6.77
+        },
+        "2": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 6.76
+        },
+        "3": {
+          "pieces": 64,
+          "reason": "lockout",
+          "capped": false,
+          "wall_s": 0.27
+        },
+        "4": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 6.58
+        },
+        "5": {
+          "pieces": 111,
+          "reason": "no_candidates",
+          "capped": false,
+          "wall_s": 0.47
+        },
+        "6": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 6.61
+        },
+        "7": {
+          "pieces": 971,
+          "reason": "no_candidates",
+          "capped": false,
+          "wall_s": 4.5
+        },
+        "8": {
+          "pieces": 1455,
+          "reason": "no_candidates",
+          "capped": false,
+          "wall_s": 6.81
+        },
+        "9": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 6.57
+        },
+        "10": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 6.93
+        },
+        "11": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 6.62
+        },
+        "12": {
+          "pieces": 261,
+          "reason": "no_candidates",
+          "capped": false,
+          "wall_s": 1.32
+        },
+        "13": {
+          "pieces": 586,
+          "reason": "no_candidates",
+          "capped": false,
+          "wall_s": 2.57
+        },
+        "14": {
+          "pieces": 206,
+          "reason": "no_candidates",
+          "capped": false,
+          "wall_s": 0.92
+        },
+        "15": {
+          "pieces": 1045,
+          "reason": "no_candidates",
+          "capped": false,
+          "wall_s": 4.68
+        },
+        "16": {
+          "pieces": 455,
+          "reason": "no_candidates",
+          "capped": false,
+          "wall_s": 2.0
+        },
+        "17": {
+          "pieces": 205,
+          "reason": "no_candidates",
+          "capped": false,
+          "wall_s": 0.89
+        },
+        "18": {
+          "pieces": 91,
+          "reason": "no_candidates",
+          "capped": false,
+          "wall_s": 0.41
+        },
+        "19": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 7.9
+        },
+        "mean": 902.0,
+        "median": 1008.0,
+        "deaths_lt300": 6,
+        "capped": 8
+      },
+      "rand9": {
+        "0": {
+          "pieces": 1064,
+          "reason": "no_candidates",
+          "capped": false,
+          "wall_s": 5.79
+        },
+        "1": {
+          "pieces": 1386,
+          "reason": "no_candidates",
+          "capped": false,
+          "wall_s": 7.08
+        },
+        "2": {
+          "pieces": 879,
+          "reason": "no_candidates",
+          "capped": false,
+          "wall_s": 6.34
+        },
+        "3": {
+          "pieces": 1047,
+          "reason": "no_candidates",
+          "capped": false,
+          "wall_s": 5.45
+        },
+        "4": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 6.82
+        },
+        "5": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 7.11
+        },
+        "6": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 11.12
+        },
+        "7": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 8.31
+        },
+        "8": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 6.65
+        },
+        "9": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 6.61
+        },
+        "10": {
+          "pieces": 632,
+          "reason": "no_candidates",
+          "capped": false,
+          "wall_s": 2.68
+        },
+        "11": {
+          "pieces": 575,
+          "reason": "no_candidates",
+          "capped": false,
+          "wall_s": 2.35
+        },
+        "12": {
+          "pieces": 251,
+          "reason": "no_candidates",
+          "capped": false,
+          "wall_s": 1.13
+        },
+        "13": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 6.45
+        },
+        "14": {
+          "pieces": 1081,
+          "reason": "no_candidates",
+          "capped": false,
+          "wall_s": 4.85
+        },
+        "15": {
+          "pieces": 841,
+          "reason": "no_candidates",
+          "capped": false,
+          "wall_s": 3.49
+        },
+        "16": {
+          "pieces": 108,
+          "reason": "no_candidates",
+          "capped": false,
+          "wall_s": 0.44
+        },
+        "17": {
+          "pieces": 1110,
+          "reason": "no_candidates",
+          "capped": false,
+          "wall_s": 5.31
+        },
+        "18": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 6.35
+        },
+        "19": {
+          "pieces": 1217,
+          "reason": "no_candidates",
+          "capped": false,
+          "wall_s": 7.66
+        },
+        "mean": 1109.5,
+        "median": 1163.5,
+        "deaths_lt300": 2,
+        "capped": 8
+      },
+      "rand12": {
+        "0": {
+          "pieces": 1002,
+          "reason": "no_candidates",
+          "capped": false,
+          "wall_s": 4.23
+        },
+        "1": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 6.34
+        },
+        "2": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 6.2
+        },
+        "3": {
+          "pieces": 1060,
+          "reason": "no_candidates",
+          "capped": false,
+          "wall_s": 5.42
+        },
+        "4": {
+          "pieces": 400,
+          "reason": "no_candidates",
+          "capped": false,
+          "wall_s": 1.65
+        },
+        "5": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 6.87
+        },
+        "6": {
+          "pieces": 985,
+          "reason": "no_candidates",
+          "capped": false,
+          "wall_s": 4.7
+        },
+        "7": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 6.08
+        },
+        "8": {
+          "pieces": 1067,
+          "reason": "no_candidates",
+          "capped": false,
+          "wall_s": 4.4
+        },
+        "9": {
+          "pieces": 984,
+          "reason": "no_candidates",
+          "capped": false,
+          "wall_s": 4.23
+        },
+        "10": {
+          "pieces": 279,
+          "reason": "no_candidates",
+          "capped": false,
+          "wall_s": 4.74
+        },
+        "11": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 6.51
+        },
+        "12": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 7.21
+        },
+        "13": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 6.11
+        },
+        "14": {
+          "pieces": 71,
+          "reason": "no_candidates",
+          "capped": false,
+          "wall_s": 0.29
+        },
+        "15": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 6.12
+        },
+        "16": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 6.15
+        },
+        "17": {
+          "pieces": 194,
+          "reason": "no_candidates",
+          "capped": false,
+          "wall_s": 0.83
+        },
+        "18": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 6.36
+        },
+        "19": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 6.4
+        },
+        "mean": 1127.1,
+        "median": 1500.0,
+        "deaths_lt300": 3,
+        "capped": 11
+      },
+      "holes2": {
+        "0": {
+          "pieces": 289,
+          "reason": "no_candidates",
+          "capped": false,
+          "wall_s": 1.26
+        },
+        "1": {
+          "pieces": 837,
+          "reason": "no_candidates",
+          "capped": false,
+          "wall_s": 3.81
+        },
+        "2": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 6.94
+        },
+        "3": {
+          "pieces": 817,
+          "reason": "no_candidates",
+          "capped": false,
+          "wall_s": 3.59
+        },
+        "4": {
+          "pieces": 638,
+          "reason": "no_candidates",
+          "capped": false,
+          "wall_s": 2.85
+        },
+        "5": {
+          "pieces": 900,
+          "reason": "no_candidates",
+          "capped": false,
+          "wall_s": 4.07
+        },
+        "6": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 7.16
+        },
+        "7": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 6.75
+        },
+        "8": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 8.5
+        },
+        "9": {
+          "pieces": 994,
+          "reason": "no_candidates",
+          "capped": false,
+          "wall_s": 4.98
+        },
+        "10": {
+          "pieces": 918,
+          "reason": "no_candidates",
+          "capped": false,
+          "wall_s": 4.77
+        },
+        "11": {
+          "pieces": 1453,
+          "reason": "no_candidates",
+          "capped": false,
+          "wall_s": 6.98
+        },
+        "12": {
+          "pieces": 1143,
+          "reason": "no_candidates",
+          "capped": false,
+          "wall_s": 5.28
+        },
+        "13": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 7.65
+        },
+        "14": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 8.9
+        },
+        "15": {
+          "pieces": 287,
+          "reason": "no_candidates",
+          "capped": false,
+          "wall_s": 1.89
+        },
+        "16": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 7.13
+        },
+        "17": {
+          "pieces": 887,
+          "reason": "no_candidates",
+          "capped": false,
+          "wall_s": 4.25
+        },
+        "18": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 6.91
+        },
+        "19": {
+          "pieces": 634,
+          "reason": "no_candidates",
+          "capped": false,
+          "wall_s": 2.8
+        },
+        "mean": 1089.8,
+        "median": 1068.5,
+        "deaths_lt300": 2,
+        "capped": 8
+      },
+      "holes4": {
+        "0": {
+          "pieces": 165,
+          "reason": "no_candidates",
+          "capped": false,
+          "wall_s": 0.75
+        },
+        "1": {
+          "pieces": 145,
+          "reason": "no_candidates",
+          "capped": false,
+          "wall_s": 0.67
+        },
+        "2": {
+          "pieces": 1123,
+          "reason": "no_candidates",
+          "capped": false,
+          "wall_s": 5.22
+        },
+        "3": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 7.08
+        },
+        "4": {
+          "pieces": 287,
+          "reason": "no_candidates",
+          "capped": false,
+          "wall_s": 1.29
+        },
+        "5": {
+          "pieces": 481,
+          "reason": "lockout",
+          "capped": false,
+          "wall_s": 2.32
+        },
+        "6": {
+          "pieces": 741,
+          "reason": "no_candidates",
+          "capped": false,
+          "wall_s": 3.64
+        },
+        "7": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 7.08
+        },
+        "8": {
+          "pieces": 304,
+          "reason": "no_candidates",
+          "capped": false,
+          "wall_s": 1.41
+        },
+        "9": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 7.1
+        },
+        "10": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 6.48
+        },
+        "11": {
+          "pieces": 1263,
+          "reason": "no_candidates",
+          "capped": false,
+          "wall_s": 5.19
+        },
+        "12": {
+          "pieces": 318,
+          "reason": "no_candidates",
+          "capped": false,
+          "wall_s": 1.34
+        },
+        "13": {
+          "pieces": 1184,
+          "reason": "no_candidates",
+          "capped": false,
+          "wall_s": 4.92
+        },
+        "14": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 6.33
+        },
+        "15": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 6.17
+        },
+        "16": {
+          "pieces": 428,
+          "reason": "no_candidates",
+          "capped": false,
+          "wall_s": 1.74
+        },
+        "17": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 6.18
+        },
+        "18": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 6.47
+        },
+        "19": {
+          "pieces": 534,
+          "reason": "no_candidates",
+          "capped": false,
+          "wall_s": 2.32
+        },
+        "mean": 948.6,
+        "median": 1153.5,
+        "deaths_lt300": 3,
+        "capped": 8
+      },
+      "holes6": {
+        "0": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 6.14
+        },
+        "1": {
+          "pieces": 1237,
+          "reason": "no_candidates",
+          "capped": false,
+          "wall_s": 5.28
+        },
+        "2": {
+          "pieces": 184,
+          "reason": "no_candidates",
+          "capped": false,
+          "wall_s": 0.92
+        },
+        "3": {
+          "pieces": 339,
+          "reason": "no_candidates",
+          "capped": false,
+          "wall_s": 1.42
+        },
+        "4": {
+          "pieces": 945,
+          "reason": "lockout",
+          "capped": false,
+          "wall_s": 3.87
+        },
+        "5": {
+          "pieces": 576,
+          "reason": "no_candidates",
+          "capped": false,
+          "wall_s": 2.42
+        },
+        "6": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 6.76
+        },
+        "7": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 6.43
+        },
+        "8": {
+          "pieces": 807,
+          "reason": "no_candidates",
+          "capped": false,
+          "wall_s": 3.58
+        },
+        "9": {
+          "pieces": 237,
+          "reason": "no_candidates",
+          "capped": false,
+          "wall_s": 1.05
+        },
+        "10": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 6.84
+        },
+        "11": {
+          "pieces": 98,
+          "reason": "no_candidates",
+          "capped": false,
+          "wall_s": 0.4
+        },
+        "12": {
+          "pieces": 917,
+          "reason": "no_candidates",
+          "capped": false,
+          "wall_s": 4.41
+        },
+        "13": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 7.23
+        },
+        "14": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 6.81
+        },
+        "15": {
+          "pieces": 342,
+          "reason": "no_candidates",
+          "capped": false,
+          "wall_s": 1.41
+        },
+        "16": {
+          "pieces": 1409,
+          "reason": "no_candidates",
+          "capped": false,
+          "wall_s": 6.74
+        },
+        "17": {
+          "pieces": 580,
+          "reason": "no_candidates",
+          "capped": false,
+          "wall_s": 2.57
+        },
+        "18": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 7.22
+        },
+        "19": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 6.28
+        },
+        "mean": 983.5,
+        "median": 1091.0,
+        "deaths_lt300": 3,
+        "capped": 8
+      },
+      "drought": {
+        "0": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 8.48
+        },
+        "1": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 6.36
+        },
+        "2": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 6.97
+        },
+        "3": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 6.12
+        },
+        "4": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 6.11
+        },
+        "5": {
+          "pieces": 966,
+          "reason": "no_candidates",
+          "capped": false,
+          "wall_s": 4.74
+        },
+        "6": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 7.21
+        },
+        "7": {
+          "pieces": 1013,
+          "reason": "no_candidates",
+          "capped": false,
+          "wall_s": 4.59
+        },
+        "8": {
+          "pieces": 382,
+          "reason": "no_candidates",
+          "capped": false,
+          "wall_s": 1.86
+        },
+        "9": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 6.36
+        },
+        "10": {
+          "pieces": 375,
+          "reason": "no_candidates",
+          "capped": false,
+          "wall_s": 1.75
+        },
+        "11": {
+          "pieces": 176,
+          "reason": "no_candidates",
+          "capped": false,
+          "wall_s": 0.7
+        },
+        "12": {
+          "pieces": 208,
+          "reason": "no_candidates",
+          "capped": false,
+          "wall_s": 0.84
+        },
+        "13": {
+          "pieces": 637,
+          "reason": "no_candidates",
+          "capped": false,
+          "wall_s": 2.57
+        },
+        "14": {
+          "pieces": 913,
+          "reason": "no_candidates",
+          "capped": false,
+          "wall_s": 3.9
+        },
+        "15": {
+          "pieces": 655,
+          "reason": "no_candidates",
+          "capped": false,
+          "wall_s": 2.82
+        },
+        "16": {
+          "pieces": 1420,
+          "reason": "no_candidates",
+          "capped": false,
+          "wall_s": 6.56
+        },
+        "17": {
+          "pieces": 145,
+          "reason": "no_candidates",
+          "capped": false,
+          "wall_s": 0.78
+        },
+        "18": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 7.26
+        },
+        "19": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 7.18
+        },
+        "mean": 1019.5,
+        "median": 1216.5,
+        "deaths_lt300": 3,
+        "capped": 9
+      },
+      "flat18": {
+        "0": {
+          "pieces": 123,
+          "reason": "no_candidates",
+          "capped": false,
+          "wall_s": 0.61
+        },
+        "1": {
+          "pieces": 5,
+          "reason": "no_candidates",
+          "capped": false,
+          "wall_s": 0.02
+        },
+        "2": {
+          "pieces": 6,
+          "reason": "no_candidates",
+          "capped": false,
+          "wall_s": 0.03
+        },
+        "3": {
+          "pieces": 746,
+          "reason": "no_candidates",
+          "capped": false,
+          "wall_s": 3.57
+        },
+        "4": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 6.78
+        },
+        "5": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 7.93
+        },
+        "6": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 7.76
+        },
+        "7": {
+          "pieces": 16,
+          "reason": "no_candidates",
+          "capped": false,
+          "wall_s": 0.07
+        },
+        "8": {
+          "pieces": 8,
+          "reason": "no_candidates",
+          "capped": false,
+          "wall_s": 0.03
+        },
+        "9": {
+          "pieces": 9,
+          "reason": "no_candidates",
+          "capped": false,
+          "wall_s": 0.03
+        },
+        "10": {
+          "pieces": 12,
+          "reason": "no_candidates",
+          "capped": false,
+          "wall_s": 0.05
+        },
+        "11": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 11.61
+        },
+        "12": {
+          "pieces": 15,
+          "reason": "no_candidates",
+          "capped": false,
+          "wall_s": 0.16
+        },
+        "13": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 9.09
+        },
+        "14": {
+          "pieces": 334,
+          "reason": "no_candidates",
+          "capped": false,
+          "wall_s": 1.92
+        },
+        "15": {
+          "pieces": 10,
+          "reason": "no_candidates",
+          "capped": false,
+          "wall_s": 0.05
+        },
+        "16": {
+          "pieces": 11,
+          "reason": "no_candidates",
+          "capped": false,
+          "wall_s": 0.05
+        },
+        "17": {
+          "pieces": 444,
+          "reason": "no_candidates",
+          "capped": false,
+          "wall_s": 2.4
+        },
+        "18": {
+          "pieces": 14,
+          "reason": "no_candidates",
+          "capped": false,
+          "wall_s": 0.07
+        },
+        "19": {
+          "pieces": 8,
+          "reason": "no_candidates",
+          "capped": false,
+          "wall_s": 0.05
+        },
+        "mean": 463.1,
+        "median": 15.5,
+        "deaths_lt300": 12,
+        "capped": 5
+      },
+      "holes8": {
+        "0": {
+          "pieces": 1257,
+          "reason": "no_candidates",
+          "capped": false,
+          "wall_s": 6.51
+        },
+        "1": {
+          "pieces": 1221,
+          "reason": "no_candidates",
+          "capped": false,
+          "wall_s": 6.11
+        },
+        "2": {
+          "pieces": 438,
+          "reason": "no_candidates",
+          "capped": false,
+          "wall_s": 2.01
+        },
+        "3": {
+          "pieces": 371,
+          "reason": "no_candidates",
+          "capped": false,
+          "wall_s": 1.69
+        },
+        "4": {
+          "pieces": 546,
+          "reason": "no_candidates",
+          "capped": false,
+          "wall_s": 2.46
+        },
+        "5": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 9.18
+        },
+        "6": {
+          "pieces": 890,
+          "reason": "no_candidates",
+          "capped": false,
+          "wall_s": 4.06
+        },
+        "7": {
+          "pieces": 1360,
+          "reason": "no_candidates",
+          "capped": false,
+          "wall_s": 5.81
+        },
+        "8": {
+          "pieces": 639,
+          "reason": "no_candidates",
+          "capped": false,
+          "wall_s": 2.61
+        },
+        "9": {
+          "pieces": 1423,
+          "reason": "no_candidates",
+          "capped": false,
+          "wall_s": 5.8
+        },
+        "10": {
+          "pieces": 271,
+          "reason": "no_candidates",
+          "capped": false,
+          "wall_s": 1.14
+        },
+        "11": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 6.17
+        },
+        "12": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 6.17
+        },
+        "13": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 6.11
+        },
+        "14": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 6.09
+        },
+        "15": {
+          "pieces": 713,
+          "reason": "no_candidates",
+          "capped": false,
+          "wall_s": 2.92
+        },
+        "16": {
+          "pieces": 451,
+          "reason": "no_candidates",
+          "capped": false,
+          "wall_s": 1.91
+        },
+        "17": {
+          "pieces": 115,
+          "reason": "no_candidates",
+          "capped": false,
+          "wall_s": 0.46
+        },
+        "18": {
+          "pieces": 1294,
+          "reason": "no_candidates",
+          "capped": false,
+          "wall_s": 5.37
+        },
+        "19": {
+          "pieces": 1306,
+          "reason": "no_candidates",
+          "capped": false,
+          "wall_s": 5.51
+        },
+        "mean": 989.8,
+        "median": 1239.0,
+        "deaths_lt300": 2,
+        "capped": 5
+      }
+    },
+    "loop_r1": {
+      "flat6": {
+        "0": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 6.19
+        },
+        "1": {
+          "pieces": 780,
+          "reason": "no_candidates",
+          "capped": false,
+          "wall_s": 3.19
+        },
+        "2": {
+          "pieces": 373,
+          "reason": "no_candidates",
+          "capped": false,
+          "wall_s": 1.5
+        },
+        "3": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 6.08
+        },
+        "4": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 6.16
+        },
+        "5": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 6.11
+        },
+        "6": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 6.1
+        },
+        "7": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 6.06
+        },
+        "8": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 6.15
+        },
+        "9": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 6.18
+        },
+        "10": {
+          "pieces": 926,
+          "reason": "no_candidates",
+          "capped": false,
+          "wall_s": 3.73
+        },
+        "11": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 6.1
+        },
+        "12": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 6.14
+        },
+        "13": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 6.08
+        },
+        "14": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 6.1
+        },
+        "15": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 6.12
+        },
+        "16": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 6.06
+        },
+        "17": {
+          "pieces": 444,
+          "reason": "no_candidates",
+          "capped": false,
+          "wall_s": 1.83
+        },
+        "18": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 6.15
+        },
+        "19": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 6.26
+        },
+        "mean": 1326.2,
+        "median": 1500.0,
+        "deaths_lt300": 0,
+        "capped": 16
+      },
+      "flat9": {
+        "0": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 6.09
+        },
+        "1": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 6.04
+        },
+        "2": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 6.16
+        },
+        "3": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 6.08
+        },
+        "4": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 6.14
+        },
+        "5": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 6.16
+        },
+        "6": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 6.11
+        },
+        "7": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 5.94
+        },
+        "8": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 6.09
+        },
+        "9": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 6.11
+        },
+        "10": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 6.16
+        },
+        "11": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 6.17
+        },
+        "12": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 6.16
+        },
+        "13": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 6.1
+        },
+        "14": {
+          "pieces": 915,
+          "reason": "no_candidates",
+          "capped": false,
+          "wall_s": 3.72
+        },
+        "15": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 6.05
+        },
+        "16": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 6.03
+        },
+        "17": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 5.99
+        },
+        "18": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 6.0
+        },
+        "19": {
+          "pieces": 1111,
+          "reason": "lockout",
+          "capped": false,
+          "wall_s": 4.5
+        },
+        "mean": 1451.3,
+        "median": 1500.0,
+        "deaths_lt300": 0,
+        "capped": 18
+      },
+      "flat12": {
+        "0": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 6.14
+        },
+        "1": {
+          "pieces": 1027,
+          "reason": "lockout",
+          "capped": false,
+          "wall_s": 4.13
+        },
+        "2": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 6.58
+        },
+        "3": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 6.2
+        },
+        "4": {
+          "pieces": 762,
+          "reason": "no_candidates",
+          "capped": false,
+          "wall_s": 3.03
+        },
+        "5": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 6.0
+        },
+        "6": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 6.07
+        },
+        "7": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 6.11
+        },
+        "8": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 5.99
+        },
+        "9": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 6.0
+        },
+        "10": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 6.19
+        },
+        "11": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 6.06
+        },
+        "12": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 6.06
+        },
+        "13": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 6.0
+        },
+        "14": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 6.09
+        },
+        "15": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 6.04
+        },
+        "16": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 6.03
+        },
+        "17": {
+          "pieces": 1147,
+          "reason": "no_candidates",
+          "capped": false,
+          "wall_s": 4.81
+        },
+        "18": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 6.73
+        },
+        "19": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 6.05
+        },
+        "mean": 1421.8,
+        "median": 1500.0,
+        "deaths_lt300": 0,
+        "capped": 17
+      },
+      "flat15": {
+        "0": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 6.32
+        },
+        "1": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 6.9
+        },
+        "2": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 6.15
+        },
+        "3": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 6.17
+        },
+        "4": {
+          "pieces": 1165,
+          "reason": "no_candidates",
+          "capped": false,
+          "wall_s": 4.77
+        },
+        "5": {
+          "pieces": 109,
+          "reason": "no_candidates",
+          "capped": false,
+          "wall_s": 0.42
+        },
+        "6": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 5.99
+        },
+        "7": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 6.02
+        },
+        "8": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 6.09
+        },
+        "9": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 6.1
+        },
+        "10": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 6.02
+        },
+        "11": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 6.07
+        },
+        "12": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 6.12
+        },
+        "13": {
+          "pieces": 1090,
+          "reason": "no_candidates",
+          "capped": false,
+          "wall_s": 4.52
+        },
+        "14": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 6.12
+        },
+        "15": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 6.15
+        },
+        "16": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 6.03
+        },
+        "17": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 6.03
+        },
+        "18": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 6.05
+        },
+        "19": {
+          "pieces": 1388,
+          "reason": "no_candidates",
+          "capped": false,
+          "wall_s": 5.58
+        },
+        "mean": 1387.6,
+        "median": 1500.0,
+        "deaths_lt300": 1,
+        "capped": 16
+      },
+      "rand9": {
+        "0": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 6.03
+        },
+        "1": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 6.2
+        },
+        "2": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 6.24
+        },
+        "3": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 6.13
+        },
+        "4": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 6.32
+        },
+        "5": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 5.94
+        },
+        "6": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 6.17
+        },
+        "7": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 6.05
+        },
+        "8": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 6.2
+        },
+        "9": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 6.16
+        },
+        "10": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 6.15
+        },
+        "11": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 6.13
+        },
+        "12": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 6.16
+        },
+        "13": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 6.09
+        },
+        "14": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 6.08
+        },
+        "15": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 6.16
+        },
+        "16": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 6.07
+        },
+        "17": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 6.06
+        },
+        "18": {
+          "pieces": 810,
+          "reason": "no_candidates",
+          "capped": false,
+          "wall_s": 3.29
+        },
+        "19": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 6.13
+        },
+        "mean": 1465.5,
+        "median": 1500.0,
+        "deaths_lt300": 0,
+        "capped": 19
+      },
+      "rand12": {
+        "0": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 6.03
+        },
+        "1": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 6.0
+        },
+        "2": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 6.13
+        },
+        "3": {
+          "pieces": 663,
+          "reason": "no_candidates",
+          "capped": false,
+          "wall_s": 2.83
+        },
+        "4": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 6.06
+        },
+        "5": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 6.01
+        },
+        "6": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 5.98
+        },
+        "7": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 5.98
+        },
+        "8": {
+          "pieces": 455,
+          "reason": "no_candidates",
+          "capped": false,
+          "wall_s": 1.82
+        },
+        "9": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 6.02
+        },
+        "10": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 6.08
+        },
+        "11": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 6.01
+        },
+        "12": {
+          "pieces": 1125,
+          "reason": "no_candidates",
+          "capped": false,
+          "wall_s": 4.57
+        },
+        "13": {
+          "pieces": 33,
+          "reason": "no_candidates",
+          "capped": false,
+          "wall_s": 0.14
+        },
+        "14": {
+          "pieces": 907,
+          "reason": "no_candidates",
+          "capped": false,
+          "wall_s": 3.66
+        },
+        "15": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 6.01
+        },
+        "16": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 6.2
+        },
+        "17": {
+          "pieces": 1046,
+          "reason": "no_candidates",
+          "capped": false,
+          "wall_s": 4.26
+        },
+        "18": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 6.05
+        },
+        "19": {
+          "pieces": 717,
+          "reason": "no_candidates",
+          "capped": false,
+          "wall_s": 2.97
+        },
+        "mean": 1222.3,
+        "median": 1500.0,
+        "deaths_lt300": 1,
+        "capped": 13
+      },
+      "holes2": {
+        "0": {
+          "pieces": 191,
+          "reason": "no_candidates",
+          "capped": false,
+          "wall_s": 0.92
+        },
+        "1": {
+          "pieces": 74,
+          "reason": "no_candidates",
+          "capped": false,
+          "wall_s": 0.3
+        },
+        "2": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 6.04
+        },
+        "3": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 5.95
+        },
+        "4": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 6.06
+        },
+        "5": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 6.12
+        },
+        "6": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 6.17
+        },
+        "7": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 6.16
+        },
+        "8": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 6.09
+        },
+        "9": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 6.09
+        },
+        "10": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 6.2
+        },
+        "11": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 6.14
+        },
+        "12": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 6.02
+        },
+        "13": {
+          "pieces": 1215,
+          "reason": "no_candidates",
+          "capped": false,
+          "wall_s": 4.94
+        },
+        "14": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 6.84
+        },
+        "15": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 10.2
+        },
+        "16": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 7.98
+        },
+        "17": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 6.8
+        },
+        "18": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 7.23
+        },
+        "19": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 7.01
+        },
+        "mean": 1349.0,
+        "median": 1500.0,
+        "deaths_lt300": 2,
+        "capped": 17
+      },
+      "holes4": {
+        "0": {
+          "pieces": 134,
+          "reason": "no_candidates",
+          "capped": false,
+          "wall_s": 0.62
+        },
+        "1": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 6.55
+        },
+        "2": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 6.41
+        },
+        "3": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 6.45
+        },
+        "4": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 7.9
+        },
+        "5": {
+          "pieces": 157,
+          "reason": "no_candidates",
+          "capped": false,
+          "wall_s": 0.75
+        },
+        "6": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 7.42
+        },
+        "7": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 7.13
+        },
+        "8": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 6.75
+        },
+        "9": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 6.45
+        },
+        "10": {
+          "pieces": 603,
+          "reason": "no_candidates",
+          "capped": false,
+          "wall_s": 2.61
+        },
+        "11": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 6.41
+        },
+        "12": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 6.72
+        },
+        "13": {
+          "pieces": 957,
+          "reason": "no_candidates",
+          "capped": false,
+          "wall_s": 4.29
+        },
+        "14": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 6.36
+        },
+        "15": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 6.38
+        },
+        "16": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 6.33
+        },
+        "17": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 6.29
+        },
+        "18": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 6.36
+        },
+        "19": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 6.3
+        },
+        "mean": 1292.5,
+        "median": 1500.0,
+        "deaths_lt300": 2,
+        "capped": 16
+      },
+      "holes6": {
+        "0": {
+          "pieces": 1221,
+          "reason": "no_candidates",
+          "capped": false,
+          "wall_s": 5.22
+        },
+        "1": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 6.37
+        },
+        "2": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 6.46
+        },
+        "3": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 6.69
+        },
+        "4": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 6.58
+        },
+        "5": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 6.95
+        },
+        "6": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 6.89
+        },
+        "7": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 6.61
+        },
+        "8": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 6.94
+        },
+        "9": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 6.62
+        },
+        "10": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 6.79
+        },
+        "11": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 6.47
+        },
+        "12": {
+          "pieces": 137,
+          "reason": "lockout",
+          "capped": false,
+          "wall_s": 0.59
+        },
+        "13": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 6.27
+        },
+        "14": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 6.35
+        },
+        "15": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 6.31
+        },
+        "16": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 6.39
+        },
+        "17": {
+          "pieces": 291,
+          "reason": "no_candidates",
+          "capped": false,
+          "wall_s": 1.24
+        },
+        "18": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 6.49
+        },
+        "19": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 6.52
+        },
+        "mean": 1357.5,
+        "median": 1500.0,
+        "deaths_lt300": 2,
+        "capped": 17
+      },
+      "drought": {
+        "0": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 6.49
+        },
+        "1": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 6.38
+        },
+        "2": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 6.29
+        },
+        "3": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 6.29
+        },
+        "4": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 6.3
+        },
+        "5": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 6.34
+        },
+        "6": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 6.45
+        },
+        "7": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 6.27
+        },
+        "8": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 6.31
+        },
+        "9": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 6.52
+        },
+        "10": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 6.98
+        },
+        "11": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 6.75
+        },
+        "12": {
+          "pieces": 390,
+          "reason": "no_candidates",
+          "capped": false,
+          "wall_s": 1.73
+        },
+        "13": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 6.33
+        },
+        "14": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 6.4
+        },
+        "15": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 6.36
+        },
+        "16": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 6.37
+        },
+        "17": {
+          "pieces": 107,
+          "reason": "no_candidates",
+          "capped": false,
+          "wall_s": 0.45
+        },
+        "18": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 6.52
+        },
+        "19": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 6.55
+        },
+        "mean": 1374.8,
+        "median": 1500.0,
+        "deaths_lt300": 1,
+        "capped": 18
+      },
+      "flat18": {
+        "0": {
+          "pieces": 8,
+          "reason": "no_candidates",
+          "capped": false,
+          "wall_s": 0.03
+        },
+        "1": {
+          "pieces": 5,
+          "reason": "no_candidates",
+          "capped": false,
+          "wall_s": 0.02
+        },
+        "2": {
+          "pieces": 4,
+          "reason": "no_candidates",
+          "capped": false,
+          "wall_s": 0.02
+        },
+        "3": {
+          "pieces": 4,
+          "reason": "no_candidates",
+          "capped": false,
+          "wall_s": 0.02
+        },
+        "4": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 6.52
+        },
+        "5": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 6.47
+        },
+        "6": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 6.68
+        },
+        "7": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 6.42
+        },
+        "8": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 6.47
+        },
+        "9": {
+          "pieces": 4,
+          "reason": "no_candidates",
+          "capped": false,
+          "wall_s": 0.01
+        },
+        "10": {
+          "pieces": 11,
+          "reason": "no_candidates",
+          "capped": false,
+          "wall_s": 0.04
+        },
+        "11": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 6.32
+        },
+        "12": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 6.36
+        },
+        "13": {
+          "pieces": 17,
+          "reason": "no_candidates",
+          "capped": false,
+          "wall_s": 0.07
+        },
+        "14": {
+          "pieces": 69,
+          "reason": "no_candidates",
+          "capped": false,
+          "wall_s": 0.29
+        },
+        "15": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 6.3
+        },
+        "16": {
+          "pieces": 16,
+          "reason": "no_candidates",
+          "capped": false,
+          "wall_s": 0.06
+        },
+        "17": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 6.29
+        },
+        "18": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 6.42
+        },
+        "19": {
+          "pieces": 8,
+          "reason": "no_candidates",
+          "capped": false,
+          "wall_s": 0.04
+        },
+        "mean": 757.3,
+        "median": 784.5,
+        "deaths_lt300": 10,
+        "capped": 10
+      },
+      "holes8": {
+        "0": {
+          "pieces": 804,
+          "reason": "no_candidates",
+          "capped": false,
+          "wall_s": 3.62
+        },
+        "1": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 7.85
+        },
+        "2": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 6.37
+        },
+        "3": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 6.23
+        },
+        "4": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 6.33
+        },
+        "5": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 6.23
+        },
+        "6": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 6.39
+        },
+        "7": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 6.28
+        },
+        "8": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 6.41
+        },
+        "9": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 6.51
+        },
+        "10": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 6.52
+        },
+        "11": {
+          "pieces": 1168,
+          "reason": "no_candidates",
+          "capped": false,
+          "wall_s": 5.38
+        },
+        "12": {
+          "pieces": 320,
+          "reason": "no_candidates",
+          "capped": false,
+          "wall_s": 1.45
+        },
+        "13": {
+          "pieces": 500,
+          "reason": "no_candidates",
+          "capped": false,
+          "wall_s": 2.16
+        },
+        "14": {
+          "pieces": 972,
+          "reason": "no_candidates",
+          "capped": false,
+          "wall_s": 4.22
+        },
+        "15": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 6.4
+        },
+        "16": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 6.37
+        },
+        "17": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 6.23
+        },
+        "18": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 6.3
+        },
+        "19": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 6.31
+        },
+        "mean": 1313.2,
+        "median": 1500.0,
+        "deaths_lt300": 0,
+        "capped": 15
+      }
+    }
+  },
+  "arm_sha": {
+    "snap11": "23006b0ff8f911c4",
+    "snap10": "9989ce86390bcba6",
+    "loop_r1": "0a911369d8107f47"
+  },
+  "games": 20,
+  "master_seed": 202600,
+  "paired_vs_snap11": {
+    "snap10": {
+      "flat6": {
+        "delta": -366.6,
+        "t": -2.74,
+        "wins": 1,
+        "losses": 10
+      },
+      "flat9": {
+        "delta": -12.5,
+        "t": -0.1,
+        "wins": 4,
+        "losses": 5
+      },
+      "flat12": {
+        "delta": -427.6,
+        "t": -3.38,
+        "wins": 2,
+        "losses": 10
+      },
+      "flat15": {
+        "delta": -349.0,
+        "t": -2.28,
+        "wins": 1,
+        "losses": 12
+      },
+      "rand9": {
+        "delta": -262.1,
+        "t": -1.99,
+        "wins": 3,
+        "losses": 10
+      },
+      "rand12": {
+        "delta": -301.4,
+        "t": -2.1,
+        "wins": 1,
+        "losses": 9
+      },
+      "holes2": {
+        "delta": -185.9,
+        "t": -1.56,
+        "wins": 3,
+        "losses": 10
+      },
+      "holes4": {
+        "delta": -355.5,
+        "t": -2.48,
+        "wins": 2,
+        "losses": 10
+      },
+      "holes6": {
+        "delta": -225.9,
+        "t": -1.48,
+        "wins": 4,
+        "losses": 10
+      },
+      "drought": {
+        "delta": -343.6,
+        "t": -2.19,
+        "wins": 2,
+        "losses": 11
+      },
+      "flat18": {
+        "delta": -296.1,
+        "t": -1.53,
+        "wins": 5,
+        "losses": 10
+      },
+      "holes8": {
+        "delta": -448.6,
+        "t": -3.46,
+        "wins": 2,
+        "losses": 14
+      }
+    },
+    "loop_r1": {
+      "flat6": {
+        "delta": -119.3,
+        "t": -1.14,
+        "wins": 1,
+        "losses": 4
+      },
+      "flat9": {
+        "delta": 109.0,
+        "t": 1.23,
+        "wins": 3,
+        "losses": 2
+      },
+      "flat12": {
+        "delta": -58.4,
+        "t": -1.19,
+        "wins": 2,
+        "losses": 3
+      },
+      "flat15": {
+        "delta": 136.7,
+        "t": 1.03,
+        "wins": 4,
+        "losses": 2
+      },
+      "rand9": {
+        "delta": 93.8,
+        "t": 1.09,
+        "wins": 3,
+        "losses": 1
+      },
+      "rand12": {
+        "delta": -206.2,
+        "t": -1.58,
+        "wins": 1,
+        "losses": 7
+      },
+      "holes2": {
+        "delta": 73.2,
+        "t": 0.57,
+        "wins": 5,
+        "losses": 3
+      },
+      "holes4": {
+        "delta": -11.6,
+        "t": -0.08,
+        "wins": 4,
+        "losses": 3
+      },
+      "holes6": {
+        "delta": 148.0,
+        "t": 1.3,
+        "wins": 7,
+        "losses": 3
+      },
+      "drought": {
+        "delta": 11.7,
+        "t": 0.09,
+        "wins": 3,
+        "losses": 2
+      },
+      "flat18": {
+        "delta": -1.9,
+        "t": -0.01,
+        "wins": 4,
+        "losses": 5
+      },
+      "holes8": {
+        "delta": -125.1,
+        "t": -1.38,
+        "wins": 1,
+        "losses": 5
+      }
+    }
+  }
+}

@@ -1,0 +1,217 @@
+{
+  "note": "Randomized recovery suite (read-only diagnostic; not a gate); identical start boards across arms; TAP pieces; cap 1500.",
+  "arms": {
+    "snap11": {
+      "flat9": {
+        "0": {
+          "pieces": 1445,
+          "reason": "no_candidates",
+          "capped": false,
+          "wall_s": 9.56
+        },
+        "1": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 9.53
+        },
+        "2": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 9.96
+        },
+        "3": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 9.53
+        },
+        "mean": 1486.2,
+        "median": 1500.0,
+        "deaths_lt300": 0,
+        "capped": 3
+      },
+      "holes4": {
+        "0": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 10.54
+        },
+        "1": {
+          "pieces": 728,
+          "reason": "no_candidates",
+          "capped": false,
+          "wall_s": 4.71
+        },
+        "2": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 9.78
+        },
+        "3": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 9.72
+        },
+        "mean": 1307.0,
+        "median": 1500.0,
+        "deaths_lt300": 0,
+        "capped": 3
+      },
+      "drought": {
+        "0": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 10.68
+        },
+        "1": {
+          "pieces": 1195,
+          "reason": "no_candidates",
+          "capped": false,
+          "wall_s": 9.28
+        },
+        "2": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 12.17
+        },
+        "3": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 12.65
+        },
+        "mean": 1423.8,
+        "median": 1500.0,
+        "deaths_lt300": 0,
+        "capped": 3
+      }
+    },
+    "snap10": {
+      "flat9": {
+        "0": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 14.52
+        },
+        "1": {
+          "pieces": 1045,
+          "reason": "no_candidates",
+          "capped": false,
+          "wall_s": 12.15
+        },
+        "2": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 19.2
+        },
+        "3": {
+          "pieces": 810,
+          "reason": "no_candidates",
+          "capped": false,
+          "wall_s": 8.19
+        },
+        "mean": 1213.8,
+        "median": 1272.5,
+        "deaths_lt300": 0,
+        "capped": 2
+      },
+      "holes4": {
+        "0": {
+          "pieces": 165,
+          "reason": "no_candidates",
+          "capped": false,
+          "wall_s": 2.15
+        },
+        "1": {
+          "pieces": 145,
+          "reason": "no_candidates",
+          "capped": false,
+          "wall_s": 1.65
+        },
+        "2": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 11.73
+        },
+        "3": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 11.24
+        },
+        "mean": 827.5,
+        "median": 832.5,
+        "deaths_lt300": 2,
+        "capped": 2
+      },
+      "drought": {
+        "0": {
+          "pieces": 1500,
+          "reason": "max_pieces",
+          "capped": true,
+          "wall_s": 11.46
+        },
+        "1": {
+          "pieces": 891,
+          "reason": "no_candidates",
+          "capped": false,
+          "wall_s": 6.76
+        },
+        "2": {
+          "pieces": 939,
+          "reason": "no_candidates",
+          "capped": false,
+          "wall_s": 6.72
+        },
+        "3": {
+          "pieces": 984,
+          "reason": "lockout",
+          "capped": false,
+          "wall_s": 7.35
+        },
+        "mean": 1078.5,
+        "median": 961.5,
+        "deaths_lt300": 0,
+        "capped": 1
+      }
+    }
+  },
+  "arm_sha": {
+    "snap11": "23006b0ff8f911c4",
+    "snap10": "9989ce86390bcba6"
+  },
+  "games": 4,
+  "master_seed": 202600,
+  "paired_vs_snap11": {
+    "snap10": {
+      "flat9": {
+        "delta": -272.5,
+        "t": -1.51,
+        "wins": 1,
+        "losses": 2
+      },
+      "holes4": {
+        "delta": -479.5,
+        "t": -1.51,
+        "wins": 0,
+        "losses": 2
+      },
+      "drought": {
+        "delta": -345.2,
+        "t": -2.7,
+        "wins": 0,
+        "losses": 3
+      }
+    }
+  }
+}

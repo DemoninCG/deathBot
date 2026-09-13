@@ -45,6 +45,10 @@ ARMS = {
     "cool30lam10": {"abort_top": 16, "abort_occ": 110, "reenter_occ": 60, "cooldown": 30, "lam": 10.0},
     "cool30lam20": {"abort_top": 16, "abort_occ": 110, "reenter_occ": 60, "cooldown": 30, "lam": 20.0},
     "cool30lam30": {"abort_top": 16, "abort_occ": 110, "reenter_occ": 60, "cooldown": 30, "lam": 30.0},
+    "watch80": {"abort_top": 16, "abort_occ": 110, "reenter_occ": 60, "cooldown": 30, "lam": 10.0, "progress_patience": 80},
+    "reentry_cert": {"abort_top": 16, "abort_occ": 110, "reenter_occ": 60, "reenter_top": 10,
+                     "reenter_holes": 2, "reentry_min_progress": 1.0, "cooldown": 30, "lam": 10.0},
+    "a120_r50": {"abort_top": 16, "abort_occ": 120, "reenter_occ": 50, "cooldown": 30, "lam": 10.0},
 }
 
 def resolve(p: str) -> Path:

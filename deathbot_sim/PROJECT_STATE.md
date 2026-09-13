@@ -21,8 +21,16 @@ seeds; §49.4 answers), the §50 soup/ensemble screen (safe, no
 promotion, pooled n=90), and the §51 dose sweep + gen-2 teacher swap
 (LR axis closed; fs2ply teacher gate-passed; gen-2 GATE PASSED); and
 2026-09-12 with the §51.4 promotion (gen2_seed44 PROMOTED at t+5.97,
-cap-3000 n=100 — **snapshot11 is the new 1-ply champion**). Intended
-as a complete briefing for a fresh reviewer (human or AI) so no
+cap-3000 n=100 — **snapshot11 is the new 1-ply champion**); and
+2026-09-13 with the §52.7 loop-gen-2 completion (r1 ADOPT, r2 REVERT,
+r3 ADOPT, r4 genuine exhaustion at 242 new-targets) and the §52.8 final
+gate (G1 +294.4 t+2.20 AND G2 +42.6 t+1.23, both PASS →
+PROMOTE-TO-5400-PANEL, user-gated); and
+2026-09-13 with the §52.9 promotion (_loop2_champ_r3 PROMOTED at t+2.75,
+cap-3000 n=100 — **snapshot12 is the new 1-ply champion**); and
+2026-09-13 with the §53 snapshot12 style re-examination (λ10 knee
+gate-passed at 1.07–1.30 T/100, cross re-gated at +1.87 t+3.34).
+Intended as a complete briefing for a fresh reviewer (human or AI) so no
 context is lost.*
 
 **Where things stand (2026-09-11):** survival is solved by
@@ -4231,9 +4239,10 @@ nor hurts at this scale.
    verdict above, expected gain is small. No further soups without a new
    mechanism.
 
-Standing configs: **1-ply champion = snapshot11 ≡ gen2_seed44** (sha
-`23006b0ff8f911c4`; +768 t+5.97 vs snapshot10 at cap-3000 n=100, §51.4);
-fallback = snapshot10 ≡ fullsplit_seed42; survival 2-ply =
+Standing configs: **1-ply champion = snapshot12 ≡ _loop2_champ_r3** (sha
+`471685c2a717d62b`; +283.2 t+2.75 vs snapshot11 at cap-3000 n=100, §52.9);
+fallback = snapshot11 ≡ gen2_seed44 (prev champion); snapshot10 ≡
+fullsplit_seed42 retained; survival 2-ply =
 snapshot9 + full 2-ply (b8_diverse operating); stylish = corrected
 cool30lam10. Artifacts added:
 `python/_distill_soup.py`, `python/_soup_vs_members.py`,
@@ -4413,3 +4422,586 @@ Artifacts (cumulative for §51): `python/_cache_teacher_labels.py` +
 `model_weights_snapshot11.pt` (NEW CHAMPION).
 Panels consumed: 21110–21139 (gate), 5300–5399 (promotion; next free
 **5400+**); 26000s/31000s reporting only; dev free **21150+**.
+
+## 52. Gen-3 probe + continuous self-distillation loop + hard-benchmark
+program (2026-09-12 evening)
+
+### 52.1 Gen-3 probe — the loop has fuel, but it is thinning
+
+`python/_teacherN_probe.py` (generalized probe; student = teacher file
+= snapshot11, old labels = gen-2's fs2ply) →
+`_diag_out/_teacher3_probe.json`. GATE PASSED, second generation
+running:
+
+| metric | gen-2 probe | gen-3 probe | gate |
+|---|---:|---:|---|
+| teacher-teacher agreement | 0.890 | **0.941** | (contracting) |
+| student-vs-new dis | 17.8% | **15.5%** (3,575) | ≥5% pass |
+| NEW targets | 782 | **559** | ≥300 pass |
+| afford median | −1.1 | **−1.05** | >−8 pass (0 ≤−20) |
+
+Shape: information gets deeper-but-thinner each generation — the
+expected signature of a converging self-improvement loop. snapshot11's
+2-ply labels cached (`_teacher_labels_snap11_bank.npz`).
+
+### 52.2 Continuous self-distillation loop — LAUNCHED, then user-PAUSED
+for a full plan audit
+
+`python/_selfdistill_loop.py` → `_diag_out/_selfdistill_loop.json`.
+Per cycle: label working champion's own 2-ply on the bank → re-gate vs
+PREVIOUS cycle's labels (dis ≥5%, new-targets ≥300, afford median >−8;
+FAIL = information exhausted = stop) → validated-dose burst (lr 1e-4 ×
+1200 × 256, schedule seeds 45+) → cap-3000 30-tape screen vs pre-burst
+champion (ADOPT iff delta >−100 AND t >−1.5 — a safety net against
+damage, NOT a promotion criterion) → adopt writes `_loop_champ_rN.pt`
+in `_diag_out` only. Stops: gate fail | 2 consecutive non-adoptions |
+max cycles | 7.5 h deadline. NEVER touches lineage files
+(`model_weights_snapshot11.pt` etc.). Dev seeds advance 30/cycle from
+21150.
+
+Status at pause (2026-09-12 late evening): cycle 1 labeled + gate PASS
+(same numbers as the §52.1 probe — expected; same champion, same bank) +
+burst in flight (step 800/1200, loss 0.369, dW 2.64 — healthy, same
+signature as the promoted gen-2 fits). **The user asked to STOP after
+cycle 1 completes and audit the full plan before restarting.**
+
+**Interrupt safety (verified against the code):** YES — Ctrl+C (or
+`Stop-Process -Id <loop_pid>`) after cycle 1's screen lands is safe.
+Every stage writes `_selfdistill_loop.json` incrementally BEFORE the
+next stage starts; the only interrupt-loss windows are (a) mid-burst
+(the burst checkpoint saves only after all 1200 steps — interrupting
+mid-burst loses that fit, nothing else; cycle-1 labels are already on
+disk and reused on resume), and (b) mid-screen (the two 30-tape evals
+are lost, ~2 min). The JSON's `current_champion` /
+`next_dev_seed` / per-cycle records are complete after the screen, so a
+resume continues cleanly from cycle 2 with the adopted-or-reverted
+champion. Recommended interruption point: after the `r1 screen:` line
+prints (adopt/revert recorded). One cosmetic gap: the running process
+holds pre-edit code without the `cycle1_complete` marker — irrelevant
+unless resuming, where the marker (and the edit) take effect. The chain
+waiter (`_chain_recovery.py`, PID 13688/6288) should be stopped FIRST
+if the intent is "no recovery suite yet" — otherwise it fires the full
+recovery suite the moment cycle 1 completes (see §52.3).
+
+**Known design gaps for the audit (recorded before the restart, per the
+project's premature-conclusion discipline):**
+1. **Stale state distribution.** The loop trains on the snapshot9-era
+   bank (23,016 states from 32 normal games). As the champion improves,
+   its real state distribution diverges; the bank under-covers
+   long-game/recovery states where the champion now lives (61% cap-3000).
+   Fix available: per-cycle (or per-k-cycle) bank refresh — play the
+   current champion, bank its decision states (`diag_student_aggregate.py`
+   machinery), label, fit on fresh+bank mix.
+2. **No hard-state curriculum.** The loop currently learns NOTHING about
+   recovery boards (see §52.3). User explicitly wants the loop to LEARN
+   them: play-from-hard-starts → bank → label → mix (e.g. 70% bank +
+   30% recovery states) is the next loop generation's defining feature.
+3. **Screen adopts zero-gain bursts.** The adopt rule (delta >−100)
+   keeps a burst whose only effect is pulling the champion toward
+   already-extracted labels. Cheap fix on resume: require delta ≥ 0
+   (not just >−100) OR add a small positive bar.
+4. **Label cache duplication in cycle 1** (the loop re-labeled despite
+   the probe's cache — a path-semantics mismatch; ~25 min wasted once;
+   later cycles genuinely need fresh labels of their own champion).
+5. **Dev-seed budget.** 30 tapes/cycle × up to 8 cycles = up to 240 dev
+   tapes (21150–21389). Fine, but the final fresh-panel gate must use
+   the NEXT untouched range after whatever the loop consumed.
+6. **Gate thresholds** (dis ≥5%, new ≥300, afford >−8) were inherited
+   from gen-2's one-shot decision, not re-derived for a continuous loop.
+   The audit should re-examine them (e.g., new-targets ≥ 200? afford
+   percentile instead of median?).
+
+### 52.3 Randomized recovery suite — built, smoke-tested, board-geometry
+bug FIXED, chained then paused
+
+`python/_recovery_suite.py` (read-only diagnostic; not a gate).
+Motivation: gen-2's gain concentrates in long-game survival (cap-3000
+61% vs 18%), cap-1500 saturates, and the style program (height-adjusted
+λ, cool30lam10 re-gate) needs to know WHERE the champion recovers better
+before any λ work. Suites (20 games each, per-game boards from a seeded
+RNG, IDENTICAL across arms — fully paired):
+  flat{6,9,12,15} — fixed-height flat stacks (dig ladder)
+  rand{9,12}      — random per-column heights in [base−2, base+2]
+  holes{2,4,6}    — height-12 stacks with k random buried holes
+  drought         — height-9 stack, first 6 queue pieces forced non-I
+  Board-geometry guarantee (user catch, 2026-09-12): every stack leaves
+  ONE RANDOM EMPTY COLUMN — otherwise all-flat stacks contain complete
+  rows that auto-clear on the first lock (the first smoke test's
+  universal 1500s was exactly this bug). Verified: no generated board
+  has a complete row; `flat9` renders as nine 9-high columns + one
+  empty column; holes render as real buried gaps.
+Smoke results (n=4, post-fix, snap11 vs snap10): flat9 +272.5; holes4
++479.5 (snap10 2/4 outright deaths); drought +345.2 t−2.70 W/L 0/3 —
+the recovery advantage is large and consistent in every band; drought
+recovery differentiates most. Full suite: `_chain_recovery.py` polls
+the loop JSON and fires `_recovery_suite.py` when cycle 1's screen
+lands — **but per the user's pause decision, the waiter should be
+stopped (PIDs 13688/6288) if the audit should precede it; the suite can
+also run independently any time** (`python/_recovery_suite.py
+--weights ../../model_weights_snapshot11.pt ../../
+model_weights_snapshot10.pt --names snap11 snap10`).
+
+### 52.4 Hard-benchmark plan (user direction) — recorded for the audit
+
+Premise (user): the champion will saturate cap-3000 soon; make gameplay
+harder. Two distinct axes, deliberately separated:
+  A. RECOVERY SUITES (built, §52.3): keep TAP distribution, seed bad
+     positions. Isolates recovery skill; fully paired; feeds the style
+     program's λ-band work. NOT comparability-breaking.
+  B. PIECE-DISTRIBUTION BENCHMARK (designed, not built): pure-random
+     pieces (drop-in queue swap; piece RNG already per-game-seeded).
+     Changes the TASK (TAP's 4-piece history reroll is part of the game
+     definition) — adopt as a SEPARATE labeled axis ("random-pieces"
+     panels reported alongside TAP panels), never replacing the TAP
+     benchmark, since all promotion gates are defined on TAP tapes.
+     Purpose: stress drought handling; test whether the gen-2 gain is
+     robust policy or history-reroll exploitation.
+  C. HARD-STATE CURRICULUM (§52.2 item 2): not a benchmark — changes
+     what the loop trains on. Sequenced AFTER A (measure where recovery
+     fails before curriculum-ing those states).
+
+### 52.5 Audit checklist for the restart decision (user-owned)
+
+1. Loop restart parameters: max cycles, deadline, adopt rule (upgrade to
+   delta ≥ 0?), gate thresholds, cycle budget.
+2. Bank refresh cadence (§52.2 item 1) and hard-state mixing ratio
+   (§52.2 item 2; needs the recovery suite's first full results to pick
+   the failure bands).
+3. Recovery suite: run before or after restart? (It measures the
+   CURRENT champion either way; n=20/suite; ~40–70 min.)
+4. Style program sequencing: cool30lam10 re-gate + height-band λ on the
+   loop-final chassis only (no point re-gating on a moving chassis).
+5. Fresh-panel gate + promotion panel policy for the loop's output
+   (which range, which n, pre-registered rule BEFORE restarting).
+6. Panel accounting: dev seeds consumed by tonight's run (21150–21179
+   by cycle 1; +30/cycle after), next free ranges.
+
+### 52.6 Audit DONE — fixes landed, suite running, restart gated on loop-gen-2 (2026-09-12 night)
+
+User ran the §52.5 audit. Findings + fixes (all in code, tested):
+
+1. **BUG (fixed): recovery suite played a preview-blind policy.**
+   `play_recovery_game` called `score_batch_fast` unconditionally,
+   duplicating cur into both slots and discarding the true preview —
+   while the survival screens (`NeuralScorer.score_batch`) use the true
+   preview whenever cur ≠ nxt (almost always at 1-ply). Suite-vs-
+   survival comparisons were confounded. Now true-preview forward,
+   matching the sweep harness; pinned by
+   `tests/test_recovery_suite.py` (6 tests: harness-parity on every
+   suite's first decision, no-fast-path spy test, no-complete-rows,
+   determinism, drought-queue, termination). Same unconditional-`fast`
+   pattern fixed in the loop's affordability metric and
+   `_teacherN_probe.py` (metric-only there, but consistent now).
+2. **Loop learns no recovery states (structural, not a bug).** The fit
+   pool is games 0–23 of the snapshot9-era normal-game bank; the suite
+   is read-only. Restart approved ONLY as loop-gen-2: mixed bank
+   (normal + play-from-hard-start states, ~70/30 starting point, bands
+   picked from the suite results below) + dual screen (survival tapes
+   + recovery leg). No piece-distribution work leaked in anywhere
+   (suite is TAP + 6-forced-non-I drought prefix; §52.4-B stays a
+   design note).
+3. **Adopt rule tightened: delta >= 0 AND t > -1.5** (was > -100 —
+   kept true-zero sideways drifts). Revert costs nothing (labels still
+   advance). All later cycles run the tightened rule (cycle 1 adopted
+   under the old rule at +63.7 t+0.33 — would adopt under either).
+4. **Suite hardened:** `flat18` + `holes8` near-death band appended
+   (E4/§41 rescue evidence lives at occ-80+, old ladder topped at 15);
+   append-only order (indices feed per-game seeds); `_chain_recovery.py`
+   now measures `_loop_champ_r1.pt` alongside snap11/snap10 (the old
+   chain measured the pre-burst champion even after adoption); suite
+   JSON carries the separate-RNG tape-convention warning (§33).
+5. **Not changed (deliberately):** single empty column kept for now —
+   replacing it with top-row knockouts is recommended before these
+   boards become *training* starts (dig-to-empty-column is a learnable
+   artifact), but valid for measurement. Gate thresholds unchanged
+   (contracting agreement 0.890→0.941 says the loop converges; revisit
+   if a cycle gates marginal). Style program stays sequenced after the
+   loop on the loop-final chassis.
+6. **Panel accounting:** recovery suite uses its own 202600 seed space
+   (no dev panels consumed). Loop dev: 21150–21179 (cycle 1);
+   21180+ next. Promotion reserve 5400+ untouched.
+
+Full suite (`_recovery_suite.json`, 12 suites × 20 games × 3 arms:
+snap11 / snap10 / loop_r1, true-preview policy): DONE 2026-09-12 night
+(720 games, cap 1500, fully paired on 202600 seed space):
+
+| suite | snap11 (cap) | snap10 (cap) | loop_r1 (cap) | snap10−snap11 | loop_r1−snap11 |
+|---|---|---|---|---|---|
+| flat6 | 1445.5 (19/20) | 1078.8 (10/20) | 1326.2 (16/20) | −366.6 t−2.74 | −119.3 t−1.14 |
+| flat9 | 1342.3 (16/20) | 1329.8 (15/20) | 1451.3 (18/20) | −12.5 t−0.10 | +109.0 t+1.23 |
+| flat12 | 1480.2 (18/20) | 1052.6 (10/20) | 1421.8 (17/20) | −427.6 t−3.38 | −58.4 t−1.19 |
+| flat15 | 1251.0 (16/20) | 902.0 (8/20) | 1387.6 (16/20) | −349.0 t−2.28 | +136.7 t+1.03 |
+| rand9 | 1371.7 (17/20) | 1109.5 (8/20) | 1465.5 (19/20) | −262.1 t−1.99 | +93.8 t+1.09 |
+| rand12 | 1428.5 (19/20) | 1127.1 (11/20) | 1222.3 (13/20) | −301.4 t−2.10 | −206.2 t−1.58 |
+| holes2 | 1275.8 (14/20) | 1089.8 (8/20) | 1349.0 (17/20) | −185.9 t−1.56 | +73.2 t+0.57 |
+| holes4 | 1304.2 (16/20) | 948.6 (8/20) | 1292.5 (16/20) | −355.5 t−2.48 | −11.6 t−0.08 |
+| holes6 | 1209.5 (12/20) | 983.5 (8/20) | 1357.5 (17/20) | −225.9 t−1.48 | +148.0 t+1.30 |
+| drought | 1363.2 (17/20) | 1019.5 (9/20) | 1374.8 (18/20) | −343.6 t−2.19 | +11.7 t+0.09 |
+| flat18 | 759.1 (10/20) | 463.1 (5/20) | 757.3 (10/20) | −296.1 t−1.53 | −1.9 t−0.01 |
+| holes8 | 1438.3 (18/20) | 989.8 (5/20) | 1313.2 (15/20) | −448.6 t−3.46 | −125.1 t−1.38 |
+
+Reads: (a) snap11 dominates snap10 on 11/12 suites (flat9 ties) —
+the gen-2 gain IS substantially a recovery gain, measured on the
+true-preview policy; (b) loop_r1 ≡ snap11 everywhere (all |t|<1.6) —
+the cycle-1 burst neither helped nor hurt recovery, consistent with
+its neutral survival screen (+63.7 t+0.33); (c) flat18 is the
+discriminator band both arms die on (snap11 10/20 deaths, med 780;
+snap10 12/20, med 15.5) — the curriculum band; holes8 discriminates
+most paired-significantly (t−3.46) while snap11 caps 18/20, so it
+separates skill without being a coin flip. Mixing guidance for
+loop-gen-2 hard-start states: weight flat18 + flat15 + holes{4,6,8}
++ rand12 + drought (bands where snap10 dies 2–3× as often but snap11
+survives); flat9 carries no signal (drop it from the mix). Full test suite after edits: **190 passed, 2 skipped**.
+Artifacts: `tests/test_recovery_suite.py`,
+`_diag_out/_recovery_suite.json` (DONE, 720 games).
+
+### 52.7 Loop-gen-2 BUILT + LAUNCHED (2026-09-12 night) — mixed bank, dual screen, pre-registered final gate
+
+New drivers: `python/_collect_hardstart_pool.py` →
+`_diag_out/_hardstart_pool.npz` (DONE: **21,959 states** from 80 games
+— 8 suites x 10 games, indices 100–109, max 300 states/game, working
+champion `_loop_champ_r1.pt` sha `0a911369d8`; per-suite yields
+2122–3000 confirm the curriculum shape — flat18 killer boards die in
+6–9 pieces while flat12/rand12 run full 300; labeling shape contract
+smoke-tested 20/20); `python/_selfdistill_loop2.py` →
+`_diag_out/_selfdistill_loop2.json` (DONE 2026-09-13: r1 ADOPT
+(+376.2 t+1.77 / +17.7 t+0.23), r2 REVERT (−113.9 t−0.62 / +92.9
+t+1.58), r3 ADOPT (+201.3 t+1.46 / −65.4 t−0.87), r4 genuine gate
+FAIL (242 new-targets < 300, gated against adopted r3 labels — real
+exhaustion, not the r3 artifact); final working champion
+`_loop2_champ_r3.pt` sha `471685c2a717d62b`); `python/_loop2_final_gate.py` →
+`_diag_out/_loop2_final_gate.json` (DONE 2026-09-13 — see §52.8).
+
+Per cycle: label base bank (prev-cycle gate, gen-1 rule) + label hard
+pool (informational dis rate) → mixed burst 70/30 (batch 179/77,
+validated dose) → DUAL screen: survival 30 fresh dev tapes cap 3000
+vs pre-burst (ADOPT needs m_s >= 0 AND t_s > -1.5) AND recovery leg
+4 suites (flat15/flat18/holes6/drought) x 8 games at indices 200–207
+— overlap-free vs pool 100–109 and suite-eval 0–19 — paired pre-vs-
+post on identical boards (ADOPT needs m_r > -100 AND t_r > -1.5, a
+damage net at ~1/6 paired-sd, not a promotion claim). All scoring
+true-preview; lineage files never touched (`_loop2_champ_rN.pt` in
+`_diag_out`); resume-safe/incremental JSON.
+
+PRE-REGISTERED FINAL-GATE RULE (also in the driver docstring — quoted
+here so the record is complete): G1 dev gate = 60 fresh tapes from the
+NEXT untouched dev range after the loop's last consumed seed, cap 3000,
+final working champ vs snapshot11, same harness: PASS iff paired delta
+> 0 AND t >= 2.0 AND cap not lower. G2 recovery gate = full 12x20 suite
+on the same two arms (202600 space, identical boards): PASS iff
+240-game paired mean >= 0 AND no suite t < -2.0. Both pass → user-gated
+n=100 cap-3000 promotion panel on the 5400+ reserve under the §51.4 rule
+(PROMOTE iff t >= 2.0 AND cap not lower; one +200 extension iff
+0 < t < 2; stop iff delta <= 0). Either gate fails → HOLD snapshot11, no
+promotion panel spent. The gate driver APPENDS its consumed dev range to
+PANEL_REGISTRY.md itself and refuses to overwrite an existing gate file
+(one decision per fresh panel).
+
+### 52.8 Final gate DONE — G1+G2 PASS → PROMOTE-TO-5400-PANEL (2026-09-13, user-gated)
+
+Driver `python/_loop2_final_gate.py` → `_diag_out/_loop2_final_gate.json`
+(wall 3291 s): challenger `_loop2_champ_r3.pt` (`471685c2a717d62b`)
+vs snapshot11 (`23006b0ff8f911c4`), dev panel **21270–21329 CONSUMED**
+(registry appended by the driver; next free dev **21330+**).
+
+G1 survival (60 fresh tapes, cap 3000, same harness): challenger 2791.5
+(50/60 cap) vs incumbent 2497.1 (39/60 cap): **delta +294.4, t +2.20,
+W/L 20/8 — PASS** (pre-registered: delta > 0 AND t >= 2.0 AND cap not
+lower; all three hold). G2 recovery (full 12x20 suite, 202600 space,
+identical boards): **240-game paired mean +42.6, t +1.23, W/L 42/27,
+worst suite t −0.67 (flat12) — PASS** (pre-registered: mean >= 0 AND
+no suite t < −2.0). Strongest recovery suites: holes6 +177.4 t+1.49
+(8/1), flat9 +101.5, rand9 +98.7; flat18 dead-even (+5.8 t+0.02, 8/7)
+— the mixed-bank training held the hard band, did not extend it.
+
+**VERDICT: PROMOTE-TO-5400-PANEL.** The pre-registered rule fires:
+the final gate authorizes (but does not itself run) the user-gated
+n=100 cap-3000 promotion panel on the 5400+ reserve under the §51.4
+rule (PROMOTE iff t >= 2.0 AND cap not lower; one +200 extension iff
+0 < t < 2; stop iff delta ≤ 0). No lineage file touched — promotion
+panel still required before any snapshot12 exists.
+
+### 52.9 PROMOTION PANEL — _loop2_champ_r3 PROMOTED to 1-ply champion
+(2026-09-13, `python/_loop2_promotion.py` →
+`_diag_out/_loop2_promotion.json`)
+
+Pre-registered rule fired on first use of the 5400s reserve (no
+extension needed). Panel: seeds **5400–5499** (promotion reserve,
+first use), cap 3000, same sweep harness both arms:
+
+| arm | mean | median | cap | paired vs champ |
+|---|---:|---:|---|---|
+| **_loop2_champ_r3** | **2838.0** | 3000 | **89/100** | — |
+| snapshot11 champ | 2554.8 | 3000 | 73/100 | **+283.2, t+2.75**, W/T/L 25/65/10 |
+
+**PROMOTED — no extension needed.** t+2.75 clears the t ≥ 2.0 bar
+with cap rate higher (89 vs 73), so the §51.4 rule promotes on the
+n=100 panel alone. `_loop2_champ_r3.pt` →
+**`model_weights_snapshot12.pt`** (new champion lineage file; sha
+`471685c2a717d62b` verified against the promotion JSON).
+snapshot11 (`23006b0ff8f911c4`) retained as fallback champion.
+Chain: snap7 → snap9 (gen-1 self-distill, §7) → snapshot10 /
+fullsplit_seed42 (gen-1 2-ply-teacher distill, §26/§30) →
+snapshot11 / gen2_seed44 (gen-2 self-distill, §51) →
+**snapshot12 / _loop2_champ_r3 (loop-gen-2 mixed-bank 70/30 +
+dual-screen survivor, §52.7–§52.9)**.
+
+What loop-gen-2 established: the mixed-bank fit (normal + hard-start
+recovery states) plus the dual survival/recovery screen produced a
+champion that beats snapshot11 on fresh TAP tapes (+283 t+2.75) while
+holding the full-suite recovery gate (+42.6, worst suite −0.67). The
+self-improvement loop (fit → expand → re-fit) has now worked three
+times at increasing scale and remains the validated improvement lever.
+
+Next free: **21330+** (dev); promotion reserve **5500+** untouched
+(5400–5499 CONSUMED; the n=200 extension was pre-authorized but
+unneeded).
+
+## 53. Snapshot12 style re-examination (2026-09-13) — λ10 knee,
+cross re-gated, horizon leg open
+
+All arms snapshot12 (`471685c2a717d62b`) unless stated, dense Phi col 9 +
+`{1:1,2:3,3:5,4:8}` completion bonus, corrected masked-root controller
+(§44.3). User direction: the 1-ply champion improved three generations
+since the style work (§38–§47 ran on snapshot9), and the recovery
+evidence (G2 +42.6, worst suite −0.67; flat18 dead-even on the mixed-bank
+chassis) predicts headroom for a higher Tetris rate before survival
+collapses. Re-examine the style setups on the current champ, starting
+with evaluations.
+
+### 53.1 Rung-0 re-run: snapshot12 λ sweep — knee moved to λ10
+
+Driver: `python/diag_lambda_high.py` (unchanged §38 recipe) →
+`_diag_out/snap12_lambda_high.json` (wall 1008 s at 8 workers). 30 FRESH
+tapes **21330–21359 CONSUMED** (next free 21360+), cap 300.
+
+| λ | cap | pcs | lines | tet | T/100 | t-share | ready | paired dTet vs λ10 |
+|---|---:|---:|---:|---:|---:|---:|---:|---|
+| 0 | 30/30 | 300.0 | 118.5 | 2 | 0.022 | 0.001 | 0.000 | −3.10, t−9.60 |
+| 10 | 29/30 | 296.3 | 111.7 | 95 | 1.069 | 0.044 | 0.407 | — |
+| 30 | 4/30 | 210.9 | 67.6 | 64 | 1.012 | 0.058 | 0.413 | −1.03, t−2.28 |
+| 40 | 3/30 | 204.1 | 64.8 | 77 | 1.258 | 0.075 | 0.486 | −0.60, t−1.12 |
+
+Zero-style contract holds (λ0 30/30). Comparison vs the snapshot9 rung-0
+on the same recipe (`lambda_high.json`: λ10 30/30 / 17 tet / 0.189 T/100;
+λ30 21/30 / 31 tet / 0.375; λ40 15/30 / 41 tet / 0.544): snapshot12's λ10
+plays **~5.6× the Tetris rate of snapshot9's λ10** (95 vs 17 Tetrises),
+with every game ≥ 1 Tetris (dist 1–8, median 3) where snapshot9's λ10
+left 14/30 games at zero. But λ30/40 collapse much harder here (4/30 +
+3/30 vs 21/30 + 15/30): deaths are early-dig `no_candidates` at
+82–279 pcs (26/26 λ30 deaths; 25/27 λ40 deaths + 2 `lockout`), and the
+paired deltas vs λ10 are FLAT (λ30 −1.03 t−2.28 — significantly WORSE
+style per tape; λ40 −0.60 t−1.12 n.s.). Even the capped survivors show
+no superstar shape (λ30 capped-game tets 3/3/6/7; λ40 3/4/7).
+
+Verdict: **the Pareto knee moved to λ10.** λ10 dominates λ30/40 on both
+axes (29/30 + 1.07 T/100 vs 4/30 + 1.01 and 3/30 + 1.26). Pure-λ work
+above 10 is CLOSED on this chassis — the extra commitment time costs
+more than it buys, exactly the §44.5 scouting read, now measured at
+n=30 with paired significance on the λ30 side. The λ10 reference itself
+is re-validated as the stylish pure-λ point: 29/30 survival with a
+1.07 T/100 style rate the snapshot9 era never reached at any λ ≤ 40
+(snap9 λ40: 0.544 at 15/30).
+
+### 53.2 Controller ministage: corrected cool30 vs cool30lam10
+on snapshot12 — cross re-gated
+
+Driver: `python/diag_commit_stageC.py --arms cool30,cool30lam10`
+(minimal decision run per the §44.4 precedent: head-to-head pairing,
+no cap-3000 leg) → `_diag_out/snap12_commit_ministage.json` (wall
+~500 s at 8 workers). 15 FRESH tapes **21360–21374 CONSUMED** (next
+free 21375+), cap 300.
+
+| arm | cap | tet | T/100 | off | paired dTet vs cool30 |
+|---|---:|---:|---:|---:|---|
+| cool30 (corrected) | 15/15 | 34 | 0.756 | 0.205 | — |
+| cool30lam10 (corrected cross) | 15/15 | 62 | 1.378 | 0.331 | **+1.87, t+3.34** |
+
+Paired dPc exactly 0 (all 15 cap both arms). Cross tet dist
+0/1/3×4/4×3/5×2/6/7/11 (max 11) vs cool30 max 6; recovers 2.9/g vs
+1.9/g, re-entries 2.3 vs 1.7, fallbacks 1.0 vs 1.7, cash-outs 0.20 vs
+0.13; longest no-Tetris gap 167 vs 192. The λ gradient inside the
+commitment adds style at zero cap cost — same direction as the snap9
+Stage-B/C reads (§42 dTet +3.73 t+4.21 at cap 1500 n=15; §44.4 +2.73
+t+2.10 at cap 1500 n=15), now larger per tape at cap 300 on the
+stronger chassis (+1.87/game; the per-100 rate gap is wider).
+
+Verdict: **cross re-gated on snapshot12.** Corrected cool30lam10 is
+the stylish default on the new chassis (1.38 T/100 at 15/15); cool30
+stays the ablation reference. No promotion claim — n=15 at cap 300
+cannot promote a stylish config (§47 gate needs cap-1500 legs with
+t≥2 or discordant p≤0.05); this is the point estimate the horizon
+leg (§53.4) tests.
+
+### 53.3 Mid-λ knee map: λ5/10/15/20 — sharp knee at λ10
+
+User-directed (mid-λ cells untested since the snap9 era: §17.1 swept
+2/5/10/20 but λ10's 1.07 T/100 here vs 0.19 there re-opens the shape).
+Same driver/recipe → `_diag_out/snap12_lambda_mid.json` (wall 1156 s
+at 8 workers). 30 FRESH tapes **21375–21404 CONSUMED** (next free
+**21405+**), cap 300.
+
+| λ | cap | pcs | lines | tet | T/100 | ready | paired dTet vs λ10 |
+|---|---:|---:|---:|---:|---:|---:|---|
+| 5 | 30/30 | 300.0 | 118.0 | 5 | 0.056 | 0.044 | −3.73, t−9.89 |
+| 10 | 30/30 | 300.0 | 113.6 | 117 | 1.300 | 0.451 | — |
+| 15 | 28/30 | 295.1 | 105.8 | 85 | 0.960 | 0.447 | −1.07, t−2.44 |
+| 20 | 20/30 | 281.4 | 98.8 | 84 | 0.995 | 0.415 | −1.10, t−2.21 |
+
+Reads: (a) λ5 ≡ λ0 on style (5 vs 2 Tetrises; paired dTet −3.73 t−9.89
+vs λ10) — the well incentive has a sharp activation threshold between
+5 and 10, same qualitative shape as snap9 (§17.1: λ5 ≈ λ0) but the
+active branch now pays 1.30 T/100 instead of 0.04. (b) λ15 is already
+survival-negative (28/30, deaths 21378@167 + 21396@287) with NO style
+gain (paired dTet −1.07 t−2.44 — significantly worse per tape). (c) λ20
+loses 10/30 (all `no_candidates` at 175–295 pcs) at flat style (−1.10
+t−2.21). Ready-frac is saturated flat 0.41–0.45 across λ10/15/20 — the
+policy holds usable channels equally often; higher λ only digs
+deeper graves with them. Note the panel runs hot for style (λ10 1.30
+here vs 1.07 on 21330–21359 — tape luck; paired deltas control for it,
+and both panels agree λ10 ≈ 1.1–1.3 T/100 at 29–30/30).
+
+Verdict: **knee is sharp at λ10 — no intermediate cell promotes.**
+λ15/20 are survival-negative AND style-negative-or-flat on paired
+tests; λ5 is survival-safe but style-dead. The pure-λ frontier on
+snapshot12 is a single point (λ10), not a curve to tune along.
+
+### 53.4 Standing dispositions + open legs (amended by §53.5 —
+challengers screened, cross holds)
+
+1. **Stylish default on snapshot12: corrected cool30lam10**
+   (1.38 T/100 at 15/15, §53.2 point estimate; 1.15 T/100 at 20/20,
+   §53.5 reference) with **pure-λ λ10**
+   (1.07–1.30 T/100 at 29–30/30 × 2 panels) as the stable fallback.
+   Both inherit the stronger chassis; both beat every snapshot9-era
+   style number at matched-or-better survival.
+2. **Closed on this chassis:** pure-λ above 10 (λ15/20/30/40 all
+   survival-negative with paired-significant-or-flat style
+   deltas — §§53.1/53.3); micro-tune re-runs at cap 300 (the §44.6
+   cells were tuned for a chassis whose λ10 played 0.19 T/100 —
+   re-tuning thresholds around a 1.3 T/100 knee is a different
+   problem, and cap-300 cannot discriminate survival anyway).
+3. **Open leg 1 — horizon (required before any stylish promotion):**
+   corrected cross vs pure-λ λ10 on a fresh dev panel at cap 1500
+   (the §40 SUSTAINS protocol: 20 matched tapes, windows +
+   trajectories + FAIL flags), then the cap-3000 confirmation leg
+   (§32.3 item 6) on the winner only. The cap-300 T/100 numbers
+   (≈1.1–1.4) will attenuate at horizon — the question is how much,
+   and whether the abandon/rebuild cycle sustains or accumulates
+   across recoveries on the new value function.
+4. **Open leg 2 — viz legibility:** the §27.6 stylish-viz divergence
+   is still documented-unfixed; the visualizer must become a replay
+   consumer (§44.1-C replay contract) before any stylish config is
+   shown. `viz_live.py --phi-lambda` exists for snapshot9 (§17.6)
+   but has no snapshot12 re-validation.
+5. Panels: 21330–21359 (§53.1), 21360–21374 (§53.2), 21375–21404
+   (§53.3), 21405–21424 (§53.5) CONSUMED; next free **21425+** (dev);
+   5500+ reserves for promotion. No lineage file touched (snapshot12
+   `471685c2a717d62b` throughout).
+
+### 53.5 Challenger screen: previously-promising setups on snapshot12 —
+cross holds (2026-09-13)
+
+Driver: `python/diag_commit_stageC.py --arms cool30lam10,cool30lam20,
+watch80,reentry_cert,a120_r50` (minimal cap-300 screen per the §44.4
+precedent; `diag_commit_stageC.py` gained the three Round-C arm configs
+`watch80`/`reentry_cert`/`a120_r50` for this run — same values as the
+Round-C baseline variants) →
+`_diag_out/snap12_ctrl_challengers.json` (wall 1197 s at 8 workers).
+20 FRESH tapes **21405–21424 CONSUMED** (next free 21425+), cap 300.
+Note: the driver's paired-dTet columns read +0.00 for every arm — no
+`lam10` arm was present, so the driver had no reference to pair
+against; deltas below are manual pairings vs the cross on the same
+seeds (the valid comparison).
+
+| arm | cap | tet | T/100 | T/cap | gap | off | paired dTet vs cross |
+|---|---:|---:|---:|---:|---:|---:|---|
+| cool30lam10 (ref) | 20/20 | 69 | 1.150 | 3.45 | 158 | 0.306 | — |
+| a120_r50 | 20/20 | 76 | 1.267 | 3.80 | 141 | 0.303 | +0.35, t+0.85 (n.s.) |
+| watch80 | 20/20 | 77 | 1.283 | 3.85 | 150 | 0.317 | +0.40, t+1.80 (n.s.) |
+| reentry_cert | 20/20 | 62 | 1.033 | 3.10 | 160 | 0.338 | −0.35, t−1.23 (n.s.) |
+| cool30lam20 | 20/20 | 50 | 0.833 | 2.50 | 178 | 0.406 | **−0.95, t−2.11** |
+
+All arms 20/20 cap — no survival discrimination at this horizon, as
+expected. Reads, in evidence order:
+
+1. **cool30lam20 is style-negative on the stronger chassis too**
+   (−0.95 t−2.11, the only |t|>2 in the screen; longest gap 178 vs
+   158; off-frac 0.406 — the extra gradient re-creates over-eager
+   digging inside the preserved set, the §44.5 triage-note risk, now
+   paired-significant against the cross). Closed again — no further
+   λ cells inside the commitment.
+2. **watch80 leans positive (+0.40 t+1.80) but does not promote.**
+   Below the t≥2 bar; the §47 read (fires rarely, never harmful,
+   no population cap gain) stands — opt-in safety candidate only.
+   Its deltas are the most consistent in the screen (only one −1,
+   max +3), so it stays the lead fallback if the horizon leg shows
+   backlog deaths.
+3. **a120_r50 leans positive (+0.35 t+0.85) but does not promote.**
+   n.s. with wide scatter (−4/+4 tails); the §47.4 HOLD-a110_r60
+   read stands. Threshold re-tuning around the 1.3 T/100 knee
+   remains a horizon-leg question, not a cap-300 decision.
+4. **reentry_cert is neutral (−0.35 t−1.23).** Style tied, no cap
+   split at this horizon (20/20 both arms) — fallback-only
+   disposition unchanged (§47.3).
+
+Verdict: **no challenger promotes — corrected cool30lam10 holds as
+the stylish default on snapshot12.** The screen also confirms the
+§53.2 point estimate is stable across panels (cross 1.38 T/100 at
+15/15 → 1.15 T/100 at 20/20 — same band, no attenuation signal at
+cap 300). Next: the horizon leg (§53.4.3) — cross vs pure-λ λ10 at
+cap 1500 on fresh 21425+ (since consumed by §53.6, use 21475+).
+
+### 53.6 Challenger confirmation at n=50: both leans evaporate —
+cross holds (2026-09-13)
+
+User-directed (the n=20 leans favored a larger evaluation): corrected
+cool30lam10 vs watch80 vs a120_r50 (lam20 + cert dropped — lam20
+style-negative at t−2.11, cert neutral), 50 FRESH tapes **21425–21474
+CONSUMED** (next free **21475+**), cap 300 →
+`_diag_out/snap12_ctrl_challengers50.json` (wall ~1700 s at 8 workers).
+Same pairing caveat as §53.5 (driver columns +0.00 — no lam10 arm;
+deltas manual vs the cross on the same seeds).
+
+| arm | cap | tet | T/100 | T/cap | gap | off | paired dTet vs cross |
+|---|---:|---:|---:|---:|---:|---:|---|
+| cool30lam10 (ref) | 50/50 | 180 | 1.200 | 3.60 | 151 | 0.308 | — |
+| watch80 | 50/50 | 180 | 1.200 | 3.60 | 146 | 0.320 | +0.00, t+0.00 |
+| a120_r50 | 50/50 | 185 | 1.233 | 3.70 | 153 | 0.300 | +0.10, t+0.36 |
+
+All arms 50/50 cap — still no survival discrimination, as expected.
+Reads:
+
+1. **watch80's lean evaporates completely** (+0.40 t+1.80 at n=20 →
+   +0.00 t+0.00 at n=50). 40/50 paired deltas are EXACTLY 0 —
+   the watchdog is near-inert on this panel (fires rarely, changes
+   nothing when it fires here). The n=20 lean was panel luck on a
+   handful of nonzero deltas. Disposition reverts to the §47 read
+   (opt-in safety candidate, never harmful, no population gain) —
+   with the added note that on snapshot12 it barely fires at all.
+2. **a120_r50's lean evaporates** (+0.35 t+0.85 → +0.10 t+0.36,
+   W/L 17/18 — perfectly balanced). The threshold cell is
+   interchangeable with the default at cap 300; HOLD a110_r60 stands
+   (§44.6/§47.4, now confirmed on two chassis).
+3. **Cross point estimate stable across three panels**: 1.38 (n=15) →
+   1.15 (n=20) → 1.20 (n=50) T/100 — the stylish default is not
+   drifting with panel luck.
+
+Verdict: **cross holds; no further cap-300 challenger work justified.**
+This is the project's n=30 mirage pattern a fourth time (§8 round-2,
+§36.3 armB, §50 soup, now watch80/a120 leans). Next: the horizon leg
+(§53.4.3) — cross vs pure-λ λ10 at cap 1500 on fresh 21475+.
+
+1. Loop restart parameters: max cycles, deadline, adopt rule (upgrade to
+   delta ≥ 0?), gate thresholds, cycle budget.
+2. Bank refresh cadence (§52.2 item 1) and hard-state mixing ratio
+   (§52.2 item 2; needs the recovery suite's first full results to pick
+   the failure bands).
+3. Recovery suite: run before or after restart? (It measures the
+   CURRENT champion either way; n=20/suite; ~40–70 min.)
+4. Style program sequencing: cool30lam10 re-gate + height-band λ on the
+   loop-final chassis only (no point re-gating on a moving chassis).
+5. Fresh-panel gate + promotion panel policy for the loop's output
+   (which range, which n, pre-registered rule BEFORE restarting).
+6. Panel accounting: dev seeds consumed by tonight's run (21150–21179
+   by cycle 1; +30/cycle after), next free ranges.

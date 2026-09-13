@@ -1,0 +1,103 @@
+{
+  "note": "PRE-REGISTERED loop-gen-2 final gate. G1 PASS iff paired delta>0 AND t>=2.0 AND cap not lower. G2 PASS iff 240-game paired mean>=0 AND no suite t<-2.0. Promotion is user-gated on the 5400+ reserve (\u00a751.4 rule).",
+  "challenger": "C:\\My Things\\HTML\\Demonin's Item Shop\\other\\deathBot\\deathbot_sim\\_diag_out\\_loop2_champ_r3.pt",
+  "challenger_sha": "471685c2a717d62b",
+  "incumbent": "C:\\My Things\\HTML\\Demonin's Item Shop\\other\\deathBot\\model_weights_snapshot11.pt",
+  "incumbent_sha": "23006b0ff8f911c4",
+  "dev_seeds": "21270-21329",
+  "cap": 3000,
+  "G1_survival": {
+    "challenger_mean": 2791.5,
+    "incumbent_mean": 2497.1,
+    "delta": 294.4,
+    "t": 2.2,
+    "wins": 20,
+    "losses": 8,
+    "capped": "50/60 vs 39/60",
+    "pass": true
+  },
+  "G2_recovery": {
+    "paired_mean_240": 42.6,
+    "t": 1.23,
+    "wins": 42,
+    "losses": 27,
+    "worst_suite_t": -0.67,
+    "per_suite": {
+      "flat6": {
+        "delta": 7.2,
+        "t": 0.1,
+        "wins": 1,
+        "losses": 1
+      },
+      "flat9": {
+        "delta": 101.5,
+        "t": 0.96,
+        "wins": 4,
+        "losses": 1
+      },
+      "flat12": {
+        "delta": -45.5,
+        "t": -0.67,
+        "wins": 2,
+        "losses": 1
+      },
+      "flat15": {
+        "delta": 47.3,
+        "t": 0.33,
+        "wins": 4,
+        "losses": 3
+      },
+      "rand9": {
+        "delta": 98.7,
+        "t": 1.34,
+        "wins": 2,
+        "losses": 2
+      },
+      "rand12": {
+        "delta": -58.0,
+        "t": -0.49,
+        "wins": 1,
+        "losses": 2
+      },
+      "holes2": {
+        "delta": 64.6,
+        "t": 0.51,
+        "wins": 5,
+        "losses": 3
+      },
+      "holes4": {
+        "delta": 93.8,
+        "t": 0.71,
+        "wins": 4,
+        "losses": 2
+      },
+      "holes6": {
+        "delta": 177.4,
+        "t": 1.49,
+        "wins": 8,
+        "losses": 1
+      },
+      "drought": {
+        "delta": -1.9,
+        "t": -0.02,
+        "wins": 2,
+        "losses": 2
+      },
+      "flat18": {
+        "delta": 5.8,
+        "t": 0.02,
+        "wins": 8,
+        "losses": 7
+      },
+      "holes8": {
+        "delta": 20.2,
+        "t": 0.47,
+        "wins": 1,
+        "losses": 2
+      }
+    },
+    "pass": true
+  },
+  "verdict": "PROMOTE-TO-5400-PANEL",
+  "wall_s": 3291.0
+}

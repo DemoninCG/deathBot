@@ -309,24 +309,63 @@ class TestRotationApi:
 
     def test_right_kick_chosen_when_left_blocked(self):
         board = ds.Board()
-        # T spawn CW -> state 1. Block (4,19) and (4,20) so bare rotation
-        # fails; +1 right kick -> x=4, cells at (5,19),(5,20),(6,20),(5,21)
-        # which are open. -1 left kick would be blocked by (4,20). So +1.
-        board.set_cell(4, 19)
-        board.set_cell(4, 20)
-        t = ds.Piece.spawn(ds.PieceType.T)
-        kick = board.kick_used(t, True)
-        assert kick == (1, 0), f"should use +1 right kick, got {kick}\n" + _describe(board, t)
+        # L state 3 at (3,0) CW -> state 0 bare (5,0),(3,1),(4,1),(5,1).
+        # Block (3,1) (scan cell 4, off-center): bare fails, kicks allowed.
+        # +1 -> x=4: (6,0),(4,1),(5,1),(6,1) open. -1 -> x=2 includes
+        # (3,1) blocked, fails. So +1.
+        l = ds.Piece(ds.PieceType.L, 3, 3, 0)
+        board.set_cell(3, 1)
+        kick = board.kick_used(l, True)
+        assert kick == (1, 0), f"should use +1 right kick, got {kick}\n" + _describe(board, l)
 
     def test_left_kick_chosen_when_right_blocked(self):
         board = ds.Board()
-        # Block bare + right kicks, leave left open.
-        board.set_cell(4, 19)
-        board.set_cell(5, 20)
-        board.set_cell(6, 20)
-        t = ds.Piece.spawn(ds.PieceType.T)
-        kick = board.kick_used(t, True)
-        assert kick == (-1, 0), f"should use -1 left kick, got {kick}\n" + _describe(board, t)
+        # Same L3->L0 CW: block (5,0) (scan 9, off-center, bare cell) so
+        # bare fails with kicks allowed; block (6,0) too (outside the box,
+        # kills +1 only). -1 -> x=2 all open. So -1.
+        l = ds.Piece(ds.PieceType.L, 3, 3, 0)
+        board.set_cell(5, 0)
+        board.set_cell(6, 0)
+        kick = board.kick_used(l, True)
+        assert kick == (-1, 0), f"should use -1 left kick, got {kick}\n" + _describe(board, l)
+
+    def test_i_piece_never_kicks(self):
+        board = ds.Board()
+        # I spawn CW -> state 1 needs (5,18..21). Block (5,19): bare fails
+        # while x=4 (+1) would fit — must still fail in TAP.
+        i = ds.Piece.spawn(ds.PieceType.I)
+        board.set_cell(5, 19)
+        assert board.try_rotate(i, True) is None
+        assert board.kick_used(i, True) is None
+
+    def test_no_double_kicks(self):
+        board = ds.Board()
+        # L3->L0 CW blocked at bare, +1 AND -1: block (3,1) [bare/-1],
+        # (6,0) [+1]. ±2 cells open, but TAP must still fail.
+        l = ds.Piece(ds.PieceType.L, 3, 3, 0)
+        board.set_cell(3, 1)
+        board.set_cell(6, 0)
+        assert board.try_rotate(l, True) is None
+
+    def test_center_column_blocks_kick(self):
+        board = ds.Board()
+        # T state 0 at (3,0) CW -> state 1 bare (4,0),(4,1),(5,1),(4,2).
+        # Box (3,0), scan 1..9: block (4,2) (scan cell 2, CENTER). Bare
+        # fails and the first collision is center -> no kicks, even though
+        # +1 -> (5,0),(5,1),(6,1),(5,2) would fit.
+        t = ds.Piece(ds.PieceType.T, 0, 3, 0)
+        board.set_cell(4, 2)
+        assert board.try_rotate(t, True) is None
+        assert board.kick_used(t, True) is None
+
+    def test_center_column_allows_offcenter_first_hit(self):
+        board = ds.Board()
+        # L3->L0 CW with (3,1) blocked (scan 4, off-center, bare cell):
+        # bare fails, first hit off-center, kicks allowed, +1 wins.
+        l = ds.Piece(ds.PieceType.L, 3, 3, 0)
+        board.set_cell(3, 1)
+        kick = board.kick_used(l, True)
+        assert kick == (1, 0), f"off-center first hit should allow +1, got {kick}\n" + _describe(board, l)
 
     def test_rotation_fails_when_all_kicks_blocked(self):
         board = ds.Board()

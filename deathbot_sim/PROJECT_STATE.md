@@ -1,4 +1,4 @@
-# deathBot — Project State & Training Plan Handoff
+﻿# deathBot — Project State & Training Plan Handoff
 
 *Prepared 2026-09-05 after a full diagnostic + patching campaign; updated
 2026-09-06 (evening) for the survival-solved → style era; updated
@@ -4990,7 +4990,229 @@ Reads:
 Verdict: **cross holds; no further cap-300 challenger work justified.**
 This is the project's n=30 mirage pattern a fourth time (§8 round-2,
 §36.3 armB, §50 soup, now watch80/a120 leans). Next: the horizon leg
-(§53.4.3) — cross vs pure-λ λ10 at cap 1500 on fresh 21475+.
+(§53.4.3) — cross vs pure-λ λ10 at cap 1500 on fresh 21475+ (since
+consumed by §53.6, use 21495+ — DONE as §53.7 below).
+
+### 53.7 Tiered preserve at horizon: +13.25 t+6.69 — PROMOTE-CANDIDATE
+(2026-09-13)
+
+User-directed: enforce a stricter preserve filter (block moves that
+create overhangs, not just holes), with ordered fallback overhangs →
+holes → channel-only → unconstrained. Implemented as
+`tiered_preserve=True` on `CommitScorer` (`commit_controller.py`):
+new `count_overhangs_outside()` (outside-well covered empties — a
+superset of `holes_outside` that also counts side-escape overhangs;
+unit-checked: empty 0, enclosed 1, side-escape 1 with 0 holes) +
+Tier 0 (no new overhangs) → Tier 1 (legacy, no new holes) → Tier 2
+(channel only) → unconstrained fallback, tier usage in stats. New arm
+`cool30lam10tiered` (cross config + flag) in `diag_commit_stageC.py`.
+Driver caveat carried over: paired-dTet columns vs lam10 only — the
+tiered-vs-cross deltas below are manual pairings on the same seeds.
+20 FRESH tapes **21475–21494 CONSUMED** (next free **21495+**),
+cap 1500 → `_diag_out/snap12_tiered_long.json` (wall 3267 s).
+
+| arm | cap | tet | T/100 | T/cap | gap | off | paired dTet |
+|---|---:|---:|---:|---:|---:|---:|---|
+| cool30lam10 (ref) | 20/20 | 348 | 1.160 | 17.40 | 301 | 0.394 | — |
+| cool30lam10tiered | 20/20 | 613 | 2.043 | 30.65 | 261 | 0.329 | **vs cross +13.25, t+6.69, W/L 17/2, min −3** |
+| lam10 (pure-λ) | 20/20 | 337 | 1.123 | 16.85 | 300 | — | tiered vs lam10 +13.80 t+7.67; cross vs lam10 +0.55 t+0.51 n.s. |
+
+Every tape caps on all three arms (dPc exactly 0, discordant 0/0) —
+the read is pure style at zero survival cost. Tiered wins 17/20 tapes
+(per-seed deltas vs cross: +13/+7/+13/+18/+20/+21/−3/+13/+15/+17/+12/
++7/+23/−1/+12/+34/+7/+19/+18, only −3/−1 negative); tiered dist
+20–51 (min 20) vs cross 10–25 (max 25) — the distributions BARELY
+OVERLAP (tiered floor ≈ cross ceiling). Cross-vs-lam10 is n.s.
+(+0.55 t+0.51) — at horizon the commitment alone adds nothing over
+pure-λ λ10; the tiering is the entire effect. Outliers: 21491
+(tiered 51 vs cross 17: clears {0:1176,1:183,2:61,3:29,4:51} vs
+{0:1131,1:222,2:88,3:42,4:17} — tiered converts doubles/triples into
+Tetrises); 21482 (the worst tiered tape, −3: 20 vs 23 — still a
+20-Tetris game).
+
+Mechanism (stats): tiered Tier-0 binds on **~96–98% of committed
+decisions** (mean tier0/1/2 kept 969/25/10 per game, tier_fallback 0.0,
+fallbacks 0.0) vs cross fallbacks 9.5/game. The strict filter does NOT
+collapse to fallback — it almost always finds a no-new-overhang move,
+so the policy builds cleaner stacks without paying the fallback tax.
+Off-frac 0.329 vs 0.394 (tiered recovers LESS: 14.2 vs 16.8 recovers —
+cleaner committed play needs fewer rescues); cash-outs 1.8 vs 0.75/g
+(more Tetris-ready states reached, consistent with gap 261 vs 301).
+
+Verdict: **tiered is a PROMOTE-CANDIDATE at horizon — the largest
+style effect measured on any chassis at cap 1500 (+13.25/game,
+t+6.69, all 20 tapes cap).** Pre-registered bar per §47 (t≥2 with cap
+tied-or-better) is cleared by 3×. NOT yet promoted: this is one
+20-tape dev panel; the §32.3 item-6 cap-3000 confirmation leg on the
+winner is the remaining gate (plus the viz replay-contract, §53.4.4)
+— DONE as §53.8 below (PROMOTED).
+Also open: whether pure-tiered-without-λ (tier constraint, lam=0)
+carries the effect — the current arm confounds tiering with the
+λ10-inside-commitment gradient.
+
+### 53.8 Tiered promotion leg at cap 3000: +22.7 t+6.89 — PROMOTED
+(2026-09-13)
+
+User-gated promotion eval: corrected cool30lam10 vs cool30lam10tiered,
+20 FRESH tapes **21495–21514 CONSUMED** (next free **21515+**),
+cap 3000 → `_diag_out/snap12_tiered_promotion.json` (wall 4443 s).
+Pre-registered read (§47): promote iff cap tied-or-better or style
+separates (paired dTet t≥2 with cap ≥19/20).
+
+| arm | cap | pcs | tet | T/100 | T/cap | gap | off |
+|---|---:|---:|---:|---:|---:|---:|---:|
+| cool30lam10 (ref) | 20/20 | 3000.0 | 713 | 1.188 | 35.65 | 318 | 0.377 |
+| cool30lam10tiered | 19/20 | 2911.2 | 1167 | 2.004 | 60.21 | 256 | 0.338 |
+
+Paired tiered−cross: **dTet +22.7, t+6.89, W/L 19/1** (per-seed
++33/+34/+20/+11/+42/+46/+18/+16/−18/+22/+34/+4/+35/+29/+23/+8/+32/
++15/+31/+19); dPc −88.8, t−1.00 (the entire deficit is the one death);
+discordant 0/1, McNemar exact p=1.0. Tiered dist 23–84 (median ~57)
+vs cross 25–44 — overlap only at the tiered floor. The style effect
+SCALES with horizon (+13.25/game at cap 1500 → +22.7/game at cap
+3000; T/100 holds 2.04 vs 2.04 — no attenuation, vs cross 1.16 →
+1.19). Cash-outs 4.45 vs 1.85/g; tiered fallbacks still 0.0 (cross
+19.75/game at this horizon — the fallback tax grows with horizon
+while tiered pays none).
+
+The one death (21503@1223 `no_candidates`): backlog-shaped, not
+early-dig — occ windows 63/67/59/54/67/**80**/**154**, final top 21
+/ 10 holes; last Tetris at pc 1150, then 73 dry pieces into the wall.
+Tiered recovers 12 / re-enters 11 on this tape with 128
+reentry_denied_cool (cooldown-gated at the end, not geometry-denied).
+Cross on the SAME tape caps with 41 Tetrises (final occ 50, top 7) —
+a genuine tape-trade, same shape as the §40/§47 backlog deaths, at
+1/20 vs the cross's 0/20 (paired cap n.s., p=1.0).
+
+Verdict: **cool30lam10tiered PROMOTED as the stylish default on
+snapshot12** — style separates at t+6.89 (3× the bar) with cap
+19/20 vs 20/20 (n.s.). Working failure estimate: 1/20 ≈ 5%/game at
+cap 3000 (one-sided 95% upper bound ~17%); cross 0/20 on this panel.
+Remaining: viz replay-contract (§53.4.4) before any stylish demo;
+pure-tiered-without-λ ablation — DONE as §53.9 below (interaction-only,
+promotion stands).
+
+### 53.9 Tiered×λ factorial: interaction-only — promotion stands
+(2026-09-13)
+
+User-directed (§53.8 open item): 2×2 constraint×λ on snapshot12 —
+`cool30` / `cool30lam10` / `cool30tiered` (new: tiered + lam 0, one-line
+arm addition) / `cool30lam10tiered`. 20 FRESH tapes **21515–21534
+CONSUMED** (next free **21535+**), cap 1500 →
+`_diag_out/snap12_tiered_factorial.json` (wall 4630 s). Driver caveat:
+paired columns pair vs `lam10` only — cross deltas below are manual
+pairings on the same seeds.
+
+| arm | cap | tet | T/100 | T/cap | gap | off | fb |
+|---|---:|---:|---:|---:|---:|---:|---:|
+| cool30 (legacy, λ0) | 20/20 | 239 | 0.797 | 11.95 | 373 | 0.279 | 8.75 |
+| cool30lam10 (legacy, λ10) | 19/20 | 382 | 1.319 | 19.68 | 270 | 0.356 | 9.45 |
+| cool30tiered (tiered, λ0) | 20/20 | 330 | 1.100 | 16.50 | 332 | 0.269 | 0.0 |
+| cool30lam10tiered (tiered, λ10) | 20/20 | 664 | 2.213 | 33.20 | 192 | 0.294 | 0.0 |
+
+Manual pairings vs the tiered-cross: cool30 −21.25 t−10.97 (W/L 0/20);
+lam10-legacy −14.1 t−9.34 (0/18 + 2 ties); pure-tiered −16.7 t−10.11
+(0/20). Cross-pairings: pure-tiered vs lam10-legacy −2.6 t−2.18 (the
+λ10 gradient alone beats tiering alone, significantly); pure-tiered vs
+cool30 +4.55 t+3.72 (tiering alone beats nothing-alone);
+lam10-legacy vs cool30 +7.15 t+4.81 (gradient alone beats nothing —
+note the cross arm's one death 21529@452 `no_candidates`, backlog
+occ-168, which the tiered-cross caps with 20 Tetrises on the same tape;
+paired cap n.s., discordant 0/1, but the T/100 gap absorbs it).
+
+Reads against the pre-registered bins: NOT "tiering carries" (pure
+tiering loses to λ-alone by −2.6 t−2.18) and NOT "gradient required,
+tiering enabler" as a mild modifier — the sum of main effects (+4.55
+tiering +7.15 gradient ≈ +11.7) explains barely half the +21.25
+tiered-cross-vs-cool30 gap. This is the **interaction-only bin**:
+neither ingredient works without the other (pure-tiered 1.10 and
+λ-legacy 1.32 T/100 are both ordinary; combined 2.21). Mechanism
+consistent with the §53.7 stats: pure-tiered binds Tier-0 at the same
+rate (1057 vs 1019 decisions/game, fb 0.0 both) but cash-outs only
+1.35/g vs 3.4/g — the strict filter builds clean stacks either way,
+but without the λ gradient inside the kept set the conflict-path
+ranking cannot convert them into Tetrises (gap 332 vs 192).
+
+Verdict: **promotion stands; no simplification.** The default stays
+`tiered + lam10` (both ingredients required). Tier-level knockout
+(Tier-1-only) would now test the wrong margin — the binding
+constraint is T0 (96–98%), so the next margin is λ dosing inside the
+commitment, not filter shape — DONE as §53.10 round 1 below
+(saturated 10–20); round 2 (adaptive λ) queued on 21550+.
+
+### 53.10 Tiered λ dose round 1: gradient saturated 10–20 (2026-09-13)
+
+User-gated overnight queue round 1: `cool30lam10tiered` vs
+`lam5/15/20tiered` (cross config + flag, λ varied — new arms in
+`diag_commit_stageC.py`). 15 FRESH tapes **21535–21549 CONSUMED**
+(next free **21550+**), cap 1500 →
+`_diag_out/snap12_tiered_dose.json` (wall 3286 s). Driver caveat:
+paired columns +0.00 (no lam10 arm) — deltas manual vs lam10tiered.
+
+| arm | cap | pcs | tet | T/100 | T/cap | gap | off | paired dTet vs lam10tiered |
+|---|---:|---:|---:|---:|---:|---:|---:|---|
+| lam10tiered (ref) | 14/15 | 1492.1 | 485 | 2.167 | 32.71 | 215 | 0.328 | — |
+| lam5tiered | 15/15 | 1500.0 | 355 | 1.578 | 23.67 | 247 | 0.305 | −8.67, t−3.87 (W/L 3/12) |
+| lam15tiered | 15/15 | 1500.0 | 484 | 2.151 | 32.27 | 213 | 0.363 | −0.07, t−0.02 (7/8) |
+| lam20tiered | 14/15 | 1464.8 | 493 | 2.244 | 33.29 | 208 | 0.361 | +0.53, t+0.19 (7/8) |
+
+Reads against the pre-registered bins: lam5 is style-negative at
+t−3.87 (the lower knee holds inside the filter — §53.3's λ5 ≈ λ0
+read transfers); lam15 ties lam10 almost exactly (−0.07 t−0.02,
+dPc +7.9); lam20 leans +0.53 but n.s. (t+0.19, dPc −27.3) with its
+own backlog death. **Gradient SATURATED 10–20**: doubling λ buys no
+paired style and re-introduces the backlog death the filter was
+supposed to contain. Both deaths are backlog-shaped (lam10
+21539@1381 occ-windows …/56.8/**84.1**, final top 21 / 9 holes;
+lam20 21547@972 …/67.0/**82.2**, top 21 / 5 holes) — same mechanism
+as the promotion-leg deaths (21503, 21529), contained to 1/15 each
+(paired cap n.s.).
+
+Verdict: **hold λ10; no re-dosing.** Per the queue plan this skips
+any lam15/20 promotion leg. Next: round 2 — adaptive λ
+(`tiered_lo5_hi15` / `lo5_hi20` / `lo10_hi20` vs the lam10tiered
+reference) on fresh 21550+, cap 1500 — DONE as §53.11 below (no
+cell promotes; queue complete, promotion stands).
+
+### 53.11 Adaptive-λ round 2: dosing active, no promotion —
+overnight queue complete (2026-09-13)
+
+Queue round 2: fixed `cool30lam10tiered` vs `tiered_lo5_hi15` /
+`lo5_hi20` / `lo10_hi20` (usability-dosed `lam_eff`, pre-existing
+`lam_lo`/`lam_hi` plumbing — no controller changes). 20 FRESH tapes
+**21550–21569 CONSUMED** (next free **21570+**), cap 1500 →
+`_diag_out/snap12_tiered_adaptive.json` (wall 4152 s). Driver caveat:
+paired columns +0.00 (no lam10 arm) — deltas manual vs fixed.
+
+| arm | cap | pcs | tet | T/100 | T/cap | gap | off | paired dTet vs fixed |
+|---|---:|---:|---:|---:|---:|---:|---:|---|
+| lam10tiered (ref) | 19/20 | 1474.2 | 607 | 2.059 | 31.16 | 223 | 0.326 | — |
+| lo5_hi15 | 20/20 | 1500.0 | 609 | 2.030 | 30.45 | 215 | 0.344 | +0.10, t+0.05 (8/10) |
+| lo5_hi20 | 20/20 | 1500.0 | 668 | 2.227 | 33.40 | 198 | 0.343 | +3.05, t+1.33 (11/9) |
+| lo10_hi20 | 20/20 | 1500.0 | 639 | 2.130 | 31.95 | 210 | 0.355 | +1.60, t+0.71 (9/11) |
+
+Dosing verified active (per-game mean `lam_eff`: lo5_hi15 11.5,
+lo5_hi20 15.2, lo10_hi20 16.9 — ranges 9–19, no saturation at either
+end, so the u() thresholds are well-centered). But no cell promotes:
+best cell lo5_hi20 at +3.05 t+1.33, below the t≥2 bar. Notable: all
+three adaptive arms go 20/20 while fixed drops one (21559@985
+`no_candidates`, backlog occ-windows …/66.9/**97.9**, final top 21 /
+17 holes) — and lo5_hi20 caps that SAME tape with 35 Tetrises (final
+occ 40, top 6). Genuine save, same shape as the §40/§47 backlog
+pattern, but at 1/20 it is paired-cap n.s. (discordant 1/0, McNemar
+exact p=1.0 — same math as the §53.8 promotion leg, which promoted
+on style t+6.89, not cap).
+
+Verdict: **no promotion; overnight queue complete.** Fixed
+`tiered + lam10` stands (promotion §53.8). The lo5_hi20 lean (+3.05
+t+1.33, 20/20 with the fixed death tape saved) is the lead candidate
+if a future horizon program re-opens it — but at n=20 it is panel
+luck until a cap-3000 leg says otherwise, and the queue plan's
+round-3 trigger (a round-1/2 promotion) did not fire, so no
+cap-3000 leg runs. Style program status: stylish default
+`cool30lam10tiered` at 2.0–2.2 T/100 (cap-1500 × 3 panels, cap-3000
+promotion leg); gradient saturated 10–20; dosing active but
+non-separating; filter shape maxed (T0 96–98%, zero fallbacks).
 
 1. Loop restart parameters: max cycles, deadline, adopt rule (upgrade to
    delta ≥ 0?), gate thresholds, cycle budget.
@@ -5005,3 +5227,34 @@ This is the project's n=30 mirage pattern a fourth time (§8 round-2,
    (which range, which n, pre-registered rule BEFORE restarting).
 6. Panel accounting: dev seeds consumed by tonight's run (21150–21179
    by cycle 1; +30/cycle after), next free ranges.
+
+## 54. TAP rotation correctness fix — I never kicks, center-column rule,
+IRS bare-only (2026-09-14)
+
+User-spotted viz bug, confirmed and fixed in the Rust sim (no panels
+consumed, no weights changed — physics change, so rebuild the extension
+with `maturin develop --release` from `deathbot_sim/` before any viz or
+eval). `src/rotation.rs`: KICKS is now `[(0,0),(+1,0),(-1,0)]` (no ±2,
+no floor kicks); I-piece tries the bare rotation only (TAP has no I
+kicks — those are TGM3 additions); L/J/T go through the center-column
+rule (3x3 box of the bare target scanned 1..9; a first hit in the center
+column (2/5/8) fails the rotation with no kicks, otherwise right-then-
+left kicks; walls/floor count as blockers, above-field cells count as
+empty). `src/action.rs`: IRS seeds bare-valid states at spawn coords
+only (removed kick-chasing, which created unreachable spawn states).
+Tests: 5 new Rust rotation tests (I no-kick, center block/allow,
+wall-offcenter, no-±2) + 5 new `tests/test_sim.py` mirrors; 31 lib +
+59 sim + viz/recovery suites green. User confirmed in the live viz
+testing panel: far left/right wells no longer reachable by I, center
+rule behaves. Known unrelated failure: `test_phase1.py` rollback guard
+fails on both builds (round-1 eval 266.5 > baseline 264.0 on 2 games, so
+no rejected file — eval luck, not rotation).
+
+Performance caveat: the reachable set strictly shrinks, so every
+survival/style number in §§12–53 was measured under looser physics and
+is now stale (direction: well-building gets harder, not easier — I
+well entries and center-block kicks are gone). Standing champions and
+configs unchanged (1-ply snapshot12; stylish cool30lam10tiered), but
+re-gate both on fresh panels before any promotion claim; stylish
+thresholds tuned against the old physics (λ knee, abort/reenter) may
+need re-tuning.

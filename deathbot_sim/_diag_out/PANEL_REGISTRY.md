@@ -581,3 +581,75 @@
     50/50 (185, 1.233, dTet +0.10 t+0.36, W/L 17/18) — both leans
     evaporate; cross holds (file: snap12_ctrl_challengers50.json).
     Next free: 21475+ (dev); 5500+ reserves for promotion.
+
+- seeds: 21475-21494
+  protocol: corrected-lockout, cap 1500 (snapshot12 tiered long-horizon,
+    §53.7)
+  status: CONSUMED
+  history: corrected cool30lam10 vs cool30lam10tiered vs pure-λ lam10 on
+    snapshot12 2026-09-13 (20 matched tapes, cap 1500, sha
+    471685c2a717d62b): cross 20/20 (348 tet, 1.160 T/100, ref);
+    tiered 20/20 (613, 2.043, paired vs cross +13.25 t+6.69, W/L 17/2,
+    min -3; vs lam10 +13.80 t+7.67); lam10 20/20 (337, 1.123; cross
+    vs lam10 +0.55 t+0.51 n.s.) — TIERED PROMOTE-CANDIDATE at horizon
+    (file: snap12_tiered_long.json). Next free: 21495+ (dev);
+    5500+ reserves for promotion.
+
+- seeds: 21495-21514
+  protocol: corrected-lockout, cap 3000 (snapshot12 tiered promotion
+    leg, §53.8)
+  status: CONSUMED
+  history: corrected cool30lam10 vs cool30lam10tiered on snapshot12
+    2026-09-13 (20 matched tapes, cap 3000, sha 471685c2a717d62b):
+    cross 20/20 (713 tet, 1.188 T/100, ref) vs tiered 19/20 (1167,
+    2.004, paired dTet +22.7 t+6.89, W/L 19/1; dPc -88.8 t-1.00;
+    discordant 0/1, McNemar exact p=1.0 — the single death 21503@1223
+    no_candidates, backlog-shaped occ 80→154, top 21, 10 holes; cross
+    on the same tape caps with 41 tet) — TIERED PROMOTED (file:
+    snap12_tiered_promotion.json). Next free: 21515+ (dev);
+    5500+ reserves for promotion.
+
+- seeds: 21515-21534
+  protocol: corrected-lockout, cap 1500 (snapshot12 tiered×λ
+    factorial, §53.9)
+  status: CONSUMED
+  history: 2×2 cool30/cool30lam10/cool30tiered/cool30lam10tiered on
+    snapshot12 2026-09-13 (20 matched tapes, cap 1500, sha
+    471685c2a717d62b; driver columns pair vs lam10 only — cross
+    deltas manual): cool30 20/20 (239 tet, 0.797); cool30lam10 19/20
+    (382, 1.319, death 21529@452 backlog occ-168); cool30tiered 20/20
+    (330, 1.100); tiered-cross 20/20 (664, 2.213, vs cool30 −21.25
+    t−10.97 W/L 0/20; vs lam10-legacy −14.1 t−9.34 0/18; vs
+    pure-tiered −16.7 t−10.11 0/20) — INTERACTION-ONLY, promotion
+    stands (file: snap12_tiered_factorial.json). Next free: 21535+
+    (dev); 5500+ reserves for promotion.
+
+- seeds: 21535-21549
+  protocol: corrected-lockout, cap 1500 (snapshot12 tiered λ dose,
+    §53.10 round 1)
+  status: CONSUMED
+  history: tiered λ5/10/15/20 on snapshot12 2026-09-13 (15 matched
+    tapes, cap 1500, sha 471685c2a717d62b; driver columns +0.00 —
+    deltas manual vs lam10tiered): lam10 14/15 (485 tet, 2.167,
+    death 21539@1381 backlog); lam5 15/15 (355, 1.578, dTet −8.67
+    t−3.87 — significantly worse style); lam15 15/15 (484, 2.151,
+    dTet −0.07 t−0.02 — tied); lam20 14/15 (493, 2.244, dTet +0.53
+    t+0.19 n.s., death 21547@972 backlog) — gradient SATURATED 10–20
+    (file: snap12_tiered_dose.json). Next free: 21550+ (dev);
+    5500+ reserves for promotion.
+
+- seeds: 21550-21569
+  protocol: corrected-lockout, cap 1500 (snapshot12 adaptive-λ round,
+    §53.11 round 2)
+  status: CONSUMED
+  history: fixed lam10tiered vs tiered_lo5_hi15 / lo5_hi20 / lo10_hi20
+    on snapshot12 2026-09-13 (20 matched tapes, cap 1500, sha
+    471685c2a717d62b; driver columns +0.00 — deltas manual vs fixed):
+    fixed 19/20 (607 tet, 2.059, death 21559@985 backlog occ-180);
+    lo5_hi15 20/20 (609, 2.030, dTet +0.10 t+0.05 — no dosing effect);
+    lo5_hi20 20/20 (668, 2.227, dTet +3.05 t+1.33 n.s., W/L 11/9,
+    caps the fixed death tape with 35 tet); lo10_hi20 20/20 (639,
+    2.130, dTet +1.60 t+0.71 n.s.) — adaptive dosing active
+    (lam_eff means 11.5/15.2/16.9) but no cell promotes
+    (file: snap12_tiered_adaptive.json). Next free: 21570+ (dev);
+    5500+ reserves for promotion.

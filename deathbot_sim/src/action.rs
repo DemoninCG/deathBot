@@ -136,39 +136,24 @@ pub fn apply_tick(board: &Board, p: &Piece, action: TickAction) -> TickOutcome {
 /// rotation states reachable by free pre-tick rotations (IRS).
 ///
 /// TAP allows the player to hold a rotation button before the piece spawns;
-/// the piece then appears already rotated, at no input cost. We model this by
-/// seeding the BFS with every distinct state the spawn piece can be in.
-///
-/// Returns a vec of (state, piece) pairs — one per distinct rotation state
-/// (O has 1, I has 2, J/L/S/T/Z have 4). The piece coordinates are the spawn
-/// coordinates; IRS does not move the piece horizontally.
+/// the piece then appears already rotated, at no input cost. IRS performs
+/// the BARE rotation only — kicks never apply pre-spawn (there is no stack
+/// contact yet and TAP has no I kicks at all), so only states valid at the
+/// exact spawn coordinates are seeded. (The old code chased try_rotate from
+/// spawn, which seeded kick-shifted roots that no real input can produce.)
 pub fn irs_root_states(board: &Board, kind: PieceType) -> Vec<Piece> {
     let spawn = Piece::spawn(kind);
     let n = kind.num_states();
     let mut roots = Vec::with_capacity(n as usize);
     let mut seen = std::collections::HashSet::new();
-    // Try every state directly — IRS can reach any state, but the spawn
-    // coordinates may make some states invalid (e.g. a piece whose rotated
-    // form pokes out the side at spawn x). Skip those.
+    // Bare states only: IRS can reach any state, but the spawn coordinates
+    // may make some states invalid (e.g. a piece whose rotated form pokes
+    // out the side at spawn x). Skip those. No kick-chasing: a bare-invalid
+    // spawn state is simply not IRS-reachable.
     for s in 0..n {
         let candidate = Piece::new(kind, s, spawn.x, spawn.y);
         if board.is_valid(&candidate) && seen.insert((s, spawn.x, spawn.y)) {
             roots.push(candidate);
-        }
-    }
-    // Also probe states reachable via kicks from spawn (in case a bare
-    // rotated spawn is invalid but a kick makes it valid — rare but possible
-    // at the wall). We chase rotations BFS-style from spawn.
-    let mut frontier: Vec<Piece> = roots.clone();
-    while let Some(p) = frontier.pop() {
-        for cw in [true, false] {
-            if let Some(r) = try_rotate(board, &p, cw) {
-                let key = (r.state, r.x, r.y);
-                if seen.insert(key) {
-                    roots.push(r);
-                    frontier.push(r);
-                }
-            }
         }
     }
     roots

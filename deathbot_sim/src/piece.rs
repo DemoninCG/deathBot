@@ -1,6 +1,6 @@
 //! Piece type, rotation state, and grid coordinates (phase 1.1).
 //!
-//! ARS uses a 4-state table for J/L/S/T/Z, a 2-state table for I, and a
+//! ARS uses 4-state tables for J/L/T, 2-state tables for I/S/Z, and a
 //! 1-state table for O. We store explicit per-state cell offsets (relative to
 //! the piece origin `(x, y)`) and index states modulo `num_states`, so e.g. the
 //! I piece's state 2 wraps back to state 0.

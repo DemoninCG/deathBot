@@ -17,8 +17,16 @@ Run:
     python viz_live.py --nn --weights ../../model_weights_snapshot9.pt --two-ply
     python viz_live.py --nn --weights ../../model_weights_snapshot9.pt --two-ply --line-bonus 1,3,5,8
     python viz_live.py --nn --weights ../../model_weights_snapshot9.pt --two-ply --line-bonus 1,3,5,8 --phi-lambda 20
+    python viz_live.py --nn --weights ../../model_weights_snapshot12.pt --stylish
+        (canonical stylish champion: cool30lam10tiered on snapshot12)
     python viz_live.py --piece T --board stack
     python viz_live.py --help
+
+Stylish mode (--stylish) plays the CANONICAL commitment controller
+(commit_controller.CommitScorer, cool30lam10tiered) via its choose()
+method — the same code path as the eval drivers. The left panel shows
+controller state (COMMITTED/RECOVER, last decision type, occ/top,
+ready, Tetrises + T/100) for behavior inspection.
 
 Controls:
     SPACE  - pause/resume the live game + lock cycling
@@ -105,6 +113,19 @@ _PIECE_INDEX = {
 }
 
 
+def board_locks_out(board, piece) -> bool:
+    """Lockout check with fallback for older extension builds."""
+    try:
+        return bool(board.locks_out(piece))
+    except Exception:
+        try:
+            sim = board.clone_board()
+            sim.lock(piece)
+            return False
+        except Exception:
+            return True
+
+
 # ---- Game runner (continuous play) ---------------------------------------
 
 class TwoPlyVizScorer:
@@ -117,6 +138,13 @@ class TwoPlyVizScorer:
     (masked out of selection by GameRunner's argmax only when a survivor
     exists). Full expansion (no top-k filter) — this is the validated
     snapshot9+2-ply configuration, not the truncated beams.
+
+    NOTE: this adapter does NOT replicate eval-driver tape semantics
+    (draw-free epsilon-gating, lockout-death handling) and must not be
+    used for measurement — see GameRunner. It exists for the standalone
+    --two-ply/--phi-lambda demo modes only. For the canonical stylish
+    champion use CommitVizScorer (--stylish), which delegates to the
+    canonical CommitScorer.choose().
     """
 
     def __init__(self, net, *, gamma_ply: float = 0.999,
@@ -224,15 +252,186 @@ class TwoPlyVizScorer:
         return fallback
 
 
+# Canonical stylish champion config (§53.8: cool30lam10tiered on
+# snapshot12). Single source of truth for the viz stylish mode — the
+# eval driver diag_commit_stageC.py ARMS dict must agree with these
+# values; the parity test below pins them.
+STYLISH_DEFAULTS = {
+    "abort_top": 16, "abort_occ": 110, "reenter_occ": 60,
+    "cooldown": 30, "lam": 10.0, "tiered_preserve": True,
+}
+
+
+class CommitVizScorer:
+    """Thin adapter: delegates every decision to the CANONICAL
+    CommitScorer.choose() (same code path as diag_commit_stageC._worker
+    and commit_controller.play_game_commit).
+
+    No scoring reimplementation here: choose() is called with the true
+    (current, next) pair from the runner's PieceQueue, and the returned
+    bulk index is resolved to the runner's search_locks candidate by
+    (state, x, y) identity (bulk order == search_locks order). Exposes
+    controller state (committed, last decision class, occ/top) for the
+    live overlay so well-build / cash-out / recover phases are visible.
+    """
+
+    def __init__(self, net, *, device: str = "cpu", **overrides) -> None:
+        from two_ply import TwoPlyScorer
+        from commit_controller import CommitScorer, COMPLETION_BONUS
+        cfg = dict(STYLISH_DEFAULTS)
+        cfg.update(overrides)
+        base = TwoPlyScorer(net, beam=10 ** 9, device=device,
+                            line_bonus=dict(COMPLETION_BONUS))
+        self.ctrl = CommitScorer(base, **cfg)
+        self.cfg = cfg
+        # Overlay state, refreshed on every score_batch call.
+        self.last_committed: bool = True
+        self.last_decision: str = "-"
+        self.last_occ: int = 0
+        self.last_top: int = 0
+        self.last_cashout: bool = False
+        self.last_pick_bulk: int = -1
+        self.last_pick_resolved: int = -1
+        self._last_stats_key: tuple | None = None
+
+    def _snapshot_stats(self) -> None:
+        st = self.ctrl.stats
+        key = (st.get("cashouts", 0), st.get("fallbacks", 0),
+               st.get("preserved_decisions", 0), st.get("recovers", 0),
+               st.get("reentries", 0))
+        if self._last_stats_key is not None:
+            prev = self._last_stats_key
+            if key[0] > prev[0]:
+                self.last_decision = "CASH-OUT"
+            elif key[1] > prev[1]:
+                self.last_decision = "FALLBACK"
+            elif key[3] > prev[3]:
+                self.last_decision = "RECOVER"
+            elif key[4] > prev[4]:
+                self.last_decision = "RE-ENTER"
+            elif key[2] > prev[2]:
+                self.last_decision = "PRESERVE"
+        self._last_stats_key = key
+
+    def save_state(self) -> dict:
+        """Snapshot mutable controller state (for test-panel isolation)."""
+        ctrl = self.ctrl
+        return {
+            "committed": ctrl.committed,
+            "cooldown": ctrl._cooldown_left,
+            "debt": ctrl._commit_debt,
+            "best_progress": ctrl._best_progress,
+            "stalled": ctrl._stalled_pieces,
+            "ready": ctrl._ready_wait,
+            "stats": dict(ctrl.stats),
+            "overlay": (self.last_committed, self.last_decision,
+                        self.last_occ, self.last_top, self.last_cashout,
+                        self.last_pick_bulk, self.last_pick_resolved,
+                        self._last_stats_key),
+        }
+
+    def restore_state(self, snap: dict) -> None:
+        ctrl = self.ctrl
+        ctrl.committed = snap["committed"]
+        ctrl._cooldown_left = snap["cooldown"]
+        ctrl._commit_debt = snap["debt"]
+        ctrl._best_progress = snap["best_progress"]
+        ctrl._stalled_pieces = snap["stalled"]
+        ctrl._ready_wait = snap["ready"]
+        ctrl.stats.clear()
+        ctrl.stats.update(snap["stats"])
+        (self.last_committed, self.last_decision, self.last_occ,
+         self.last_top, self.last_cashout, self.last_pick_bulk,
+         self.last_pick_resolved,
+         self._last_stats_key) = snap["overlay"]
+
+    def score(self, board, candidate) -> float:
+        return self.score_batch(board, [candidate])[0]
+
+    def score_batch(self, board, candidates, current_piece_idx=None,
+                    next_piece_idx=None) -> list[float]:
+        import numpy as np
+        if not candidates:
+            return []
+        kind = candidates[0].piece.kind
+        next_kind = TwoPlyVizScorer._kind_from_idx(
+            next_piece_idx, fallback=kind)
+        # Canonical decision — exactly what the eval driver plays.
+        pick = self.ctrl.choose(board, kind, next_kind)
+        self.last_pick_bulk = int(pick)
+        # Resolve the bulk pick to the runner's candidate index by
+        # (state, x, y) identity (robust to any search-order difference).
+        try:
+            bulk = board.lock_candidates_full(kind)
+            b_states, b_xs, b_ys = bulk[0], bulk[1], bulk[2]
+            target = (int(b_states[pick]), int(b_xs[pick]),
+                      int(b_ys[pick]))
+        except Exception:
+            target = None
+        best = 0
+        if target is not None:
+            for i, c in enumerate(candidates):
+                p = c.piece
+                if (int(p.state), int(p.x), int(p.y)) == target:
+                    best = i
+                    break
+        self.last_pick_resolved = int(best)
+        n = len(candidates)
+        out = [0.0] * n
+        out[best] = 1.0
+        # Overlay state.
+        self.last_committed = bool(self.ctrl.committed)
+        try:
+            rows = np.asarray(board.row_bits(), dtype=np.uint32)
+            self.last_occ = int(
+                sum(bin(int(v)).count("1") for v in rows))
+            top = 0
+            for r in range(20, -1, -1):
+                if int(rows[r]) & 0b1111111111:
+                    top = r + 1
+                    break
+            self.last_top = int(top)
+        except Exception:
+            pass
+        try:
+            from well_potential import dense_well_features
+            full = board.lock_candidates_full(kind)
+            rr = np.asarray(full[4], dtype=np.uint32).reshape(
+                len(full[0]), 21)[pick]
+            self.last_cashout = bool(
+                int(full[5][pick]) == 4 and dense_well_features(rr).get(
+                    "tetris_ready", 0.0) > 0.5)
+        except Exception:
+            self.last_cashout = False
+        self._snapshot_stats()
+        if self.last_cashout:
+            self.last_decision = "CASH-OUT"
+        return out
+
+
 class GameRunner:
-    """Plays one Death-mode game step at a time using a scorer."""
+    """Plays one Death-mode game step at a time using a scorer.
+
+    Tape semantics match the eval drivers (diag_commit_stageC._worker,
+    commit_controller.play_game_commit): epsilon-gating draws nothing
+    when epsilon == 0 (the §33 RNG-aliasing fix — viz tapes with an
+    explicit seed are directly comparable to headless tapes), and an
+    all-lockout position ends the game WITHOUT committing the piece
+    (A2 corrected-lockout semantics).
+    """
 
     def __init__(self, scorer: Scorer, rng: random.Random | None = None,
-                 *, epsilon: float = 0.0) -> None:
+                 *, epsilon: float = 0.0, seed: int | None = None) -> None:
         self.scorer = scorer
         self.rng = rng or random.Random()
+        self.seed = seed
         self.epsilon = epsilon
-        self.piece_queue = PieceQueue(self.rng)
+        # Prime exactly once: PieceQueue.__init__ already draws the first
+        # current+next pair, so reset() must NOT re-prime on the first
+        # game (that would burn 2 TAP draws and offset the tape vs
+        # headless drivers that do PieceQueue(rng) once per game).
+        self.piece_queue: PieceQueue | None = None
+        self.tetrises: int = 0
         self.reset()
 
     def reset(self) -> None:
@@ -244,8 +443,28 @@ class GameRunner:
         self.best_idx: int = 0
         self.pieces_placed: int = 0
         self.lines_cleared: int = 0
+        self.tetrises: int = 0
         self.alive: bool = True
-        self.piece_queue.reset()
+        self.death_reason: str = ""
+        # Fresh controller state per game: the canonical CommitScorer
+        # is stateful (committed/cooldown/debt), so reset it here.
+        try:
+            ctrl = getattr(self.scorer, "ctrl", None)
+            if ctrl is not None:
+                ctrl.committed = True
+                ctrl._cooldown_left = 0
+                ctrl._commit_debt = 0.0
+                ctrl._best_progress = 0.0
+                ctrl._stalled_pieces = 0
+                ctrl._ready_wait = 0
+        except Exception:
+            pass
+        if self.piece_queue is None:
+            # First game: PieceQueue(rng) semantics — exactly 2 TAP draws
+            # from the seeded stream, same as headless drivers.
+            self.piece_queue = PieceQueue(self.rng)
+        else:
+            self.piece_queue.reset()
         self._spawn_new_piece()
 
     def _spawn_new_piece(self) -> None:
@@ -274,13 +493,36 @@ class GameRunner:
         if not self.alive or not self.current_candidates:
             self.alive = False
             return None
-        if self.rng.random() < self.epsilon:
+        # Eval-driver parity: draw NOTHING when epsilon == 0, so an
+        # explicit seed names the same TAP tape as headless drivers
+        # (§33 RNG-aliasing fix). Nonzero epsilon keeps one draw/pick.
+        if self.epsilon > 0 and self.rng.random() < self.epsilon:
             cand = self.rng.choice(self.current_candidates)
+            idx = self.current_candidates.index(cand)
         else:
-            cand = self.current_candidates[self.best_idx]
+            idx = self.best_idx
+            cand = self.current_candidates[idx]
+        # Corrected-lockout semantics (A2): an all-lockout position is
+        # a loss and the piece is NOT committed.
+        try:
+            if all(board_locks_out(self.board, c.piece)
+                   for c in self.current_candidates):
+                self.alive = False
+                self.death_reason = "lockout"
+                return None
+            if board_locks_out(self.board, cand.piece):
+                # Defensive: scorer should never pick a lockout when a
+                # survivor exists; treat as death without committing.
+                self.alive = False
+                self.death_reason = "lockout"
+                return None
+        except Exception:
+            pass
         self.board.lock(cand.piece)
         lines = self.board.clear_lines()
         self.lines_cleared += lines
+        if lines == 4:
+            self.tetrises += 1
         self.pieces_placed += 1
         self.piece_queue.advance()  # next-piece becomes current
         self._spawn_new_piece()
@@ -461,6 +703,42 @@ def draw_game_panel(
     if runner.pieces_placed:
         stat_line("l/100", f"{100.0 * runner.lines_cleared / runner.pieces_placed:.1f}",
                   stats_y + 48)
+        stat_line("tetris", f"{runner.tetrises} "
+                  f"({100.0 * runner.tetrises / runner.pieces_placed:.2f}/100)",
+                  stats_y + 64, (255, 220, 80))
+
+    # Controller state overlay (CommitVizScorer only): the well-build /
+    # cash-out / recover phases to watch for Tetris-rate diagnosis.
+    ctrl_y = stats_y + 84
+    scorer = runner.scorer
+    if hasattr(scorer, "ctrl"):
+        mode = "COMMIT" if getattr(scorer, "last_committed", True) else "RECOVER"
+        mode_color = BEST if mode == "COMMIT" else (255, 180, 80)
+        dec = str(getattr(scorer, "last_decision", "-"))
+        if getattr(scorer, "last_cashout", False):
+            dec = "CASH-OUT"
+            mode_color = (255, 220, 80)
+        surface.blit(small_font.render(f"mode: {mode}", True, mode_color),
+                     (stats_x, ctrl_y))
+        surface.blit(small_font.render(f"dec: {dec}", True, TEXT),
+                     (stats_x + 130, ctrl_y))
+        surface.blit(small_font.render(
+            f"occ {getattr(scorer, 'last_occ', 0)} "
+            f"top {getattr(scorer, 'last_top', 0)}", True, TEXT_DIM),
+                     (stats_x, ctrl_y + 16))
+        try:
+            st = scorer.ctrl.stats
+            surface.blit(small_font.render(
+                f"rec {st.get('recovers', 0)} "
+                f"re {st.get('reentries', 0)} "
+                f"fb {st.get('fallbacks', 0)} "
+                f"co {st.get('cashouts', 0)}", True, TEXT_DIM),
+                         (stats_x, ctrl_y + 32))
+        except Exception:
+            pass
+        agg_y_off = 48
+    else:
+        agg_y_off = 0
 
     agg_x = stats_x + 180
 
@@ -473,9 +751,11 @@ def draw_game_panel(
     agg_line("max survive", f"{stats.max_survival}", stats_y + 32, STAT_GOOD)
     agg_line("avg survive", f"{stats.avg_survival:.1f}", stats_y + 48)
     agg_line("max lines", f"{stats.max_lines}", stats_y + 64)
+    if getattr(runner.scorer, "ctrl", None) is not None and runner.seed is not None:
+        agg_line("seed", f"{runner.seed}", stats_y + 80)
 
     # Recent survivals mini bar chart.
-    chart_y = stats_y + 90
+    chart_y = stats_y + 90 + agg_y_off
     surface.blit(small_font.render("recent survivals:", True, TEXT_DIM),
                  (stats_x, chart_y))
     bar_x = stats_x + 110
@@ -595,7 +875,7 @@ def draw_testing_panel(surface, board, candidates, scores, current_idx, best_idx
 # ---- Demo boards + scorer factory ----------------------------------------
 
 DEMO_BOARDS = {
-    "stack": "........../........../........../........../........../.##.#...../.######.../#######.../######..../#########.",
+    "stack": "........../........../........../........../.####...../.###..#.../#########./#########./#########./#########.",
     "empty": "........../........../........../........../........../........../........../........../........../..........",
 }
 
@@ -603,7 +883,9 @@ DEMO_BOARDS = {
 def make_scorer(use_nn: bool, weights_path: str | None = None,
                  two_ply: bool = False, gamma_ply: float = 0.999,
                  line_bonus: dict | None = None,
-                 phi_lambda: float = 0.0, well_col: int = 9):
+                 phi_lambda: float = 0.0, well_col: int = 9,
+                 stylish: bool = False, device: str = "cpu",
+                 **commit_overrides):
     if use_nn:
         if not _TORCH_AVAILABLE:
             print("torch not available; falling back to MockScorer")
@@ -619,6 +901,12 @@ def make_scorer(use_nn: bool, weights_path: str | None = None,
             else:
                 print(f"weights file {p} not found; using untrained net")
         net.eval()
+        if stylish:
+            cfg = dict(STYLISH_DEFAULTS)
+            cfg.update(commit_overrides)
+            print(f"using canonical stylish champion cool30lam10tiered "
+                  f"({cfg})")
+            return CommitVizScorer(net, device=device, **commit_overrides)
         if two_ply:
             print(f"using full-expansion 2-ply lookahead (gamma={gamma_ply}, "
                   f"line_bonus={line_bonus}, phi_lambda={phi_lambda}, "
@@ -644,6 +932,10 @@ def main() -> None:
     line_bonus: dict | None = None
     phi_lambda = 0.0
     well_col = 9
+    stylish = False
+    seed = 42
+    commit_overrides: dict = {}
+    game_step_interval_cli: float | None = None
     for i, a in enumerate(args):
         if a == "--piece" and i + 1 < len(args):
             piece_name = args[i + 1].upper()
@@ -659,6 +951,31 @@ def main() -> None:
             weights_path = a.split("=", 1)[1]
         elif a == "--two-ply":
             use_two_ply = True
+        elif a == "--stylish":
+            stylish = True
+            use_nn = True
+            use_two_ply = False
+        elif a == "--seed" and i + 1 < len(args):
+            seed = int(args[i + 1])
+        elif a.startswith("--seed="):
+            seed = int(a.split("=", 1)[1])
+        elif a == "--slow" and i + 1 < len(args):
+            try:
+                game_step_interval_cli = float(args[i + 1])
+            except ValueError:
+                pass
+        elif a.startswith("--abort-top="):
+            commit_overrides["abort_top"] = int(a.split("=", 1)[1])
+        elif a.startswith("--abort-occ="):
+            commit_overrides["abort_occ"] = int(a.split("=", 1)[1])
+        elif a.startswith("--reenter-occ="):
+            commit_overrides["reenter_occ"] = int(a.split("=", 1)[1])
+        elif a.startswith("--cooldown="):
+            commit_overrides["cooldown"] = int(a.split("=", 1)[1])
+        elif a.startswith("--lam="):
+            commit_overrides["lam"] = float(a.split("=", 1)[1])
+        elif a.startswith("--no-tiered"):
+            commit_overrides["tiered_preserve"] = False
         elif a == "--gamma-ply" and i + 1 < len(args):
             gamma_ply = float(args[i + 1])
         elif a.startswith("--gamma-ply="):
@@ -692,25 +1009,37 @@ def main() -> None:
 
     scorer = make_scorer(use_nn, weights_path, two_ply=use_two_ply,
                          gamma_ply=gamma_ply, line_bonus=line_bonus,
-                         phi_lambda=phi_lambda, well_col=well_col)
-    if use_nn and use_two_ply and phi_lambda:
+                         phi_lambda=phi_lambda, well_col=well_col,
+                         stylish=stylish, **commit_overrides)
+    if stylish:
+        wname = Path(weights_path).name if weights_path else "?"
+        scorer_name = f"Stylish-tiered({wname})"
+    elif use_nn and use_two_ply and phi_lambda:
         scorer_name = f"Stylish(lam={phi_lambda:g},well={well_col})"
     elif use_nn and use_two_ply:
         scorer_name = "TwoPly(snapshot9)"
     else:
         scorer_name = "NeuralScorer" if use_nn else "MockScorer"
 
-    rng = random.Random(42)
-    runner = GameRunner(scorer, rng, epsilon=0.0)
+    rng = random.Random(seed)
+    runner = GameRunner(scorer, rng, epsilon=0.0, seed=seed)
     stats = GameStats()
 
     test_candidates = test_board.search_locks(test_kind)
     test_cur_idx = _PIECE_INDEX.get(test_kind, 0)
-    if hasattr(scorer, "score_batch") and test_candidates:
-        test_scores = scorer.score_batch(test_board, test_candidates,
-                                          current_piece_idx=test_cur_idx)
-    else:
-        test_scores = [scorer.score(test_board, c) for c in test_candidates]
+    if hasattr(scorer, "save_state"):
+        _snap = scorer.save_state()
+    try:
+        if hasattr(scorer, "score_batch") and test_candidates:
+            test_scores = scorer.score_batch(
+                test_board, test_candidates,
+                current_piece_idx=test_cur_idx)
+        else:
+            test_scores = [scorer.score(test_board, c)
+                           for c in test_candidates]
+    finally:
+        if hasattr(scorer, "restore_state"):
+            scorer.restore_state(_snap)
     try:
         _res = test_board.lock_candidates_full(test_kind)
         test_lines = [int(x) for x in _res[5]]
@@ -737,11 +1066,23 @@ def main() -> None:
     paused = False
     reduced_motion = False
     game_step_timer = 0.0
-    game_step_interval = 0.1
+    game_step_interval = (game_step_interval_cli
+                          if game_step_interval_cli else 0.1)
     game_over_pause = 0.0
     game_over_interval = 1.5
     test_cycle_speed = 8.0
     test_time_accum = 0.0
+
+    def _refresh_scorer_name() -> str:
+        if stylish:
+            wname = Path(weights_path).name if weights_path else "?"
+            return f"Stylish-tiered({wname})"
+        if use_nn and use_two_ply and phi_lambda:
+            return (f"Stylish(lam={phi_lambda:g},"
+                    f"well={well_col})")
+        if use_nn and use_two_ply:
+            return "TwoPly(snapshot9)"
+        return "NeuralScorer" if use_nn else "MockScorer"
 
     running = True
     while running:
@@ -770,22 +1111,25 @@ def main() -> None:
                                          gamma_ply=gamma_ply,
                                          line_bonus=line_bonus,
                                          phi_lambda=phi_lambda,
-                                         well_col=well_col)
-                    if use_nn and use_two_ply and phi_lambda:
-                        scorer_name = (f"Stylish(lam={phi_lambda:g},"
-                                       f"well={well_col})")
-                    elif use_nn and use_two_ply:
-                        scorer_name = "TwoPly(snapshot9)"
-                    else:
-                        scorer_name = ("NeuralScorer" if use_nn
-                                       else "MockScorer")
+                                         well_col=well_col,
+                                         stylish=stylish,
+                                         **commit_overrides)
+                    scorer_name = _refresh_scorer_name()
                     runner.scorer = scorer
-                    if hasattr(scorer, "score_batch") and test_candidates:
-                        test_scores = scorer.score_batch(
-                            test_board, test_candidates,
-                            current_piece_idx=test_cur_idx)
-                    else:
-                        test_scores = [scorer.score(test_board, c) for c in test_candidates]
+                    runner.reset()
+                    if hasattr(scorer, "save_state"):
+                        _snap = scorer.save_state()
+                    try:
+                        if hasattr(scorer, "score_batch") and test_candidates:
+                            test_scores = scorer.score_batch(
+                                test_board, test_candidates,
+                                current_piece_idx=test_cur_idx)
+                        else:
+                            test_scores = [scorer.score(test_board, c)
+                                           for c in test_candidates]
+                    finally:
+                        if hasattr(scorer, "restore_state"):
+                            scorer.restore_state(_snap)
                     test_best_idx = (max(range(len(test_scores)),
                                          key=lambda i: test_scores[i])
                                      if test_scores else 0)

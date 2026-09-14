@@ -49,6 +49,14 @@ ARMS = {
     "reentry_cert": {"abort_top": 16, "abort_occ": 110, "reenter_occ": 60, "reenter_top": 10,
                      "reenter_holes": 2, "reentry_min_progress": 1.0, "cooldown": 30, "lam": 10.0},
     "a120_r50": {"abort_top": 16, "abort_occ": 120, "reenter_occ": 50, "cooldown": 30, "lam": 10.0},
+    "cool30lam10tiered": {"abort_top": 16, "abort_occ": 110, "reenter_occ": 60, "cooldown": 30, "lam": 10.0, "tiered_preserve": True},
+    "cool30tiered": {"abort_top": 16, "abort_occ": 110, "reenter_occ": 60, "cooldown": 30, "lam": 0.0, "tiered_preserve": True},
+    "cool30lam5tiered": {"abort_top": 16, "abort_occ": 110, "reenter_occ": 60, "cooldown": 30, "lam": 5.0, "tiered_preserve": True},
+    "cool30lam15tiered": {"abort_top": 16, "abort_occ": 110, "reenter_occ": 60, "cooldown": 30, "lam": 15.0, "tiered_preserve": True},
+    "cool30lam20tiered": {"abort_top": 16, "abort_occ": 110, "reenter_occ": 60, "cooldown": 30, "lam": 20.0, "tiered_preserve": True},
+    "tiered_lo5_hi15": {"abort_top": 16, "abort_occ": 110, "reenter_occ": 60, "cooldown": 30, "lam": 10.0, "tiered_preserve": True, "lam_lo": 5.0, "lam_hi": 15.0},
+    "tiered_lo5_hi20": {"abort_top": 16, "abort_occ": 110, "reenter_occ": 60, "cooldown": 30, "lam": 10.0, "tiered_preserve": True, "lam_lo": 5.0, "lam_hi": 20.0},
+    "tiered_lo10_hi20": {"abort_top": 16, "abort_occ": 110, "reenter_occ": 60, "cooldown": 30, "lam": 10.0, "tiered_preserve": True, "lam_lo": 10.0, "lam_hi": 20.0},
 }
 
 def resolve(p: str) -> Path:

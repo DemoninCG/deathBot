@@ -60,6 +60,31 @@ def _col_bits(rows21, col: int = WELL_COL) -> int:
     return h
 
 
+def count_overhangs_outside(rows21, well_col: int = WELL_COL) -> int:
+    """Count outside-well covered empties (overhangs, broad sense).
+
+    For each non-well column, every empty cell strictly below the column
+    top with ANY filled cell above it in the same column counts. This is
+    a superset of `holes_outside` (enclosed holes): it also counts
+    covered cells that still have a side escape (non-enclosing
+    overhangs), which the current `preserves_well` filter lets through.
+    Computed on packed [21] rows; pure numpy-free integer loop.
+    """
+    rows = np.asarray(rows21, dtype=np.uint32).reshape(-1)
+    n = 0
+    for c in range(10):
+        if c == int(well_col):
+            continue
+        seen_fill_above = False
+        for r in range(20, -1, -1):
+            filled = (int(rows[r]) >> c) & 1
+            if filled:
+                seen_fill_above = True
+            elif seen_fill_above:
+                n += 1
+    return n
+
+
 def preserves_well(pre_rows21, post_rows21, post_feats: dict,
                    max_new_holes: int = 0) -> bool:
     """True if the post-afterstate keeps a usable col-9 channel.
@@ -87,6 +112,12 @@ class CommitScorer:
       abort_top / abort_occ : drop commitment at/above (RECOVER).
       reenter_occ           : re-commit at/below (hysteresis).
       max_new_holes         : preserved-set hole tolerance (default 0).
+      tiered_preserve       : tiered strictness (§53.7): Tier 0 blocks new
+        overhangs too (strictest), Tier 1 is legacy `preserves_well`
+        (blocks new holes, allows overhangs), Tier 2 keeps the channel
+        only (well_open + no col-9 cover; allows new holes). Tiers fall
+        through in order 0 -> 1 -> 2 -> unconstrained fallback; the used
+        tier is recorded in stats (tier0/1/2/unconstrained kept counts).
     State: committed (bool), plus counters for the Pareto report
     (decisions_preserved, fallbacks, cashouts, recovers).
     """
@@ -103,7 +134,8 @@ class CommitScorer:
                  reentry_min_progress: float = 0.0,
                  ready_patience: int = 0,
                  lam_lo: float | None = None,
-                 lam_hi: float | None = None) -> None:
+                 lam_hi: float | None = None,
+                 tiered_preserve: bool = False) -> None:
         self.base = base_scorer
         self.abort_top = int(abort_top)
         self.abort_occ = int(abort_occ)
@@ -124,6 +156,7 @@ class CommitScorer:
         self.reenter_holes = None if reenter_holes is None else int(reenter_holes)
         self.reentry_min_progress = float(reentry_min_progress)
         self.ready_patience = int(ready_patience)
+        self.tiered_preserve = bool(tiered_preserve)
         # Usability-based adjustable λ (watch80-style): when lam_lo is set,
         # the per-decision Phi scale interpolates between lam_lo (risky
         # stacks) and lam_hi (clean stacks) via _usability() of the
@@ -158,6 +191,8 @@ class CommitScorer:
                   "debt_exits": 0, "progress_exits": 0,
                       "uniform_expansions": 0, "ranked_cashouts": 0,
                       "ready_exits": 0,
+                      "tier0_kept": 0, "tier1_kept": 0, "tier2_kept": 0,
+                      "tier_fallback": 0,
                       "max_commit_debt": 0.0}
 
     def _occ_top(self, pre_rows21):
@@ -345,19 +380,60 @@ class CommitScorer:
 
         # PRESERVE: filter viable to channel-preserving moves (constrain
         # FIRST on the full viable set — never after a v1 shortlist).
-        kept = []
-        for i in viable:
-            try:
-                f = dense_well_features(rows[i])
-            except Exception:
-                continue
-            if preserves_well(pre_rows, rows[i], f, self.max_new_holes):
-                kept.append(i)
+        # Tiered mode (§53.7): strictest non-empty tier wins —
+        #   Tier 0: legacy preserves_well + no NEW overhangs outside col 9
+        #   Tier 1: legacy preserves_well (no new holes; overhangs allowed)
+        #   Tier 2: channel only (well_open + no col-9 cover; holes allowed)
+        #   else : unconstrained survival fallback (existing behavior).
+        tier = "tier_fallback"
+        if not self.tiered_preserve:
+            kept = []
+            for i in viable:
+                try:
+                    f = dense_well_features(rows[i])
+                except Exception:
+                    continue
+                if preserves_well(pre_rows, rows[i], f, self.max_new_holes):
+                    kept.append(i)
+        else:
+            pre_over = count_overhangs_outside(pre_rows)
+            pre_col = _col_bits(pre_rows)
+            tier0, tier1, tier2 = [], [], []
+            for i in viable:
+                try:
+                    f = dense_well_features(rows[i])
+                except Exception:
+                    continue
+                if not (f.get("well_open", 0.0) >= 0.5
+                        and _col_bits(rows[i]) <= pre_col):
+                    continue
+                tier2.append(i)
+                pre_h = dense_well_features(pre_rows)["holes_outside"]
+                if f.get("holes_outside", 0.0) - pre_h > self.max_new_holes:
+                    continue
+                tier1.append(i)
+                try:
+                    if count_overhangs_outside(rows[i]) <= pre_over:
+                        tier0.append(i)
+                except Exception:
+                    pass
+            if tier0:
+                kept, tier = tier0, "tier0_kept"
+            elif tier1:
+                kept, tier = tier1, "tier1_kept"
+            elif tier2:
+                kept, tier = tier2, "tier2_kept"
+            else:
+                kept = []
         if not kept:
             # No preserving move exists: survival fallback, keep commitment
             # (a single fallback placement rarely destroys the plan).
             self.stats["fallbacks"] += 1
+            if self.tiered_preserve:
+                self.stats["tier_fallback"] += 1
             return self.base.choose(board, current, next_piece)
+        if self.tiered_preserve:
+            self.stats[tier] += 1
 
         # Rank the preserved set with EXACT restricted Q2ply (§44.2 fix:
         # audit A showed the v1-only fallback flips 21.5% of conflict
@@ -529,6 +605,7 @@ def play_game_commit(net, rng, *, max_pieces: int = 300,
                      ready_patience: int = 0,
                      lam_lo: float | None = None,
                      lam_hi: float | None = None,
+                     tiered_preserve: bool = False,
                      device: str = "cpu"):
     """Closed-loop game with the commitment controller. Returns
     (pieces, lines, clears, reason, stats)."""
@@ -547,7 +624,8 @@ def play_game_commit(net, rng, *, max_pieces: int = 300,
         rank_cashouts=rank_cashouts, reenter_holes=reenter_holes,
         reentry_min_progress=reentry_min_progress,
         ready_patience=ready_patience,
-        lam_lo=lam_lo, lam_hi=lam_hi)
+        lam_lo=lam_lo, lam_hi=lam_hi,
+        tiered_preserve=tiered_preserve)
     board = ds.Board()
     pq = PieceQueue(rng)
     clears = {0: 0, 1: 0, 2: 0, 3: 0, 4: 0}

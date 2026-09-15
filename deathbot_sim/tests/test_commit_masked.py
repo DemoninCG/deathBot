@@ -270,3 +270,110 @@ def test_nonconflict_shortcut_and_determinism():
         if checked_shortcut and checked_conflict:
             break
     assert checked_shortcut > 0, "no non-conflict state found"
+
+
+def _preserved_state_with_burn_option(n=60):
+    """First frozen-bank state whose kept set has a 0-line and a burn line.
+
+    Returns (pre, cur, nxt_piece, kept, kept_lines) or skips the test.
+    """
+    import deathbot_sim as ds
+    from two_ply import TwoPlyScorer
+    from commit_controller import CommitScorer, preserves_well
+    from well_potential import dense_well_features
+    net = _load_net()
+    bank, placed, nxt, m = _bank(n)
+    kw = {"abort_top": 99, "abort_occ": 10 ** 9, "reenter_occ": 10 ** 9}
+    for s in range(m):
+        pre = ds.Board.from_row_bits([int(v) for v in bank.pre_rows[s]])
+        bulk = pre.lock_candidates_full(placed[s])
+        n_c = len(bulk[0])
+        viable = [i for i, lo in enumerate(bulk[3]) if not lo]
+        if not viable:
+            continue
+        rows = np.asarray(bulk[4], dtype=np.uint32).reshape(n_c, 21)
+        pre_rows = np.asarray(pre.row_bits(), dtype=np.uint32)
+        kept = [i for i in viable
+                if preserves_well(pre_rows, rows[i],
+                                  dense_well_features(rows[i]), 0)]
+        if not kept:
+            continue
+        klines = [int(bulk[5][j]) for j in kept]
+        if 0 in klines and any(k in (1, 2, 3) for k in klines):
+            return pre, placed[s], nxt[s], kept, klines
+    import pytest
+    pytest.skip("no kept set with 0-line + burn options in bank slice")
+
+
+def test_burn_zero_is_legacy():
+    """burn_penalty=0 reproduces the legacy pick and shortcut behavior."""
+    from two_ply import TwoPlyScorer
+    from commit_controller import CommitScorer
+    net = _load_net()
+    pre, cur, nxt_piece, kept, _kl = _preserved_state_with_burn_option()
+    mk = lambda **kw: CommitScorer(
+        TwoPlyScorer(net, beam=10 ** 9,
+                     line_bonus={1: 1.0, 2: 3.0, 3: 5.0, 4: 8.0}), **kw)
+    kw0 = {"abort_top": 99, "abort_occ": 10 ** 9, "reenter_occ": 10 ** 9}
+    a = mk(**kw0).choose(pre, cur, nxt_piece)
+    b = mk(**dict(kw0, burn_penalty=0.0)).choose(pre, cur, nxt_piece)
+    assert a == b
+    # Legacy shortcut: base pick inside kept takes the direct path.
+    ctrl = mk(**dict(kw0, burn_penalty=0.0))
+    before = ctrl.stats.get("masked_expansions", 0)
+    pick = ctrl.choose(pre, cur, nxt_piece)
+    base_pick = ctrl.base.choose(pre, cur, nxt_piece)
+    if base_pick in kept:
+        assert pick == base_pick
+        assert ctrl.stats.get("masked_expansions", 0) == before
+
+
+def test_burn_penalty_reranks_kept_only():
+    """A large burn penalty forces exact scoring and avoids burns kept-side.
+
+    Checks: (a) burn>0 skips the base-pick shortcut (masked_expansions
+    increments even when the base pick preserves); (b) the pick equals
+    the independently computed penalized argmax (exact - penalty*lines
+    on lines 1..3, lines 0/4 untouched); (c) the burn_pen_applied
+    counter records the re-ranked burn options.
+    """
+    from two_ply import TwoPlyScorer
+    from commit_controller import CommitScorer
+    net = _load_net()
+    pre, cur, nxt_piece, kept, klines = _preserved_state_with_burn_option()
+    kw = {"abort_top": 99, "abort_occ": 10 ** 9, "reenter_occ": 10 ** 9}
+    base = TwoPlyScorer(net, beam=10 ** 9,
+                        line_bonus={1: 1.0, 2: 3.0, 3: 5.0, 4: 8.0})
+    ctrl = CommitScorer(base, **dict(kw, burn_penalty=50.0))
+    pick = ctrl.choose(pre, cur, nxt_piece)
+    assert pick in kept
+    assert ctrl.stats.get("masked_expansions", 0) == 1
+    assert ctrl.stats.get("burn_pen_applied", 0) >= 1
+    # Independent penalized argmax (lam=0 here, so Phi is all zeros).
+    bulk = pre.lock_candidates_full(cur)
+    rows = np.asarray(bulk[4], dtype=np.uint32).reshape(len(bulk[0]), 21)
+    exact = _exact_restricted(
+        net, base, [rows[j] for j in kept],
+        [int(bulk[5][j]) for j in kept], cur, nxt_piece)
+    pen = [e - (50.0 * k if k in (1, 2, 3) else 0.0)
+           for e, k in zip(exact, klines)]
+    want = kept[max(range(len(kept)), key=lambda j: (pen[j], -j))]
+    assert pick == want, (pick, want)
+    # Determinism under the penalty.
+    ctrl2 = CommitScorer(
+        TwoPlyScorer(net, beam=10 ** 9,
+                     line_bonus={1: 1.0, 2: 3.0, 3: 5.0, 4: 8.0}),
+        **dict(kw, burn_penalty=50.0))
+    assert ctrl2.choose(pre, cur, nxt_piece) == pick
+
+
+def test_burn_penalty_rejects_negative():
+    """Negative burn penalties raise (the parameter is a disincentive)."""
+    import pytest
+    from two_ply import TwoPlyScorer
+    from commit_controller import CommitScorer
+    net = _load_net()
+    base = TwoPlyScorer(net, beam=10 ** 9,
+                        line_bonus={1: 1.0, 2: 3.0, 3: 5.0, 4: 8.0})
+    with pytest.raises(ValueError):
+        CommitScorer(base, burn_penalty=-1.0)

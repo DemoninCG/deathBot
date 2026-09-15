@@ -252,13 +252,15 @@ class TwoPlyVizScorer:
         return fallback
 
 
-# Canonical stylish champion config (§53.8: cool30lam10tiered on
-# snapshot12). Single source of truth for the viz stylish mode — the
+# Canonical stylish champion config (§58: cool30lam10tiered_burn6 on
+# snapshot12 — burn_penalty 6.0 promoted at cap 3000, t+3.47).
+# Single source of truth for the viz stylish mode — the
 # eval driver diag_commit_stageC.py ARMS dict must agree with these
 # values; the parity test below pins them.
 STYLISH_DEFAULTS = {
     "abort_top": 16, "abort_occ": 110, "reenter_occ": 60,
     "cooldown": 30, "lam": 10.0, "tiered_preserve": True,
+    "burn_penalty": 6.0,
 }
 
 
@@ -974,6 +976,8 @@ def main() -> None:
             commit_overrides["cooldown"] = int(a.split("=", 1)[1])
         elif a.startswith("--lam="):
             commit_overrides["lam"] = float(a.split("=", 1)[1])
+        elif a.startswith("--burn-penalty="):
+            commit_overrides["burn_penalty"] = float(a.split("=", 1)[1])
         elif a.startswith("--no-tiered"):
             commit_overrides["tiered_preserve"] = False
         elif a == "--gamma-ply" and i + 1 < len(args):

@@ -144,9 +144,10 @@ def main() -> None:
     ok = ok and same_open
     # Pin the stylish defaults to the eval driver's ARMS config.
     import diag_commit_stageC as stageC
-    arm = stageC.ARMS["cool30lam10tiered"]
+    arm = stageC.ARMS["cool30lam10tiered_burn6"]
     pinned = all(arm.get(k) == v for k, v in STYLISH_DEFAULTS.items())
-    print(f"STYLISH_DEFAULTS pins diag_commit_stageC cool30lam10tiered: "
+    print(f"STYLISH_DEFAULTS pins diag_commit_stageC "
+          f"cool30lam10tiered_burn6: "
           f"{pinned} {STYLISH_DEFAULTS}")
     ok = ok and pinned
     if not ok:

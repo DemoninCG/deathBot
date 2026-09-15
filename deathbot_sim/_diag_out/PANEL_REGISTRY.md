@@ -653,3 +653,65 @@
     (lam_eff means 11.5/15.2/16.9) but no cell promotes
     (file: snap12_tiered_adaptive.json). Next free: 21570+ (dev);
     5500+ reserves for promotion.
+
+- seeds: 21570-21609
+  protocol: corrected-lockout, cap 300 (snapshot12 cooldown + burn screen,
+    §55; corrected TAP physics post-§54 rebuild)
+  status: CONSUMED
+  history: corrected cool30lam10tiered (ref) vs cool15/cool20 (cooldown
+    15/20) vs burn2/burn4 (burn_penalty 2.0/4.0) vs cool15+burn4 on
+    snapshot12 2026-09-14 (40 matched tapes, cap 300, sha
+    471685c2a717d62b; driver columns +0.00 — deltas manual vs ref):
+    ref 40/40 (233 tet, 1.942 T/100); cool15 40/40 (244, dTet +0.275
+    t+0.85 n.s.); cool20 40/40 (238, +0.125 t+0.28 n.s.); burn2 39/40
+    (275, 2.310, dTet +1.05 t+1.82 n.s., death 21579@203
+    no_candidates); burn4 40/40 (289, 2.408, dTet +1.40 t+2.28,
+    W/L 25/11); cool15burn4 40/40 (282, 2.350, dTet +1.225 t+2.15,
+    W/L 22/11) — burn4 PROMOTE-CANDIDATE at cap 300, cooldown NEUTRAL
+    (file: snap12_style_tune55.json). Next free: 21610+ (dev);
+    5500+ reserves for promotion.
+
+- seeds: 21610-21629
+  protocol: corrected-lockout, cap 1500 (snapshot12 burn horizon leg,
+    §56; corrected TAP physics post-§54 rebuild)
+  status: CONSUMED
+  history: corrected cool30lam10tiered (ref) vs burn4 (B=4.0) vs burn6
+    (B=6.0) on snapshot12 2026-09-14 (20 matched tapes, cap 1500, sha
+    471685c2a717d62b, §40 SUSTAINS protocol; driver columns +0.00 —
+    deltas manual vs ref): ref 16/20 (535 tet, 2.027 T/100); burn4
+    18/20 (695, 2.370, dTet +8.0 t+2.96 W/L 15/5, dPc +146.4 t+1.77,
+    discordant 3/1 n.s.); burn6 18/20 (718, 2.513, dTet +9.15 t+2.65
+    W/L 16/4, dPc +108.8 t+0.88, discordant 4/2 n.s.); burn6 vs
+    burn4 +1.15 t+0.42 n.s. — BOTH burn arms PASS the Pareto style
+    gate; burn6 point-estimate leader (file: snap12_burn_long.json).
+    Next free: 21630+ (dev); 5500+ reserves for promotion.
+
+- seeds: 21630-21649
+  protocol: corrected-lockout, cap 3000 (snapshot12 burn promotion leg,
+    §57 — SUPERSEDED, file overwritten by §58 rerun, do not cite;
+    corrected TAP physics post-§54 rebuild)
+  status: CONSUMED
+  history: corrected cool30lam10tiered (ref) vs burn4 (B=4.0) on
+    snapshot12 2026-09-14 (20 matched tapes, cap 3000, sha
+    471685c2a717d62b): ref 17/20 (1102 tet, 1.888 T/100); burn4 16/20
+    (1244, 2.293, dTet +7.1 t+1.49 W/L 14/6) — FAILED the t≥2 rule.
+    SUPERSEDED by the §58 30-tape rerun on 21650–21679 (same file
+    path, new contents). Panel stays CONSUMED either way.
+
+- seeds: 21650-21679
+  protocol: corrected-lockout, cap 3000 (snapshot12 burn promotion
+    rerun, §58; corrected TAP physics post-§54 rebuild)
+  status: CONSUMED
+  history: corrected cool30lam10tiered (ref) vs burn4 (B=4.0) vs burn6
+    (B=6.0) on snapshot12 2026-09-14 (30 matched tapes, cap 3000, sha
+    471685c2a717d62b; file OVERWROTE snap12_burn_promotion.json — the
+    §57 20-tape contents are gone, §57 panel stays CONSUMED; driver
+    leg key reads `cap1500` — cosmetic, games play to 3000; deltas
+    manual vs ref): ref 24/30 (1434 tet, 1.857 T/100); burn4 24/30
+    (1869, 2.302, dTet +14.5 t+2.52 W/L 21/9, dPc +131.6 t+0.60,
+    discordant 5/5 p=1.0); burn6 26/30 (1983, 2.412, dTet +18.3
+    t+3.47 W/L 23/7, dPc +166.5 t+0.73, discordant 6/4 p=0.31);
+    burn6 vs burn4 +3.8 t+0.88 n.s. — BOTH burn arms PASS the
+    pre-registered Pareto t≥2 rule; burn6 PROMOTED (file, overwritten:
+    snap12_burn_promotion.json). Next free: 21680+ (dev); 5500+
+    reserves for promotion.

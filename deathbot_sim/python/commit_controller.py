@@ -118,6 +118,16 @@ class CommitScorer:
         only (well_open + no col-9 cover; allows new holes). Tiers fall
         through in order 0 -> 1 -> 2 -> unconstrained fallback; the used
         tier is recorded in stats (tier0/1/2/unconstrained kept counts).
+      burn_penalty          : adjustable burn disincentive (§55, z-units
+        per non-Tetris cleared line): on COMMITTED preserved decisions
+        only, exact[j] -= burn_penalty * lines[j] for lines in {1,2,3}
+        (lines 0/4 unaffected). 0.0 = legacy behavior (exact default).
+        Burns keep the well open so they pass the preserve filter; the
+        penalty re-ranks the kept set toward 0-line builds and Tetrises
+        without touching survival fallback / uncommitted / cash-out
+        paths. When > 0 the base-pick shortcut is skipped (forced
+        masked expansion, like uniform_commit_scoring) so the penalty
+        applies to every preserved decision, not just conflicts.
     State: committed (bool), plus counters for the Pareto report
     (decisions_preserved, fallbacks, cashouts, recovers).
     """
@@ -135,7 +145,8 @@ class CommitScorer:
                  ready_patience: int = 0,
                  lam_lo: float | None = None,
                  lam_hi: float | None = None,
-                 tiered_preserve: bool = False) -> None:
+                 tiered_preserve: bool = False,
+                 burn_penalty: float = 0.0) -> None:
         self.base = base_scorer
         self.abort_top = int(abort_top)
         self.abort_occ = int(abort_occ)
@@ -157,6 +168,12 @@ class CommitScorer:
         self.reentry_min_progress = float(reentry_min_progress)
         self.ready_patience = int(ready_patience)
         self.tiered_preserve = bool(tiered_preserve)
+        # §55 burn disincentive: z-units subtracted per non-Tetris cleared
+        # line (lines in {1,2,3} only) on COMMITTED preserved decisions.
+        # Validated non-negative; negative values raise below.
+        if float(burn_penalty) < 0.0:
+            raise ValueError("burn_penalty must be >= 0")
+        self.burn_penalty = float(burn_penalty)
         # Usability-based adjustable λ (watch80-style): when lam_lo is set,
         # the per-decision Phi scale interpolates between lam_lo (risky
         # stacks) and lam_hi (clean stacks) via _usability() of the
@@ -193,6 +210,7 @@ class CommitScorer:
                       "ready_exits": 0,
                       "tier0_kept": 0, "tier1_kept": 0, "tier2_kept": 0,
                       "tier_fallback": 0,
+                      "burn_pen_applied": 0,
                       "max_commit_debt": 0.0}
 
     def _occ_top(self, pre_rows21):
@@ -441,8 +459,12 @@ class CommitScorer:
         # above is still valid (unconstrained argmax inside kept ==
         # constrained argmax); only the conflict path needed correction.
         # No second unconstrained base.choose call happens here.
+        # §55: burn_penalty forces the exact path on EVERY preserved
+        # decision (like uniform_commit_scoring) so the penalty applies
+        # even when the base pick preserves.
         base_pick = self.base.choose(board, current, next_piece)
-        if base_pick in kept and not self.uniform_commit_scoring:
+        force_exact = bool(self.uniform_commit_scoring) or self.burn_penalty > 0.0
+        if base_pick in kept and not force_exact:
             self.stats["preserved_decisions"] += 1
             return base_pick
         # Conflict: score kept roots with exact Q2ply = v1 + completion
@@ -467,6 +489,25 @@ class CommitScorer:
             except Exception:
                 pass
         exact = self._exact_q2ply(kept, rows, lines, next_piece, v1, phi)
+        # §55 burn disincentive: re-rank the KEPT set only —
+        # exact[j] -= burn_penalty * lines[j] for lines in {1,2,3};
+        # 0-line builds and Tetrises (lines 0/4) are untouched, so the
+        # incentive gradient points 0 > burn > Tetris-payoff-free short
+        # clears. Survival fallback / uncommitted / cash-out paths above
+        # return before this point and never see the penalty. Track
+        # applications for the Pareto report.
+        if self.burn_penalty > 0.0:
+            nburn = 0
+            for pos, j in enumerate(kept):
+                try:
+                    nl = int(lines[j])
+                except Exception:
+                    nl = 0
+                if nl in (1, 2, 3):
+                    exact[pos] = float(exact[pos]) - self.burn_penalty * nl
+                    nburn += 1
+            self.stats["burn_pen_applied"] = (
+                self.stats.get("burn_pen_applied", 0) + nburn)
         best = max(range(len(kept)), key=lambda j: (exact[j], -j))
         pick = kept[best]
         if self.uniform_commit_scoring and base_pick in kept:
@@ -606,6 +647,7 @@ def play_game_commit(net, rng, *, max_pieces: int = 300,
                      lam_lo: float | None = None,
                      lam_hi: float | None = None,
                      tiered_preserve: bool = False,
+                     burn_penalty: float = 0.0,
                      device: str = "cpu"):
     """Closed-loop game with the commitment controller. Returns
     (pieces, lines, clears, reason, stats)."""
@@ -625,7 +667,8 @@ def play_game_commit(net, rng, *, max_pieces: int = 300,
         reentry_min_progress=reentry_min_progress,
         ready_patience=ready_patience,
         lam_lo=lam_lo, lam_hi=lam_hi,
-        tiered_preserve=tiered_preserve)
+        tiered_preserve=tiered_preserve,
+        burn_penalty=burn_penalty)
     board = ds.Board()
     pq = PieceQueue(rng)
     clears = {0: 0, 1: 0, 2: 0, 3: 0, 4: 0}

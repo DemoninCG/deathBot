@@ -29,7 +29,18 @@ PROMOTE-TO-5400-PANEL, user-gated); and
 2026-09-13 with the §52.9 promotion (_loop2_champ_r3 PROMOTED at t+2.75,
 cap-3000 n=100 — **snapshot12 is the new 1-ply champion**); and
 2026-09-13 with the §53 snapshot12 style re-examination (λ10 knee
-gate-passed at 1.07–1.30 T/100, cross re-gated at +1.87 t+3.34).
+gate-passed at 1.07–1.30 T/100, cross re-gated at +1.87 t+3.34); and
+2026-09-14 with the §54 TAP rotation correctness fix (I never kicks,
+center-column rule, IRS bare-only — all §§12–53 numbers stale, re-gate
+required); and 2026-09-14 with the §55 cooldown + burn-disincentive
+screen (burn4 +1.40 t+2.28 PROMOTE-CANDIDATE at cap 300, cooldown
+neutral); and 2026-09-14 with the §56 burn horizon leg (burn4 +8.0
+t+2.96 AND burn6 +9.15 t+2.65, both PASS at cap 1500 — burn6
+point-estimate leader, cap-3000 confirmation required); and 2026-09-14
+with the §57 burn promotion leg (burn4 +7.1 t+1.49 — FAILS, HOLD
+unburned champ; SUPERSEDED by §58); and 2026-09-14 with the §58 burn
+promotion rerun (30 tapes, burn4 +14.5 t+2.52 AND burn6 +18.3 t+3.47,
+both PASS — **burn6 PROMOTED as the stylish default**).
 Intended as a complete briefing for a fresh reviewer (human or AI) so no
 context is lost.*
 
@@ -5258,3 +5269,322 @@ configs unchanged (1-ply snapshot12; stylish cool30lam10tiered), but
 re-gate both on fresh panels before any promotion claim; stylish
 thresholds tuned against the old physics (λ knee, abort/reenter) may
 need re-tuning.
+
+## 55. Cooldown-shortening + burn disincentive screen (2026-09-14) —
+burn4 PROMOTE-CANDIDATE at cap 300, cooldown NEUTRAL
+
+User observations on the stylish champ (`cool30lam10tiered` on snapshot12,
+§53.8) in the viz: (a) the post-RECOVER cooldown sometimes blocks re-entry
+longer than needed; (b) many non-Tetris lines are well-preserving burns
+(1/2/3-line clears that keep col 9 open and pass the preserve filter).
+Both ideas tested as opt-in inference-only controller options (no weights
+touched, default config byte-identical). First eval under the corrected
+§54 physics (extension rebuilt via `maturin develop --release` before
+the run).
+
+### 55.1 Implementation — `burn_penalty` (adjustable rate)
+
+`CommitScorer(..., burn_penalty=B)` (`commit_controller.py`): on COMMITTED
+preserved decisions only, `exact[j] -= B * lines[j]` for lines in {1,2,3}
+(lines 0/4 untouched — 0-line builds and Tetrises never penalized, so the
+gradient points 0-line build > burn > Tetris-payoff-free short clear).
+Survival fallback / uncommitted / cash-out paths return before the penalty
+and never see it. When B > 0 the base-pick shortcut is skipped (forced
+masked expansion, like `uniform_commit_scoring`) so the penalty applies to
+every preserved decision, not just conflicts; applications counted in
+`stats["burn_pen_applied"]`. Negative B raises (`ValueError`).
+`play_game_commit` forwards the param. New arms in `diag_commit_stageC.py`:
+`cool30lam10tiered_burn2/4` (B = 2.0/4.0, cooldown 30) +
+`cool15lam10tiered` (cooldown 30→15, B = 0) / `cool20lam10tiered`
+(cooldown 20) / `cool15lam10tiered_burn4` (both). Scale reference: B = 4
+is ~0.4x the within-state v1 spread (~10.5) per line, ~3x the median
+conflict Q-gap (~6) for a triple — material but not dominant vs the
+completion bonus ({1:1, 2:3, 3:5, 4:8}) it partially offsets.
+Pinned by 3 new tests in `tests/test_commit_masked.py` (B = 0 is legacy +
+shortcut preserved; B = 50 forces exact scoring and equals the
+independently computed penalized argmax; negative raises) — suite 6/6
+pass on the masked file.
+
+### 55.2 Screen — 40 fresh matched tapes, cap 300
+
+Driver: `diag_commit_stageC.py --arms cool30lam10tiered,
+cool15lam10tiered,cool15lam10tiered_burn4,cool20lam10tiered,
+cool30lam10tiered_burn2,cool30lam10tiered_burn4` →
+`_diag_out/snap12_style_tune55.json`. Panel **21570–21609 CONSUMED**
+(next free **21610+**), cap 300, snapshot12 (`471685c2a...`) throughout.
+Driver caveat (as in §§53.5–53.11): paired columns read +0.00 (no lam10
+arm) — deltas below are manual pairings vs the champ on the same seeds.
+
+| arm | cap | lines | tet | T/100 | T/cap | gap | off | paired dTet vs champ |
+|---|---:|---:|---:|---:|---:|---:|---:|---|
+| cool30lam10tiered (ref) | 40/40 | 113.7 | 233 | 1.942 | 5.83 | 130 | 0.344 | — |
+| cool15 (cd15) | 40/40 | 112.9 | 244 | 2.033 | 6.10 | 127 | 0.333 | +0.275, t+0.85 (15/12) |
+| cool20 (cd20) | 40/40 | 112.9 | 238 | 1.983 | 5.95 | 126 | 0.332 | +0.125, t+0.28 (14/15) |
+| burn2 (B=2) | 39/40 | 111.6 | 275 | 2.310 | 7.03 | 108 | 0.364 | +1.05, t+1.82 (23/11) |
+| burn4 (B=4) | 40/40 | 113.2 | 289 | 2.408 | 7.23 | 112 | 0.342 | **+1.40, t+2.28 (25/11)** |
+| cool15burn4 (cd15+B=4) | 40/40 | 112.5 | 282 | 2.350 | 7.05 | 110 | 0.325 | **+1.225, t+2.15 (22/11)** |
+
+All dPc = 0 except burn2 (−2.4, t−1.00 — the entire deficit is its one
+death, below). Per-seed burn4 deltas vs champ:
++1/+12/+4/0/+6/+2/−5/+1/+4/+2/−5/+4/+1/0/−3/+1/+6/0/−1/0/+9/+1/−5/−6/−2/
++7/−2/+2/+1/+2/+1/+8/−1/+2/−2/−2/+4/+3/+2/+4 (25/11, min −6). Tier0 binds
+~182–195 decisions/game on every arm, fallbacks 0.0 everywhere — the
+filter regime is unchanged; only the kept-set ranking moves.
+
+### 55.3 Reads
+
+1. **Cooldown is NEUTRAL — the firing observation is confirmed but it
+   does not convert to style.** `denied_cool`/game falls 25.3 (ref) →
+   12.6 (cd20) → 8.1 (cd15): the 30-piece block really does bind ~3x more
+   often than the 15-piece block. Recovers/re-entries rise accordingly
+   (2.77/2.38 → 3.75/3.38). But style does not follow (+0.275 t+0.85 /
+   +0.125 t+0.28, W/L near-even, dPc exactly 0, off-frac barely moves
+   0.344 → 0.332). Faster re-entry just re-enters into the same stacks the
+   controller would take 15 pieces later. CLOSED — no further cooldown
+   cells without horizon evidence.
+2. **Burn penalty WORKS — dose-responsive, mechanism-clean.** B = 0 → 2 →
+   4 gives dTet +1.05 → +1.40 (t+1.82 → t+2.28); burn applications
+   1374 (B=2) / 1665 (B=4) / 1706 (cd15+B=4) over 40 games (~34–43/game).
+   Clears show the conversion directly (ref → burn4): {0:9422→9433,
+   1:1392→1412, 2:635→639, **3:318→227 (−91)**, **4:233→289 (+56)**} —
+   triples fall by ~30% while Tetrises rise ~25%; singles/doubles flat.
+   Cash-outs double (0.425 → 0.95/g) and longest gap shrinks (130 → 112).
+   The penalty does what was asked: it prices the well-preserving burn
+   without closing the well (0-line builds stay top-ranked, Tetris payoff
+   untouched).
+3. **burn4 and cool15burn4 tie — no interaction claim.** +1.40 t+2.28 vs
+   +1.225 t+2.15 with overlapping deltas; cooldown-alone is neutral
+   (§55.3.1), so the combined arm's gain is the burn gain. Do not promote
+   the combo on this panel; horizon leg is burn4 vs ref (cool15burn4
+   optional third arm).
+4. **burn2 is dominated.** Weaker style (+1.05, n.s.) AND the panel's only
+   death: 21579@203 `no_candidates` (final occ 172 / top 21 / 4 holes; one
+   Tetris at pc 50, then dry — early stack-out, discordant 0/1 n.s.). B = 2
+   prices burns enough to re-rank but not enough to build cleanly — the
+   half-dose failure mode. No further B < 4 cells.
+
+### 55.4 Verdict + next legs
+
+**burn4 (B = 4.0, cooldown 30) is a PROMOTE-CANDIDATE at cap 300** — both
+burn arms with B = 4 clear the t ≥ 2 bar with cap tied-or-better (burn4
+40/40, cool15burn4 40/40), dose-response is monotonic, and the clears +
+cash-out mechanism is exactly the requested one. NOT yet promoted: per the
+§47 gate a cap-300 screen cannot promote a stylish config. Required legs,
+in order: (a) **cap-1500 horizon** — burn4 vs ref on a fresh dev panel
+(20 matched tapes, §40 SUSTAINS protocol: windows + trajectories + FAIL
+flags; pre-register promote iff paired dTet t ≥ 2 with cap tied-or-better,
+or cap separates at t ≥ 2 / discordant p ≤ 0.05); (b) **cap-3000
+confirmation** (§32.3 item 6) on the winner only. Open dosing question for
+the horizon leg only: whether B = 6 extends the triples→Tetris conversion
+or re-creates over-eager digging (do not screen B = 6 at cap 300 —
+cap-300 cannot discriminate survival, §§44.6/53.6). Cooldown work is
+CLOSED at cap 300. Standing stylish default stays **cool30lam10tiered**
+until the horizon leg lands — DONE as §56 below (both burn arms pass).
+Panels: 21570–21609 CONSUMED; next free **21610+** (dev); 5500+ reserves
+untouched — 21610–21629 CONSUMED by §56; next free **21630+**.
+
+## 56. Burn horizon leg at cap 1500 — burn4 AND burn6 PASS (2026-09-14)
+
+User-gated 3-way leg under the Pareto framing (higher T/100 at survival
+cost counts as success): corrected `cool30lam10tiered` (ref) vs `burn4`
+(B = 4.0) vs `burn6` (new exploratory arm, B = 6.0). 20 FRESH tapes
+**21610–21629 CONSUMED** (next free **21630+**), cap 1500 →
+`_diag_out/snap12_burn_long.json` (wall 3378 s; driver:
+`diag_commit_stageC.py --arms
+cool30lam10tiered,cool30lam10tiered_burn4,cool30lam10tiered_burn6`).
+Snapshot12 (`471685c2a...`) throughout. Driver caveat: paired columns
++0.00 (no lam10 arm) — deltas below are manual pairings on the same
+seeds. Pre-registered Pareto rule: advance on paired dTet t ≥ 2
+regardless of cap direction; cap reported via t + discordant McNemar,
+non-vetoing.
+
+| arm | cap | pcs | lines | tet | T/100 | T/cap | gap | off | paired dTet vs ref |
+|---|---:|---:|---:|---:|---:|---:|---:|---:|---|
+| cool30lam10tiered (ref) | 16/20 | 1319.7 | 517.6 | 535 | 2.027 | 31.00 | 203 | 0.402 | — |
+| burn4 (B=4) | 18/20 | 1466.1 | 577.0 | 695 | 2.370 | 35.11 | 192 | 0.398 | **+8.0, t+2.96, W/L 15/5** |
+| burn6 (B=6) | 18/20 | 1428.4 | 563.8 | 718 | 2.513 | 37.39 | 197 | 0.365 | **+9.15, t+2.65, W/L 16/4** |
+
+burn6 vs burn4: +1.15, t+0.42 (11/8) — n.s. Paired dPc: burn4 +146.4
+t+1.77; burn6 +108.8 t+0.88 (both n.s., direction favors burn arms —
+pieces move WITH style here, not against it). Discordant cap: burn4
+3 saves / 1 new death; burn6 4 saves / 2 new deaths (both n.s.,
+McNemar p = 0.63 / 0.69). Cash-outs: 2.0 → 3.1 → 3.15/g. Off-frac:
+0.402 → 0.398 → 0.365. Burn applications: 3744 (B=4) / 4196 (B=6).
+Tier0 binds, fallbacks 0.0 everywhere (filter regime unchanged).
+
+Per-seed shape: burn4 dTet
+[+8/−1/+5/+12/−8/+7/+20/−1/+7/+29/+6/+29/+30/+3/+11/+16/+5/−5/−14/+1]
+(15/5, min −14); burn6 dTet
+[+2/−6/+7/+9/+14/+11/+37/+3/+21/+29/+11/+18/+37/−16/+7/+4/+18/−3/+4/−24]
+(16/4, min −24). Worst tapes: burn4 −14 on 21628 (31 vs 45 — still a
+31-Tetris game); burn6 −24 on 21629 (17 vs 41, capped both — genuine
+tape-trade: burn6 plays 17 Tetrises where the ref plays 41).
+
+Clears (ref → burn4 → burn6): {0:20410→22575→22112,
+1:3365→3897→3617, 2:1401→1601→1576, **3:682→554→545**,
+**4:535→695→718**} — the §55 triples→Tetris conversion holds at horizon
+(−19% triples, +30–34% Tetrises), now with singles up too (+532/+252:
+cleaner committed play feeds more 1-line trims rather than fewer).
+
+Deaths (all `no_candidates`, backlog-shaped finals occ 170–180 / top 21):
+ref dies 4× (21616@146 early occ-174; 21619@688; 21621@1395;
+21622@164 early occ-176); burn4 dies 2× (21616@892 with 22 Tetrises
+before the wall — same tape as the ref's 146-pc death, +746 pcs rescue;
+21624@1430); burn6 dies 2× (21610@1375 with 35 Tetrises; 21629@193
+early occ-172). No arm shows the early-dig failure mode (§38) — deaths
+are horizon backlog, contained to 2/20 on both burn arms vs 4/20 ref.
+
+Verdict: **BOTH burn arms PASS the Pareto style gate (t+2.96 / t+2.65,
+both ≥ 2) with cap tied-or-better (18/20 vs 16/20, n.s.).** Dose read:
+B = 6 does NOT extend the effect meaningfully over B = 4 (+1.15 t+0.42
+n.s.; triples 554→545 flat, Tetrises +23 on W/L 11/8) — the conversion
+saturates at B = 4, and burn6's worst tape (−24) is deeper than burn4's
+(−14). **Point-estimate leader is burn6 (2.513 T/100) but the promotion
+recommendation is burn4**: larger paired t (+2.96 vs +2.65), shallower
+worst case, lower dose for the same cap. Per the user's Pareto framing
+either would qualify; burn4 dominates on risk-adjusted grounds.
+Remaining gate before any promotion: **cap-3000 confirmation**
+(§32.3 item 6) — burn4 vs ref on a fresh panel (20 matched tapes,
+pre-register promote iff paired dTet t ≥ 2; cap n.s. non-vetoing per
+the Pareto rule). `viz_live.py` gained `--burn-penalty=` so the burn
+config is viewable (`--stylish --burn-penalty 4.0`); canonical
+`STYLISH_DEFAULTS` still the unburned champ until the 3000 leg lands.
+Standing stylish default stays **cool30lam10tiered** until then.
+Panels: 21610–21629 CONSUMED; next free **21630+** (dev); 5500+
+reserves untouched — 21630–21649 CONSUMED by §57; next free **21650+**.
+
+## 57. Burn promotion leg at cap 3000 — FAILS, HOLD unburned champ
+(2026-09-14)
+
+User-gated confirmation (§32.3 item 6): corrected `cool30lam10tiered`
+(ref) vs `burn4` (B = 4.0). 20 FRESH tapes **21630–21649 CONSUMED**
+(next free **21650+**), cap 3000 →
+`_diag_out/snap12_burn_promotion.json` (wall 4240 s). Snapshot12
+(`471685c2a...`) throughout. Driver caveat: the driver's leg Dict key
+is hard-coded `cap1500` regardless of `--cap` (cosmetic only — the
+JSON's `cap` field reads 3000 and every game plays to 3000). Deltas
+below are manual pairings on the same seeds. Pre-registered Pareto
+rule: promote iff paired dTet t ≥ 2 (cap n.s. non-vetoing).
+
+| arm | cap | pcs | lines | tet | T/100 | T/cap | gap | off | paired dTet vs ref |
+|---|---:|---:|---:|---:|---:|---:|---:|---:|---|
+| cool30lam10tiered (ref) | 17/20 | 2918.2 | 1158.2 | 1102 | 1.888 | 57.06 | 247 | 0.425 | — |
+| burn4 (B=4) | 16/20 | 2712.8 | 1076.0 | 1244 | 2.293 | 69.81 | 247 | 0.406 | +7.1, t+1.49 (14/6) |
+
+Paired dPc −205.3, t−1.12 (n.s.). Discordant cap 3 saves / 4 new
+deaths (McNemar exact p = 1.0). Per-seed dTet:
++6/−31/+18/+1/+26/−1/+30/+10/−17/−3/+24/+7/+12/−32/+14/−26/+51/+21/
++25/+7 (14/6); dPc: 0/−2554/0/+29/0/0/0/−402/−668/0/+186/0/0/−2120/0/
+0/+1422/0/0/0. Clears (ref → burn4): {0:44601→41606,
+1:7924→7275, 2:3377→3125, **3:1359→1006 (−353)**, **4:1102→1244
+(+142)**} — the triples→Tetris conversion still operates (−26%
+triples, +13% Tetrises, cash-outs 4.25→5.0/g, burn applications 6718),
+but the Tetris gain attenuates (+13% here vs +30% at cap 1500) while
+four tapes go deeply negative (−26/−31/−32, and the −32 tape is a
+−2120-piece death).
+
+Deaths (all `no_candidates`, finals occ 164–182 / top 20–21): ref 3×
+(21633@2971; 21640@2814; 21646@1578 — all late, last Tetris within
+~100 pieces of the wall); burn4 4× (21631@446 early occ-174 with 11
+Tetrises; 21637@2598; 21638@2332; 21643@880). The shapes differ: the
+ref dies late after playing Tetrises to the wall; burn4's deaths
+include an early stack-out (446) plus two mid-horizon walls (2332,
+2598) on tapes the ref caps. That is the over-eager-digging failure
+mode (§38) re-appearing past the §56 horizon — exactly the risk the
+B = 6 discussion flagged, now measured at B = 4 at cap 3000.
+
+Verdict vs the pre-registered rule (promote iff paired dTet t ≥ 2):
+**FAILS — t+1.49 < 2, HOLD the unburned champ.** The style lean is
+real (+142 Tetrises, T/100 2.29 vs 1.89) but three −26-or-worse tapes
+cap the t at 1.49, and the 3-saves-4-new-deaths trade adds nothing on
+the cap axis either (p = 1.0). Under the user's Pareto framing
+(style-at-survival-cost counts as success) this is still not a
+promotion: the style separation itself does not clear the bar, so
+there is no Pareto claim to weigh against survival. Standing stylish
+default stays **cool30lam10tiered** (burn4 remains the lead
+candidate — largest horizon t of any burn arm at any cap — but needs
+a new idea before another promotion leg: e.g. usability-gated burn
+that relaxes B on tall/holey stacks, or B inside the tiered filter
+with a cooldown rescue pairing). Panels: 21630–21649 CONSUMED; next
+free **21650+** (dev); 5500+ reserves untouched — NOTE: the
+`snap12_burn_promotion.json` FILE was later overwritten by the §58
+30-tape rerun on 21650–21679 (same path, new contents); the §57
+numbers above survive only in this text + the §57 registry entry.
+The §57 panel stays CONSUMED regardless.
+
+## 58. Burn promotion rerun at cap 3000 — burn4 AND burn6 PASS,
+burn6 PROMOTED (2026-09-14)
+
+User reran the promotion leg for conclusive data (30 tapes, B = 6
+re-added; same `--out snap12_burn_promotion.json` path, so this
+OVERWRITES the §57 20-tape file — §57's numbers survive only in §57
+above + the registry): corrected `cool30lam10tiered` (ref) vs `burn4`
+(B = 4.0) vs `burn6` (B = 6.0). 30 FRESH tapes **21650–21679
+CONSUMED** (next free **21680+**), cap 3000 → overwritten
+`_diag_out/snap12_burn_promotion.json`. Snapshot12 (`471685c2a...`)
+throughout. Driver caveats: leg key reads `cap1500` regardless of
+`--cap` (cosmetic — JSON `cap` reads 3000, games play to 3000);
+paired columns +0.00 (no lam10 arm) — deltas below manual vs ref.
+Pre-registered Pareto rule (§56): promote iff paired dTet t ≥ 2
+(cap n.s. non-vetoing).
+
+| arm | cap | pcs | lines | tet | T/100 | T/cap | gap | off | paired dTet vs ref |
+|---|---:|---:|---:|---:|---:|---:|---:|---:|---|
+| cool30lam10tiered (ref) | 24/30 | 2574.5 | 1020.5 | 1434 | 1.857 | 56.04 | 232 | 0.422 | — |
+| burn4 (B=4) | 24/30 | 2706.1 | 1073.5 | 1869 | 2.302 | 69.21 | 225 | 0.406 | **+14.5, t+2.52 (21/9)** |
+| burn6 (B=6) | 26/30 | 2740.9 | 1087.6 | 1983 | 2.412 | 72.81 | 245 | 0.420 | **+18.3, t+3.47 (23/7)** |
+
+burn6 vs burn4: +3.8, t+0.88 (n.s.). Paired dPc: burn4 +131.6
+t+0.60; burn6 +166.5 t+0.73 (both n.s., direction favors burn arms).
+Discordant cap: burn4 5/5 (McNemar exact p = 1.0); burn6 6/4
+(p = 0.75). Cash-outs: 3.97 → 6.0 → 5.23/g. Off-frac flat
+(0.422 → 0.406 → 0.420). Burn applications: 9923 (B=4) / 10747
+(B=6). Tier0 binds, fallbacks 0.0 everywhere (filter regime
+unchanged).
+
+Per-seed shape: burn4 dTet
+[−8/−7/+14/+11/−53/+23/+36/−23/+18/+44/+41/−33/+38/+68/+60/+69/+39/
++21/+53/−23/+1/−20/+54/+12/−29/−4/+15/+5/+11/+2] (21/9); burn6 dTet
+[+12/+19/+12/+19/−53/+10/+64/−7/+31/+26/+15/+35/+1/+71/+57/+49/+30/
+−4/+45/−3/−7/+13/+68/+23/+7/−48/+20/−4/+32/+16] (23/7). The shared
+−53 tape (21654: ref 3000-cap vs both burn arms dead at 65,
+`no_candidates` occ-180 — an opening stack-out both penalties take
+identically) caps neither arm's t; burn6's extra negatives (−48 on
+21675@364, −7/−4/−3) are shallower than §57's −26-or-worse trio,
+and burn6 posts the panel's three biggest wins (+64/+68/+71).
+
+Clears (ref → burn4 → burn6): {0:59103→62255→63052,
+1:10441→10996→11187, 2:4329→4452→4510, **3:1927→1610→1496**,
+**4:1434→1869→1983**} — the triples→Tetris conversion scales to
+cap 3000 (−16%/−22% triples, +30%/+38% Tetrises). T/100 holds flat
+across horizons on every arm (ref 1.94→2.03→1.86→1.89; burn4
+2.41→2.37→2.29→2.30; burn6 2.51→2.41 — no attenuation).
+
+Deaths: ref 6× (21656@1499; 21663@411 `lockout`; 21664@1212;
+21665@555; 21668@988; 21672@569); burn4 6× (21654@65 shared;
+21657@2502; 21661@1270; 21671@1994; 21672@2284; 21674@1067);
+burn6 4× (21654@65 shared; 21662@1841; 21667@1958; 21675@364).
+All `no_candidates` save the one ref `lockout`; finals occ 162–182 /
+top 20–21. No arm concentrates deaths early (burn6's two sub-500
+deaths are the shared 65 + 364 with 3 Tetrises; burn4's worst is
+also the shared 65) — the §57 over-eager-digging read does NOT
+replicate: at n = 30 the burn deaths are horizon backlog at the
+same rate-or-better as the ref (6/4 vs 6/6).
+
+Verdict vs the pre-registered rule: **BOTH burn arms PASS (t+2.52 /
+t+3.47, both ≥ 2) with cap tied-or-better (24/30 + 26/30 vs 24/30,
+both n.s.).** Dose read reverses the §56 caution: at n = 30 burn6
+separates from burn4 by +3.8 (still n.s., t+0.88) with the higher t
+(+3.47 vs +2.52), the higher cap (26 vs 24), and 5.23→6.0-comparable
+cash-outs — under the user's Pareto framing (style-at-survival-cost
+counts as success) burn6 is the promotion. **PROMOTED:
+`cool30lam10tiered_burn6` (B = 6.0, cooldown 30) is the new stylish
+default on snapshot12** (2.41 T/100 at 26/30, cap-3000). Canonical
+`STYLISH_DEFAULTS` in `viz_live.py` updated to the burn6 config
+(`burn_penalty: 6.0` added alongside the existing six keys);
+`viz_parity_check.py` re-pinned to the `cool30lam10tiered_burn6` ARMS
+entry; parity re-verified after the edit (seeds 42/123 @60 pieces:
+MATCH/MATCH, pin True, parity OK). View with plain `--stylish`
+(canonical) or explicit `--stylish --burn-penalty 6.0`. Panels:
+21650–21679 CONSUMED; next free **21680+** (dev); 5500+ reserves
+untouched.

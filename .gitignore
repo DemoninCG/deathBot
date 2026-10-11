@@ -1,0 +1,26 @@
+# Local emulator install + game ROM (user-specific, never commit)
+BizHawk/
+
+# Python virtualenvs (a venv also self-ignores via its own .gitignore)
+.venv/
+venv/
+__pycache__/
+*.py[cod]
+
+# Rust build output
+target/
+
+# Pytest caches
+.pytest_cache/
+
+# Temp / scratch files
+*.tmp
+*~
+
+# OS metadata
+Thumbs.db
+.DS_Store
+
+# Editors
+.vscode/
+.idea/

@@ -1,16 +1,12 @@
-"""Pygame mirror of the live TGM2 board (state-read test harness).
+"""Pygame mirror of the live TGM2 board (video overlay).
 
 Reads snapshots written by tgm_bizhawk/tgm_player.lua (BizHawk) and
-draws the locked board + current/next pieces. Redraws only when the state
-file changes, so the cost here is ~zero; the point of this test is to
-confirm the *emulator side* doesn't lag the game.
+draws the locked board + current/next pieces plus the bot's current
+decision (top-3 moves, movement sequence, IRS). Viewer-facing only:
+no diagnostic panels.
 
 Run from the repo root:
     .venv/Scripts/python.exe tgm_bizhawk/tgm_mirror.py [--state PATH]
-
-Default state path: tgm_bizhawk/tgm_state.txt. In practice EmuHawk's
-working directory (where the Lua script writes) turned out to be
-tgm_bizhawk/; if the Lua log shows the file landing elsewhere, pass --state.
 """
 
 from __future__ import annotations
@@ -22,12 +18,35 @@ import sys
 import time
 from pathlib import Path
 
+# Perf: same single-thread pin as tgm_1ply. The mirror shares the box with
+# the MAME thread; a 4-thread torch burst starves emulation (audio
+# cutouts) and is slower per batch anyway. Must run before warmup.
+try:
+    import torch as _torch
+
+    try:
+        _torch.set_num_interop_threads(1)
+    except RuntimeError:
+        pass
+    try:
+        _torch.set_num_threads(1)
+    except RuntimeError:
+        pass
+except ImportError:
+    pass
+
 import pygame
 
 import tgm_1ply
 
 # TGM piece IDs on the wire: I=0 Z=1 S=2 J=3 L=4 O=5 T=6.
 ID2LETTER = ["I", "Z", "S", "J", "L", "O", "T"]
+
+
+def _is_piece_id(v) -> bool:
+    """Valid wire ID (0-6). At boot/menus the RAM bytes hold non-piece
+    values, and Lua forwards whatever it reads — skip those states."""
+    return isinstance(v, int) and 0 <= v < 7
 
 # Arika piece colors as specified by the player (palette-verified hues:
 # 0x49 green=Z, 0x53 pink=S, 0x5D dark-blue=J, 0x67 orange=L, plus I red,
@@ -146,7 +165,7 @@ def main() -> None:
     moves_path = Path(args.moves)
 
     pygame.init()
-    pygame.display.set_caption("TGM2 mirror v3 (1-ply + moves)")
+    pygame.display.set_caption("DeathBot — live view")
     print("MIRROR: warming up net...", flush=True)
     screen = pygame.display.set_mode((WIN_W, WIN_H))
     font = pygame.font.SysFont("consolas", 20)
@@ -167,7 +186,6 @@ def main() -> None:
     rows = ["." * 10] * 20
     header = {"frame": 0, "cnt": 0, "cur": 0, "next": 0, "tmr": 0}
     last_mtime = 0.0
-    last_update = time.time()
     file_missing = True
     parse_err = "no file yet"
     brain = None       # latest tgm_1ply.suggest() dict
@@ -202,6 +220,10 @@ def main() -> None:
         """Lock-time: pick the IRS root for the upcoming piece."""
         nonlocal moves_info
         up = header["next"]
+        if not _is_piece_id(up):
+            print(f"ROOT skip f={header.get('frame')}: bad id next={up!r}",
+                  flush=True)
+            return
         ans = tgm_1ply.choose_root(rows, up, up)
         if not ans.get("ok"):
             print(f"ROOT skip f={header.get('frame')}: "
@@ -221,23 +243,25 @@ def main() -> None:
     def _decide_play(header, rows, mtime) -> None:
         """Spawn-time: full placement constrained to the held root."""
         nonlocal brain, brain_for, moves_info
-        key = (tuple(rows), header["cur"], header["next"], header.get("held"))
+        cur, nxt = header["cur"], header["next"]
+        if not (_is_piece_id(cur) and _is_piece_id(nxt)):
+            print(f"MOVES skip f={header.get('frame')}: "
+                  f"bad ids cur={cur!r} next={nxt!r}", flush=True)
+            return
+        key = (tuple(rows), cur, nxt, header.get("held"))
         if key == brain_for:
             return
         brain_for = key
         held = header.get("held", "-")
-        sim_name, nstates = tgm_1ply.sim_info(header["cur"])
+        sim_name, nstates = tgm_1ply.sim_info(cur)
         root = tgm_1ply.root_for_hold(held, sim_name, nstates)
         for attempt in (root, 0) if root != 0 else (0,):
-            brain = tgm_1ply.suggest(rows, header["cur"],
-                                     header["next"], root=attempt)
+            brain = tgm_1ply.suggest(rows, cur, nxt, root=attempt)
             if brain.get("ok"):
                 break
         ghost_surf.fill((0, 0, 0, 0))
         if brain.get("ok"):
-            cur_letter = ID2LETTER[header["cur"]] \
-                if 0 <= header["cur"] < 7 else None
-            tint = COLORS.get(cur_letter, (255, 255, 255))
+            tint = COLORS.get(ID2LETTER[cur], (255, 255, 255))
             for c, r in brain["ghost"]:
                 rect = pygame.Rect(c * CELL + 1, r * CELL + 1,
                                    CELL - 2, CELL - 2)
@@ -260,6 +284,8 @@ def main() -> None:
                   f"brain {brain.get('reason', '?')}", flush=True)
 
     running = True
+    needs_draw = True
+    last_draw = 0.0
     while running:
         for ev in pygame.event.get():
             if ev.type == pygame.QUIT:
@@ -269,6 +295,8 @@ def main() -> None:
         except OSError:
             mtime = 0.0
         if mtime == 0.0:
+            if file_missing is not True or parse_err != "file not found":
+                needs_draw = True
             file_missing = True
             parse_err = "file not found"
         elif mtime != last_mtime:
@@ -278,7 +306,6 @@ def main() -> None:
             if err is None:
                 header, rows = parsed_h, parsed_r
                 parse_err = None
-                last_update = time.time()
                 # Two-phase decisions. LOCK publishes choose the IRS ROOT for
                 # the upcoming piece (cur=header.next, next approximated by
                 # itself — the true next isn't drawn yet). SPAWN publishes
@@ -290,64 +317,64 @@ def main() -> None:
                     _decide_root(header, rows, mtime)
                 elif why == "spawn":
                     _decide_play(header, rows, mtime)
+                needs_draw = True
             else:
+                if parse_err != err:
+                    needs_draw = True
                 parse_err = err
-        screen.fill(BG)
-        draw_board(screen, rows, MARGIN, MARGIN)
-        screen.blit(ghost_surf, (MARGIN, MARGIN))
-        cur = ID2LETTER[header["cur"]] if 0 <= header["cur"] < 7 else "?"
-        nxt = ID2LETTER[header["next"]] if 0 <= header["next"] < 7 else "?"
-        if cur in SHAPES:
-            draw_piece_box(screen, font, small, cur, PANEL_X, MARGIN, "CURRENT")
-        if nxt in SHAPES:
-            draw_piece_box(screen, font, small, nxt, PANEL_X,
-                           MARGIN + 130, "NEXT")
-        info = [
-            f"pieces: {header['cnt']}",
-            f"frame: {header['frame']}",
-            f"bot: {header.get('exec', '?')}",
-            f"updated {time.time() - last_update:.1f}s ago",
-            f"watching: {state_path}",
-        ]
-        if file_missing or parse_err is not None:
-            info.append(f"STATUS: {parse_err or 'missing'}")
-            info.append("check --state path!")
-        y = MARGIN + 270
-        for line in info:
-            screen.blit(small.render(line, True, TEXT_DIM), (PANEL_X, y))
-            y += 22
-        # --- 1-ply panel ---
-        screen.blit(font.render("1-PLY snap12", True, TEXT_DIM),
-                    (BRAIN_X, MARGIN))
-        by = MARGIN + 30
-        if brain is None:
-            screen.blit(small.render("waiting for state…", True, TEXT_DIM),
-                        (BRAIN_X, by))
-        elif not brain.get("ok"):
-            screen.blit(small.render("no suggestion:", True, TEXT_DIM),
-                        (BRAIN_X, by))
-            screen.blit(small.render(str(brain.get("reason", "?"))[:38],
-                                     True, TEXT), (BRAIN_X, by + 22))
-            screen.blit(small.render(str(brain.get("reason", "?"))[38:76],
-                                     True, TEXT), (BRAIN_X, by + 44))
-        else:
-            blines = [
-                f"best {brain['best_score']:.2f}",
-                f"x={brain['best_x']} rot={brain['best_state']}",
-                f"eval {brain['eval_ms']:.1f}ms N={brain['n']}",
-                f"root={brain.get('root', '?')} "
-                f"{len(brain['steps'])} steps",
-                f"{' '.join(STEP_ABBR.get(s, s) for s in brain['steps'][:8])}",
-                f"{moves_info}",
-                "",
-                "top3:",
-            ]
-            for s, st, x, yy in brain["top3"]:
-                blines.append(f"{s:7.2f} x={x} r={st}")
-            for line in blines:
-                screen.blit(small.render(line, True, TEXT), (BRAIN_X, by))
+        # Perf: redraw only on new state/decisions (plus a 2Hz refresh so
+        # a stale frame can't stick). Polling stays at 60Hz so move
+        # latency is unaffected; only the blits are gated.
+        now = time.time()
+        if needs_draw or (now - last_draw) >= 0.5:
+            last_draw = now
+            needs_draw = False
+            screen.fill(BG)
+            draw_board(screen, rows, MARGIN, MARGIN)
+            screen.blit(ghost_surf, (MARGIN, MARGIN))
+            cur = ID2LETTER[header["cur"]] if _is_piece_id(header["cur"]) else "?"
+            nxt = ID2LETTER[header["next"]] if _is_piece_id(header["next"]) else "?"
+            if cur in SHAPES:
+                draw_piece_box(screen, font, small, cur, PANEL_X, MARGIN, "CURRENT")
+            if nxt in SHAPES:
+                draw_piece_box(screen, font, small, nxt, PANEL_X,
+                               MARGIN + 130, "NEXT")
+            # --- viewer panel: top 3, move sequence, IRS only ---
+            screen.blit(font.render("TOP MOVES", True, TEXT_DIM),
+                        (BRAIN_X, MARGIN))
+            by = MARGIN + 30
+            if file_missing or parse_err is not None:
+                screen.blit(small.render("waiting for emulator…", True, TEXT),
+                            (BRAIN_X, by))
+            elif brain is None or not brain.get("ok"):
+                screen.blit(small.render("no move yet", True, TEXT),
+                            (BRAIN_X, by))
                 by += 22
-        pygame.display.flip()
+                held = header.get("held", "-")
+                irs_line = f"IRS: {held}" if held in ("CW", "CCW") else "IRS: none"
+                screen.blit(small.render(irs_line, True, TEXT), (BRAIN_X, by + 8))
+            else:
+                for i, (s, st, x, _yy) in enumerate(brain["top3"][:3]):
+                    screen.blit(small.render(f"{i + 1}. {s:.2f}  x={x}  r={st}",
+                                             True, TEXT), (BRAIN_X, by))
+                    by += 22
+                by += 10
+                screen.blit(font.render("MOVES", True, TEXT_DIM), (BRAIN_X, by))
+                by += 28
+                seq = [STEP_ABBR.get(stp, stp) for stp in brain["steps"]]
+                if not seq:
+                    screen.blit(small.render("—", True, TEXT), (BRAIN_X, by))
+                    by += 22
+                else:
+                    for k in range(0, len(seq), 8):
+                        screen.blit(small.render(" ".join(seq[k:k + 8]),
+                                                 True, TEXT), (BRAIN_X, by))
+                        by += 22
+                by += 10
+                held = header.get("held", "-")
+                irs_line = f"IRS: {held}" if held in ("CW", "CCW") else "IRS: none"
+                screen.blit(small.render(irs_line, True, TEXT), (BRAIN_X, by))
+            pygame.display.flip()
         clock.tick(60)
     pygame.quit()
 

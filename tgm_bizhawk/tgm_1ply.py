@@ -13,6 +13,28 @@ import sys
 import time
 from pathlib import Path
 
+# Perf: pin torch to a single thread BEFORE any inference. The default
+# (4 threads here) makes each 1-ply batch burst across all cores and
+# starves the MAME thread, which shows up as slower-than-normal play +
+# audio cutouts. Single-thread uses ~1/4 of the CPU per inference
+# (isolated batches are a few ms slower, but the emulator stays smooth).
+# set_num_interop_threads() may only be called once before parallel work
+# starts, so do it at import (guarded); set_num_threads() is re-applied
+# in ensure_net() since it can be set at any time.
+try:
+    import torch as _torch
+
+    try:
+        _torch.set_num_interop_threads(1)
+    except RuntimeError:
+        pass
+    try:
+        _torch.set_num_threads(1)
+    except RuntimeError:
+        pass
+except ImportError:
+    pass
+
 HERE = Path(__file__).resolve().parent
 ROOT = HERE.parent
 sys.path.insert(0, str(ROOT / "deathbot_sim" / "python"))
@@ -49,6 +71,10 @@ def ensure_net():
         return _scorer, _load_error
     try:
         import torch
+        try:
+            torch.set_num_threads(1)
+        except RuntimeError:
+            pass
         _net = TAPNet()
         _net.load_state_dict(torch.load(WEIGHTS, map_location="cpu"))
         _net.eval()
@@ -111,6 +137,8 @@ def _sim_name(t) -> str:
 
 def sim_info(tgm_id: int) -> tuple:
     """(sim type name, num_states) for a TGM wire ID."""
+    if not isinstance(tgm_id, int) or not 0 <= tgm_id < 7:
+        raise ValueError(f"bad TGM piece id: {tgm_id!r}")
     t = TGM2SIM[tgm_id]
     name = _sim_name(t)
     return name, NUMSTATES[name]
@@ -143,6 +171,10 @@ def choose_root(rows, cur_tgm: int, next_approx_tgm: int) -> dict:
     single-tap roots. Returns {"ok", "root" (sim state), "hold" (TGM-side
     "CW"/"CCW"/"-"), "value", "n"}.
     """
+    if not (isinstance(cur_tgm, int) and isinstance(next_approx_tgm, int)
+            and 0 <= cur_tgm < 7 and 0 <= next_approx_tgm < 7):
+        return {"ok": False,
+                "reason": f"bad ids cur={cur_tgm} next={next_approx_tgm}"}
     cur_t = TGM2SIM[cur_tgm]
     nxt_t = TGM2SIM[next_approx_tgm]
     try:
@@ -198,7 +230,8 @@ def suggest(rows, cur_tgm: int, next_tgm: int, root: int = 0) -> dict:
     scorer, err = ensure_net()
     if scorer is None:
         return {"ok": False, "reason": f"net load failed: {err}"}
-    if not (0 <= cur_tgm < 7 and 0 <= next_tgm < 7):
+    if not (isinstance(cur_tgm, int) and isinstance(next_tgm, int)
+            and 0 <= cur_tgm < 7 and 0 <= next_tgm < 7):
         return {"ok": False, "reason": f"bad ids cur={cur_tgm} next={next_tgm}"}
     cur_t = TGM2SIM[cur_tgm]
     nxt_t = TGM2SIM[next_tgm]

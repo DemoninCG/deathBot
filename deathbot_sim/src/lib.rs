@@ -67,11 +67,14 @@ impl PyInput {
 /// One reachable locking position + the input sequence that reaches it from
 /// the IRS root. The input sequence does NOT include a trailing Neutral —
 /// emit one to actually lock the piece in the real game.
+/// `irs_root` is the rotation state of the IRS root the path starts from
+/// (0 = bare spawn). Live playback sets it up with IRS taps during ARE.
 #[pyclass(name = "LockCandidate")]
 #[derive(Debug, Clone)]
 pub struct PyLockCandidate {
     pub piece: PyPiece,
     pub inputs: Vec<PyInput>,
+    pub irs_root: u8,
 }
 
 #[pymethods]
@@ -94,6 +97,13 @@ impl PyLockCandidate {
             .iter()
             .map(|i| format!("{:?}", i))
             .collect()
+    }
+
+    /// Rotation state of the IRS root this path starts from (0 = bare
+    /// spawn, no pre-spawn input needed).
+    #[getter]
+    fn irs_root(&self) -> u8 {
+        self.irs_root
     }
 
     fn __repr__(&self) -> String {
@@ -420,6 +430,7 @@ impl PyBoard {
             .map(|c| PyLockCandidate {
                 piece: PyPiece { inner: c.piece },
                 inputs: c.inputs.iter().map(|&i| PyInput::from_inner(i)).collect(),
+                irs_root: c.irs_root,
             })
             .collect()
     }
@@ -427,6 +438,38 @@ impl PyBoard {
     /// Convenience: count of distinct reachable lock positions.
     fn count_locks(&self, kind: PyPieceType) -> usize {
         pathfind::count_locks(&self.inner, kind.to_inner())
+    }
+
+    /// Bare-spawn BFS for live playback: same search seeded only from the
+    /// unrotated spawn, so every path replays with no pre-spawn input.
+    /// Same element type as `search_locks` (all report `irs_root: 0`).
+    fn search_locks_bare(&self, kind: PyPieceType) -> Vec<PyLockCandidate> {
+        pathfind::search_locks_bare(&self.inner, kind.to_inner())
+            .into_iter()
+            .map(|c| PyLockCandidate {
+                piece: PyPiece { inner: c.piece },
+                inputs: c.inputs.iter().map(|&i| PyInput::from_inner(i)).collect(),
+                irs_root: c.irs_root,
+            })
+            .collect()
+    }
+
+    /// Root-constrained BFS for live playback with true IRS: same search
+    /// seeded only from IRS roots with the given rotation state (the
+    /// orientation an ARE hold produced). Empty when that root is blocked.
+    fn search_locks_from(
+        &self,
+        kind: PyPieceType,
+        root_state: u8,
+    ) -> Vec<PyLockCandidate> {
+        pathfind::search_locks_from(&self.inner, kind.to_inner(), root_state)
+            .into_iter()
+            .map(|c| PyLockCandidate {
+                piece: PyPiece { inner: c.piece },
+                inputs: c.inputs.iter().map(|&i| PyInput::from_inner(i)).collect(),
+                irs_root: c.irs_root,
+            })
+            .collect()
     }
 
     /// Bulk lock+clear every reachable candidate for `kind` in ONE FFI call.

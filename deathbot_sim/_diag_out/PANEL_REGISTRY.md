@@ -715,3 +715,45 @@
     pre-registered Pareto t≥2 rule; burn6 PROMOTED (file, overwritten:
     snap12_burn_promotion.json). Next free: 21680+ (dev); 5500+
     reserves for promotion.
+
+- seeds: 21680-21729
+  protocol: corrected-lockout, cap 3000 (12-snapshot pure-1-ply showdown,
+    2026-09-15; post-§54 physics; NeuralScorer true-preview, eps=0,
+    aliased RNG sweep convention; clears recorded per game)
+  status: CONSUMED
+  history: model_weights_snapshot{1..12}.pt x 50 matched tapes, pure 1-ply
+    greedy, no 2-ply/controller/bonus — driver
+    python/diag_snapshot_showdown.py.
+    Result 2026-09-15 (cap 3000, post-§54 physics,
+    file snapshot_showdown_21680.json, wall ~640s):
+    snap12 1768.9 (9/50 cap, 94 tet) > snap11 892.4 (2/50, 40 tet) >
+    snap10 679.7 (0/50, 23 tet) > snap9 328.9 > snap6 305.4 >
+    snap7 299.1 > snap5 281.6 > snap3 275.7 > snap4 191.0 >
+    snap2 121.5 > snap1 76.7 > snap8 29.9; all paired vs snap12
+    t<=-5.5; 1-ply T/100 ~0-0.11 throughout (no style signal, as expected).
+
+- seeds: 21730-21929
+  protocol: corrected-lockout, cap 3000 (snapshots 1-10 x200 MTTD refinement,
+    2026-09-15; post-§54 physics; same showdown harness; snaps 11-12 excluded)
+  status: CONSUMED
+  history: snapshots 1-10 x 200 matched tapes, pure 1-ply greedy — driver
+    python/diag_snapshot_showdown.py --snaps 1 2 3 4 5 6 7 8 9 10.
+    Result 2026-09-15 (cap 3000, post-§54 physics,
+    file snapshot_showdown_21730_snap1-10.json, wall ~1053s):
+    snap10 552.8 [483.5,638.2] > snap9 365.7 > snap7 328.6 >
+    snap6 298.5 > snap5 279.8 > snap3 254.9 > snap4 202.7 >
+    snap2 114.2 > snap1 74.1 > snap8 30.5; snap4 dip below snap3/5 holds.
+  notes: 5500+ reserves untouched.
+
+- seeds: 21930-21949
+  protocol: corrected-lockout, cap 1500 (stylish-champion lineage re-eval,
+    2026-09-15; post-§54 physics; 6 cells: snap9 lam10/cross +
+    snap12 lam10/cross/tiered/burn6, all matched tapes)
+  status: CONSUMED (style_lineage_21930.json, wall ~5500s):
+    snap12_burn6 18/20 (674 tet, 2.273 T/100) > snap12_tiered 17/20
+    (560, 1.978, dTet -5.7 t-2.15) > snap12_cross 18/20 (290, 1.031,
+    dTet -19.2 t-9.21) > snap12_lam10 5/20 (213, 1.109, dTet -23.05
+    t-8.69) > snap9_cross 9/20 (92, 0.414) > snap9_lam10 14/20 (75,
+    0.288) — champ holds, tiered second, snap9 chassis collapses.
+  notes: 5500+ reserves untouched; next free 21950+ after this run.
+  notes: 5500+ reserves untouched.

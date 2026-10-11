@@ -91,10 +91,13 @@ static I_1: [(i8, i8); 4] = [(2, 0), (2, 1), (2, 2), (2, 3)];
 // O piece — 1 state. Immovable 2x2 block.
 static O_0: [(i8, i8); 4] = [(1, 0), (2, 0), (1, 1), (2, 1)];
 
-// T piece — 4 states.
+// T piece — 4 states. NOTE: T_2 ("up") sits one tile LOWER than a naive
+// bottom-alignment would put it (flat at dy=0, stem above): this is the ARS
+// geometry, and it is load-bearing. At the old height T could rotate out of
+// well mouths (fundoshi), which needs a floor kick that only TGM3 has.
 static T_0: [(i8, i8); 4] = [(1, 0), (0, 1), (1, 1), (2, 1)];
 static T_1: [(i8, i8); 4] = [(1, 0), (1, 1), (2, 1), (1, 2)];
-static T_2: [(i8, i8); 4] = [(0, 1), (1, 1), (2, 1), (1, 2)];
+static T_2: [(i8, i8); 4] = [(0, 0), (1, 0), (2, 0), (1, 1)];
 static T_3: [(i8, i8); 4] = [(1, 0), (0, 1), (1, 1), (1, 2)];
 
 // S piece — 2 states (horizontal / vertical).

@@ -40,6 +40,18 @@ local RAM = "sh2 : ram : 0x6000000-0x60FFFFF";
 local SPR = "sh2 : ram : 0x4000000-0x400FFFF";
 local OUTFILE = "tgm_state.txt";
 
+-- Perf: orientation trace (ORI spawncheck + per-rotation snapshots) is a
+-- diagnostic that costs 2+ full sprite-list scans per piece plus console
+-- spam. It does not affect decisions or playback. Keep OFF for real-time
+-- play/recording; set true only when auditing holds offline.
+local ORI_ENABLED = false;
+
+-- Perf: localize the hot memory readers once. The per-read pcall()s below
+-- used to cost ~4000 protected calls per board scan (up to ~10 scans per
+-- piece); a single pcall around the whole scan preserves the nil,err
+-- contract at ~1/4000th of the cost. The outer onframeend pcall remains
+-- as the final backstop.
+
 local LOCK_COLR = { [0x3F] = "I", [0x5D] = "J", [0x67] = "L", [0x71] = "O",
                     [0x53] = "S", [0x7B] = "T", [0x49] = "Z" };
 -- Move steps arrive from Python in TGM-side direction names (the bridge
@@ -51,77 +63,98 @@ local function sext(v, bits)
   if v >= (2 ^ (bits - 1)) then return v - (2 ^ bits) else return v end
 end
 
+local _read_u16 = memory.read_u16_be;
+local _read_u32 = memory.read_u32_be;
+
 local function scan_board()
-  local grid = {};
-  for r = 0, 19 do grid[r] = {} end
-  for i = 0, 0x3FF do
-    local ok, e = pcall(memory.read_u16_be, 0x3800 + i * 2, SPR);
-    if not ok then return nil, "sprlist read failed at entry " .. i end
-    local base = ((e & 0x3FF) * 4) * 4;
-    local ok0, w0 = pcall(memory.read_u32_be, base, SPR);
-    local ok1, w1 = pcall(memory.read_u32_be, base + 4, SPR);
-    local ok2, w2 = pcall(memory.read_u32_be, base + 8, SPR);
-    if not (ok0 and ok1 and ok2) then
-      return nil, "sprite read failed at list entry " .. i;
-    end
-    local x = sext(w0 & 0x3FF, 10);
-    local y = sext(math.floor(w0 / 65536) & 0x3FF, 10);
-    local wide = (math.floor(w1 / 256) & 0xF) + 1;
-    local high = (math.floor(w1 / 16777216) & 0xF) + 1;
-    local tnum = w2 & 0x7FFFF;
-    local colr = math.floor(w2 / 16777216) & 0xFF;
-    if wide == 1 and high == 1 and tnum >= 0x18200 and tnum <= 0x182FF
-       and LOCK_COLR[colr] ~= nil
-       and (x - 18) % 8 == 0 and (y - 41) % 8 == 0 then
-      local c = math.floor((x - 18) / 8);
-      local r = math.floor((y - 41) / 8);
-      if c >= 0 and c < 10 and r >= 0 and r < 20
-         and grid[r][c] == nil then
-        grid[r][c] = LOCK_COLR[colr];
+  -- Single-pcall wrapper: the inner scan throws on a bus error, we
+  -- convert to the historical (nil, err) return. Normal path: zero
+  -- pcalls inside the 1024-entry loop (was 4 per entry).
+  local function inner()
+    local grid = {};
+    for r = 0, 19 do grid[r] = {} end
+    for i = 0, 0x3FF do
+      local e = _read_u16(0x3800 + i * 2, SPR);
+      local base = ((e & 0x3FF) * 4) * 4;
+      -- Read w1 first: most non-field sprites are not 1x1, so skipping
+      -- w0/w2 there saves ~2 bus reads per such entry. Field cells need
+      -- all three words.
+      local w1 = _read_u32(base + 4, SPR);
+      local wide = (math.floor(w1 / 256) & 0xF) + 1;
+      local high = (math.floor(w1 / 16777216) & 0xF) + 1;
+      if wide == 1 and high == 1 then
+        local w0 = _read_u32(base, SPR);
+        local w2 = _read_u32(base + 8, SPR);
+        local tnum = w2 & 0x7FFFF;
+        if tnum >= 0x18200 and tnum <= 0x182FF then
+          local colr = math.floor(w2 / 16777216) & 0xFF;
+          if LOCK_COLR[colr] ~= nil then
+            local x = sext(w0 & 0x3FF, 10);
+            local y = sext(math.floor(w0 / 65536) & 0x3FF, 10);
+            if (x - 18) % 8 == 0 and (y - 41) % 8 == 0 then
+              local c = math.floor((x - 18) / 8);
+              local r = math.floor((y - 41) / 8);
+              if c >= 0 and c < 10 and r >= 0 and r < 20
+                 and grid[r][c] == nil then
+                grid[r][c] = LOCK_COLR[colr];
+              end
+            end
+          end
+        end
       end
+      if (e & 0x4000) ~= 0 then break end
     end
-    if (e & 0x4000) ~= 0 then break end
+    local rows = {};
+    for r = 0, 19 do
+      local row = {};
+      for c = 0, 9 do row[#row + 1] = grid[r][c] or "." end
+      rows[#rows + 1] = table.concat(row);
+    end
+    return rows;
   end
-  local rows = {};
-  for r = 0, 19 do
-    local row = {};
-    for c = 0, 9 do row[#row + 1] = grid[r][c] or "." end
-    rows[#rows + 1] = table.concat(row);
-  end
-  return rows;
+  local ok, res = pcall(inner);
+  if ok then return res end
+  return nil, "sprite read failed: " .. tostring(res);
 end
 
 -- On-grid mino cells "c_r=COLR" for ANY 1x1 0x182xx sprite. Falling pieces
 -- use piece-specific animated palettes (T: 0x7E/0x7D, I: 0x3E/0x42, …),
 -- so callers subtract the cached locked board to isolate the live piece.
+-- DIAGNOSTIC ONLY (gated by ORI_ENABLED): same single-pcall treatment as
+-- scan_board; untouched semantics when enabled.
 local function snapshot_minos()
-  local cells = {};
-  for i = 0, 0x3FF do
-    local ok, e = pcall(memory.read_u16_be, 0x3800 + i * 2, SPR);
-    if not ok then return nil end
-    local base = ((e & 0x3FF) * 4) * 4;
-    local ok0, w0 = pcall(memory.read_u32_be, base, SPR);
-    local ok1, w1 = pcall(memory.read_u32_be, base + 4, SPR);
-    local ok2, w2 = pcall(memory.read_u32_be, base + 8, SPR);
-    if ok0 and ok1 and ok2 then
-      local x = sext(w0 & 0x3FF, 10);
-      local y = sext(math.floor(w0 / 65536) & 0x3FF, 10);
+  local function inner()
+    local cells = {};
+    for i = 0, 0x3FF do
+      local e = _read_u16(0x3800 + i * 2, SPR);
+      local base = ((e & 0x3FF) * 4) * 4;
+      local w1 = _read_u32(base + 4, SPR);
       local wide = (math.floor(w1 / 256) & 0xF) + 1;
       local high = (math.floor(w1 / 16777216) & 0xF) + 1;
-      local tnum = w2 & 0x7FFFF;
-      local colr = math.floor(w2 / 16777216) & 0xFF;
-      if wide == 1 and high == 1 and tnum >= 0x18200 and tnum <= 0x182FF
-         and (x - 18) % 8 == 0 and (y - 41) % 8 == 0 then
-        local c = math.floor((x - 18) / 8);
-        local r = math.floor((y - 41) / 8);
-        if c >= 0 and c < 10 and r >= 0 and r < 20 then
-          cells[c .. "_" .. r] = colr;
+      if wide == 1 and high == 1 then
+        local w0 = _read_u32(base, SPR);
+        local w2 = _read_u32(base + 8, SPR);
+        local tnum = w2 & 0x7FFFF;
+        if tnum >= 0x18200 and tnum <= 0x182FF then
+          local colr = math.floor(w2 / 16777216) & 0xFF;
+          local x = sext(w0 & 0x3FF, 10);
+          local y = sext(math.floor(w0 / 65536) & 0x3FF, 10);
+          if (x - 18) % 8 == 0 and (y - 41) % 8 == 0 then
+            local c = math.floor((x - 18) / 8);
+            local r = math.floor((y - 41) / 8);
+            if c >= 0 and c < 10 and r >= 0 and r < 20 then
+              cells[c .. "_" .. r] = colr;
+            end
+          end
         end
       end
+      if (e & 0x4000) ~= 0 then break end
     end
-    if (e & 0x4000) ~= 0 then break end
+    return cells;
   end
-  return cells;
+  local ok, res = pcall(inner);
+  if ok then return res end
+  return nil;
 end
 
 -- publish state (dedupe by board+cnt/cur/nxt); returns publish frame or nil.
@@ -357,10 +390,14 @@ event.onframeend(function()
     -- this frameend, so the reading reflects the previous frame's result.
     -- Covers both explicit checks (spawn/rotN) and the automatic spawncheck
     -- 2f after every turnover (audits what the ARE hold produced).
-    if verify_armed ~= nil or (ori_at ~= nil and frame >= ori_at) then
+    -- Perf: gated by ORI_ENABLED (diagnostic only: 1-2 full sprite scans
+    -- plus console spam per piece when on).
+    if ORI_ENABLED and (verify_armed ~= nil or (ori_at ~= nil and frame >= ori_at)) then
       local ac = active_cells();
       console.log(string.format("ORI %s cur=%d [%s]",
         verify_armed or "spawncheck", cur, ac or "READ-FAILED"));
+      verify_armed = nil; ori_at = nil;
+    elseif not ORI_ENABLED then
       verify_armed = nil; ori_at = nil;
     end
 
@@ -389,9 +426,9 @@ event.onframeend(function()
       end
       -- keep holding through the spawn frameend (IRS samples held input
       -- at spawn); release lands at rel_at below. The spawncheck audits
-      -- the produced orientation 2f later.
+      -- the produced orientation 2f later (ORI_ENABLED only).
       if hold_btn ~= nil and rel_at == nil then rel_at = frame + 1 end
-      ori_at = frame + 2;
+      if ORI_ENABLED then ori_at = frame + 2 end
       done_hold = false;
       consumed_for = nil;  -- new piece: its play move is adoptable again
       if plan == nil and hold_btn == nil then exec = "idle" end
@@ -404,8 +441,8 @@ event.onframeend(function()
         if plan.idx <= #plan.steps then
           press_mapped(plan.steps[plan.idx]);
           exec = string.format("play %d/%d", plan.idx, #plan.steps);
-          if plan.steps[plan.idx] == "CW"
-             or plan.steps[plan.idx] == "CCW" then
+          if ORI_ENABLED and (plan.steps[plan.idx] == "CW"
+             or plan.steps[plan.idx] == "CCW") then
             verify_armed = "rot" .. plan.idx;
           end
           plan.idx = plan.idx + 1;
@@ -475,7 +512,7 @@ event.onframeend(function()
           consumed_for = m.for_frame;
           exec = "play";
           done_hold = false;
-          verify_armed = "spawn";
+          if ORI_ENABLED then verify_armed = "spawn" end
           console.log(string.format(
             "PLAYER: plan adopted (%d steps) for f=%d",
             #m.steps, m.for_frame));

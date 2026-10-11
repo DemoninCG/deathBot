@@ -39,10 +39,15 @@ use crate::rotation::try_rotate;
 ///
 /// The input sequence does NOT include a trailing Neutral — callers should
 /// emit one to actually lock the piece in the real game.
+/// `irs_root` is the rotation state of the IRS root the path starts from
+/// (0 = bare spawn, reached with no pre-spawn input). Live playback needs
+/// it: a nonzero root must be set up during ARE via IRS taps before the
+/// path's inputs are replayed from spawn.
 #[derive(Debug, Clone)]
 pub struct LockCandidate {
     pub piece: Piece,
     pub inputs: Vec<Input>,
+    pub irs_root: u8,
 }
 
 /// Canonical BFS node key: (rotation_state, x, y). We include y because under
@@ -63,6 +68,33 @@ type NodeKey = (u8, i8, i8);
 /// (state, x+16, y+32) — no hashing — and queue/path storage reuses buffers.
 pub fn search_locks(board: &Board, kind: PieceType) -> Vec<LockCandidate> {
     search_locks_with_paths(board, kind)
+}
+
+/// Bare-spawn search for LIVE PLAYBACK (not training): identical BFS, but
+/// seeded ONLY from the unrotated spawn state (IRS root 0), so every
+/// returned path starts exactly where the real piece spawns and needs no
+/// pre-spawn input. Locks reachable solely via rotated IRS roots (rare
+/// IRS-only tucks) are absent rather than mislabeled — the caller must not
+/// filter or reinterpret roots. Every candidate reports `irs_root: 0`.
+/// Returns empty when even the bare spawn is blocked (topping out).
+pub fn search_locks_bare(board: &Board, kind: PieceType) -> Vec<LockCandidate> {
+    search_locks_with_paths_from(board, kind, Some(0))
+}
+
+/// Root-constrained search for live playback with true IRS: identical BFS
+/// seeded only from IRS roots whose rotation state is `root_state` (when
+/// valid at spawn). Lets the bot plan from the orientation its ARE hold
+/// actually produced, verified at spawn. Empty when that root is blocked.
+pub fn search_locks_from(
+    board: &Board,
+    kind: PieceType,
+    root_state: u8,
+) -> Vec<LockCandidate> {
+    search_locks_with_paths_from(board, kind, Some(root_state))
+}
+
+fn search_locks_with_paths(board: &Board, kind: PieceType) -> Vec<LockCandidate> {
+    search_locks_with_paths_from(board, kind, None)
 }
 
 /// Scoring-only search (item 5): grounded (state, x, y) triples with NO
@@ -118,26 +150,36 @@ pub fn search_placements(board: &Board, kind: PieceType) -> Vec<Piece> {
     out
 }
 
-fn search_locks_with_paths(board: &Board, kind: PieceType) -> Vec<LockCandidate> {
+fn search_locks_with_paths_from(
+    board: &Board,
+    kind: PieceType,
+    root_filter: Option<u8>,
+) -> Vec<LockCandidate> {
     let mut candidates: Vec<LockCandidate> = Vec::new();
     let mut visited: HashSet<NodeKey> = HashSet::new();
-    let mut queue: VecDeque<(Piece, Vec<Input>)> = VecDeque::new();
+    let mut queue: VecDeque<(Piece, Vec<Input>, u8)> = VecDeque::new();
 
-    // 1. Seed with IRS roots, each dropped under 20G.
+    // 1. Seed with IRS roots, each dropped under 20G. A root filter keeps
+    // only the requested rotation state (bare spawn = 0, or the orientation
+    // an ARE hold produced); None keeps every valid root.
     for root in irs_root_states(board, kind) {
+        if root_filter.is_some_and(|s| s != root.state) {
+            continue;
+        }
         let grounded = board.drop_20g(&root);
         let key = (grounded.state, grounded.x, grounded.y);
         if visited.insert(key) {
             candidates.push(LockCandidate {
                 piece: grounded,
                 inputs: Vec::new(),
+                irs_root: root.state,
             });
-            queue.push_back((grounded, Vec::new()));
+            queue.push_back((grounded, Vec::new(), root.state));
         }
     }
 
     // 2. BFS over (state, x) edges.
-    while let Some((piece, path)) = queue.pop_front() {
+    while let Some((piece, path, root_state)) = queue.pop_front() {
         // Enumerate the 4 single-input edges: Left, Right, RotateCw, RotateCcw.
         for (input, child) in successors(board, &piece) {
             let grounded = board.drop_20g(&child);
@@ -148,8 +190,9 @@ fn search_locks_with_paths(board: &Board, kind: PieceType) -> Vec<LockCandidate>
                 candidates.push(LockCandidate {
                     piece: grounded,
                     inputs: new_path.clone(),
+                    irs_root: root_state,
                 });
-                queue.push_back((grounded, new_path));
+                queue.push_back((grounded, new_path, root_state));
             }
         }
     }
@@ -267,6 +310,65 @@ mod tests {
             let keys: HashSet<(u8, i8, i8)> =
                 locks.iter().map(|c| (c.piece.state, c.piece.x, c.piece.y)).collect();
             assert_eq!(keys.len(), locks.len(), "{:?} has duplicate (state, x, y) candidates", kind);
+        }
+    }
+
+    #[test]
+    fn bare_search_reports_root_zero_and_subset_of_full() {
+        // Every bare candidate starts at the unrotated spawn (irs_root 0).
+        // Each bare lock position must also exist in the full search (paths
+        // may differ: full search can reach the same lock shorter via a
+        // rotated root, which is exactly why bare search exists).
+        let b = Board::new();
+        for &kind in PieceType::ALL.iter() {
+            let bare = search_locks_bare(&b, kind);
+            let full = search_locks(&b, kind);
+            assert!(!bare.is_empty(), "{:?} bare search empty on empty board", kind);
+            for c in &bare {
+                assert_eq!(c.irs_root, 0, "{:?} bare root not zero", kind);
+                assert!(full.iter().any(|f|
+                    f.piece.state == c.piece.state
+                    && f.piece.x == c.piece.x && f.piece.y == c.piece.y),
+                    "{:?} bare lock missing from full search", kind);
+            }
+        }
+    }
+
+    #[test]
+    fn from_search_root_zero_matches_bare() {
+        // search_locks_from(_, 0) must equal search_locks_bare exactly
+        // (same seeds, same order, same paths).
+        let b = Board::new();
+        for &kind in PieceType::ALL.iter() {
+            let a = search_locks_bare(&b, kind);
+            let f = search_locks_from(&b, kind, 0);
+            assert_eq!(a.len(), f.len(), "{:?} count", kind);
+            for (x, y) in a.iter().zip(f.iter()) {
+                assert_eq!((x.piece.state, x.piece.x, x.piece.y),
+                           (y.piece.state, y.piece.x, y.piece.y));
+                assert_eq!(x.inputs, y.inputs);
+                assert_eq!(x.irs_root, 0);
+                assert_eq!(y.irs_root, 0);
+            }
+        }
+    }
+
+    #[test]
+    fn from_search_other_roots_stay_inside_full() {
+        // Constrained searches report their own root and stay within the
+        // full search's lock positions.
+        let b = Board::new();
+        for &kind in PieceType::ALL.iter() {
+            let full = search_locks(&b, kind);
+            for s in 1..kind.num_states() {
+                for c in search_locks_from(&b, kind, s).iter() {
+                    assert_eq!(c.irs_root, s);
+                    assert!(full.iter().any(|f|
+                        f.piece.state == c.piece.state
+                        && f.piece.x == c.piece.x && f.piece.y == c.piece.y),
+                        "{:?} root-{} lock missing from full search", kind, s);
+                }
+            }
         }
     }
 

@@ -367,6 +367,25 @@ class TestRotationApi:
         kick = board.kick_used(l, True)
         assert kick == (1, 0), f"off-center first hit should allow +1, got {kick}\n" + _describe(board, l)
 
+    def test_center_column_bottom_center_before_bottom_left(self):
+        board = ds.Board()
+        # Live-game correction (Death ~level 443): TGM-side flat J on two
+        # stack blocks (sim-L state 0) refuses both rotations; a 1..9 scan
+        # sees bottom-left first and wrongly allows the +1 kick.
+        l = ds.Piece(ds.PieceType.L, 0, 3, 0)
+        board.set_cell(3, 0)
+        board.set_cell(4, 0)
+        assert board.try_rotate(l, True) is None
+        assert board.kick_used(l, True) is None
+        assert board.try_rotate(l, False) is None
+        # Mirror (TGM-side L == sim-J) stays blocked: symmetry pin.
+        board2 = ds.Board()
+        j = ds.Piece(ds.PieceType.J, 0, 3, 0)
+        board2.set_cell(4, 0)
+        board2.set_cell(5, 0)
+        assert board2.try_rotate(j, True) is None
+        assert board2.kick_used(j, True) is None
+
     def test_rotation_fails_when_all_kicks_blocked(self):
         board = ds.Board()
         # Block every column the I piece could rotate into.

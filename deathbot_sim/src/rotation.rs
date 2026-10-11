@@ -10,11 +10,14 @@
 //! - The I piece NEVER kicks in TAP (I wall/floor kicks were added in
 //!   TGM3 Terror-Instinct). I rotation succeeds only as the bare rotation.
 //! - L, J, T are subject to the CENTER COLUMN rule: the 3x3 box of the
-//!   bare target position is scanned in 1..9 order (top-left to
-//!   bottom-right); if the FIRST colliding cell (stack block or wall/floor)
-//!   is in the center column (cells 2, 5, 8), the rotation fails outright
-//!   and no kick is tried. An off-center first collision allows the normal
-//!   right-then-left kicks.
+//!   bare target position is scanned top-to-bottom with the bottom row
+//!   ordered center, left, right (cells 1,2,3,4,5,6,8,7,9); if the FIRST
+//!   colliding cell (stack block or wall/floor) is in the center column
+//!   (cells 2, 5, 8), the rotation fails outright and no kick is tried.
+//!   An off-center first collision allows the normal right-then-left
+//!   kicks. (Bottom-center precedes bottom-left: a 1..9 scan wrongly
+//!   allows kicks for a flat piece resting its left half on the stack —
+//!   refuted by TGM2 gameplay, see CENTER_SCAN.)
 //! - No ±2 kicks and no floor kicks exist in TAP.
 //!
 //! Kick sequence per rotation attempt (in order):
@@ -30,9 +33,16 @@ use crate::piece::{Piece, PieceType};
 /// (purely horizontal kicks). TAP has no ±2 or floor kicks.
 pub const KICKS: [(i8, i8); 3] = [(0, 0), (1, 0), (-1, 0)];
 
-/// 3x3 box scan order for the center-column rule (cell numbers 1..9,
-/// row-major top-to-bottom). Entries are `(dx, dy)` offsets from the box
-/// origin plus whether the cell is in the center column (dx == 1).
+/// 3x3 box scan order for the center-column rule. Entries are `(dx, dy)`
+/// offsets from the box origin plus whether the cell is in the center
+/// column (dx == 1). Order is top-to-bottom with the bottom row scanned
+/// CENTER, left, right (cells 1,2,3,4,5,6,8,7,9) — NOT 1..9. Correction
+/// from TGM2 Death gameplay (~level 443, 2026-10-12): a flat J resting
+/// its left half on two stack blocks (bottom-left AND bottom-center of
+/// the box blocked) refuses rotation in both directions, but a 1..9 scan
+/// sees bottom-left first (off-center) and wrongly allows the +1 kick.
+/// The game blocks both that and its mirror (bottom-center + bottom-right,
+/// first hit center either way), so only "8 before 7" is mirror-symmetric.
 const CENTER_SCAN: [((i8, i8), bool); 9] = [
     ((0, 2), false), // 1
     ((1, 2), true),  // 2 center
@@ -40,8 +50,8 @@ const CENTER_SCAN: [((i8, i8), bool); 9] = [
     ((0, 1), false), // 4
     ((1, 1), true),  // 5 center
     ((2, 1), false), // 6
+    ((1, 0), true),  // 8 center (before 7 — see above)
     ((0, 0), false), // 7
-    ((1, 0), true),  // 8 center
     ((2, 0), false), // 9
 ];
 
@@ -59,8 +69,9 @@ fn box_cell_blocked(board: &Board, c: i8, r: i8) -> bool {
 }
 
 /// Center-column gate for L/J/T bare rotations. Scans the 3x3 box of the
-/// bare target position in 1..9 order; returns true when the FIRST colliding
-/// cell is a center-column cell (rotation must fail, no kicks allowed).
+/// bare target position (order 1,2,3,4,5,6,8,7,9 — bottom-center before
+/// bottom-left); returns true when the FIRST colliding cell is a
+/// center-column cell (rotation must fail, no kicks allowed).
 /// Returns false when the first collision is off-center (kicks allowed) or
 /// when nothing collides (caller already handled the bare-success case).
 fn center_column_blocks(board: &Board, target: &Piece) -> bool {
@@ -278,6 +289,61 @@ mod tests {
         let t = Piece::new(PieceType::T, 3, -1, 0);
         let used = kick_used(&b, &t, true);
         assert_eq!(used, Some((1, 0)), "wall-first collision is off-center, +1 kick should apply, got {:?}", used);
+    }
+
+    #[test]
+    fn center_column_bottom_center_checked_before_bottom_left() {
+        // TGM2 gameplay (Death ~level 443): a flat J resting its left half
+        // on two stack blocks refuses rotation in BOTH directions, but a
+        // 1..9 scan sees bottom-left first (off-center) and wrongly allows
+        // the +1 kick. TGM-side J == sim-L geometry (bridge mirror-swaps
+        // J/L). sim-L state 0 at (3,0): cells (5,0),(3,1),(4,1),(5,1);
+        // stack (3,0),(4,0) = box cells 7,8. CW -> L_1 bare needs (4,0):
+        // fails; +1 -> (5,0),(5,1),(5,2),(6,2) is open but must be vetoed.
+        let mut b = Board::new();
+        let l = Piece::new(PieceType::L, 0, 3, 0);
+        assert!(b.is_valid(&l));
+        b.set_cell(3, 0);
+        b.set_cell(4, 0);
+        assert!(try_rotate(&b, &l, true).is_none(),
+                "bottom-left-first with bottom-center blocked must fail, got {:?}",
+                kick_used(&b, &l, true));
+        assert!(kick_used(&b, &l, true).is_none());
+        // CCW (0->3) fails on the merits too (both kicks blocked): pin it.
+        assert!(try_rotate(&b, &l, false).is_none());
+        // Mirror symmetry (TGM-side L == sim-J, stack under the right half
+        // = box cells 8,9) must also fail — first hit center either way.
+        let mut b2 = Board::new();
+        let j = Piece::new(PieceType::J, 0, 3, 0);
+        assert!(b2.is_valid(&j));
+        b2.set_cell(4, 0);
+        b2.set_cell(5, 0);
+        assert!(try_rotate(&b2, &j, true).is_none());
+        assert!(kick_used(&b2, &j, true).is_none());
+    }
+
+    #[test]
+    fn t_up_orientation_sits_low_no_fundoshi() {
+        // ARS (TGM2): the T "up" orientation sits one tile lower than the
+        // sim's old table had it. At the old height T could rotate out of
+        // well mouths (fundoshi), which in reality needs a floor kick that
+        // only exists in TGM3 — TAP has right/left kicks only.
+        // Shelf at row 3, cols 4 and 6; T_1 vertical rooted at (4,3).
+        let mut b = Board::new();
+        b.set_cell(4, 3);
+        b.set_cell(6, 3);
+        let t = Piece::new(PieceType::T, 1, 4, 3);
+        assert!(b.is_valid(&t));
+        // Rotating into the up orientation must fail: with the correct low
+        // table its flat lands in the shelf row, and no TAP kick rescues it
+        // (sideways kicks hit shelf, no floor kicks exist).
+        assert!(try_rotate(&b, &t, true).is_none(),
+                "fundoshi escape must fail without TGM3 floor kicks");
+        // Same rotation in the open still works (no over-correction).
+        let b2 = Board::new();
+        let t2 = Piece::new(PieceType::T, 1, 4, 5);
+        assert!(try_rotate(&b2, &t2, true).is_some(),
+                "open-field T rotation must still succeed");
     }
 
     #[test]

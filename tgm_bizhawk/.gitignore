@@ -1,0 +1,9 @@
+# Runtime exchange files between tgm_player.lua (EmuHawk) and tgm_mirror.py.
+# Regenerated every run; never commit.
+tgm_state.txt
+tgm_state.txt.tmp
+tgm_moves.txt
+tgm_moves.tmp
+tgm_player_output.txt
+tgm_terminal_output.txt
+__pycache__/

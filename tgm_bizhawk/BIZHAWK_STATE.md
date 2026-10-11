@@ -256,3 +256,13 @@ publishes to resume (ROOTs flowing again if pairs fit; silent-cache
 pieces otherwise). Watch: whether IRS holds still engage at 500+ pace,
 and any DAS runaways on long same-direction runs (DAS shortens up
 there — STEP_FRAMES may need revisiting per section).
+
+## 12. FIRST LIVE DEATH GM (2026-10-12, verified)
+
+Snapshot12 1-ply + true IRS reached level 999 (Death GM) in real TGM2.
+This validates the §7–§11 fixes live: bad-header parse, timer-gate hold
+adoption, lock-publish starvation (§9 one-shot adoption), center-column
+rule (§10), and the 500+ quiescence/backstop (§11, STEP_FRAMES=2).
+Live config is survival-only (plain greedy snapshot12, no style bonuses).
+Open watch items: DAS runaways on long runs at 500+ pace, high-stack IRS
+kicks, O-piece edge cases.

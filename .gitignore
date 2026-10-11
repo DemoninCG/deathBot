@@ -16,6 +16,17 @@ target/
 # Temp / scratch files
 *.tmp
 *~
+*.log
+
+# Regenerable training artifacts (banks, checkpoints, run logs).
+# Evidence JSONs + PANEL_REGISTRY.md + the test fixture bank are tracked.
+deathbot_sim/_diag_out/*.pt
+deathbot_sim/_diag_out/*.npz
+!deathbot_sim/_diag_out/state_bank_snapshot9_32games.npz
+deathbot_sim/_diag_out/*.log
+deathbot_sim/*.state.pt
+deathbot_sim/_test_*.pt*
+deathbot_sim/_diagnostic_*.pt*
 
 # OS metadata
 Thumbs.db
